@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <ImageView
+        android:id="@+id/grid_item_bg"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginRight="0dp"
+        android:src="@mipmap/image_box"
+        android:contentDescription="@null" />
+
+    <ImageView
+        android:id="@+id/grid_item_image"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="-82dp"
+        android:layout_marginLeft="8dp"
+        android:src="@mipmap/cat"
+
+        />
+</LinearLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="340dp"
+    android:layout_height="300dp"
+    android:background="@drawable/popup_bg">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="95dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/linearLayout2">
+            <kankan.wheel.widget.WheelView android:id="@+id/day"
+                android:layout_height="100dp"
+                android:layout_width="85dp"
+                android:background="@color/colorPrimary"
+                android:layout_marginRight="5dp"/>
+            <kankan.wheel.widget.WheelView android:id="@+id/hour"
+                android:layout_height="100dp"
+                android:layout_width="40dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:layout_gravity="center_vertical"/>
+            <kankan.wheel.widget.WheelView android:id="@+id/minute"
+                android:layout_height="100dp"
+                android:layout_width="40dp"/>
+            <kankan.wheel.widget.WheelView android:id="@+id/ampm"
+                android:layout_height="100dp"
+                android:layout_width="40dp"
+                android:layout_marginLeft="5dp"/>
+    </LinearLayout>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/set_butt"
+            android:layout_gravity="bottom"
+            android:baselineAlignBottom="true"
+            android:layout_marginTop="245dp"
+            android:layout_marginLeft="120dp"
+            android:id="@+id/set"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/x_butt"
+        android:layout_marginLeft="282dp"
+        android:layout_marginTop="25dp"
+        android:id="@+id/close"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="Day"
+        android:layout_below="@+id/close"
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:layout_alignStart="@+id/linearLayout2"
+        android:layout_marginLeft="25dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="HH"
+        android:layout_alignTop="@+id/textView"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="MM"
+        android:id="@+id/textView"
+        android:layout_below="@+id/close"
+        android:layout_toRightOf="@+id/set"
+        android:layout_marginLeft="-10dp"
+         />
+
+
+
+</RelativeLayout>

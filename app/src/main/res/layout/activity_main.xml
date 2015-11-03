@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:fitsSystemWindows="false"
+    tools:context="com.fournodes.ud.pranky.Main"
+    android:background="@drawable/app_bg" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:padding="5dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/sett_btn_margin_right"
+            android:layout_marginTop="@dimen/sett_btn_margin_top"
+            android:src="@mipmap/setting_butt"
+            android:layout_alignParentTop="true"/>
+    </RelativeLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.v4.view.ViewPager
+        android:layout_marginTop="110dp"
+        android:layout_width="265dp"
+        android:layout_height="275dp"
+        android:layout_marginLeft="49dp"
+        android:id="@+id/pager"
+        android:overScrollMode="never"
+        />
+
+
+    <me.relex.circleindicator.CircleIndicator
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:id="@+id/pagerIndicator"
+        android:layout_marginTop="410dp"
+        app:ci_width="5dp"
+        app:ci_height="5dp"
+        app:ci_drawable_unselected="@mipmap/slider_period"
+        app:ci_drawable="@mipmap/slider_period_hover"
+
+
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/slider_line"
+        android:layout_below="@id/pagerIndicator"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-6dp"
+        />
+</RelativeLayout>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="492dp"
+        android:layout_marginLeft="80dp"
+        android:src="@mipmap/clock_but"
+        android:id="@+id/clock_btn"/>
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="492dp"
+        android:layout_marginLeft="220dp"
+        android:src="@mipmap/time_butt"
+        android:id="@+id/timer_btn"/>
+</RelativeLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
