@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +50,17 @@ public class Main extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        View decorView = getWindow().getDecorView();
+// Hide both the navigation bar and the status bar.
+// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+// a general rule, you should design your app to hide the status bar whenever you
+// hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+       // Toast.makeText(Main.this,getResources().getDisplayMetrics().densityDpi,Toast.LENGTH_LONG);
 
         awesomePager = (ViewPager) findViewById(R.id.pager);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
@@ -176,6 +188,15 @@ public class Main extends FragmentActivity {
                 ampmAdapter.setItemTextResource(R.id.time_item);
                 ampm.setViewAdapter(ampmAdapter);
 
+                ImageView close = (ImageView) dialog.findViewById(R.id.close);
+
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
                 dialog.show();
 
 
@@ -239,6 +260,14 @@ public class Main extends FragmentActivity {
                 secAdapter.setItemResource(R.layout.wheel_item_time);
                 secAdapter.setItemTextResource(R.id.time_item);
                 sec.setViewAdapter(minAdapter);
+                ImageView close = (ImageView) dialog.findViewById(R.id.timerclose);
+
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
 
                 dialog.show();
 
@@ -298,5 +327,18 @@ public class Main extends FragmentActivity {
             dates.add(date);
         }
         return dates;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View decorView = getWindow().getDecorView();
+// Hide both the navigation bar and the status bar.
+// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+// a general rule, you should design your app to hide the status bar whenever you
+// hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 }

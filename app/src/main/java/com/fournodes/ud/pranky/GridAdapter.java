@@ -89,7 +89,7 @@ public class GridAdapter extends BaseAdapter{
 	}
 	
 	private void setCatImage(int pos, ViewHolder viewHolder, Integer img) {
-		viewHolder.imageView.setImageResource(images[pos]);
+		//viewHolder.imageView.setImageResource(images[pos]);
 		viewHolder.itemImage.setImageResource(img);
 	}
 

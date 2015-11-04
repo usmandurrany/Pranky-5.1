@@ -64,14 +64,14 @@
         android:layout_height="60dp"
         android:layout_marginTop="492dp"
         android:layout_marginLeft="80dp"
-        android:src="@mipmap/clock_but"
+        android:src="@drawable/clockstates"
         android:id="@+id/clock_btn"/>
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="492dp"
         android:layout_marginLeft="220dp"
-        android:src="@mipmap/time_butt"
+        android:src="@drawable/timerstates"
         android:id="@+id/timer_btn"/>
 </RelativeLayout>
 
