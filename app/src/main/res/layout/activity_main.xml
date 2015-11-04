@@ -1,80 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="false"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context="com.fournodes.ud.pranky.Main"
-    android:background="@drawable/app_bg" >
+    android:background="@drawable/background"
+    android:padding="5dp"
+    android:gravity="center_horizontal"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/app_body"
+android:scaleType="fitXY"
+        android:layout_centerHorizontal="true" />
 
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_alignParentTop="true"
+        android:paddingTop="20dp"
+        android:paddingRight="15dp">
+
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/setting_butt"
+                android:contentDescription="@null"
+                android:layout_gravity="top|right"/>
+
+    </LinearLayout>
+<LinearLayout
+    android:id="@+id/middle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@id/top"
+    android:gravity="center_horizontal">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:padding="5dp">
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="70dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="45dp">
+        <android.support.v4.view.ViewPager
+            android:layout_width="260dp"
+            android:layout_height="300dp"
+            android:id="@+id/pager"
+
+            android:overScrollMode="never"
+            />
+
+
+        <me.relex.circleindicator.CircleIndicator
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:id="@+id/pagerIndicator"
+            android:layout_marginTop="5dp"
+            app:ci_width="5dp"
+            app:ci_height="5dp"
+            app:ci_drawable_unselected="@mipmap/slider_period"
+            app:ci_drawable="@mipmap/slider_period_hover"
+            android:layout_below="@id/pager"
+
+
+
+            />
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/sett_btn_margin_right"
-            android:layout_marginTop="@dimen/sett_btn_margin_top"
-            android:src="@mipmap/setting_butt"
-            android:layout_alignParentTop="true"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/slider_line"
+            android:layout_below="@id/pagerIndicator"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-6dp"
+            android:contentDescription="@null" />
+
     </RelativeLayout>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <android.support.v4.view.ViewPager
-        android:layout_marginTop="110dp"
-        android:layout_width="265dp"
-        android:layout_height="275dp"
-        android:layout_marginLeft="49dp"
-        android:id="@+id/pager"
-        android:overScrollMode="never"
-        />
 
 
-    <me.relex.circleindicator.CircleIndicator
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/middle"
+        android:id="@+id/bottom"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:id="@+id/pagerIndicator"
-        android:layout_marginTop="410dp"
-        app:ci_width="5dp"
-        app:ci_height="5dp"
-        app:ci_drawable_unselected="@mipmap/slider_period"
-        app:ci_drawable="@mipmap/slider_period_hover"
-
-
-        />
-    <ImageView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/slider_line"
-        android:layout_below="@id/pagerIndicator"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-6dp"
-        />
+android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="bottom">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:paddingBottom="20dp"
+            >
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="80dp"
+                android:src="@drawable/clockstates"
+                android:id="@+id/clock_btn"
+                android:contentDescription=""
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"/>
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="0dp"
+                android:src="@drawable/timerstates"
+                android:id="@+id/timer_btn"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="80dp"
+                android:layout_alignParentBottom="true"
+                />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
 </RelativeLayout>
-
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="492dp"
-        android:layout_marginLeft="80dp"
-        android:src="@drawable/clockstates"
-        android:id="@+id/clock_btn"/>
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="492dp"
-        android:layout_marginLeft="220dp"
-        android:src="@drawable/timerstates"
-        android:id="@+id/timer_btn"/>
-</RelativeLayout>
-
-
-
-</android.support.design.widget.CoordinatorLayout>

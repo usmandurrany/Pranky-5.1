@@ -1,7 +1,9 @@
 package com.fournodes.ud.pranky;
 
 import android.app.Dialog;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.view.ViewDebug;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
 public class Main extends FragmentActivity {
+    private   View decorView;
 
     public me.relex.circleindicator.CircleIndicator mIndicator;
     private ViewPager awesomePager;
@@ -51,14 +56,6 @@ public class Main extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View decorView = getWindow().getDecorView();
-// Hide both the navigation bar and the status bar.
-// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-// a general rule, you should design your app to hide the status bar whenever you
-// hide the navigation bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
 
        // Toast.makeText(Main.this,getResources().getDisplayMetrics().densityDpi,Toast.LENGTH_LONG);
 
@@ -197,8 +194,19 @@ public class Main extends FragmentActivity {
                     }
                 });
 
+                //Here's the magic..
+//Set the dialog to not focusable (makes navigation ignore us adding the window)
+                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+//Show the dialog!
                 dialog.show();
 
+//Set the dialog to immersive
+                dialog.getWindow().getDecorView().setSystemUiVisibility(
+                        Main.this.getWindow().getDecorView().getSystemUiVisibility());
+
+//Clear the not focusable flag from the window
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
                 // custom dialog
 
@@ -255,7 +263,7 @@ public class Main extends FragmentActivity {
                 min.setViewAdapter(minAdapter);
 
 //Configure am/pm Marker Column
-                WheelView sec = (WheelView) dialog.findViewById(R.id.timersec);
+               final WheelView sec = (WheelView) dialog.findViewById(R.id.timersec);
                 NumericWheelAdapter secAdapter = new NumericWheelAdapter(Main.this, 00, 59);
                 secAdapter.setItemResource(R.layout.wheel_item_time);
                 secAdapter.setItemTextResource(R.id.time_item);
@@ -269,8 +277,28 @@ public class Main extends FragmentActivity {
                     }
                 });
 
+                ImageView set = (ImageView) dialog.findViewById(R.id.timerset);
+                set.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(Main.this, String.valueOf(sec.getCurrentItem()), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+//Here's the magic..
+//Set the dialog to not focusable (makes navigation ignore us adding the window)
+                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+//Show the dialog!
                 dialog.show();
 
+//Set the dialog to immersive
+
+                dialog.getWindow().getDecorView().setSystemUiVisibility(
+                        Main.this.getWindow().getDecorView().getSystemUiVisibility());
+
+//Clear the not focusable flag from the window
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
 
 
@@ -329,16 +357,20 @@ public class Main extends FragmentActivity {
         return dates;
     }
 
+
+
     @Override
-    protected void onResume() {
-        super.onResume();
-        View decorView = getWindow().getDecorView();
-// Hide both the navigation bar and the status bar.
-// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-// a general rule, you should design your app to hide the status bar whenever you
-// hide the navigation bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        decorView = getWindow().getDecorView();
+
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
+
 }
