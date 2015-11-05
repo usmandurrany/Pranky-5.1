@@ -1,6 +1,9 @@
 package com.fournodes.ud.pranky;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +42,10 @@ public class Main extends FragmentActivity {
     ImageView clock;
     ImageView timer;
 
+    int clockDay, clockHour,clockMin,clockampm; //0 for am 1 for pm
+    int timerHour, timerMin, timerSec;
+    //String ampm;
+
     ArrayList<Category> codeCategory;
 
     int images[] = { R.mipmap.bee, R.mipmap.cat,
@@ -47,16 +55,14 @@ public class Main extends FragmentActivity {
             R.mipmap.cricket, R.mipmap.hammer,
             R.mipmap.bomb, R.mipmap.footsteps };
 
-    String deviceNames[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
-            "X", "Y", "Z" };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        Calendar c = Calendar.getInstance();
+//        Toast.makeText(Main.this, c.get(Calendar.AM_PM),Toast.LENGTH_SHORT).show();
        // Toast.makeText(Main.this,getResources().getDisplayMetrics().densityDpi,Toast.LENGTH_LONG);
 
         awesomePager = (ViewPager) findViewById(R.id.pager);
@@ -154,32 +160,31 @@ public class Main extends FragmentActivity {
                 dialog.setTitle("Title...");
 
                 //Array for the am/pm marker column
-                String[] ampmArray = new String[]{"am", "pm"};
-
+               String[] ampmArray = {"am","pm"};
 //With a custom method I get the next following 10 days from now
                 ArrayList<Date> days = getNextNumberOfDays(new Date(), 10);
 
 
 //Configure Days Column
-                WheelView day = (WheelView) dialog.findViewById(R.id.day);
+                final WheelView day = (WheelView) dialog.findViewById(R.id.day);
                 day.setViewAdapter(new DayWheelAdapter(Main.this, days));
 
 //Configure Hours Column
-                WheelView hour = (WheelView) dialog.findViewById(R.id.hour);
+                final WheelView hour = (WheelView) dialog.findViewById(R.id.hour);
                 NumericWheelAdapter hourAdapter = new NumericWheelAdapter(Main.this, 1, 12);
                 hourAdapter.setItemResource(R.layout.wheel_item_time);
                 hourAdapter.setItemTextResource(R.id.time_item);
                 hour.setViewAdapter(hourAdapter);
 
 //Configure Minutes Column
-                WheelView min = (WheelView) dialog.findViewById(R.id.minute);
+                final WheelView min = (WheelView) dialog.findViewById(R.id.minute);
                 NumericWheelAdapter minAdapter = new NumericWheelAdapter(Main.this, 00, 59);
                 minAdapter.setItemResource(R.layout.wheel_item_time);
                 minAdapter.setItemTextResource(R.id.time_item);
                 min.setViewAdapter(minAdapter);
 
 //Configure am/pm Marker Column
-                WheelView ampm = (WheelView) dialog.findViewById(R.id.ampm);
+                final WheelView ampm = (WheelView) dialog.findViewById(R.id.ampm);
                 ArrayWheelAdapter<String> ampmAdapter = new ArrayWheelAdapter<String>(Main.this, ampmArray);
                 ampmAdapter.setItemResource(R.layout.wheel_item_time);
                 ampmAdapter.setItemTextResource(R.id.time_item);
@@ -191,6 +196,20 @@ public class Main extends FragmentActivity {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
+                    }
+                });
+
+                ImageView clockset = (ImageView) dialog.findViewById(R.id.set);
+                clockset.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(Main.this, String.valueOf(ampm.getCurrentItem()), Toast.LENGTH_SHORT).show();
+                        clockDay=day.getCurrentItem();
+                        clockHour=hour.getCurrentItem();
+                        clockMin=min.getCurrentItem();
+                        clockampm=ampm.getCurrentItem();
+                        ScheduleSoundPlayback("clock");
+
                     }
                 });
 
@@ -249,14 +268,14 @@ public class Main extends FragmentActivity {
                 //Array for the am/pm marker column
 
 //Configure Hours Column
-                WheelView hour = (WheelView) dialog.findViewById(R.id.timerhour);
-                NumericWheelAdapter hourAdapter = new NumericWheelAdapter(Main.this, 1, 12);
+                final WheelView hour = (WheelView) dialog.findViewById(R.id.timerhour);
+                NumericWheelAdapter hourAdapter = new NumericWheelAdapter(Main.this, 0, 12);
                 hourAdapter.setItemResource(R.layout.wheel_item_time);
                 hourAdapter.setItemTextResource(R.id.time_item);
                 hour.setViewAdapter(hourAdapter);
 
 //Configure Minutes Column
-                WheelView min = (WheelView) dialog.findViewById(R.id.timerminute);
+                final WheelView min = (WheelView) dialog.findViewById(R.id.timerminute);
                 NumericWheelAdapter minAdapter = new NumericWheelAdapter(Main.this, 00, 59);
                 minAdapter.setItemResource(R.layout.wheel_item_time);
                 minAdapter.setItemTextResource(R.id.time_item);
@@ -281,8 +300,11 @@ public class Main extends FragmentActivity {
                 set.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(Main.this, String.valueOf(sec.getCurrentItem()), Toast.LENGTH_SHORT).show();
-                    }
+                        timerHour=hour.getCurrentItem();
+                        timerMin=min.getCurrentItem();
+                        timerSec=sec.getCurrentItem();
+
+                        ScheduleSoundPlayback("timer");                    }
                 });
 
 //Here's the magic..
@@ -372,5 +394,23 @@ public class Main extends FragmentActivity {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
+
+    public void ScheduleSoundPlayback(String type){
+        SoundScheduler scheduler=new SoundScheduler(Main.this);
+        Intent intent = new Intent(this, PlaySound.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+                intent, PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        if (type=="clock")
+        alarmManager.set(AlarmManager.RTC_WAKEUP,scheduler.clockSchedule(clockDay,clockHour,clockMin,clockampm).getTimeInMillis() , pendingIntent);
+        else
+            alarmManager.set(AlarmManager.RTC_WAKEUP, scheduler.timerSchedule(timerHour, timerMin, timerSec).getTimeInMillis(), pendingIntent);
+
+        Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
+
+    }
+
 
 }
