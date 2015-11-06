@@ -33,7 +33,7 @@ import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
-public class Main extends FragmentActivity {
+public class Main extends FragmentActivity implements SoundSelectListener {
     private   View decorView;
 
     public me.relex.circleindicator.CircleIndicator mIndicator;
@@ -41,6 +41,7 @@ public class Main extends FragmentActivity {
     private PagerAdapter pm;
     ImageView clock;
     ImageView timer;
+    int sound;
 
     int clockDay, clockHour,clockMin,clockampm; //0 for am 1 for pm
     int timerHour, timerMin, timerSec;
@@ -208,7 +209,7 @@ public class Main extends FragmentActivity {
                         clockHour=hour.getCurrentItem();
                         clockMin=min.getCurrentItem();
                         clockampm=ampm.getCurrentItem();
-                        ScheduleSoundPlayback("clock");
+                        ScheduleSoundPlayback("clock",sound);
 
                     }
                 });
@@ -304,7 +305,7 @@ public class Main extends FragmentActivity {
                         timerMin=min.getCurrentItem();
                         timerSec=sec.getCurrentItem();
 
-                        ScheduleSoundPlayback("timer");                    }
+                        ScheduleSoundPlayback("timer",sound);                    }
                 });
 
 //Here's the magic..
@@ -349,6 +350,12 @@ public class Main extends FragmentActivity {
         });
     }
 
+    @Override
+    public void selectedSound(int sound) {
+        Toast.makeText(Main.this, String.valueOf(sound), Toast.LENGTH_SHORT).show();
+        this.sound=sound;
+    }
+
     private class PagerAdapter extends FragmentStatePagerAdapter {
 
         private List<GridFragment> fragments;
@@ -368,6 +375,8 @@ public class Main extends FragmentActivity {
             return this.fragments.size();
         }
     }
+
+
     public static ArrayList getNextNumberOfDays(Date originalDate,int days){
         ArrayList dates = new ArrayList();
         long offset;
@@ -395,10 +404,11 @@ public class Main extends FragmentActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    public void ScheduleSoundPlayback(String type){
+    public void ScheduleSoundPlayback(String type, int sound){
         SoundScheduler scheduler=new SoundScheduler(Main.this);
         Intent intent = new Intent(this, PlaySound.class);
-
+        intent.putExtra("Sound",getResources().getResourceEntryName(sound));
+        Toast.makeText(Main.this, getResources().getResourceName(sound), Toast.LENGTH_SHORT).show();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
                 intent, PendingIntent.FLAG_ONE_SHOT);
 

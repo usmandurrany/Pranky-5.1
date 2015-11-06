@@ -8,14 +8,13 @@
     android:fitsSystemWindows="false"
     tools:context="com.fournodes.ud.pranky.Main"
     android:background="@drawable/background"
-    android:padding="5dp"
     android:gravity="center_horizontal"
     >
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/app_body"
-android:scaleType="fitXY"
+        android:scaleType="center"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout
@@ -25,8 +24,8 @@ android:scaleType="fitXY"
         android:orientation="horizontal"
         android:gravity="right"
         android:layout_alignParentTop="true"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp">
+        android:paddingTop="53dp"
+        android:paddingRight="23dp">
 
 
             <ImageView
@@ -48,8 +47,8 @@ android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:paddingTop="70dp"
-        android:paddingLeft="50dp"
+        android:paddingTop="60dp"
+        android:paddingLeft="52dp"
         android:paddingRight="45dp">
         <android.support.v4.view.ViewPager
             android:layout_width="260dp"
@@ -102,7 +101,7 @@ android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:paddingBottom="20dp"
+            android:paddingBottom="51dp"
             >
 
             <ImageView

@@ -55,7 +55,7 @@ public class SoundScheduler {
         schAlarm.set(Calendar.HOUR, (schAlarm.get(Calendar.HOUR) + h));
         schAlarm.set(Calendar.MINUTE, (schAlarm.get(Calendar.MINUTE)+ m));
         schAlarm.set(Calendar.SECOND, (schAlarm.get(Calendar.SECOND) + s));
-        Log.e("SCHEDULED FOR", String.valueOf(schAlarm.get(Calendar.YEAR)) + " " + String.valueOf(schAlarm.get(Calendar.MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.DAY_OF_MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.HOUR)) + " " + String.valueOf(schAlarm.get(Calendar.MINUTE)) + " " + String.valueOf(schAlarm.get(Calendar.AM_PM)));
+        Log.e("SCHEDULED FOR", String.valueOf(schAlarm.get(Calendar.YEAR)) + " " + String.valueOf(schAlarm.get(Calendar.MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.DAY_OF_MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.HOUR)) + " " + String.valueOf(schAlarm.get(Calendar.MINUTE)) + " " + String.valueOf(schAlarm.get(Calendar.SECOND)));
 
         return schAlarm;
     }

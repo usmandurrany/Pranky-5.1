@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginLeft="55dp"
+        android:layout_marginLeft="52dp"
         android:layout_marginTop="95dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/linearLayout2">
@@ -40,7 +40,7 @@
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/set_butt"
+            android:src="@drawable/setstates"
             android:layout_gravity="bottom"
             android:baselineAlignBottom="true"
             android:layout_marginTop="245dp"
@@ -61,23 +61,27 @@
         android:layout_below="@+id/close"
         android:layout_alignLeft="@+id/linearLayout2"
         android:layout_alignStart="@+id/linearLayout2"
-        android:layout_marginLeft="25dp"/>
+        android:layout_marginLeft="25dp"
+        android:id="@+id/dd"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
         android:text="HH"
-        android:layout_alignTop="@+id/textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginLeft="45dp"
+        android:layout_toRightOf="@id/dd"
+        android:layout_marginTop="60dp"
+
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
         android:text="MM"
-        android:id="@+id/textView"
+        android:id="@+id/mm"
         android:layout_below="@+id/close"
         android:layout_toRightOf="@+id/set"
-        android:layout_marginLeft="-10dp"
+        android:layout_marginLeft="-18dp"
          />
 
 

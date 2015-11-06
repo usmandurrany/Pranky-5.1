@@ -15,18 +15,28 @@ public class PlaySound extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Uri sound  = Uri.parse("android.resource://com.fournodes.ud.pranky/raw/waterdrop");
+
+        //Uri sound  = Uri.parse("android.resource://"+intent.getStringExtra("Sound"));
 
 
-        MediaPlayer player = MediaPlayer.create(context, sound);
-        player.start();
+        MediaPlayer player = null;
+        try {
+            player = MediaPlayer.create(context, R.raw.class.getField(intent.getStringExtra("Sound")).getInt(null));
+            player.start();
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
-        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
 
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            }
-        });
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

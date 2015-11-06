@@ -30,7 +30,9 @@ public class GridFragment extends Fragment{
 	private GridAdapter mGridAdapter;
 	GridItems[] gridItems = {};
 	private Activity activity;
-	
+	SoundSelectListener soundsel;
+
+
 	public GridFragment(GridItems[] gridItems, Activity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
@@ -48,7 +50,18 @@ public class GridFragment extends Fragment{
 		
 		return view;
 	}
-	
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try{
+			soundsel= (SoundSelectListener) activity;
+
+		}catch (ClassCastException e){
+			throw new ClassCastException("Activity must implement soundSelectListener");
+		}
+	}
+
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -90,6 +103,7 @@ if (selHolder == null){
 						 +	getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
 		String name = getResources().getResourceEntryName(gridItems[pos].res);
 		int sound = R.raw.class.getField(name).getInt(null);
+		soundsel.selectedSound(sound);
 		MediaPlayer mp = MediaPlayer.create(activity, sound);
 		mp.start();
 		if (viewPOS == pos){
