@@ -34,18 +34,16 @@ import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
 public class Main extends FragmentActivity implements SoundSelectListener {
-    private   View decorView;
+    protected   View decorView;
 
     public me.relex.circleindicator.CircleIndicator mIndicator;
-    private ViewPager awesomePager;
-    private PagerAdapter pm;
-    ImageView clock;
-    ImageView timer;
-    int sound;
+    protected ViewPager awesomePager;
+    protected PagerAdapter pm;
+    protected ImageView clock;
+    protected ImageView timer;
+    private int sound;
 
-    int clockDay, clockHour,clockMin,clockampm; //0 for am 1 for pm
-    int timerHour, timerMin, timerSec;
-    //String ampm;
+
 
     ArrayList<Category> codeCategory;
 
@@ -62,24 +60,22 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Calendar c = Calendar.getInstance();
-//        Toast.makeText(Main.this, c.get(Calendar.AM_PM),Toast.LENGTH_SHORT).show();
-       // Toast.makeText(Main.this,getResources().getDisplayMetrics().densityDpi,Toast.LENGTH_LONG);
+
 
         awesomePager = (ViewPager) findViewById(R.id.pager);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
 
         ArrayList<Integer> a = new ArrayList<Integer>();
 
-        Category m = new Category();
+        //Category m = new Category();
 
         for(int i = 0; i < images.length; i++) {
             a.add(i, images[i]);
-            m.resid = a.get(i);
+            //.resid = a.get(i);
         }
 
-        codeCategory = new ArrayList<Category>();
-        codeCategory.add(m);
+        //codeCategory = new ArrayList<Category>();
+        //codeCategory.add(m);
 
         Iterator<Integer> it = a.iterator();
 
@@ -155,237 +151,38 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         clock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                final Dialog dialog = new Dialog(Main.this, R.style.ClockDialog);
-                dialog.setContentView(R.layout.clock);
-                dialog.setTitle("Title...");
-
-                //Array for the am/pm marker column
-               String[] ampmArray = {"am","pm"};
-//With a custom method I get the next following 10 days from now
-                ArrayList<Date> days = getNextNumberOfDays(new Date(), 10);
-
-
-//Configure Days Column
-                final WheelView day = (WheelView) dialog.findViewById(R.id.day);
-                day.setViewAdapter(new DayWheelAdapter(Main.this, days));
-
-//Configure Hours Column
-                final WheelView hour = (WheelView) dialog.findViewById(R.id.hour);
-                NumericWheelAdapter hourAdapter = new NumericWheelAdapter(Main.this, 1, 12);
-                hourAdapter.setItemResource(R.layout.wheel_item_time);
-                hourAdapter.setItemTextResource(R.id.time_item);
-                hour.setViewAdapter(hourAdapter);
-
-//Configure Minutes Column
-                final WheelView min = (WheelView) dialog.findViewById(R.id.minute);
-                NumericWheelAdapter minAdapter = new NumericWheelAdapter(Main.this, 00, 59);
-                minAdapter.setItemResource(R.layout.wheel_item_time);
-                minAdapter.setItemTextResource(R.id.time_item);
-                min.setViewAdapter(minAdapter);
-
-//Configure am/pm Marker Column
-                final WheelView ampm = (WheelView) dialog.findViewById(R.id.ampm);
-                ArrayWheelAdapter<String> ampmAdapter = new ArrayWheelAdapter<String>(Main.this, ampmArray);
-                ampmAdapter.setItemResource(R.layout.wheel_item_time);
-                ampmAdapter.setItemTextResource(R.id.time_item);
-                ampm.setViewAdapter(ampmAdapter);
-
-                ImageView close = (ImageView) dialog.findViewById(R.id.close);
-
-                close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-
-                ImageView clockset = (ImageView) dialog.findViewById(R.id.set);
-                clockset.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(Main.this, String.valueOf(ampm.getCurrentItem()), Toast.LENGTH_SHORT).show();
-                        clockDay=day.getCurrentItem();
-                        clockHour=hour.getCurrentItem();
-                        clockMin=min.getCurrentItem();
-                        clockampm=ampm.getCurrentItem();
-                        ScheduleSoundPlayback("clock",sound);
-
-                    }
-                });
-
-                //Here's the magic..
-//Set the dialog to not focusable (makes navigation ignore us adding the window)
-                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-//Show the dialog!
-                dialog.show();
-
-//Set the dialog to immersive
-                dialog.getWindow().getDecorView().setSystemUiVisibility(
-                        Main.this.getWindow().getDecorView().getSystemUiVisibility());
-
-//Clear the not focusable flag from the window
-                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-                // custom dialog
-
-
-                // set the custom dialog components - text, image and button
-                //TextView text = (TextView) dialog.findViewById(R.id.text);
-                //text.setText("Android custom dialog example!");
-                //ImageView image = (ImageView) dialog.findViewById(R.id.image);
-                // image.setImageResource(R.drawable.ic_launcher);
-
-                // Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-                //dialogButton.setOnClickListener(new OnClickListener() {
-                //     @Override
-                //    public void onClick(View v) {
-                //         dialog.dismiss();
-                //     }
-                //  });
-                // dialog.show();
+                if (sound == 0)
+                    Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
+                else {
+                    clockDialog cDialog = new clockDialog(Main.this, sound);
+                    cDialog.show();
+                }
             }
-
         });
-
-
-
-
-
-
-
 
         timer = (ImageView) findViewById(R.id.timer_btn);
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                final Dialog dialog = new Dialog(Main.this, R.style.ClockDialog);
-                dialog.setContentView(R.layout.timer);
-                dialog.setTitle("Title...");
-
-                //Array for the am/pm marker column
-
-//Configure Hours Column
-                final WheelView hour = (WheelView) dialog.findViewById(R.id.timerhour);
-                NumericWheelAdapter hourAdapter = new NumericWheelAdapter(Main.this, 0, 12);
-                hourAdapter.setItemResource(R.layout.wheel_item_time);
-                hourAdapter.setItemTextResource(R.id.time_item);
-                hour.setViewAdapter(hourAdapter);
-
-//Configure Minutes Column
-                final WheelView min = (WheelView) dialog.findViewById(R.id.timerminute);
-                NumericWheelAdapter minAdapter = new NumericWheelAdapter(Main.this, 00, 59);
-                minAdapter.setItemResource(R.layout.wheel_item_time);
-                minAdapter.setItemTextResource(R.id.time_item);
-                min.setViewAdapter(minAdapter);
-
-//Configure am/pm Marker Column
-               final WheelView sec = (WheelView) dialog.findViewById(R.id.timersec);
-                NumericWheelAdapter secAdapter = new NumericWheelAdapter(Main.this, 00, 59);
-                secAdapter.setItemResource(R.layout.wheel_item_time);
-                secAdapter.setItemTextResource(R.id.time_item);
-                sec.setViewAdapter(minAdapter);
-                ImageView close = (ImageView) dialog.findViewById(R.id.timerclose);
-
-                close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-
-                ImageView set = (ImageView) dialog.findViewById(R.id.timerset);
-                set.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        timerHour=hour.getCurrentItem();
-                        timerMin=min.getCurrentItem();
-                        timerSec=sec.getCurrentItem();
-
-                        ScheduleSoundPlayback("timer",sound);                    }
-                });
-
-//Here's the magic..
-//Set the dialog to not focusable (makes navigation ignore us adding the window)
-                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-//Show the dialog!
-                dialog.show();
-
-//Set the dialog to immersive
-
-                dialog.getWindow().getDecorView().setSystemUiVisibility(
-                        Main.this.getWindow().getDecorView().getSystemUiVisibility());
-
-//Clear the not focusable flag from the window
-                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-
-
-
-
-                // custom dialog
-
-
-                // set the custom dialog components - text, image and button
-                //TextView text = (TextView) dialog.findViewById(R.id.text);
-                //text.setText("Android custom dialog example!");
-                //ImageView image = (ImageView) dialog.findViewById(R.id.image);
-                // image.setImageResource(R.drawable.ic_launcher);
-
-                // Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-                //dialogButton.setOnClickListener(new OnClickListener() {
-                //     @Override
-                //    public void onClick(View v) {
-                //         dialog.dismiss();
-                //     }
-                //  });
-                // dialog.show();
+                if (sound == 0)
+                    Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
+                else {
+                    timerDialog tDialog = new timerDialog(Main.this, sound);
+                    tDialog.show();
+                }
             }
-
         });
+
+
+
     }
+
+
 
     @Override
     public void selectedSound(int sound) {
         Toast.makeText(Main.this, String.valueOf(sound), Toast.LENGTH_SHORT).show();
         this.sound=sound;
-    }
-
-    private class PagerAdapter extends FragmentStatePagerAdapter {
-
-        private List<GridFragment> fragments;
-
-        public PagerAdapter(FragmentManager fm, List<GridFragment> fragments) {
-            super(fm);
-            this.fragments = fragments;
-        }
-
-        @Override
-        public Fragment getItem(int pos) {
-            return this.fragments.get(pos);
-        }
-
-        @Override
-        public int getCount() {
-            return this.fragments.size();
-        }
-    }
-
-
-    public static ArrayList getNextNumberOfDays(Date originalDate,int days){
-        ArrayList dates = new ArrayList();
-        long offset;
-        for(int i= 0; i<= days; i++){
-            offset = 86400 * 1000L * i;
-            Date date = new Date( originalDate.getTime()+offset);
-            dates.add(date);
-        }
-        return dates;
     }
 
 
@@ -404,23 +201,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    public void ScheduleSoundPlayback(String type, int sound){
-        SoundScheduler scheduler=new SoundScheduler(Main.this);
-        Intent intent = new Intent(this, PlaySound.class);
-        intent.putExtra("Sound",getResources().getResourceEntryName(sound));
-        Toast.makeText(Main.this, getResources().getResourceName(sound), Toast.LENGTH_SHORT).show();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
-                intent, PendingIntent.FLAG_ONE_SHOT);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        if (type=="clock")
-        alarmManager.set(AlarmManager.RTC_WAKEUP,scheduler.clockSchedule(clockDay,clockHour,clockMin,clockampm).getTimeInMillis() , pendingIntent);
-        else
-            alarmManager.set(AlarmManager.RTC_WAKEUP, scheduler.timerSchedule(timerHour, timerMin, timerSec).getTimeInMillis(), pendingIntent);
-
-        Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
-
-    }
 
 
 }

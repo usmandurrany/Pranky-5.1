@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -24,14 +26,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class GridFragment extends Fragment{
-	private View selHolder;
+
 	private int viewPOS;
 	private GridView mGridView;
 	private GridAdapter mGridAdapter;
 	GridItems[] gridItems = {};
 	private Activity activity;
 	SoundSelectListener soundsel;
-
+	ImageView img;
 
 	public GridFragment(GridItems[] gridItems, Activity activity) {
 		this.gridItems = gridItems;
@@ -93,8 +95,8 @@ public class GridFragment extends Fragment{
 	}
 	
 	public void onGridItemClick(GridView g, View v, int pos, long id) throws NoSuchFieldException, IllegalAccessException {
-if (selHolder == null){
-	selHolder= v;
+if (img == null){
+	img = (ImageView) v.findViewById(R.id.grid_item_bg);
 	viewPOS =pos;
 }
 		Toast.makeText(
@@ -107,32 +109,26 @@ if (selHolder == null){
 		MediaPlayer mp = MediaPlayer.create(activity, sound);
 		mp.start();
 		if (viewPOS == pos){
-			selHolder.setSelected(true);
-			selHolder.setBackgroundResource(R.drawable.gridselectedanim);
-			AnimationDrawable boxsel = (AnimationDrawable) selHolder.getBackground();
-			boxsel.start();
+			img.setSelected(true);
+			//img.setBackgroundResource(R.drawable.gridselectedanim);
+
 
 		}else{
-			selHolder.setSelected(false);
-			selHolder.setBackgroundResource(0);
+			img.setSelected(false);
+			//img.setBackgroundResource(R.drawable.gridstates);
 
-			selHolder = v;
+			img = (ImageView) v.findViewById(R.id.grid_item_bg);
 			viewPOS = pos;
-			selHolder.setSelected(true);
-			selHolder.setBackgroundResource(R.drawable.gridselectedanim);
-			AnimationDrawable boxsel = (AnimationDrawable) selHolder.getBackground();
-			boxsel.start();
-		}
+			img.setSelected(true);
+			//img.setBackgroundResource(R.drawable.gridselectedanim);
 
-//		Path path = new Path();
-//		Canvas c = new Canvas();
-//		Paint mPaint= new Paint();
-//		path.addRect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom(), Path.Direction.CW);
-//		PathEffect pe = new DashPathEffect(new float[] {10, 5, 5, 5},5);
-//		mPaint.setPathEffect(pe);
-//		c.drawPath(path, mPaint);
-		//ImageView test = (ImageView) getActivity().getResources().gridItems[pos].res);
-		//test.setBackgroundColor(0xFFFFFFFF);
+		}
+		StateListDrawable  boxsel = (StateListDrawable) img.getBackground();
+		Drawable current = boxsel.getCurrent();
+		if (current instanceof AnimationDrawable) {
+			AnimationDrawable btnAnimation = (AnimationDrawable) current;
+			btnAnimation.start();
+		}
 
 	}
 }

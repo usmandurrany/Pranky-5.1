@@ -10,7 +10,7 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginRight="0dp"
-        android:src="@drawable/gridstates"
+        android:background="@drawable/gridstates"
         android:contentDescription="@null"
         />
 
