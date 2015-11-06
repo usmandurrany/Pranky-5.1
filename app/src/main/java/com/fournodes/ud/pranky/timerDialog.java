@@ -13,13 +13,13 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class timerDialog {
+public class TimerDialog {
 
     private Context context;
     private Dialog dialog;
     private int sound;
 
-    public timerDialog(Context context,int sound) {
+    public TimerDialog(Context context, int sound) {
         this.context = context;
         this.sound=sound;
     }

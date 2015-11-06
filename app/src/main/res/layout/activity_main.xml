@@ -31,7 +31,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/setting_butt"
+                android:src="@mipmap/settings"
                 android:contentDescription="@null"
                 android:layout_gravity="top|right"/>
 

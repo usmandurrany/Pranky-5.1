@@ -18,14 +18,14 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class clockDialog {
+public class ClockDialog {
     private Context context;
     private Dialog dialog;
     private int clockDay, clockHour,clockMin,clockampm; //0 for am 1 for pm
     private int sound;
 
 
-    public clockDialog(Context context, int sound) {
+    public ClockDialog(Context context, int sound) {
         this.context=context;
         this.sound=sound;
     }

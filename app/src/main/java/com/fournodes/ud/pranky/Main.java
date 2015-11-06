@@ -1,37 +1,15 @@
 package com.fournodes.ud.pranky;
 
-import android.app.AlarmManager;
-import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.format.DateUtils;
 import android.view.View;
-import android.view.ViewDebug;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import kankan.wheel.widget.WheelView;
-import kankan.wheel.widget.adapters.ArrayWheelAdapter;
-import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
 public class Main extends FragmentActivity implements SoundSelectListener {
     protected   View decorView;
@@ -154,7 +132,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 if (sound == 0)
                     Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
                 else {
-                    clockDialog cDialog = new clockDialog(Main.this, sound);
+                    ClockDialog cDialog = new ClockDialog(Main.this, sound);
                     cDialog.show();
                 }
             }
@@ -167,7 +145,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 if (sound == 0)
                     Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
                 else {
-                    timerDialog tDialog = new timerDialog(Main.this, sound);
+                    TimerDialog tDialog = new TimerDialog(Main.this, sound);
                     tDialog.show();
                 }
             }

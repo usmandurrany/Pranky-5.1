@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:drawable="@mipmap/set_butt_hover" />
-    <item android:state_activated="true" android:drawable="@mipmap/set_butt_hover" />
+    <item android:state_pressed="true" android:drawable="@mipmap/set_hover" />
 
     <!-- default -->
-    <item android:drawable="@mipmap/set_butt" />
+    <item android:drawable="@mipmap/set" />
 </selector>

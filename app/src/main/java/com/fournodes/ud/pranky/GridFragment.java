@@ -2,6 +2,7 @@ package com.fournodes.ud.pranky;
 
 import android.app.Activity;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -127,6 +128,8 @@ if (img == null){
 		Drawable current = boxsel.getCurrent();
 		if (current instanceof AnimationDrawable) {
 			AnimationDrawable btnAnimation = (AnimationDrawable) current;
+			boxsel.setEnterFadeDuration(500);
+			boxsel.setExitFadeDuration(500);
 			btnAnimation.start();
 		}
 
