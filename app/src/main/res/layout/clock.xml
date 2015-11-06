@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="350dp"
+    android:layout_width="350dp"
     android:layout_height="300dp"
-    android:background="@drawable/popup_body_3">
+    android:background="@drawable/popup_body_3"
+    android:layout_centerInParent="true">
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="200dp"
         android:src="@drawable/set_butt"
         android:id="@+id/set"
-        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        android:scaleType="fitXY"/>
+        android:layout_marginTop="150dp"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,37 +55,6 @@
         android:layout_marginLeft="282dp"
         android:layout_marginTop="22dp"
         android:id="@+id/close"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:text="Day"
-        android:layout_below="@+id/close"
-        android:layout_alignLeft="@+id/linearLayout2"
-        android:layout_alignStart="@+id/linearLayout2"
-        android:layout_marginLeft="25dp"
-        android:id="@+id/dd"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:text="HH"
-        android:layout_marginLeft="45dp"
-        android:layout_toRightOf="@id/dd"
-        android:layout_marginTop="60dp"
-
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:text="MM"
-        android:id="@+id/mm"
-        android:layout_below="@+id/close"
-        android:layout_toRightOf="@+id/set"
-        android:layout_marginLeft="-18dp"
-         />
-
 
 
 </RelativeLayout>
