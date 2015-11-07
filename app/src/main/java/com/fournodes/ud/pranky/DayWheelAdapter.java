@@ -34,7 +34,7 @@ import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd");
         //Assign the text
         weekday.setStrokeColor(0xFF1B640D);
-        weekday.setStrokeWidth(10);
+        weekday.setStrokeWidth(6);
         weekday.setText(dateFormat.format(dates.get(index)));
 
         if (index == 0) {

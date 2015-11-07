@@ -194,7 +194,7 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
                     text = "";
                 }
                 textView.setStrokeColor(0xFF1B640D);
-                textView.setStrokeWidth(10);
+                textView.setStrokeWidth(6);
                 textView.setText(text);
     
                 if (itemResourceId == TEXT_VIEW_ITEM_RESOURCE) {

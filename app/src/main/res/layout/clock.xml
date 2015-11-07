@@ -44,7 +44,7 @@
             android:layout_width="40dp"/>
         <kankan.wheel.widget.WheelView android:id="@+id/ampm"
             android:layout_height="100dp"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_marginLeft="5dp"/>
 
     </LinearLayout>
@@ -65,13 +65,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/hh"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="2dp"/>
+            android:layout_marginRight="7dp"
+            android:layout_marginLeft="3dp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/mm"
-            android:layout_marginRight="55dp"
+            android:layout_marginRight="65dp"
             android:layout_marginLeft="0dp"/>
 
 
