@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     tools:context="com.fournodes.ud.pranky.Main"
-    android:background="@drawable/background"
+    android:background="@drawable/app_bg_2"
     android:gravity="center_horizontal"
     >
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/app_body"
-        android:scaleType="center"
+        android:scaleType="fitXY"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout

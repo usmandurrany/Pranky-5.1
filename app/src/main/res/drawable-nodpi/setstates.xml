@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:drawable="@mipmap/set_hover" />
+    <item android:state_pressed="true" android:drawable="@drawable/set_croped_hover" />
 
     <!-- default -->
-    <item android:drawable="@mipmap/set" />
+    <item android:drawable="@drawable/set_croped" />
 </selector>

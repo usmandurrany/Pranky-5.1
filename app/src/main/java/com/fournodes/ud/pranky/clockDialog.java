@@ -37,7 +37,7 @@ public class ClockDialog {
                 dialog.setContentView(R.layout.clock);
 
                 //Array for the am/pm marker column
-                String[] ampmArray = {"am","pm"};
+                String[] ampmArray = {"AM","PM"};
                 //With a custom method I get the next following 10 days from now
                 ArrayList<Date> days = getNextNumberOfDays(new Date(), 10);
 

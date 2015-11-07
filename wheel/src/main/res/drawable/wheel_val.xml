@@ -19,7 +19,10 @@
 -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-	<stroke android:width="2dp" android:color="#17410f" />
+ <gradient
+    android:startColor="#55333333"
+    android:centerColor="#66d7d9a9"
+    android:endColor="#55333333"
+    android:angle="90" />
+    <stroke android:width="2dp" android:color="#5517410f" />
 </shape>
