@@ -23,9 +23,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
 
 
-    ArrayList<Category> codeCategory;
 
-    int images[] = { R.mipmap.bee, R.mipmap.cat,
+    int images[] = { R.mipmap.annoyed,R.mipmap.bee, R.mipmap.cat,
             R.mipmap.current, R.mipmap.knock,
             R.mipmap.glassbreak, R.mipmap.gun,
             R.mipmap.farting, R.mipmap.waterdrop,
@@ -115,12 +114,15 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 imLst.add(itm8);
                 i = i + 1;
             }
+            if (!it.hasNext()){
+                GridItems itmLst = new GridItems(i, R.mipmap.add_soudnnd);
+                imLst.add(itmLst);
 
+            }
             GridItems[] gp = {};
             GridItems[] gridPage = imLst.toArray(gp);
             gridFragments.add(new GridFragment(gridPage, Main.this));
         }
-
         pm = new PagerAdapter(getSupportFragmentManager(), gridFragments);
         awesomePager.setAdapter(pm);
         mIndicator.setViewPager(awesomePager);

@@ -1,6 +1,7 @@
 package com.fournodes.ud.pranky;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -8,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.media.Image;
@@ -26,7 +28,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class GridFragment extends Fragment{
+import java.util.IllegalFormatCodePointException;
+
+public class GridFragment extends Fragment {
 
 	private int viewPOS;
 	private GridView mGridView;
@@ -35,32 +39,33 @@ public class GridFragment extends Fragment{
 	private Activity activity;
 	SoundSelectListener soundsel;
 	ImageView img;
+	ImageView addSoundImg;
 
 	public GridFragment(GridItems[] gridItems, Activity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		
+							 @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
 		View view;
-		
+
 		view = inflater.inflate(R.layout.grid, container, false);
-		
+
 		mGridView = (GridView) view.findViewById(R.id.grid_view);
-		
+
 		return view;
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		try{
-			soundsel= (SoundSelectListener) activity;
+		try {
+			soundsel = (SoundSelectListener) activity;
 
-		}catch (ClassCastException e){
+		} catch (ClassCastException e) {
 			throw new ClassCastException("Activity must implement soundSelectListener");
 		}
 	}
@@ -68,20 +73,20 @@ public class GridFragment extends Fragment{
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		if(activity != null) {
-			
+
+		if (activity != null) {
+
 			mGridAdapter = new GridAdapter(activity, gridItems);
-			
-			if(mGridView != null){
+
+			if (mGridView != null) {
 				mGridView.setAdapter(mGridAdapter);
 			}
-			
+
 			mGridView.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
-						int pos, long id) {
+										int pos, long id) {
 
 					try {
 						onGridItemClick((GridView) parent, view, pos, id);
@@ -94,44 +99,52 @@ public class GridFragment extends Fragment{
 			});
 		}
 	}
-	
+
 	public void onGridItemClick(GridView g, View v, int pos, long id) throws NoSuchFieldException, IllegalAccessException {
-if (img == null){
-	img = (ImageView) v.findViewById(R.id.grid_item_bg);
-	viewPOS =pos;
-}
+
+		if (img == null) {
+			img = (ImageView) v.findViewById(R.id.grid_item_bg);
+
+			viewPOS = pos;
+
+		}
+
 		Toast.makeText(
 				activity,
 				"Position Clicked: " + pos + " & Image is: "
-						 +	getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
+						+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
 		String name = getResources().getResourceEntryName(gridItems[pos].res);
-		int sound = R.raw.class.getField(name).getInt(null);
-		soundsel.selectedSound(sound);
-		MediaPlayer mp = MediaPlayer.create(activity, sound);
-		mp.start();
-		if (viewPOS == pos){
-			img.setSelected(true);
-			//img.setBackgroundResource(R.drawable.gridselectedanim);
+		if (getResources().getResourceEntryName(gridItems[pos].res).equals("add_soudnnd") ) {
+			Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
+		} else {
+			int sound = R.raw.class.getField(name).getInt(null);
+			soundsel.selectedSound(sound);
+			MediaPlayer mp = MediaPlayer.create(activity, sound);
+			mp.start();
+			if (viewPOS == pos) {
+				img.setSelected(true);
+				//img.setBackgroundResource(R.drawable.gridselectedanim);
 
 
-		}else{
-			img.setSelected(false);
-			//img.setBackgroundResource(R.drawable.gridstates);
+			} else {
+				img.setSelected(false);
+				//img.setBackgroundResource(R.drawable.gridstates);
 
-			img = (ImageView) v.findViewById(R.id.grid_item_bg);
-			viewPOS = pos;
-			img.setSelected(true);
-			//img.setBackgroundResource(R.drawable.gridselectedanim);
+				img = (ImageView) v.findViewById(R.id.grid_item_bg);
+				viewPOS = pos;
+				img.setSelected(true);
+				//img.setBackgroundResource(R.drawable.gridselectedanim);
 
+			}
+			StateListDrawable boxsel = (StateListDrawable) img.getBackground();
+			Drawable current = boxsel.getCurrent();
+			if (current instanceof AnimationDrawable) {
+				AnimationDrawable btnAnimation = (AnimationDrawable) current;
+				boxsel.setEnterFadeDuration(500);
+				boxsel.setExitFadeDuration(500);
+				btnAnimation.start();
+			}
 		}
-		StateListDrawable  boxsel = (StateListDrawable) img.getBackground();
-		Drawable current = boxsel.getCurrent();
-		if (current instanceof AnimationDrawable) {
-			AnimationDrawable btnAnimation = (AnimationDrawable) current;
-			boxsel.setEnterFadeDuration(500);
-			boxsel.setExitFadeDuration(500);
-			btnAnimation.start();
-		}
-
 	}
+
 }

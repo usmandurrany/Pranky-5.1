@@ -23,6 +23,8 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        Intent PlayMusic = new Intent(this, AppBGMusic.class);
+        startService(PlayMusic);
 
         ImageView logo = (ImageView)findViewById(R.id.logo);
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_bounce);

@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
+        <service android:name=".AppBGMusic"  android:enabled="true"></service>
         <activity
             android:name=".Splash"
             android:label="@string/app_name"
