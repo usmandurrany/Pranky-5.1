@@ -116,6 +116,8 @@ public class GridFragment extends Fragment {
 		String name = getResources().getResourceEntryName(gridItems[pos].res);
 		if (getResources().getResourceEntryName(gridItems[pos].res).equals("add_soudnnd") ) {
 			Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
+			SoundSelectDialog soundseldiag = new SoundSelectDialog(activity);
+			soundseldiag.show();
 		} else {
 			int sound = R.raw.class.getField(name).getInt(null);
 			soundsel.selectedSound(sound);

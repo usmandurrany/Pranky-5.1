@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="350dp"
+    android:layout_height="350dp"
+    android:background="@drawable/popup_body_4">
+
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtselsound"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="129dp"
+        android:textColorHint="#b3b2b2"
+        android:hint="Select sound"/>
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtselpic"
+        android:layout_below="@+id/txtselsound"
+        android:layout_alignLeft="@+id/txtselsound"
+        android:layout_alignStart="@+id/txtselsound"
+        android:layout_marginTop="39dp"
+        android:textColorHint="#b3b2b2"
+        android:hint="Select picture"/>
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnDiagClose"
+        android:src="@drawable/closestates"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSelSound"
+        android:src="@mipmap/addmore"
+        android:layout_alignTop="@+id/txtselsound"
+        android:layout_alignLeft="@+id/btnDiagClose"
+        android:layout_alignStart="@+id/btnDiagClose"
+        android:layout_marginLeft="-30dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSelPic"
+        android:src="@mipmap/addmore"
+        android:layout_alignBottom="@+id/txtselpic"
+        android:layout_alignRight="@+id/btnSelSound"
+        android:layout_alignEnd="@+id/btnSelSound" />
+
+    <ImageView
+        android:layout_marginBottom="-3dp"
+        android:layout_width="222dp"
+        android:layout_height="90dp"
+        android:scaleType="fitCenter"
+        android:id="@+id/btnSoundSet"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/setstates"
+        android:paddingRight="1dp" />
+</RelativeLayout>

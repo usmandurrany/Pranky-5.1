@@ -1,8 +1,15 @@
 package com.fournodes.ud.pranky;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -10,6 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 
 public class Main extends FragmentActivity implements SoundSelectListener {
     protected   View decorView;
@@ -20,7 +29,9 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected ImageView clock;
     protected ImageView timer;
     private int sound;
-
+    AppBGMusic mService;
+    boolean mBound;
+    private AppBGMusic player =getInstance();
 
 
 
@@ -181,6 +192,14 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
+
+@Override
+public void onDestroy(){
+    super.onDestroy();
+    if(player.mp!=null)
+        player.mp.stop();
+
+}
 
 
 
