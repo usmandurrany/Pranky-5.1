@@ -40,11 +40,11 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
 
     int images[] = { R.mipmap.annoyed,R.mipmap.bee, R.mipmap.cat,
-            R.mipmap.current, R.mipmap.knock,
+            R.mipmap.current, R.mipmap.hammer,
             R.mipmap.glassbreak, R.mipmap.gun,
-            R.mipmap.farting, R.mipmap.waterdrop,
+            R.mipmap.farting, R.mipmap.watertap,
             R.mipmap.cricket, R.mipmap.hammer,
-            R.mipmap.bomb, R.mipmap.footsteps, R.mipmap.current_new };
+            R.mipmap.bomb, R.mipmap.footsteps, R.mipmap.mosquito};
 
 
 

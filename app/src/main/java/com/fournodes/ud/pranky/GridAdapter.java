@@ -1,6 +1,7 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Context;
+import android.graphics.drawable.StateListDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,7 @@ public class GridAdapter extends BaseAdapter{
 			
 			view = mInflater.inflate(R.layout.custom, parent, false);
 			viewHolder = new ViewHolder();
-			viewHolder.imageView = (ImageView) view.findViewById(R.id.grid_item_bg);
+			//viewHolder.imageView = (ImageView) view.findViewById(R.id.grid_item_bg);
 			viewHolder.itemImage = (ImageView) view.findViewById(R.id.grid_item_image);
 			view.setTag(viewHolder);
 			
@@ -90,13 +91,37 @@ public class GridAdapter extends BaseAdapter{
 	
 	private void setCatImage(int pos, ViewHolder viewHolder, Integer img) {
 		if(img == R.mipmap.addmore)
-		viewHolder.imageView.setBackgroundResource(R.drawable.addstates);
-		else
-		viewHolder.itemImage.setImageResource(img);
+		viewHolder.itemImage.setBackgroundResource(R.drawable.addstates);
+		else{
+
+			try {
+				String name = context.getResources().getResourceEntryName(img)+"_hover";
+
+				int imageStatePressed = R.mipmap.class.getField(name).getInt(null);
+				StateListDrawable states = new StateListDrawable();
+				states.addState(new int[] {android.R.attr.state_pressed},
+						context.getResources().getDrawable(imageStatePressed));
+
+				states.addState(new int[] { },
+						context.getResources().getDrawable(img));
+				viewHolder.itemImage.setImageDrawable(states);
+			} catch (IllegalAccessException e ) {
+				e.printStackTrace();
+
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			}
+
+
+		}
+		//viewHolder.itemImage.setImageResource(img);
 	}
 
 	@Override
 	public void notifyDataSetChanged() {
 		super.notifyDataSetChanged();
+	}
+	public void setImageStates(int img){
+
 	}
 }

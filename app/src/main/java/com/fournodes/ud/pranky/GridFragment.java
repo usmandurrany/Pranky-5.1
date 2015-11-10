@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -104,7 +105,7 @@ public class GridFragment extends Fragment implements IGridFragment{
 	public void onGridItemClick(GridView g, View v, int pos, long id) throws NoSuchFieldException, IllegalAccessException {
 
 		if (img == null) {
-			img = (ImageView) v.findViewById(R.id.grid_item_bg);
+			img = (ImageView) v.findViewById(R.id.grid_item_image);
 
 			viewPOS = pos;
 			//Toast.makeText(activity,  Toast.LENGTH_SHORT).show();
@@ -137,27 +138,22 @@ public class GridFragment extends Fragment implements IGridFragment{
 
 			if (viewPOS == pos) {
 				img.setSelected(true);
-				//img.setBackgroundResource(R.drawable.gridselectedanim);
+				img.setBackgroundResource(R.drawable.gridselectedanim);
 
 
 			} else {
 				img.setSelected(false);
-				//img.setBackgroundResource(R.drawable.gridstates);
+				img.setBackgroundResource(0);
 
-				img = (ImageView) v.findViewById(R.id.grid_item_bg);
+				img = (ImageView) v.findViewById(R.id.grid_item_image);
 				viewPOS = pos;
 				img.setSelected(true);
-				//img.setBackgroundResource(R.drawable.gridselectedanim);
+				img.setBackgroundResource(R.drawable.gridselectedanim);
 
 			}
-			StateListDrawable boxsel = (StateListDrawable) img.getBackground();
-			Drawable current = boxsel.getCurrent();
-			if (current instanceof AnimationDrawable) {
-				AnimationDrawable btnAnimation = (AnimationDrawable) current;
-				boxsel.setEnterFadeDuration(500);
-				boxsel.setExitFadeDuration(500);
-				btnAnimation.start();
-			}
+			AnimationDrawable boxsel = (AnimationDrawable) img.getBackground();
+			boxsel.start();
+
 		}
 	}
 
@@ -167,4 +163,6 @@ public class GridFragment extends Fragment implements IGridFragment{
 		img.setSelected(false);
 
 	}
+
+
 }
