@@ -8,7 +8,7 @@
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:id="@+id/txtselsound"
+        android:id="@+id/txtMusicToggle"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -23,9 +23,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/txtselpic"
-        android:layout_below="@+id/txtselsound"
-        android:layout_alignLeft="@+id/txtselsound"
-        android:layout_alignStart="@+id/txtselsound"
+        android:layout_below="@+id/txtMusicToggle"
+        android:layout_alignLeft="@+id/txtMusicToggle"
+        android:layout_alignStart="@+id/txtMusicToggle"
         android:layout_marginTop="39dp"
         android:textColorHint="#b3b2b2"
         android:hint="Select picture"/>
@@ -44,9 +44,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSelSound"
+        android:id="@+id/btnMusicToggle"
         android:src="@mipmap/addmore"
-        android:layout_alignTop="@+id/txtselsound"
+        android:layout_alignTop="@+id/txtMusicToggle"
         android:layout_alignLeft="@+id/btnDiagClose"
         android:layout_alignStart="@+id/btnDiagClose"
         android:layout_marginLeft="-30dp" />
@@ -57,8 +57,8 @@
         android:id="@+id/btnSelPic"
         android:src="@mipmap/addmore"
         android:layout_alignBottom="@+id/txtselpic"
-        android:layout_alignRight="@+id/btnSelSound"
-        android:layout_alignEnd="@+id/btnSelSound" />
+        android:layout_alignRight="@+id/btnMusicToggle"
+        android:layout_alignEnd="@+id/btnMusicToggle" />
 
     <ImageView
         android:layout_marginBottom="-3dp"

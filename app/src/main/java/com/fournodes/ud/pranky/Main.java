@@ -4,9 +4,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -28,10 +30,12 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected PagerAdapter pm;
     protected ImageView clock;
     protected ImageView timer;
+    protected ImageView settings;
     private int sound;
     AppBGMusic mService;
     boolean mBound;
     private AppBGMusic player =getInstance();
+    private int pageNo;
 
 
 
@@ -40,7 +44,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             R.mipmap.glassbreak, R.mipmap.gun,
             R.mipmap.farting, R.mipmap.waterdrop,
             R.mipmap.cricket, R.mipmap.hammer,
-            R.mipmap.bomb, R.mipmap.footsteps };
+            R.mipmap.bomb, R.mipmap.footsteps, R.mipmap.current_new };
 
 
 
@@ -126,7 +130,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 i = i + 1;
             }
             if (!it.hasNext()){
-                GridItems itmLst = new GridItems(i, R.mipmap.add_soudnnd);
+                GridItems itmLst = new GridItems(i, R.mipmap.addmore);
                 imLst.add(itmLst);
 
             }
@@ -134,8 +138,39 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             GridItems[] gridPage = imLst.toArray(gp);
             gridFragments.add(new GridFragment(gridPage, Main.this));
         }
+
+
         pm = new PagerAdapter(getSupportFragmentManager(), gridFragments);
         awesomePager.setAdapter(pm);
+        awesomePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1)
+                    pageNo = position - 1;
+                else
+                    pageNo = position + 1;
+
+
+                Log.e("POSITION", String.valueOf(position));
+
+                Fragment fragment = (Fragment) pm.instantiateItem(awesomePager, pageNo);
+                if (fragment instanceof IGridFragment) {
+                    ((IGridFragment) fragment).pageScrolled();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
         mIndicator.setViewPager(awesomePager);
 
         clock = (ImageView) findViewById(R.id.clock_btn);
@@ -161,6 +196,14 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                     TimerDialog tDialog = new TimerDialog(Main.this, sound);
                     tDialog.show();
                 }
+            }
+        });
+        settings = (ImageView) findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SettingsDialog sett = new SettingsDialog(Main.this);
+                sett.show();
             }
         });
 
@@ -198,6 +241,7 @@ public void onDestroy(){
     super.onDestroy();
     if(player.mp!=null)
         player.mp.stop();
+        player.mp.release();
 
 }
 

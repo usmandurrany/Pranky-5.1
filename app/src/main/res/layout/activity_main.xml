@@ -31,9 +31,10 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/settings"
+                android:src="@drawable/settingstates"
                 android:contentDescription="@null"
-                android:layout_gravity="top|right"/>
+                android:layout_gravity="top|right"
+                android:id="@+id/settings"/>
 
     </LinearLayout>
 <LinearLayout

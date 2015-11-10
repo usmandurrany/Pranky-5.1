@@ -6,14 +6,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Date;
-
-import kankan.wheel.widget.WheelView;
-import kankan.wheel.widget.adapters.ArrayWheelAdapter;
-import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
 /**
  * Created by Usman-Durrani on 10-Nov-15.
@@ -33,7 +25,7 @@ public class SoundSelectDialog {
 
         dialog = new Dialog(context, R.style.ClockDialog);
         dialog.setContentView(R.layout.dialog_soundselect);
-        ImageView btnselsound = (ImageView) dialog.findViewById(R.id.btnSelSound);
+        ImageView btnselsound = (ImageView) dialog.findViewById(R.id.btnMusicToggle);
         ImageView btnselpic = (ImageView) dialog.findViewById(R.id.btnSelPic);
         ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
         ImageView btnsoundset = (ImageView) dialog.findViewById(R.id.btnSoundSet);

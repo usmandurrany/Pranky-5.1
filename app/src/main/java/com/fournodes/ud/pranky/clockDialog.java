@@ -81,13 +81,17 @@ public class ClockDialog {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(context, String.valueOf(ampm.getCurrentItem()), Toast.LENGTH_SHORT).show();
-                        clockDay=day.getCurrentItem();
-                        clockHour=hour.getCurrentItem();
-                        clockMin=min.getCurrentItem();
-                        clockampm=ampm.getCurrentItem();
-                        SoundScheduler scheduler = new SoundScheduler(context,clockDay,clockHour,clockMin,clockampm,sound);
-                        scheduler.ScheduleSoundPlayback("clock", scheduler.clockSchedule());
+                        clockDay = day.getCurrentItem();
+                        clockHour = hour.getCurrentItem();
+                        clockMin = min.getCurrentItem();
+                        clockampm = ampm.getCurrentItem();
+                        SoundScheduler scheduler = new SoundScheduler(context, clockDay, clockHour, clockMin, clockampm, sound);
+                        if (scheduler.validateTime(scheduler.clockSchedule(),"clock")){
+                            scheduler.ScheduleSoundPlayback("clock", scheduler.clockSchedule());
                         dialog.dismiss();
+                    }
+                        else
+                            Toast.makeText(context, "Time has aready passed. Please reselect.", Toast.LENGTH_SHORT).show();
 
 
                     }

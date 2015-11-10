@@ -89,7 +89,9 @@ public class GridAdapter extends BaseAdapter{
 	}
 	
 	private void setCatImage(int pos, ViewHolder viewHolder, Integer img) {
-		//viewHolder.imageView.setImageResource(images[pos]);
+		if(img == R.mipmap.addmore)
+		viewHolder.imageView.setBackgroundResource(R.drawable.addstates);
+		else
 		viewHolder.itemImage.setImageResource(img);
 	}
 

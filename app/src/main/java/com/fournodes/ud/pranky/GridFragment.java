@@ -15,6 +15,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -30,7 +31,7 @@ import android.widget.Toast;
 
 import java.util.IllegalFormatCodePointException;
 
-public class GridFragment extends Fragment {
+public class GridFragment extends Fragment implements IGridFragment{
 
 	private int viewPOS;
 	private GridView mGridView;
@@ -106,6 +107,7 @@ public class GridFragment extends Fragment {
 			img = (ImageView) v.findViewById(R.id.grid_item_bg);
 
 			viewPOS = pos;
+			//Toast.makeText(activity,  Toast.LENGTH_SHORT).show();
 
 		}
 
@@ -114,15 +116,25 @@ public class GridFragment extends Fragment {
 				"Position Clicked: " + pos + " & Image is: "
 						+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
 		String name = getResources().getResourceEntryName(gridItems[pos].res);
-		if (getResources().getResourceEntryName(gridItems[pos].res).equals("add_soudnnd") ) {
+		if (getResources().getResourceEntryName(gridItems[pos].res).equals("addmore") ) {
 			Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
 			SoundSelectDialog soundseldiag = new SoundSelectDialog(activity);
 			soundseldiag.show();
 		} else {
 			int sound = R.raw.class.getField(name).getInt(null);
 			soundsel.selectedSound(sound);
-			MediaPlayer mp = MediaPlayer.create(activity, sound);
+			final MediaPlayer mp = MediaPlayer.create(activity, sound);
 			mp.start();
+
+			Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				public void run() {
+					// Actions to do after 2 seconds
+					mp.stop();
+					mp.release();
+				}
+			}, 2000);
+
 			if (viewPOS == pos) {
 				img.setSelected(true);
 				//img.setBackgroundResource(R.drawable.gridselectedanim);
@@ -149,4 +161,10 @@ public class GridFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void pageScrolled() {
+		if (img != null)
+		img.setSelected(false);
+
+	}
 }

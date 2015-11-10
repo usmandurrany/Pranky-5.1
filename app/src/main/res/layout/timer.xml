@@ -62,34 +62,33 @@
         android:layout_marginTop="18dp"
         android:id="@+id/timerclose"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:text="HH"
-        android:layout_above="@+id/linearLayout"
-        android:layout_alignLeft="@+id/linearLayout"
-        android:layout_alignStart="@+id/linearLayout"
-        android:layout_marginLeft="7dp"
-        android:layout_marginBottom="10dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:text="MM"
-        android:layout_above="@+id/linearLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:text="SS"
-        android:layout_above="@+id/linearLayout"
-        android:layout_alignRight="@+id/linearLayout"
-        android:layout_alignEnd="@+id/linearLayout"
-        android:layout_marginRight="9dp"
-        android:layout_marginBottom="10dp"/>
+        android:gravity="center"
+        android:layout_marginTop="60dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/hh"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="15dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/mm"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="1dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ss"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"/>
 
+
+    </LinearLayout>
 
 </RelativeLayout>

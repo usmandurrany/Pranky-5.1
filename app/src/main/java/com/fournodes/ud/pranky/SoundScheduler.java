@@ -29,7 +29,8 @@ public class SoundScheduler {
     public SoundScheduler(Context context, int day, int hr, int min, int ampm,int sound){
         this.context=context;
         this.day =day;
-        this.hr=hr;
+        this.hr=(hr+1);
+
         this.min=min;
         this.ampm=ampm;
         this.sound=sound;
@@ -42,19 +43,36 @@ public class SoundScheduler {
         this.sound=sound;
     }
 
+    public void get24HrTime(){
+        if (ampm==0) {
+            if (hr == 12)
+            hr = 00;
+        }
+        else{
+            if (hr==12)
+                hr=12;
+            else
+                hr=hr+12;
+        }
+
+    }
+
+
     public Calendar clockSchedule(){
 
+        get24HrTime();
         schAlarm = Calendar.getInstance(TimeZone.getDefault());
 
 
-    schAlarm.setTimeInMillis(System.currentTimeMillis());
+    //schAlarm.setTimeInMillis(System.currentTimeMillis());
+        schAlarm.set(Calendar.DAY_OF_MONTH, (schAlarm.get(Calendar.DAY_OF_MONTH) + day));
 
-    schAlarm.set(Calendar.HOUR, (hr + 1));
+    schAlarm.set(Calendar.HOUR_OF_DAY, hr);
     schAlarm.set(Calendar.MINUTE, min);
         schAlarm.set(Calendar.SECOND, 00);
 
-        schAlarm.set(Calendar.AM_PM, ampm);
-    schAlarm.set(Calendar.DAY_OF_MONTH, (schAlarm.get(Calendar.DAY_OF_MONTH) + day));
+       // schAlarm.set(Calendar.AM_PM, ampm);
+
     Log.d("SCHEDULED FOR", String.valueOf(schAlarm.get(Calendar.YEAR)) + " " + String.valueOf(schAlarm.get(Calendar.MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.DAY_OF_MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.HOUR)) + " " + String.valueOf(schAlarm.get(Calendar.MINUTE)) + " " + String.valueOf(schAlarm.get(Calendar.AM_PM)));
 
 
@@ -94,6 +112,27 @@ public class SoundScheduler {
             alarmManager.set(AlarmManager.RTC_WAKEUP, schAlarm.getTimeInMillis(), pendingIntent);
 
         Toast.makeText(context, "Alarm set", Toast.LENGTH_LONG).show();
+
+    }
+    public boolean validateTime(Calendar cal, String type) {
+        if (type.equals("clock")) {
+            Calendar current = Calendar.getInstance(TimeZone.getDefault());
+            Log.d("Current Time", current.getTime().toString());
+            Log.d("SCH Time", cal.getTime().toString());
+
+            if (current.before(cal))
+                return true;
+            else
+                return false;
+        }else{
+            if(hr == 0 && min == 0 && sec < 5 ) {
+                Toast.makeText(context, "Timer must at least be set to 5 sec.", Toast.LENGTH_SHORT).show();
+                return false;
+
+            }
+            return true;
+        }
+
 
     }
 

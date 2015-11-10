@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
@@ -65,10 +66,15 @@ public class TimerDialog {
                     public void onClick(View view) {
 
                         SoundScheduler scheduler = new SoundScheduler(context,hour.getCurrentItem(),min.getCurrentItem(),sec.getCurrentItem(),sound);
-                        scheduler.ScheduleSoundPlayback("timer", scheduler.timerSchedule());
-                        dialog.dismiss();
 
+                        if (scheduler.validateTime(scheduler.timerSchedule(),"timer")){
+                            scheduler.ScheduleSoundPlayback("timer", scheduler.timerSchedule());
+                            dialog.dismiss();
+                        }
                     }
+
+
+
                 });
 
                 //Set the dialog to not focusable (makes navigation ignore us adding the window)

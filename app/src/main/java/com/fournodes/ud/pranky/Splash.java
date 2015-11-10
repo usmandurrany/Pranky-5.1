@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,9 +32,30 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        player.mp = MediaPlayer.create(getApplicationContext(), R.raw.app_bg);
-        player.mp.setLooping(true);
-        player.mp.start();
+        SharedPreferences settings = getSharedPreferences("PrankySharedPref", 0);
+
+
+        if (settings.getBoolean("PlayBGMusic",true)){
+            player.mp = MediaPlayer.create(getApplicationContext(), R.raw.app_bg);
+            // player.mp.setLooping(true);
+            player.mp.setVolume(0, (float) 0.2);
+            player.mp.start();
+            player.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            try {
+                                player.mp.start();
+                            } catch (IllegalStateException e) {
+                            }
+                        }
+                    }, 2000);
+                }
+            });
+        }
         ImageView logo = (ImageView)findViewById(R.id.logo);
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_bounce);
         logo.startAnimation(animation);
