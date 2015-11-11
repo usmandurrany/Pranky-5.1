@@ -1,36 +1,21 @@
 package com.fournodes.ud.pranky;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PathEffect;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.util.IllegalFormatCodePointException;
 
 public class GridFragment extends Fragment implements IGridFragment{
 
@@ -42,7 +27,10 @@ public class GridFragment extends Fragment implements IGridFragment{
 	SoundSelectListener soundsel;
 	ImageView img;
 	ImageView addSoundImg;
+	Intent soundAct;
+	int Null;
 
+	public GridFragment(){}
 	public GridFragment(GridItems[] gridItems, Activity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
@@ -103,7 +91,7 @@ public class GridFragment extends Fragment implements IGridFragment{
 	}
 
 	public void onGridItemClick(GridView g, View v, int pos, long id) throws NoSuchFieldException, IllegalAccessException {
-
+		//int animDrawable = getResources().getIdentifier("com.fournodes.ud.pranky:drawable/gridselectedanim", null, null);
 		if (img == null) {
 			img = (ImageView) v.findViewById(R.id.grid_item_image);
 
@@ -119,8 +107,10 @@ public class GridFragment extends Fragment implements IGridFragment{
 		String name = getResources().getResourceEntryName(gridItems[pos].res);
 		if (getResources().getResourceEntryName(gridItems[pos].res).equals("addmore") ) {
 			Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
-			SoundSelectDialog soundseldiag = new SoundSelectDialog(activity);
-			soundseldiag.show();
+			//SoundSelect soundseldiag = new SoundSelect(activity);
+			//soundseldiag.show();
+			soundAct= new Intent(getActivity(), SoundSelect.class);
+			startActivity(soundAct);
 		} else {
 			int sound = R.raw.class.getField(name).getInt(null);
 			soundsel.selectedSound(sound);
@@ -138,20 +128,22 @@ public class GridFragment extends Fragment implements IGridFragment{
 
 			if (viewPOS == pos) {
 				img.setSelected(true);
-				img.setBackgroundResource(R.drawable.gridselectedanim);
+				img.setImageResource(R.drawable.gridselectedanim);
 
 
 			} else {
 				img.setSelected(false);
-				img.setBackgroundResource(0);
+				img.setImageResource(0);
 
 				img = (ImageView) v.findViewById(R.id.grid_item_image);
 				viewPOS = pos;
 				img.setSelected(true);
-				img.setBackgroundResource(R.drawable.gridselectedanim);
+				img.setImageResource(R.drawable.gridselectedanim);
+
+				//img.setBackgroundResource(R.drawable.gridselectedanim);
 
 			}
-			AnimationDrawable boxsel = (AnimationDrawable) img.getBackground();
+			AnimationDrawable boxsel = (AnimationDrawable) img.getDrawable();
 			boxsel.start();
 
 		}
@@ -159,8 +151,13 @@ public class GridFragment extends Fragment implements IGridFragment{
 
 	@Override
 	public void pageScrolled() {
-		if (img != null)
-		img.setSelected(false);
+		if (img != null) {
+			img.setSelected(false);
+			img.setImageResource(0);
+		}
+
+		soundsel.selectedSound(Null);
+
 
 	}
 

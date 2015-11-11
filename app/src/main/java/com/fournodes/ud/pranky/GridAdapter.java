@@ -101,10 +101,11 @@ public class GridAdapter extends BaseAdapter{
 				StateListDrawable states = new StateListDrawable();
 				states.addState(new int[] {android.R.attr.state_pressed},
 						context.getResources().getDrawable(imageStatePressed));
-
+				states.addState(new int[] {android.R.attr.state_selected},
+						context.getResources().getDrawable(imageStatePressed));
 				states.addState(new int[] { },
 						context.getResources().getDrawable(img));
-				viewHolder.itemImage.setImageDrawable(states);
+				viewHolder.itemImage.setBackground(states);
 			} catch (IllegalAccessException e ) {
 				e.printStackTrace();
 

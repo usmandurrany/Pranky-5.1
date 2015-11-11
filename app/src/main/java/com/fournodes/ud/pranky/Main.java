@@ -39,12 +39,14 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
 
 
-    int images[] = { R.mipmap.annoyed,R.mipmap.bee, R.mipmap.cat,
+    int images[] = {
+            R.mipmap.annoyed, R.mipmap.vibrate,
+            R.mipmap.bee, R.mipmap.cat,
             R.mipmap.current, R.mipmap.hammer,
             R.mipmap.glassbreak, R.mipmap.gun,
             R.mipmap.farting, R.mipmap.watertap,
-            R.mipmap.cricket, R.mipmap.hammer,
-            R.mipmap.bomb, R.mipmap.footsteps, R.mipmap.mosquito};
+            R.mipmap.cricket, R.mipmap.bomb,
+            R.mipmap.footsteps, R.mipmap.mosquito};
 
 
 
@@ -52,7 +54,6 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         awesomePager = (ViewPager) findViewById(R.id.pager);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
@@ -142,6 +143,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
         pm = new PagerAdapter(getSupportFragmentManager(), gridFragments);
         awesomePager.setAdapter(pm);
+        awesomePager.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         awesomePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -239,10 +241,10 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 @Override
 public void onDestroy(){
     super.onDestroy();
-    if(player.mp!=null)
+    if(player.mp!=null) {
         player.mp.stop();
         player.mp.release();
-
+    }
 }
 
 

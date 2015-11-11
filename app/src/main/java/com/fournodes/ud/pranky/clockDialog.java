@@ -34,7 +34,7 @@ public class ClockDialog {
 
 
                 dialog = new Dialog(context, R.style.ClockDialog);
-                dialog.setContentView(R.layout.clock);
+                dialog.setContentView(R.layout.dialog_clock);
 
                 //Array for the am/pm marker column
                 String[] ampmArray = {"AM","PM"};
@@ -86,8 +86,8 @@ public class ClockDialog {
                         clockMin = min.getCurrentItem();
                         clockampm = ampm.getCurrentItem();
                         SoundScheduler scheduler = new SoundScheduler(context, clockDay, clockHour, clockMin, clockampm, sound);
-                        if (scheduler.validateTime(scheduler.clockSchedule(),"clock")){
-                            scheduler.ScheduleSoundPlayback("clock", scheduler.clockSchedule());
+                        if (scheduler.validateTime(scheduler.clockSchedule(),"dialog_clock")){
+                            scheduler.ScheduleSoundPlayback("dialog_clock", scheduler.clockSchedule());
                         dialog.dismiss();
                     }
                         else

@@ -45,7 +45,10 @@ public class SettingsDialog {
         dialog.setContentView(R.layout.dialog_settings);
         Switch btnmusic = (Switch) dialog.findViewById(R.id.btnMusicToggle);
         ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
-        ImageView btnsettset = (ImageView) dialog.findViewById(R.id.btnSettingsSet);
+
+        SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
+        playMusic = settings.getBoolean("PlayBGMusic",true);
+        btnmusic.setChecked(playMusic);
 
         btndiagclose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,30 +57,23 @@ public class SettingsDialog {
             }
         });
 
-        btnmusic.setChecked(true);
+        final SharedPreferences.Editor editor = settings.edit();
+
         btnmusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked)
+                if (isChecked){
                    playMusic=true;
-                 else
-                    playMusic=false;
 
 
+                }
+                 else {
+                    playMusic = false;
+                }
 
-            }
-        });
-        btnsettset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
-                SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("PlayBGMusic", playMusic);
-
-                // Commit the edits!
                 editor.commit();
-
-                if (settings.getBoolean("PlayBGMusic",true)){
+                if (playMusic){
                     player.mp = MediaPlayer.create(context, R.raw.app_bg);
                     // player.mp.setLooping(true);
                     player.mp.setVolume(0, (float) 0.2);
@@ -97,10 +93,13 @@ public class SettingsDialog {
                             }, 2000);
                         }
                     });
+                }else{
+                    player.mp.stop();
+                    player.mp.release();
                 }
-
             }
         });
+
 
 
 

@@ -106,7 +106,7 @@ public class SoundScheduler {
                 intent, PendingIntent.FLAG_ONE_SHOT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        if (type=="clock")
+        if (type=="dialog_clock")
             alarmManager.set(AlarmManager.RTC_WAKEUP,schAlarm.getTimeInMillis() , pendingIntent);
         else
             alarmManager.set(AlarmManager.RTC_WAKEUP, schAlarm.getTimeInMillis(), pendingIntent);
@@ -115,7 +115,7 @@ public class SoundScheduler {
 
     }
     public boolean validateTime(Calendar cal, String type) {
-        if (type.equals("clock")) {
+        if (type.equals("dialog_clock")) {
             Calendar current = Calendar.getInstance(TimeZone.getDefault());
             Log.d("Current Time", current.getTime().toString());
             Log.d("SCH Time", cal.getTime().toString());
