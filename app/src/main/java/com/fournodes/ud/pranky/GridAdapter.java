@@ -13,11 +13,7 @@ public class GridAdapter extends BaseAdapter{
 
 	Context context;
 	
-	int images[] = { R.mipmap.image_box, R.mipmap.image_box,
-			R.mipmap.image_box, R.mipmap.image_box,
-			R.mipmap.image_box, R.mipmap.image_box,
-			R.mipmap.image_box, R.mipmap.image_box,
-			R.mipmap.image_box };
+
 	
 	public class ViewHolder {
 		public ImageView imageView;

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="350dp"
     android:layout_height="350dp"
-    android:background="@drawable/popup_body_4">
+    android:background="@drawable/popup_body_5">
 
 
     <TextView
@@ -39,16 +39,8 @@
         android:layout_alignTop="@+id/txtMusicToggle"
         android:layout_alignLeft="@+id/btnDiagClose"
         android:layout_alignStart="@+id/btnDiagClose"
-        android:layout_marginLeft="-30dp" />
+        android:layout_marginLeft="-30dp"
+        android:background="@drawable/toggle_states"/>
 
-    <ImageView
-        android:layout_marginBottom="-3dp"
-        android:layout_width="222dp"
-        android:layout_height="90dp"
-        android:scaleType="fitCenter"
-        android:id="@+id/btnSettingsSet"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/setstates"
-        android:paddingRight="1dp" />
+
 </RelativeLayout>

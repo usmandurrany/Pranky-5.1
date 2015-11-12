@@ -2,32 +2,42 @@ package com.fournodes.ud.pranky;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 
 /**
  * Created by Usman-Durrani on 10-Nov-15.
  */
-public class SoundSelect extends Activity {
+public class SoundSelect extends Activity implements FileChooser.FileSelectedListener {
     private Dialog dialog;
     protected   View decorView;
+    PrankyDB prankyDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_soundselect);
 
+        prankyDB = new PrankyDB(SoundSelect.this);
 
 
         ImageView btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
@@ -47,16 +57,35 @@ public class SoundSelect extends Activity {
         btnselsound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*");
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                FileChooser filech = new FileChooser(SoundSelect.this);
+                filech.setFileListener(new FileChooser.FileSelectedListener() {
+                    @Override
+                    public void fileSelected(File file) {
+                        Toast.makeText(SoundSelect.this,file.getName(),Toast.LENGTH_SHORT).show();
+                        copyfile(file.getAbsolutePath(),file.getName());
 
-                try {
-                    startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), 0);
-                } catch (android.content.ActivityNotFoundException ex) {
-                    // Potentially direct the user to the Market with a Dialog
-                    Toast.makeText(SoundSelect.this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
-                }
+                        // Gets the data repository in write mode
+                        SQLiteDatabase db = prankyDB.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+                        ContentValues values = new ContentValues();
+                        values.put(PrankyDB.COLUMN_PIC_LOC, R.mipmap.waterdrop);
+                        values.put(PrankyDB.COLUMN_PIC_ALIAS, file.getName());
+                        values.put(PrankyDB.COLUMN_SOUND_LOC, file.getAbsolutePath());
+
+
+// Insert the new row, returning the primary key value of the new row
+                        long newRowId;
+                        newRowId = db.insert(
+                                PrankyDB.TABLE_USER_SOUNDS,
+                                "null",
+                                values);
+                        Toast.makeText(SoundSelect.this, String.valueOf(newRowId), Toast.LENGTH_SHORT).show();
+
+                    }
+                })
+                .showDialog();
+
 
 
             }
@@ -90,30 +119,8 @@ public class SoundSelect extends Activity {
 
 
 
-    @Override
-    protected void onActivityResult ( int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case 0:
-                if (resultCode == RESULT_OK) {
-                    // Get the Uri of the selected file
-                    Uri uri = data.getData();
-                    File myFile = new File(uri.getPath());
-                    Log.d("LOC", "File Uri: " + myFile.getAbsolutePath().toString());
-                    // Get the path
-                    String path = null;
 
-                        path = myFile.getAbsolutePath();
-
-                    Log.e("FILE", "File Path: " + path);
-                    // Get the file instance
-                    // File file = new File(path);
-                    // Initiate the upload
-                }
-                break;
-        }
-    }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -128,4 +135,23 @@ public class SoundSelect extends Activity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
+    @Override
+    public void fileSelected(File file) {
+    }
+
+    public void copyfile(String srcPath,String fileName){
+        //String sourcePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TongueTwister/tt_temp.3gp";
+        File source = new File(srcPath);
+
+        String destinationPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pranky/"+fileName;
+        File destination = new File(destinationPath);
+        try
+        {
+            FileUtils.copyFile(source, destination);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

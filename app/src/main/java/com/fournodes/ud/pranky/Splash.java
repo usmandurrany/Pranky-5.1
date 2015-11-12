@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.IOException;
+
 import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 
 public class Splash extends AppCompatActivity {
@@ -32,11 +36,14 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         SharedPreferences settings = getSharedPreferences("PrankySharedPref", 0);
+
 
 
         if (settings.getBoolean("PlayBGMusic",true)){
             player.mp = MediaPlayer.create(getApplicationContext(), R.raw.app_bg);
+
             // player.mp.setLooping(true);
             player.mp.setVolume(0, (float) 0.2);
             player.mp.start();

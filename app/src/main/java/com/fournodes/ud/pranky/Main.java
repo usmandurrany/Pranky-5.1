@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -35,7 +37,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     AppBGMusic mService;
     boolean mBound;
     private AppBGMusic player =getInstance();
-    private int pageNo;
+    private int pageNo=0;
 
 
 
@@ -46,7 +48,12 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             R.mipmap.glassbreak, R.mipmap.gun,
             R.mipmap.farting, R.mipmap.watertap,
             R.mipmap.cricket, R.mipmap.bomb,
-            R.mipmap.footsteps, R.mipmap.mosquito};
+            R.mipmap.footsteps, R.mipmap.mosquito,
+            R.mipmap.airhorn,R.mipmap.elecrazor,
+            R.mipmap.nail,R.mipmap.scratch,
+            R.mipmap.bird,R.mipmap.windblow,
+            R.mipmap.door,R.mipmap.spoon,
+            R.mipmap.paper,R.mipmap.waterdrop};
 
 
 
@@ -66,6 +73,30 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             a.add(i, images[i]);
             //.resid = a.get(i);
         }
+
+        PrankyDB prankyDB = new PrankyDB(this);
+        SQLiteDatabase db = prankyDB.getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                PrankyDB.COLUMN_PIC_LOC
+        };
+
+        Cursor c = db.rawQuery("SELECT * FROM usr_sounds",null);
+
+        if (c.moveToFirst()) {
+
+            while (c.isAfterLast() == false) {
+                String name = c.getString(c.getColumnIndex(PrankyDB.COLUMN_PIC_LOC));
+
+                a.add(Integer.valueOf(name));
+                c.moveToNext();
+            }
+        }
+
+
+
 
         //codeCategory = new ArrayList<Category>();
         //codeCategory.add(m);
@@ -137,7 +168,9 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             }
             GridItems[] gp = {};
             GridItems[] gridPage = imLst.toArray(gp);
-            gridFragments.add(new GridFragment(gridPage, Main.this));
+            GridFragment Gfrag = new GridFragment(gridPage, Main.this);
+            Gfrag.setRetainInstance(true);
+            gridFragments.add(Gfrag);
         }
 
 
@@ -152,10 +185,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 1)
-                    pageNo = position - 1;
-                else
-                    pageNo = position + 1;
+
 
 
                 Log.e("POSITION", String.valueOf(position));
@@ -164,6 +194,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 if (fragment instanceof IGridFragment) {
                     ((IGridFragment) fragment).pageScrolled();
                 }
+
+                pageNo = position;
             }
 
             @Override
@@ -228,24 +260,26 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         super.onWindowFocusChanged(hasFocus);
         decorView = getWindow().getDecorView();
 
-            decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
 
-@Override
-public void onDestroy(){
-    super.onDestroy();
-    if(player.mp!=null) {
-        player.mp.stop();
-        player.mp.release();
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if(player.mp!=null) {
+            if (player.mp.isPlaying()) {
+                player.mp.stop();
+                player.mp.release();
+            }
+        }
     }
-}
 
 
 
