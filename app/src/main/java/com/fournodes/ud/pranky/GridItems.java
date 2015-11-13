@@ -2,7 +2,7 @@ package com.fournodes.ud.pranky;
 
 public class GridItems {
 
-	public int id;
+	public Integer id;
 	public Integer res;
 	public String sound;
 	
@@ -11,7 +11,7 @@ public class GridItems {
 		this.res = res;
 	}
 
-	public GridItems(int id, Integer res,String sound) {
+	public GridItems(Integer id, Integer res,String sound) {
 		this.id = id;
 		this.res = res;
 		this.sound = sound;

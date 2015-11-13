@@ -101,10 +101,9 @@ public class GridFragment extends Fragment implements IGridFragment{
 
 		}
 
-		Toast.makeText(
-				activity,
-				"Position Clicked: " + pos + " & Image is: "
-						+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
+		//Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
+		Toast.makeText(activity,"Position Clicked: " + pos + " & Sound is: "+ gridItems[pos].sound, Toast.LENGTH_LONG).show();
+
 		String name = getResources().getResourceEntryName(gridItems[pos].res);
 		if (getResources().getResourceEntryName(gridItems[pos].res).equals("addmore") ) {
 			Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
@@ -157,7 +156,7 @@ public class GridFragment extends Fragment implements IGridFragment{
 			img.setImageResource(0);
 		}
 
-		soundsel.selectedSound(Null);
+//		soundsel.selectedSound(Null);
 
 	}
 

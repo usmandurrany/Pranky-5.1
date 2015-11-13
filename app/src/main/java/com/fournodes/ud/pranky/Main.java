@@ -1,8 +1,12 @@
 package com.fournodes.ud.pranky;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,12 +16,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,11 +45,23 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     boolean mBound;
     private AppBGMusic player =getInstance();
     private int pageNo=0;
+    int itemsOnPage=9;
 
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
 
-    int images[] = {};
 
+createFragments();
+            awesomePager.setCurrentItem(pm.getCount()-1);
+
+        }
+    };
 
 
     @Override
@@ -50,110 +69,16 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mMessageReceiver, new IntentFilter("custom-sound-added"));
+
         awesomePager = (ViewPager) findViewById(R.id.pager);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
 
-        ArrayList<Integer> a = new ArrayList<Integer>();
 
-        //Category m = new Category();
-
-        for(int i = 0; i < images.length; i++) {
-            a.add(i, images[i]);
-            //.resid = a.get(i);
-        }
-
-        PrankyDB prankyDB = new PrankyDB(this);
-        SQLiteDatabase db = prankyDB.getReadableDatabase();
+        createFragments();
 
 
-        Cursor c = db.rawQuery("SELECT * FROM usr_sounds",null);
-
-        if (c.moveToFirst()) {
-
-            while (!c.isAfterLast()) {
-                String name = c.getString(c.getColumnIndex(PrankyDB.COLUMN_PIC_LOC));
-
-                a.add(Integer.valueOf(name));
-                c.moveToNext();
-            }
-        }
-        c.close();
-
-        Iterator<Integer> it = a.iterator();
-
-        List<GridFragment> gridFragments = new ArrayList<GridFragment>();
-        it = a.iterator();
-
-        int i = 0;
-        while(it.hasNext()) {
-            ArrayList<GridItems> imLst = new ArrayList<GridItems>();
-
-            GridItems itm = new GridItems(0, it.next());
-            imLst.add(itm);
-            i = i + 1;
-
-            if(it.hasNext()) {
-                GridItems itm1 = new GridItems(1, it.next());
-                imLst.add(itm1);
-                i = i + 1;
-            }
-
-            if(it.hasNext()) {
-                GridItems itm2 = new GridItems(2, it.next());
-                imLst.add(itm2);
-                i = i + 1;
-            }
-
-            if(it.hasNext()) {
-                GridItems itm3 = new GridItems(3, it.next());
-                imLst.add(itm3);
-                i = i + 1;
-            }
-
-            if(it.hasNext()) {
-                GridItems itm4 = new GridItems(4, it.next());
-                imLst.add(itm4);
-                i = i + 1;
-            }
-
-            if(it.hasNext()) {
-                GridItems itm5 = new GridItems(5, it.next());
-                imLst.add(itm5);
-                i = i + 1;
-            }
-
-            if(it.hasNext()) {
-                GridItems itm6 = new GridItems(6, it.next());
-                imLst.add(itm6);
-                i = i + 1;
-            }
-
-            if(it.hasNext()) {
-                GridItems itm7 = new GridItems(7, it.next());
-                imLst.add(itm7);
-                i = i + 1;
-            }
-
-            if(it.hasNext()) {
-                GridItems itm8 = new GridItems(8, it.next());
-                imLst.add(itm8);
-                i = i + 1;
-            }
-            if (!it.hasNext()){
-                GridItems itmLst = new GridItems(i, R.mipmap.addmore);
-                imLst.add(itmLst);
-
-            }
-            GridItems[] gp = {};
-            GridItems[] gridPage = imLst.toArray(gp);
-            GridFragment Gfrag = new GridFragment(gridPage, Main.this);
-            Gfrag.setRetainInstance(true);
-            gridFragments.add(Gfrag);
-        }
-
-
-        pm = new PagerAdapter(getSupportFragmentManager(), gridFragments);
-        awesomePager.setAdapter(pm);
         awesomePager.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         awesomePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -258,6 +183,58 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
         }
     }
+public void createFragments(){
+    int id=0;
+    int i=1;
+    boolean lastItemAdded=false;
+    List<GridFragment> gridFragments = new ArrayList<GridFragment>();
+
+
+    PrankyDB prankyDB = new PrankyDB(this);
+    SQLiteDatabase db = prankyDB.getReadableDatabase();
+
+
+    Cursor c = db.rawQuery("SELECT * FROM usr_sounds",null);
+
+    if (c.moveToFirst()) {
+
+        while (!c.isAfterLast() || !lastItemAdded) {
+            ArrayList<GridItems> imLst = new ArrayList<GridItems>();
+            if (!c.isAfterLast()) {
+                for ( i = 1; (i <= itemsOnPage) && (!c.isAfterLast()); i++) {
+                    id = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_ID));
+                    Integer image = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_PIC_LOC));
+                    String sound = c.getString(c.getColumnIndex(PrankyDB.COLUMN_SOUND_LOC));
+
+                    GridItems items = new GridItems(id, image, sound);
+                    imLst.add(items);
+                    c.moveToNext();
+
+                }
+            }
+            if (c.isAfterLast() && i < itemsOnPage) {
+
+                GridItems lstItem = new GridItems(id, R.mipmap.addmore);
+                imLst.add(lstItem);
+                lastItemAdded=true;
+
+            }
+            GridItems[] gp = {};
+            GridItems[] gridPage = imLst.toArray(gp);
+            GridFragment Gfrag = new GridFragment(gridPage, Main.this);
+            Gfrag.setRetainInstance(true);
+            gridFragments.add(Gfrag);
+            i=1;
+
+        }
+    }
+    c.close();
+
+
+    awesomePager.setAdapter(null);
+    pm = new PagerAdapter(getSupportFragmentManager(),gridFragments,Main.this);
+    awesomePager.setAdapter(pm);
+}
 
 
 

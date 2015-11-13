@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -61,8 +62,8 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
                 filech.setFileListener(new FileChooser.FileSelectedListener() {
                     @Override
                     public void fileSelected(File file) {
-                        Toast.makeText(SoundSelect.this,file.getName(),Toast.LENGTH_SHORT).show();
-                        copyfile(file.getAbsolutePath(),file.getName());
+                        Toast.makeText(SoundSelect.this, file.getName(), Toast.LENGTH_SHORT).show();
+                        copyfile(file.getAbsolutePath(), file.getName());
 
                         // Gets the data repository in write mode
                         SQLiteDatabase db = prankyDB.getWritableDatabase();
@@ -72,6 +73,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
                         values.put(PrankyDB.COLUMN_PIC_LOC, R.mipmap.waterdrop);
                         values.put(PrankyDB.COLUMN_PIC_ALIAS, file.getName());
                         values.put(PrankyDB.COLUMN_SOUND_LOC, file.getAbsolutePath());
+                        values.put(PrankyDB.COLUMN_REPEAT_COUNT, 1);
 
 
 // Insert the new row, returning the primary key value of the new row
@@ -104,6 +106,12 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
             public void onClick(View view) {
 
 
+                Log.d("sender", "Broadcasting message");
+                Intent intent = new Intent("custom-sound-added");
+                // You can also include some extra data.
+                intent.putExtra("message", "This is my message!");
+                LocalBroadcastManager.getInstance(SoundSelect.this).sendBroadcast(intent);
+                finish();
             }
         });
 
