@@ -23,10 +23,10 @@ public class GridAdapter extends BaseAdapter{
 	private GridItems[] items;
 	private LayoutInflater mInflater;
 	
-	public GridAdapter(Context context, GridItems[] locations) {
+	public GridAdapter(Context context, GridItems[] images) {
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
-		items = locations;
+		items = images;
 	}
 	
 	public GridItems[] getItems() {
@@ -59,6 +59,13 @@ public class GridAdapter extends BaseAdapter{
 			return items[pos].id;
 		}
 		return 0;
+	}
+
+	public String getImageSound(int pos) {
+		if(items != null && pos >= 0 && pos < getCount()) {
+			return items[pos].sound;
+		}
+		return null;
 	}
 
 	@Override
@@ -118,7 +125,5 @@ public class GridAdapter extends BaseAdapter{
 	public void notifyDataSetChanged() {
 		super.notifyDataSetChanged();
 	}
-	public void setImageStates(int img){
 
-	}
 }

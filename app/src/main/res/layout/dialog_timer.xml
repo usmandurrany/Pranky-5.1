@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="350dp"
     android:layout_height="290dp"
-    android:background="@drawable/popup_body_3">
+    android:background="@drawable/popup_small">
     <ImageView
         android:layout_width="222dp"
         android:layout_height="96dp"
@@ -10,8 +10,7 @@
         android:id="@+id/timerset"
         android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="208dp"
-        android:paddingRight="1dp"/>
+        android:layout_marginTop="222dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -55,12 +54,15 @@
 
 
     <ImageView
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/timerclose"
         android:src="@drawable/closestates"
-        android:layout_marginLeft="283dp"
-        android:layout_marginTop="18dp"
-        android:id="@+id/timerclose"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"

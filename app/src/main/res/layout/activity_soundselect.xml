@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"          android:orientation="vertical"
     android:layout_width="350dp"
     android:layout_height="350dp"
-    android:background="@drawable/popup_body_4"
+    android:background="@drawable/popup_long"
     tools:context="com.fournodes.ud.pranky.SoundSelect"
 >
 
@@ -34,8 +34,8 @@
         android:hint="Select picture"/>
 
     <ImageView
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnDiagClose"
@@ -64,13 +64,13 @@
         android:layout_alignEnd="@+id/btnMusicToggle" />
 
     <ImageView
-        android:layout_marginBottom="-3dp"
+        android:layout_marginBottom="-11dp"
         android:layout_width="222dp"
         android:layout_height="90dp"
         android:scaleType="fitCenter"
         android:id="@+id/btnSoundSet"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/setstates"
+        android:src="@drawable/save_states"
         android:paddingRight="1dp" />
 </RelativeLayout>

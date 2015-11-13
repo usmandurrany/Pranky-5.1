@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     tools:context="com.fournodes.ud.pranky.Main"
-    android:background="@drawable/app_bg_2"
+    android:background="@drawable/app_background"
     android:gravity="center_horizontal"
     >
     <ImageView
@@ -64,8 +64,8 @@
             android:layout_marginTop="5dp"
             app:ci_width="5dp"
             app:ci_height="5dp"
-            app:ci_drawable_unselected="@mipmap/slider_period"
-            app:ci_drawable="@mipmap/slider_period_hover"
+            app:ci_drawable_unselected="@mipmap/pagercircle"
+            app:ci_drawable="@mipmap/pagercircle_sel"
             android:layout_below="@id/pager"
 
 

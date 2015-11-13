@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="350dp"
     android:layout_height="350dp"
-    android:background="@drawable/popup_body_5">
+    android:background="@drawable/popup_long">
 
 
     <TextView
@@ -17,13 +17,23 @@
         android:layout_marginStart="41dp"
         android:layout_marginTop="129dp"
         android:text="Music"
-        android:textSize="24sp"
+        android:textSize="25sp"
         android:textIsSelectable="false"
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:shadowColor="#000"
+        android:textScaleX="1.2"
+        android:scaleY="1.2"
+        android:shadowDx="0.3"
+        android:shadowDy="1.3"
+        android:shadowRadius="3"
+        />
 
     <ImageView
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnDiagClose"
@@ -39,8 +49,11 @@
         android:layout_alignTop="@+id/txtMusicToggle"
         android:layout_alignLeft="@+id/btnDiagClose"
         android:layout_alignStart="@+id/btnDiagClose"
-        android:layout_marginLeft="-30dp"
-        android:background="@drawable/toggle_states"/>
+        android:layout_marginLeft="-75dp"
+        android:thumb="@drawable/toggle_states"
+        android:track="@drawable/toggle_body"
+
+        />
 
 
 </RelativeLayout>

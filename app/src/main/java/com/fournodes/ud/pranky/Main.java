@@ -41,19 +41,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
 
 
-    int images[] = {
-            R.mipmap.annoyed, R.mipmap.vibrate,
-            R.mipmap.bee, R.mipmap.cat,
-            R.mipmap.current, R.mipmap.hammer,
-            R.mipmap.glassbreak, R.mipmap.gun,
-            R.mipmap.farting, R.mipmap.watertap,
-            R.mipmap.cricket, R.mipmap.bomb,
-            R.mipmap.footsteps, R.mipmap.mosquito,
-            R.mipmap.airhorn,R.mipmap.elecrazor,
-            R.mipmap.nail,R.mipmap.scratch,
-            R.mipmap.bird,R.mipmap.windblow,
-            R.mipmap.door,R.mipmap.spoon,
-            R.mipmap.paper,R.mipmap.waterdrop};
+    int images[] = {};
 
 
 
@@ -77,29 +65,19 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         PrankyDB prankyDB = new PrankyDB(this);
         SQLiteDatabase db = prankyDB.getReadableDatabase();
 
-// Define a projection that specifies which columns from the database
-// you will actually use after this query.
-        String[] projection = {
-                PrankyDB.COLUMN_PIC_LOC
-        };
 
         Cursor c = db.rawQuery("SELECT * FROM usr_sounds",null);
 
         if (c.moveToFirst()) {
 
-            while (c.isAfterLast() == false) {
+            while (!c.isAfterLast()) {
                 String name = c.getString(c.getColumnIndex(PrankyDB.COLUMN_PIC_LOC));
 
                 a.add(Integer.valueOf(name));
                 c.moveToNext();
             }
         }
-
-
-
-
-        //codeCategory = new ArrayList<Category>();
-        //codeCategory.add(m);
+        c.close();
 
         Iterator<Integer> it = a.iterator();
 
@@ -249,7 +227,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
     @Override
     public void selectedSound(int sound) {
-        Toast.makeText(Main.this, String.valueOf(sound), Toast.LENGTH_SHORT).show();
+      // Toast.makeText(Main.this, String.valueOf(sound), Toast.LENGTH_SHORT).show();
         this.sound=sound;
     }
 
@@ -274,10 +252,10 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     public void onDestroy(){
         super.onDestroy();
         if(player.mp!=null) {
-            if (player.mp.isPlaying()) {
-                player.mp.stop();
+
+
                 player.mp.release();
-            }
+
         }
     }
 

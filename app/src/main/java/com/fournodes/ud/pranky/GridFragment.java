@@ -31,6 +31,7 @@ public class GridFragment extends Fragment implements IGridFragment{
 	int Null;
 
 	public GridFragment(){}
+
 	public GridFragment(GridItems[] gridItems, Activity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
@@ -158,8 +159,15 @@ public class GridFragment extends Fragment implements IGridFragment{
 
 		soundsel.selectedSound(Null);
 
-
 	}
+
+	public void setGridViewAdapter(GridAdapter adapter)
+	{
+		mGridAdapter = adapter;
+	}
+
+
+
 
 
 }
