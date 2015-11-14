@@ -5,4 +5,5 @@ package com.fournodes.ud.pranky;
  */
 public interface SoundSelectListener {
     public void selectedSound(int sound);
+    public void selectedSound(String sound);
 }

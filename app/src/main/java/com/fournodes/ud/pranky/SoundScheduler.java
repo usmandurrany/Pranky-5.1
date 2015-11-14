@@ -21,12 +21,13 @@ public class SoundScheduler {
     Calendar schAlarm;
     private int day,hr,min,sec,ampm;
     private int sound;
+    private String soundCus;
 
     public SoundScheduler(Context context) {
         this.context=context;
 
     }
-    public SoundScheduler(Context context, int day, int hr, int min, int ampm,int sound){
+    public SoundScheduler(Context context, int day, int hr, int min, int ampm,int sound,String soundCus){
         this.context=context;
         this.day =day;
         this.hr=(hr+1);
@@ -34,13 +35,15 @@ public class SoundScheduler {
         this.min=min;
         this.ampm=ampm;
         this.sound=sound;
+        this.soundCus=soundCus;
     }
-    public SoundScheduler(Context context, int hr, int min, int sec,int sound){
+    public SoundScheduler(Context context, int hr, int min, int sec,int sound, String soundCus){
         this.context=context;
         this.hr=hr;
         this.min=min;
         this.sec=sec;
         this.sound=sound;
+        this.soundCus=soundCus;
     }
 
     public void get24HrTime(){
@@ -99,8 +102,15 @@ public class SoundScheduler {
 
     public void ScheduleSoundPlayback(String type, Calendar schAlarm){
         Intent intent = new Intent(context, PlaySound.class);
-        intent.putExtra("Sound", context.getResources().getResourceEntryName(sound));
-        Toast.makeText(context, context.getResources().getResourceName(sound), Toast.LENGTH_SHORT).show();
+        if (sound != 0) {
+            intent.putExtra("Sound", context.getResources().getResourceEntryName(sound));
+            Toast.makeText(context, context.getResources().getResourceName(sound), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            intent.putExtra("SoundCus", soundCus);
+            Toast.makeText(context,soundCus, Toast.LENGTH_SHORT).show();
+        }
+
         final int _id = (int) System.currentTimeMillis();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, _id,
                 intent, PendingIntent.FLAG_ONE_SHOT);

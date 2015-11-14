@@ -1,13 +1,18 @@
 package com.fournodes.ud.pranky;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +21,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
+import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
+
+import java.io.IOException;
 
 public class GridFragment extends Fragment implements IGridFragment{
 
@@ -29,9 +37,14 @@ public class GridFragment extends Fragment implements IGridFragment{
 	ImageView addSoundImg;
 	Intent soundAct;
 	int Null;
+	int currVol;
+	CountDownTimer timer;
+	private PreviewMediaPlayer 	previewSound = getInstance();
+
 
 	public GridFragment(){}
 
+	@SuppressLint("ValidFragment")
 	public GridFragment(GridItems[] gridItems, Activity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
@@ -40,6 +53,7 @@ public class GridFragment extends Fragment implements IGridFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 							 @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
 
 		View view;
 
@@ -93,6 +107,11 @@ public class GridFragment extends Fragment implements IGridFragment{
 
 	public void onGridItemClick(GridView g, View v, int pos, long id) throws NoSuchFieldException, IllegalAccessException {
 		//int animDrawable = getResources().getIdentifier("com.fournodes.ud.pranky:drawable/gridselectedanim", null, null);
+		try {
+			if (previewSound.mp.isPlaying()) {
+				previewSound.mp.stop();
+			}
+		}catch(Exception e){Log.e("Preview MediaPlayer",e.toString());}
 		if (img == null) {
 			img = (ImageView) v.findViewById(R.id.grid_item_image);
 
@@ -103,8 +122,9 @@ public class GridFragment extends Fragment implements IGridFragment{
 
 		//Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
 		Toast.makeText(activity,"Position Clicked: " + pos + " & Sound is: "+ gridItems[pos].sound, Toast.LENGTH_LONG).show();
-
 		String name = getResources().getResourceEntryName(gridItems[pos].res);
+
+
 		if (getResources().getResourceEntryName(gridItems[pos].res).equals("addmore") ) {
 			Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
 			//SoundSelect soundseldiag = new SoundSelect(activity);
@@ -112,19 +132,53 @@ public class GridFragment extends Fragment implements IGridFragment{
 			soundAct= new Intent(getActivity(), SoundSelect.class);
 			startActivity(soundAct);
 		} else {
-			int sound = R.raw.class.getField(name).getInt(null);
-			soundsel.selectedSound(sound);
-			final MediaPlayer mp = MediaPlayer.create(activity, sound);
-			mp.start();
 
-			Handler handler = new Handler();
-			handler.postDelayed(new Runnable() {
-				public void run() {
-					// Actions to do after 2 seconds
-					mp.stop();
-					mp.release();
+			if (gridItems[pos].sound.equals("raw." + name)) {
+				int sound = R.raw.class.getField(name).getInt(null);
+				soundsel.selectedSound(sound);
+				previewSound.mp = MediaPlayer.create(activity, sound);
+			} else if (gridItems[pos].sound != ("raw." + name)) {
+				soundsel.selectedSound(gridItems[pos].sound);
+				previewSound.mp = new MediaPlayer();
+				try {
+					previewSound.mp.setDataSource(gridItems[pos].sound);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			}, 2000);
+				previewSound.mp.prepareAsync();
+
+			}
+			final AudioManager audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+			currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+
+			previewSound.mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+			previewSound.mp.setVolume(100, 100);
+			previewSound.mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+				@Override
+				public void onPrepared(MediaPlayer mediaPlayer) {
+					if(timer!=null)
+						timer.cancel();
+					previewSound.mp.start();
+
+					timer = new CountDownTimer(2000, 1000) {
+						public void onTick(long millisUntilFinished) {
+						}
+
+						public void onFinish() {
+							try {
+								previewSound.mp.stop();
+
+
+							} catch (Exception e) {
+								Log.e("MediaPlayer Killer", e.toString());
+							}
+							audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
+						}
+					}.start();
+				}
+			});
+
 
 			if (viewPOS == pos) {
 				img.setSelected(true);
@@ -143,7 +197,8 @@ public class GridFragment extends Fragment implements IGridFragment{
 				//img.setBackgroundResource(R.drawable.gridselectedanim);
 
 			}
-			AnimationDrawable boxsel = (AnimationDrawable) img.getDrawable();
+
+	AnimationDrawable boxsel = (AnimationDrawable) img.getDrawable();
 			boxsel.start();
 
 		}
@@ -155,15 +210,15 @@ public class GridFragment extends Fragment implements IGridFragment{
 			img.setSelected(false);
 			img.setImageResource(0);
 		}
-
-//		soundsel.selectedSound(Null);
+		try {
+			soundsel.selectedSound(Null);
+		}catch (Exception e){
+			Log.e("Sound Sel Remover", e.toString());
+		}
 
 	}
 
-	public void setGridViewAdapter(GridAdapter adapter)
-	{
-		mGridAdapter = adapter;
-	}
+
 
 
 

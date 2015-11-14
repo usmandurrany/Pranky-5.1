@@ -1,6 +1,7 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.StateListDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,6 +114,8 @@ public class GridAdapter extends BaseAdapter{
 				e.printStackTrace();
 
 			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			} catch (Resources.NotFoundException e) {
 				e.printStackTrace();
 			}
 

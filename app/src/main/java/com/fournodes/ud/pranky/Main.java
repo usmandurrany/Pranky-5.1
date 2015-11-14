@@ -41,6 +41,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected ImageView timer;
     protected ImageView settings;
     private int sound;
+    private String soundCus;
     AppBGMusic mService;
     boolean mBound;
     private AppBGMusic player =getInstance();
@@ -114,10 +115,13 @@ createFragments();
         clock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sound == 0)
+                if (sound == 0 && soundCus == null)
                     Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
-                else {
+                else if(sound!=0){
                     ClockDialog cDialog = new ClockDialog(Main.this, sound);
+                    cDialog.show();
+                }else{
+                    ClockDialog cDialog = new ClockDialog(Main.this, soundCus);
                     cDialog.show();
                 }
             }
@@ -127,10 +131,13 @@ createFragments();
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sound == 0)
+                if (sound == 0 && soundCus == null)
                     Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
-                else {
+                else if(sound!=0){
                     TimerDialog tDialog = new TimerDialog(Main.this, sound);
+                    tDialog.show();
+                }else {
+                    TimerDialog tDialog = new TimerDialog(Main.this, soundCus);
                     tDialog.show();
                 }
             }
@@ -156,6 +163,11 @@ createFragments();
         this.sound=sound;
     }
 
+    @Override
+    public void selectedSound(String sound) {
+        this.soundCus=sound;
+
+    }
 
 
     @Override
