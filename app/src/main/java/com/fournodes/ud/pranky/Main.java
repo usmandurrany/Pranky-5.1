@@ -47,6 +47,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     private AppBGMusic player =getInstance();
     private int pageNo=0;
     int itemsOnPage=9;
+    int soundRep;
+    int soundVol;
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -117,11 +119,8 @@ createFragments();
             public void onClick(View view) {
                 if (sound == 0 && soundCus == null)
                     Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
-                else if(sound!=0){
-                    ClockDialog cDialog = new ClockDialog(Main.this, sound);
-                    cDialog.show();
-                }else{
-                    ClockDialog cDialog = new ClockDialog(Main.this, soundCus);
+               else{
+                    ClockDialog cDialog = new ClockDialog(Main.this,sound, soundCus,soundRep,soundVol);
                     cDialog.show();
                 }
             }
@@ -133,11 +132,8 @@ createFragments();
             public void onClick(View view) {
                 if (sound == 0 && soundCus == null)
                     Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
-                else if(sound!=0){
-                    TimerDialog tDialog = new TimerDialog(Main.this, sound);
-                    tDialog.show();
-                }else {
-                    TimerDialog tDialog = new TimerDialog(Main.this, soundCus);
+                 else {
+                    TimerDialog tDialog = new TimerDialog(Main.this, sound,soundCus,soundRep,soundVol);
                     tDialog.show();
                 }
             }
@@ -155,19 +151,6 @@ createFragments();
 
     }
 
-
-
-    @Override
-    public void selectedSound(int sound) {
-      // Toast.makeText(Main.this, String.valueOf(sound), Toast.LENGTH_SHORT).show();
-        this.sound=sound;
-    }
-
-    @Override
-    public void selectedSound(String sound) {
-        this.soundCus=sound;
-
-    }
 
 
     @Override
@@ -217,8 +200,10 @@ public void createFragments(){
                     id = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_ID));
                     Integer image = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_PIC_LOC));
                     String sound = c.getString(c.getColumnIndex(PrankyDB.COLUMN_SOUND_LOC));
+                    Integer soundRepeat = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_REPEAT_COUNT));
+                    Integer soundVol = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_SOUND_VOL));
 
-                    GridItems items = new GridItems(id, image, sound);
+                    GridItems items = new GridItems(id, image, sound, soundRepeat,soundVol);
                     imLst.add(items);
                     c.moveToNext();
 
@@ -249,5 +234,15 @@ public void createFragments(){
 }
 
 
+    @Override
+    public void selectedSound(int sound, String soundStr, int SoundRep, int Soundvol) {
+        this.sound=sound;
+        this.soundCus=soundStr;
+        this.soundRep= SoundRep;
+        this.soundVol=Soundvol;
 
+        Toast.makeText(Main.this,"Repeat Count: " + soundRep + " Sound Vol : "+ soundVol, Toast.LENGTH_LONG).show();
+
+
+    }
 }

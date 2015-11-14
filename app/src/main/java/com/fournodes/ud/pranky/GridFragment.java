@@ -40,6 +40,7 @@ public class GridFragment extends Fragment implements IGridFragment{
 	int currVol;
 	CountDownTimer timer;
 	private PreviewMediaPlayer 	previewSound = getInstance();
+	int sound;
 
 
 	public GridFragment(){}
@@ -121,7 +122,8 @@ public class GridFragment extends Fragment implements IGridFragment{
 		}
 
 		//Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
-		Toast.makeText(activity,"Position Clicked: " + pos + " & Sound is: "+ gridItems[pos].sound, Toast.LENGTH_LONG).show();
+		//Toast.makeText(activity,"Position Clicked: " + pos + " & Repeat Count is: "+ gridItems[pos].soundRepeat, Toast.LENGTH_LONG).show();
+		//Toast.makeText(activity,"Position Clicked: " + pos + " & Volume is: "+ gridItems[pos].soundVol, Toast.LENGTH_LONG).show();
 		String name = getResources().getResourceEntryName(gridItems[pos].res);
 
 
@@ -134,11 +136,11 @@ public class GridFragment extends Fragment implements IGridFragment{
 		} else {
 
 			if (gridItems[pos].sound.equals("raw." + name)) {
-				int sound = R.raw.class.getField(name).getInt(null);
-				soundsel.selectedSound(sound);
+				sound = R.raw.class.getField(name).getInt(null);
+				soundsel.selectedSound(sound,gridItems[pos].sound,gridItems[pos].soundRepeat,gridItems[pos].soundVol);
 				previewSound.mp = MediaPlayer.create(activity, sound);
 			} else if (gridItems[pos].sound != ("raw." + name)) {
-				soundsel.selectedSound(gridItems[pos].sound);
+				soundsel.selectedSound(sound,gridItems[pos].sound,gridItems[pos].soundRepeat,gridItems[pos].soundVol);
 				previewSound.mp = new MediaPlayer();
 				try {
 					previewSound.mp.setDataSource(gridItems[pos].sound);
@@ -211,7 +213,7 @@ public class GridFragment extends Fragment implements IGridFragment{
 			img.setImageResource(0);
 		}
 		try {
-			soundsel.selectedSound(Null);
+			soundsel.selectedSound(Null,"null",0,0);
 		}catch (Exception e){
 			Log.e("Sound Sel Remover", e.toString());
 		}

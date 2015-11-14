@@ -109,6 +109,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
                         values.put(PrankyDB.COLUMN_PIC_ALIAS, soundFile.getName());
                         values.put(PrankyDB.COLUMN_SOUND_LOC, soundFile.getAbsolutePath());
                         values.put(PrankyDB.COLUMN_REPEAT_COUNT, 1);
+                        values.put(PrankyDB.COLUMN_SOUND_VOL, 1);
 
 
 // Insert the new row, returning the primary key value of the new row
