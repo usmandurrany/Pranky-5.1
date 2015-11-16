@@ -15,17 +15,9 @@
         android:layout_height="match_parent"
         android:src="@drawable/app_body"
         android:scaleType="fitXY"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
-    <LinearLayout
-        android:id="@+id/top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="right"
-        android:layout_alignParentTop="true"
-        android:paddingTop="53dp"
-        android:paddingRight="23dp">
 
 
             <ImageView
@@ -33,28 +25,25 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/settingstates"
                 android:contentDescription="@null"
-                android:layout_gravity="top|right"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/sett_btn_margin_top"
+                android:layout_marginRight="@dimen/sett_btn_margin_right"
                 android:id="@+id/settings"/>
 
-    </LinearLayout>
-<LinearLayout
-    android:id="@+id/middle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_below="@id/top"
-    android:gravity="center_horizontal">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:paddingTop="60dp"
-        android:paddingLeft="52dp"
-        android:paddingRight="45dp">
+
+
         <android.support.v4.view.ViewPager
-            android:layout_width="260dp"
-            android:layout_height="300dp"
-            android:id="@+id/pager" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pager"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:layout_marginBottom="180dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:paddingTop="@dimen/viewpager_padding_top"/>
+
+
 
 
         <me.relex.circleindicator.CircleIndicator
@@ -66,7 +55,8 @@
             app:ci_height="5dp"
             app:ci_drawable_unselected="@mipmap/pagercircle"
             app:ci_drawable="@mipmap/pagercircle_sel"
-            android:layout_below="@id/pager"
+            android:layout_above="@+id/clock_btn"
+            android:layout_marginBottom="50dp"
 
 
 
@@ -80,53 +70,59 @@
             android:layout_marginTop="-6dp"
             android:contentDescription="@null" />
 
-    </RelativeLayout>
-
-
-</LinearLayout>
-
-    <LinearLayout
-        android:layout_below="@id/middle"
-        android:id="@+id/bottom"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:gravity="bottom">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:paddingBottom="51dp"
-            >
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="55dp"
                 android:layout_marginLeft="80dp"
                 android:src="@drawable/clockstates"
                 android:id="@+id/clock_btn"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 android:contentDescription=""
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"/>
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginLeft="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="55dp"
                 android:src="@drawable/timerstates"
                 android:id="@+id/timer_btn"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="80dp"
                 android:layout_alignParentBottom="true"
                 />
-        </RelativeLayout>
 
 
-    </LinearLayout>
 
 
 </RelativeLayout>

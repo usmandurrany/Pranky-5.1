@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
-    android:layout_height="290dp"
-    android:background="@drawable/popup_small"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_centerVertical="true"
     android:layout_centerHorizontal="true">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/popup_small"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:padding="5dp"/>
     <ImageView
         android:layout_width="222dp"
         android:layout_height="96dp"
@@ -13,7 +20,7 @@
         android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="222dp"/>
+        android:layout_marginBottom="@dimen/set_btn_margin_bottom"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="@dimen/day_hh_mm_ss_margin_top"
         >
         <ImageView
             android:layout_width="wrap_content"
@@ -80,8 +87,8 @@
 
 
     <ImageView
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginTop="@dimen/close_btn_margin_top"
+        android:layout_marginRight="@dimen/close_btn_margin_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/close"

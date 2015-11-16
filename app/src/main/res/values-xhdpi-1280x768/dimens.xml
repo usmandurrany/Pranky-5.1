@@ -1,0 +1,6 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="sett_btn_margin_top">54dp</dimen>
+    <dimen name="sett_btn_margin_right">25dp</dimen>
+
+</resources>
