@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -66,6 +67,30 @@ public class Splash extends AppCompatActivity {
         ImageView logo = (ImageView)findViewById(R.id.logo);
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_bounce);
         logo.startAnimation(animation);
+
+        final ImageView logo_face= (ImageView)findViewById(R.id.logo_face);
+        final Animation animation2 = AnimationUtils.loadAnimation(getApplication(),R.anim.logo_drop);
+        logo_face.startAnimation(animation2);
+
+        animation2.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            Animation animation3 = AnimationUtils.loadAnimation(getApplication(),R.anim.logo_rotate);
+                logo_face.startAnimation(animation3);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
         new Handler().postDelayed(new Runnable() {

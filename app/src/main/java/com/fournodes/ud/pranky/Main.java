@@ -167,16 +167,28 @@ createFragments();
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try{if(player.mp!=null) {
+            player.mp.start();
+        }}catch(Exception e){Log.e("BG Music Resume",e.toString());}
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try{if(player.mp!=null) {
+            player.mp.pause();
+        }}catch(Exception e){Log.e("BG Music Pause",e.toString());}
+    }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if(player.mp!=null) {
-
-
-                player.mp.release();
-
-        }
+        try{if(player.mp!=null) {
+            player.mp.release();
+        }}catch(Exception e){Log.e("BG Music Destroy",e.toString());}
     }
 public void createFragments(){
     int id=0;
