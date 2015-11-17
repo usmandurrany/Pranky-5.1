@@ -13,10 +13,12 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/app_body"
+        android:src="@mipmap/app_body2"
         android:scaleType="fitXY"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="00dp"/>
 
 
 
@@ -32,96 +34,78 @@
 
 
 
-        <android.support.v4.view.ViewPager
+           <android.support.v4.view.ViewPager
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/pager"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp"
-            android:layout_marginBottom="180dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:paddingTop="@dimen/viewpager_padding_top"/>
+            android:layout_marginTop="@dimen/viewpager_margin_top"
+            android:layout_marginBottom="@dimen/viewpager_margin_bottom"
+            android:layout_marginLeft="@dimen/viewpager_margin_left"
+            android:layout_marginRight="@dimen/viewpager_margin_right"
+            />
 
 
 
 
         <me.relex.circleindicator.CircleIndicator
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="10dp"
             android:id="@+id/pagerIndicator"
             android:layout_marginTop="5dp"
             app:ci_width="5dp"
             app:ci_height="5dp"
+
+            android:layout_centerHorizontal="true"
             app:ci_drawable_unselected="@mipmap/pagercircle"
             app:ci_drawable="@mipmap/pagercircle_sel"
             android:layout_above="@+id/clock_btn"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="@dimen/circle_indicator_margin_bottom"
+
 
 
 
             />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/slider_line"
-            android:layout_below="@id/pagerIndicator"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-6dp"
-            android:contentDescription="@null" />
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/slider_line"
+        android:layout_below="@id/pagerIndicator"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/indicator_line_margin_top"
+        android:scaleType="fitCenter"/>
+
 
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="55dp"
-                android:layout_marginLeft="80dp"
+                android:layout_marginBottom="@dimen/clock_btn_margin_bottom"
+                android:layout_marginLeft="@dimen/clock_btn_margin_left"
                 android:src="@drawable/clockstates"
                 android:id="@+id/clock_btn"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 android:contentDescription=""
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="55dp"
+                android:layout_marginBottom="@dimen/timer_btn_margin_bottom"
                 android:src="@drawable/timerstates"
                 android:id="@+id/timer_btn"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="80dp"
+                android:layout_marginRight="@dimen/timer_btn_margin_right"
                 android:layout_alignParentBottom="true"
                 />
-
+<ImageView
+    android:layout_width="180dp"
+    android:layout_height="90dp"
+    android:src="@drawable/prankit"
+    android:scaleType="fitCenter"
+    android:id="@+id/prankit"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/prankit_btn_margin_bottom"/>
 
 
 

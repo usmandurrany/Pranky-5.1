@@ -5,6 +5,8 @@
         android:layout_height="wrap_content"
         android:contentDescription="@null"
         android:background="@mipmap/addmore"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
 
          />
 

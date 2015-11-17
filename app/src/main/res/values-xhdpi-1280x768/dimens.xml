@@ -1,6 +1,31 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="sett_btn_margin_top">54dp</dimen>
-    <dimen name="sett_btn_margin_right">25dp</dimen>
 
+    <dimen name="set_btn_margin_bottom">164dp</dimen>
+
+    <dimen name="day_hh_mm_ss_margin_top">230dp</dimen>
+
+    <dimen name="close_btn_margin_top">192dp</dimen>
+    <dimen name="close_btn_margin_right">18dp</dimen>
+
+    <dimen name="sett_btn_margin_top">52dp</dimen>
+    <dimen name="sett_btn_margin_right">22dp</dimen>
+
+    <dimen name="clock_btn_margin_bottom">75dp</dimen>
+    <dimen name="clock_btn_margin_left">50dp</dimen>
+
+    <dimen name="timer_btn_margin_bottom">75dp</dimen>
+    <dimen name="timer_btn_margin_right">50dp</dimen>
+
+    <dimen name="prankit_btn_margin_bottom">40dp</dimen>
+
+    <dimen name="circle_indicator_margin_bottom">35dp</dimen>
+    <dimen name="indicator_line_margin_top">-45dp</dimen>
+
+
+    <dimen name="viewpager_margin_top">120dp</dimen>
+    <dimen name="viewpager_margin_bottom">170dp</dimen>
+    <dimen name="viewpager_margin_left">50dp</dimen>
+    <dimen name="viewpager_margin_right">50dp</dimen>
+    <dimen name="viewpager_padding_top">40dp</dimen>
 </resources>
