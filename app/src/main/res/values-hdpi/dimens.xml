@@ -3,15 +3,15 @@
     <dimen name="sett_btn_margin_top">41dp</dimen>
     <dimen name="sett_btn_margin_right">18dp</dimen>
 
-    <dimen name="close_btn_margin_top">152dp</dimen>
-    <dimen name="close_btn_margin_right">15dp</dimen>
+    <dimen name="close_btn_margin_top">155dp</dimen>
+    <dimen name="close_btn_margin_right">18dp</dimen>
 
     <dimen name="clock_btn_margin_bottom">60dp</dimen>
     <dimen name="clock_btn_margin_left">25dp</dimen>
 
-    <dimen name="set_btn_margin_bottom">126dp</dimen>
+    <dimen name="set_btn_margin_bottom">129dp</dimen>
 
-    <dimen name="day_hh_mm_ss_margin_top">180dp</dimen>
+    <dimen name="day_hh_mm_ss_margin_top">185dp</dimen>
 
     <dimen name="timer_btn_margin_bottom">60dp</dimen>
     <dimen name="timer_btn_margin_right">25dp</dimen>
@@ -27,4 +27,23 @@
     <dimen name="viewpager_margin_left">55dp</dimen>
     <dimen name="viewpager_margin_right">50dp</dimen>
     <dimen name="viewpager_padding_top">0dp</dimen>
+
+
+    <dimen name="save_btn_margin_bottom">110dp</dimen>
+    <dimen name="close_btn_margin_top_long">132dp</dimen>
+    <dimen name="close_btn_margin_right_long">18dp</dimen>
+    <dimen name="sel_sound_margin_top">210dp</dimen>
+
+    <dimen name="sel_sound_icon_width">50dp</dimen>
+    <dimen name="sel_sound_icon_height">50dp</dimen>
+
+
+    <dimen name="sel_sound_h1">18dp</dimen>
+    <dimen name="sel_sound_txt_box">15dp</dimen>
+    <dimen name="sel_sound_icon_scroll_width">160dp</dimen>
+    <dimen name="sel_sound_icon_picker_margin_top">0dp</dimen>
+
+
+
+
 </resources>

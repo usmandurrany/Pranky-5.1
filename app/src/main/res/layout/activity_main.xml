@@ -28,6 +28,7 @@
                 android:src="@drawable/settingstates"
                 android:contentDescription="@null"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginTop="@dimen/sett_btn_margin_top"
                 android:layout_marginRight="@dimen/sett_btn_margin_right"
                 android:id="@+id/settings"/>
@@ -100,7 +101,7 @@
 <ImageView
     android:layout_width="180dp"
     android:layout_height="90dp"
-    android:src="@drawable/prankit"
+    android:src="@drawable/prankit_states"
     android:scaleType="fitCenter"
     android:id="@+id/prankit"
     android:layout_alignParentBottom="true"

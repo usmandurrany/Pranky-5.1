@@ -1,0 +1,18 @@
+<!-- [ Mirror metadata ] generatedAt: 1447832461433 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ 
+
+Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" overlay="@drawable/mockup" -->
+<screen>
+    <_content layout="@layout/dialog_settings">
+        <!-- TextView Examples:
+        <txtBGMusic text="@string/string_resource" />
+        <txtBGMusic text="Text literal" textSize="14sp" /> -->
+        <txtBGMusic />
+        <!-- ImageView Examples:
+        <btnDiagClose src="@drawable/image_resource" />
+        <btnDiagClose src="relative_path/image.jpg" /> -->
+        <btnDiagClose />
+    </_content>
+</screen>

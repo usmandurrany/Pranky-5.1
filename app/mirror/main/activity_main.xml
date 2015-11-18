@@ -1,4 +1,4 @@
-<!-- [ Mirror metadata ] generatedAt: 1446617575702 -->
+<!-- [ Mirror metadata ] generatedAt: 1447832596221 -->
 <!-- Generated screen file. Fill the id tags below with content with
 which to populate your previewed layout. For a complete specification
 of sample data, please see http://jimulabs.com/sample-data-specifications/ 
@@ -7,6 +7,10 @@ Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" ov
 <screen>
     <actionbar showTabsFor="@id/pager"/>
     <_content layout="@layout/activity_main">
+        <!-- ImageView Examples:
+        <settings src="@drawable/image_resource" />
+        <settings src="relative_path/image.jpg" /> -->
+        <settings />
         <pager>
             <!-- Add pages to your ViewPager here like so:
             <_page title="page title" icon="@drawable/my_icon"/>
@@ -15,10 +19,8 @@ Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" ov
             </_page>
             -->
         </pager>
-        <!-- ImageView Examples:
-        <clock_btn src="@drawable/image_resource" />
-        <clock_btn src="relative_path/image.jpg" /> -->
         <clock_btn />
         <timer_btn />
+        <prankit />
     </_content>
 </screen>

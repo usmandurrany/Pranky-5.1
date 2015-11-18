@@ -1,0 +1,27 @@
+<!-- [ Mirror metadata ] generatedAt: 1447832461305 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ 
+
+Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" overlay="@drawable/mockup" -->
+<screen>
+    <_content layout="@layout/activity_soundselect">
+        <!-- ImageView Examples:
+        <btnDiagClose src="@drawable/image_resource" />
+        <btnDiagClose src="relative_path/image.jpg" /> -->
+        <btnDiagClose />
+        <btnMusicToggle />
+        <btnSave />
+        <custom1 />
+        <custom2 />
+        <custom3 />
+        <custom4 />
+        <custom5 />
+        <custom6 />
+        <!-- TextView Examples:
+        <textView text="@string/string_resource" />
+        <textView text="Text literal" textSize="14sp" /> -->
+        <textView />
+        <textView2 />
+    </_content>
+</screen>

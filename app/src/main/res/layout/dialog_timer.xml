@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:src="@mipmap/popup_small"
         android:scaleType="fitCenter"
-        android:padding="5dp"/>
+        android:padding="10dp"/>
     <ImageView
         android:layout_width="222dp"
         android:layout_height="96dp"
@@ -78,24 +78,48 @@
         android:gravity="center"
         android:layout_marginTop="@dimen/day_hh_mm_ss_margin_top"
         >
-        <ImageView
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="26dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/hh"
-            android:layout_marginRight="5dp"
+            android:text="HH"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:shadowColor="#000"
+            android:shadowDy="0.3"
+            android:shadowDx="1.3"
+            android:shadowRadius="6"
+            android:layout_marginRight="3dp"
             android:layout_marginLeft="15dp"/>
-        <ImageView
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="33dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/mm"
-            android:layout_marginRight="1dp"
-            android:layout_marginLeft="1dp"/>
-        <ImageView
-            android:layout_width="wrap_content"
+            android:text="MM"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:shadowColor="#000"
+            android:shadowDy="0.3"
+            android:shadowDx="1.3"
+            android:shadowRadius="6"
+            android:layout_marginRight="22dp"
+            android:layout_marginLeft="22dp"/>
+        <TextView
+            android:layout_width="26dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ss"
+            android:text="SS"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:shadowColor="#000"
+            android:shadowDy="0.3"
+            android:shadowDx="1.3"
+            android:shadowRadius="6"
             android:layout_marginRight="15dp"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="3dp"/>
 
 
     </LinearLayout>

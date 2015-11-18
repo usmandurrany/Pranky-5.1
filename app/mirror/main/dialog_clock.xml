@@ -1,0 +1,15 @@
+<!-- [ Mirror metadata ] generatedAt: 1447832461364 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ 
+
+Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" overlay="@drawable/mockup" -->
+<screen>
+    <_content layout="@layout/dialog_clock">
+        <!-- ImageView Examples:
+        <set src="@drawable/image_resource" />
+        <set src="relative_path/image.jpg" /> -->
+        <set />
+        <close />
+    </_content>
+</screen>

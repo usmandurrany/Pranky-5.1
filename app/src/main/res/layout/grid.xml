@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:padding="5dp"
+    android:padding="3dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
-        android:padding="5dp">
+        >
     </GridView>
 
 </RelativeLayout>
