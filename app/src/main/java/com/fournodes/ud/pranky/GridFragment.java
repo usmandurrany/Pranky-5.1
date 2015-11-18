@@ -9,9 +9,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,7 @@ import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
 import java.io.IOException;
 
-public class GridFragment extends Fragment implements IGridFragment{
+public class GridFragment extends android.support.v4.app.Fragment implements IFragment {
 
 	private int viewPOS;
 	private GridView mGridView;
@@ -220,10 +218,10 @@ public class GridFragment extends Fragment implements IGridFragment{
 
 	}
 
+	@Override
+	public void TutImageClick() {
 
-
-
-
+	}
 
 
 }

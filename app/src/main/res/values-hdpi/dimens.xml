@@ -26,7 +26,7 @@
     <dimen name="viewpager_margin_bottom">180dp</dimen>
     <dimen name="viewpager_margin_left">55dp</dimen>
     <dimen name="viewpager_margin_right">50dp</dimen>
-    <dimen name="viewpager_padding_top">0dp</dimen>
+    <dimen name="viewpager_padding_top">3dp</dimen>
 
 
     <dimen name="save_btn_margin_bottom">110dp</dimen>

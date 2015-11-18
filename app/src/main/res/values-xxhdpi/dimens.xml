@@ -3,7 +3,7 @@
 
     <dimen name="set_btn_margin_bottom">167dp</dimen>
 
-    <dimen name="day_hh_mm_ss_margin_top">225dp</dimen>
+    <dimen name="day_hh_mm_ss_margin_top">235dp</dimen>
 
     <dimen name="close_btn_margin_top">196dp</dimen>
     <dimen name="close_btn_margin_right">23dp</dimen>
@@ -23,11 +23,11 @@
     <dimen name="indicator_line_margin_top">-50dp</dimen>
 
 
-    <dimen name="viewpager_margin_top">155dp</dimen>
-    <dimen name="viewpager_margin_bottom">180dp</dimen>
+    <dimen name="viewpager_margin_top">170dp</dimen>
+    <dimen name="viewpager_margin_bottom">165dp</dimen>
     <dimen name="viewpager_margin_left">50dp</dimen>
     <dimen name="viewpager_margin_right">50dp</dimen>
-    <dimen name="viewpager_padding_top">40dp</dimen>
+    <dimen name="viewpager_padding_top">10dp</dimen>
 
 
 

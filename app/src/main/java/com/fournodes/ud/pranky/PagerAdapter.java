@@ -1,10 +1,8 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -12,22 +10,37 @@ import java.util.List;
  * Created by Usman on 11/6/2015.
  */public class PagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<GridFragment> fragments;
+    private List<GridFragment> gfragments;
+    private List<TutorialFragment> Tfragments;
 
-    public PagerAdapter(FragmentManager fm, List<GridFragment> fragments,Context context) {
+    public PagerAdapter(FragmentManager fm, List<GridFragment> gridFragments,Context context) {
         super(fm);
-        this.fragments = fragments;
+        this.gfragments = gridFragments;
+
+    }
+
+    public PagerAdapter(FragmentManager fm, Context context, List<TutorialFragment> fragments) {
+        super(fm);
+        this.Tfragments = fragments;
 
     }
 
     @Override
-    public Fragment getItem(int pos) {
-      return this.fragments.get(pos);
+    public android.support.v4.app.Fragment getItem(int pos) {
+        if (gfragments !=null)
+      return this.gfragments.get(pos);
+        else
+            return this.Tfragments.get(pos);
+
     }
 
     @Override
     public int getCount() {
-        return this.fragments.size();
+        if (gfragments !=null)
+            return this.gfragments.size();
+        else
+            return this.Tfragments.size();
+
     }
 
 }

@@ -1,32 +1,25 @@
 package com.fournodes.ud.pranky;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
@@ -35,7 +28,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected   View decorView;
 
     public me.relex.circleindicator.CircleIndicator mIndicator;
-    protected ViewPager awesomePager;
+    protected ViewPager mGridPager;
     protected PagerAdapter pm;
     protected ImageView clock;
     protected ImageView timer;
@@ -49,7 +42,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     int itemsOnPage=9;
     int soundRep;
     int soundVol;
-
+    TextView text;
+    View toast;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -61,7 +55,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
 
 createFragments();
-            awesomePager.setCurrentItem(pm.getCount()-1);
+            mGridPager.setCurrentItem(pm.getCount() - 1);
 
         }
     };
@@ -72,18 +66,24 @@ createFragments();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LayoutInflater inflater = getLayoutInflater();
+        toast = inflater.inflate(R.layout.toast,
+                (ViewGroup) findViewById(R.id.toastRoot));
+
+        text = (TextView) toast.findViewById(R.id.toastText);
+
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("custom-sound-added"));
 
-        awesomePager = (ViewPager) findViewById(R.id.pager);
+        mGridPager = (ViewPager) findViewById(R.id.pager);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
 
 
         createFragments();
 
 
-        awesomePager.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
-        awesomePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mGridPager.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+        mGridPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -93,12 +93,11 @@ createFragments();
             public void onPageSelected(int position) {
 
 
-
                 Log.e("POSITION", String.valueOf(position));
 
-                Fragment fragment = (Fragment) pm.instantiateItem(awesomePager, pageNo);
-                if (fragment instanceof IGridFragment) {
-                    ((IGridFragment) fragment).pageScrolled();
+                android.support.v4.app.Fragment fragment = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, pageNo);
+                if (fragment instanceof IFragment) {
+                    ((IFragment) fragment).pageScrolled();
                 }
 
                 pageNo = position;
@@ -111,14 +110,24 @@ createFragments();
         });
 
 
-        mIndicator.setViewPager(awesomePager);
+        mIndicator.setViewPager(mGridPager);
 
         clock = (ImageView) findViewById(R.id.clock_btn);
         clock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sound == 0 && soundCus == null)
-                    Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
+                if (sound == 0 && soundCus == null) {
+                    //Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
+
+
+                    text.setText("Hello! This is a custom toast!");
+
+                    Toast cusToast = new Toast(getApplicationContext());
+                    cusToast.setGravity(Gravity.BOTTOM, 0, 0);
+                    cusToast.setDuration(Toast.LENGTH_LONG);
+                    cusToast.setView(toast);
+                    cusToast.show();
+                }
                else{
                     ClockDialog cDialog = new ClockDialog(Main.this,sound, soundCus,soundRep,soundVol);
                     cDialog.show();
@@ -194,7 +203,7 @@ public void createFragments(){
     int id=0;
     int i=1;
     boolean lastItemAdded=false;
-    List<GridFragment> gridFragments = new ArrayList<GridFragment>();
+    List<GridFragment> gridGridFragments = new ArrayList<GridFragment>();
 
 
     PrankyDB prankyDB = new PrankyDB(this);
@@ -232,7 +241,7 @@ public void createFragments(){
             GridItems[] gridPage = imLst.toArray(gp);
             GridFragment Gfrag = new GridFragment(gridPage, Main.this);
             Gfrag.setRetainInstance(true);
-            gridFragments.add(Gfrag);
+            gridGridFragments.add(Gfrag);
             i=1;
 
         }
@@ -240,9 +249,9 @@ public void createFragments(){
     c.close();
 
 
-    awesomePager.setAdapter(null);
-    pm = new PagerAdapter(getSupportFragmentManager(),gridFragments,Main.this);
-    awesomePager.setAdapter(pm);
+    mGridPager.setAdapter(null);
+    pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments,Main.this);
+    mGridPager.setAdapter(pm);
 }
 
 

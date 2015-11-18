@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fournodes.ud.pranky" >
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -27,18 +28,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
         </activity>
-        <activity android:name=".SoundSelect"
-            android:label="SoundSelectDialog"
-            android:theme="@style/ActivityDialog"
+        <activity
+            android:name=".SoundSelect"
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait">
-            </activity>
+            android:label="SoundSelectDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityDialog" >
+        </activity>
 
         <receiver
             android:name=".PlaySound"
             android:enabled="true"
             android:exported="true" >
         </receiver>
+
+        <activity android:name=".TutorialActivity" >
+        </activity>
     </application>
 
 </manifest>
