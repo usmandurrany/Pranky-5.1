@@ -1,42 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true"
 >
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:src="@mipmap/popup_small"
         android:scaleType="fitCenter"
-        android:padding="5dp"
-
-        />
-
-
+        android:padding="10dp"   />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="245dp"
+    android:id="@+id/music">
     <TextView
         android:id="@+id/txtBGMusic"
-        android:layout_alignParentLeft="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="41dp"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="230dp"
+        android:layout_marginRight="30dp"
         android:text="Music"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textIsSelectable="false"
         android:padding="5dp"
         android:textAllCaps="true"
         android:textStyle="bold"
         android:textColor="#fff"
         android:shadowColor="#000"
-        android:textScaleX="1.2"
-        android:scaleY="1.2"
+
+
         android:shadowDx="0.3"
         android:shadowDy="1.3"
         android:shadowRadius="3"
         />
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnMusicToggle"
+        android:thumb="@drawable/toggle_states"
+        android:track="@drawable/toggle_body"
+        android:layout_marginLeft="30dp"
+
+        />
+
+
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/music"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:id="@+id/myID">
+        <TextView
+            android:id="@+id/lblmyID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="37dp"
+            android:text="My ID:"
+            android:textSize="20sp"
+            android:textIsSelectable="false"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:shadowColor="#000"
+            android:shadowDx="0.3"
+            android:shadowDy="1.3"
+            android:shadowRadius="3"/>
+            <EditText
+
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtmyID"
+                android:layout_marginLeft="17dp"
+                android:background="@android:drawable/editbox_background_normal"
+                />
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/myID"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:id="@+id/lblfrndID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Prank ID:"
+            android:textSize="20sp"
+            android:textIsSelectable="false"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:shadowColor="#000"
+            android:shadowDx="0.3"
+            android:shadowDy="1.3"
+            android:shadowRadius="3"/>
+        <EditText
+
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtfrndID"
+            android:layout_marginLeft="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            />
+
+
+
+
+    </LinearLayout>
 
     <ImageView
         android:layout_marginTop="@dimen/close_btn_margin_top"
@@ -48,19 +137,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+    <ImageView
+        android:layout_marginBottom="@dimen/settings_save_margin_bottom"
+        android:layout_width="222dp"
+        android:layout_height="90dp"
+        android:scaleType="fitCenter"
+        android:id="@+id/btnSave"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/save_states"
+        android:paddingRight="1dp" />
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnMusicToggle"
-        android:thumb="@drawable/toggle_states"
-        android:track="@drawable/toggle_body"
-        android:layout_toRightOf="@id/txtBGMusic"
-        android:layout_marginTop="225dp"
-        android:layout_marginRight="45dp"
-        android:layout_alignParentRight="true"
-
-        />
 
 
 </RelativeLayout>

@@ -1,9 +1,9 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <dimen name="set_btn_margin_bottom">167dp</dimen>
+    <dimen name="set_btn_margin_bottom">166dp</dimen>
 
-    <dimen name="day_hh_mm_ss_margin_top">235dp</dimen>
+    <dimen name="day_hh_mm_ss_margin_top">245dp</dimen>
 
     <dimen name="close_btn_margin_top">196dp</dimen>
     <dimen name="close_btn_margin_right">23dp</dimen>
@@ -44,5 +44,7 @@
     <dimen name="sel_sound_txt_box">18dp</dimen>
     <dimen name="sel_sound_icon_scroll_width">215dp</dimen>
     <dimen name="sel_sound_icon_picker_margin_top">10dp</dimen>
+
+    <dimen name="settings_save_margin_bottom">169dp</dimen>
 
 </resources>

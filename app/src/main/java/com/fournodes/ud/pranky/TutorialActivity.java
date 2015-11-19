@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,12 +15,15 @@ import java.util.List;
 public class TutorialActivity extends FragmentActivity implements IFragment {
     protected   View decorView;
     PagerAdapter pm;
-
+    int pagePOS;
+    float pageOffset;
+    float mDown;
+    float mUP;
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
-    private ViewPager mTutPager;
+    private CustomViewPager mTutPager;
 
     /**
      * The pager adapter, which provides the pages to the view pager widget.
@@ -47,28 +52,22 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
 
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mTutPager = (ViewPager) findViewById(R.id.pagerTutorial);
+        mTutPager = (CustomViewPager) findViewById(R.id.pagerTutorial);
         mTutPager.setAdapter(pm);
-        mTutPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mTutPager.setOnSwipeOutListener(new CustomViewPager.OnSwipeOutListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if(position == (pm.getCount()-1)) {
-                    Intent mainIntent = new Intent(TutorialActivity.this, Main.class);
-                    TutorialActivity.this.startActivity(mainIntent);
-                    TutorialActivity.this.finish();
+            public void onSwipeOutAtEnd(float x) {
+                Log.w("UP",String.valueOf(x));
+                mUP=x;
+                if(mTutPager.getCurrentItem()==(pm.getCount()-1)) {
+                    if (mUP < mDown) {
+                        startActivity(new Intent(TutorialActivity.this, Main.class));
+                        TutorialActivity.this.finish();
+                    }
                 }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+           }
         });
+
 
     }
 
@@ -105,12 +104,21 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
 
     @Override
     public void TutImageClick() {
-        if (mTutPager.getCurrentItem() ==(pm.getCount()-1)) {
-            Intent mainIntent = new Intent(TutorialActivity.this, Main.class);
-            TutorialActivity.this.startActivity(mainIntent);
-            this.finish();
-        }
-        else
-        mTutPager.setCurrentItem(mTutPager.getCurrentItem()+1);
+
     }
+
+    @Override
+    public void TutImageTouch(View view, MotionEvent motionEvent) {
+        if(mTutPager.getCurrentItem()==(pm.getCount()-1)){
+            switch(motionEvent.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    Log.w("DOWN", String.valueOf(motionEvent.getX()));
+                    mDown = motionEvent.getX();
+                    break;
+
+            }
+        }
+    }
+
+
 }

@@ -12,6 +12,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -220,6 +221,11 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
 	@Override
 	public void TutImageClick() {
+
+	}
+
+	@Override
+	public void TutImageTouch(View view, MotionEvent motionEvent) {
 
 	}
 

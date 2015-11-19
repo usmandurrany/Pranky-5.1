@@ -123,7 +123,8 @@ createFragments();
                     text.setText("Hello! This is a custom toast!");
 
                     Toast cusToast = new Toast(getApplicationContext());
-                    cusToast.setGravity(Gravity.BOTTOM, 0, 0);
+                    cusToast.setGravity(Gravity.BOTTOM, 0, 220);
+
                     cusToast.setDuration(Toast.LENGTH_LONG);
                     cusToast.setView(toast);
                     cusToast.show();
