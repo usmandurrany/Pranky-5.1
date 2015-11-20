@@ -5,8 +5,8 @@
 
     <dimen name="day_hh_mm_ss_margin_top">230dp</dimen>
 
-    <dimen name="close_btn_margin_top">192dp</dimen>
-    <dimen name="close_btn_margin_right">18dp</dimen>
+    <dimen name="close_btn_margin_top">194dp</dimen>
+    <dimen name="close_btn_margin_right">22dp</dimen>
 
     <dimen name="sett_btn_margin_top">52dp</dimen>
     <dimen name="sett_btn_margin_right">22dp</dimen>
@@ -46,6 +46,16 @@
 
     <dimen name="settings_layout_margin_top">260dp</dimen>
 
-    <dimen name="settings_font_small">15sp</dimen>
+    <dimen name="settings_font_small">20sp</dimen>
+
+
+    <dimen name="music_text_margin_right">62dp</dimen>
+    <dimen name="music_switch_margin_left">42dp</dimen>
+
+    <dimen name="prank_text_margin_right">10dp</dimen>
+    <dimen name="prank_switch_margin_left">5dp</dimen>
+
+    <dimen name="id_text_margin_right">60dp</dimen>
+    <dimen name="id_value_margin_left">80dp</dimen>
 
 </resources>

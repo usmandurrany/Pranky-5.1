@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.fournodes.ud.pranky.Main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
-    tools:context="com.fournodes.ud.pranky.Main"
-    android:background="@drawable/app_background"
-    android:gravity="center_horizontal"
-    >
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/app_background">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@mipmap/app_body"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="0dp"
@@ -108,6 +112,7 @@
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="@dimen/prankit_btn_margin_bottom"/>
 
+    </RelativeLayout>
 
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -51,4 +51,14 @@
     <dimen name="settings_font_small">22sp</dimen>
 
 
+    <dimen name="music_text_margin_right">62dp</dimen>
+    <dimen name="music_switch_margin_left">45dp</dimen>
+
+    <dimen name="prank_text_margin_right">10dp</dimen>
+    <dimen name="prank_switch_margin_left">0dp</dimen>
+
+    <dimen name="id_text_margin_right">60dp</dimen>
+    <dimen name="id_value_margin_left">80dp</dimen>
+
+
 </resources>
