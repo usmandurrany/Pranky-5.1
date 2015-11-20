@@ -77,6 +77,10 @@ public class TimerDialog {
                             scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
                             dialog.dismiss();
                         }
+                        else{
+                            CustomToast cToast = new CustomToast(context, "Minimum time is 5 seconds");
+                            cToast.show();
+                        }
                     }
 
 

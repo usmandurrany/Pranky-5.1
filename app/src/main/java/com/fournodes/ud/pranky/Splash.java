@@ -32,13 +32,14 @@ public class Splash extends AppCompatActivity {
 
     private final int SPLASH_DISPLAY_LENGTH = 3000;
     private AppBGMusic player =getInstance();
+    Intent mainIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        SharedPreferences settings = getSharedPreferences("PrankySharedPref", 0);
+        final SharedPreferences settings = getSharedPreferences("PrankySharedPref", 0);
 
 
 
@@ -97,9 +98,13 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
+                if (settings.getBoolean("ShowTutorial",true))
 
-                //Intent mainIntent = new Intent(Splash.this, Main.class);
-                Intent mainIntent = new Intent(Splash.this, TutorialActivity.class);
+
+                mainIntent = new Intent(Splash.this, TutorialActivity.class);
+                    else
+                 mainIntent = new Intent(Splash.this, Main.class);
+
                 Splash.this.startActivity(mainIntent);
 
                 Splash.this.finish();

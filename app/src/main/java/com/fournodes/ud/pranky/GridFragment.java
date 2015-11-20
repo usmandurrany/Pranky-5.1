@@ -35,11 +35,11 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 	ImageView img;
 	ImageView addSoundImg;
 	Intent soundAct;
-	int Null;
 	int currVol;
 	CountDownTimer timer;
 	private PreviewMediaPlayer 	previewSound = getInstance();
 	int sound;
+	int lastView=-1;
 
 
 	public GridFragment(){}
@@ -105,11 +105,15 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 		}
 	}
 
-	public void onGridItemClick(GridView g, View v, int pos, long id) throws NoSuchFieldException, IllegalAccessException {
-		//int animDrawable = getResources().getIdentifier("com.fournodes.ud.pranky:drawable/gridselectedanim", null, null);
+	public void onGridItemClick(GridView g, View v, final int pos, long id) throws NoSuchFieldException, IllegalAccessException {
+
+
 		try {
 			if (previewSound.mp.isPlaying()) {
 				previewSound.mp.stop();
+				previewSound.mp.release();
+				previewSound.mp = null;
+
 			}
 		}catch(Exception e){Log.e("Preview MediaPlayer",e.toString());}
 		if (img == null) {
@@ -119,6 +123,30 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 			//Toast.makeText(activity,  Toast.LENGTH_SHORT).show();
 
 		}
+		if (viewPOS == pos) {
+			if (lastView!=-1)
+			lastView=viewPOS;
+
+			img.setSelected(true);
+			img.setImageResource(R.drawable.gridselectedanim);
+
+
+		} else {
+			img.setSelected(false);
+			img.setImageResource(0);
+
+			img = (ImageView) v.findViewById(R.id.grid_item_image);
+			lastView=viewPOS;
+			viewPOS = pos;
+
+			img.setSelected(true);
+			img.setImageResource(R.drawable.gridselectedanim);
+
+			//img.setBackgroundResource(R.drawable.gridselectedanim);
+
+		}
+
+
 
 		//Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
 		//Toast.makeText(activity,"Position Clicked: " + pos + " & Repeat Count is: "+ gridItems[pos].soundRepeat, Toast.LENGTH_LONG).show();
@@ -136,73 +164,72 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
 			if (gridItems[pos].sound.equals("raw." + name)) {
 				sound = R.raw.class.getField(name).getInt(null);
-				soundsel.selectedSound(sound,gridItems[pos].sound,gridItems[pos].soundRepeat,gridItems[pos].soundVol);
+				soundsel.selectedSound(sound, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+
 				previewSound.mp = MediaPlayer.create(activity, sound);
+
+
 			} else if (gridItems[pos].sound != ("raw." + name)) {
-				soundsel.selectedSound(sound,gridItems[pos].sound,gridItems[pos].soundRepeat,gridItems[pos].soundVol);
+				soundsel.selectedSound(sound, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
 				previewSound.mp = new MediaPlayer();
 				try {
 					previewSound.mp.setDataSource(gridItems[pos].sound);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+
 				previewSound.mp.prepareAsync();
 
 			}
 			final AudioManager audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 			currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-
 			previewSound.mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			previewSound.mp.setVolume(100, 100);
-			previewSound.mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+			Log.w("MediaPlayer Debug", "Last View " + lastView + " Current View : " + viewPOS);
+
+			if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)){
+
+					previewSound.mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+						@Override
+						public void onPrepared(MediaPlayer mediaPlayer) {
+
+
+							previewSound.mp.start();
+							lastView=0;
+
+						}
+					});
+
+
+			}
+
+
+			previewSound.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 				@Override
-				public void onPrepared(MediaPlayer mediaPlayer) {
-					if(timer!=null)
-						timer.cancel();
-					previewSound.mp.start();
+				public void onCompletion(MediaPlayer mediaPlayer) {
+					previewSound.mp.release();
+previewSound.mp = null;
+					audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
 
-					timer = new CountDownTimer(2000, 1000) {
-						public void onTick(long millisUntilFinished) {
-						}
-
-						public void onFinish() {
-							try {
-								previewSound.mp.stop();
-
-
-							} catch (Exception e) {
-								Log.e("MediaPlayer Killer", e.toString());
-							}
-							audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
-						}
-					}.start();
 				}
 			});
 
 
-			if (viewPOS == pos) {
-				img.setSelected(true);
-				img.setImageResource(R.drawable.gridselectedanim);
-
-
-			} else {
-				img.setSelected(false);
-				img.setImageResource(0);
-
-				img = (ImageView) v.findViewById(R.id.grid_item_image);
-				viewPOS = pos;
-				img.setSelected(true);
-				img.setImageResource(R.drawable.gridselectedanim);
-
-				//img.setBackgroundResource(R.drawable.gridselectedanim);
-
-			}
 
 	AnimationDrawable boxsel = (AnimationDrawable) img.getDrawable();
 			boxsel.start();
 
+		previewSound.mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+			@Override
+			public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+				previewSound.mp.release();
+				lastView=-1;
+				return false;
+			}
+		});
 		}
+
 	}
 
 	@Override
@@ -212,7 +239,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 			img.setImageResource(0);
 		}
 		try {
-			soundsel.selectedSound(Null,"null",0,0);
+			soundsel.selectedSound(-1,null,0,0);
 		}catch (Exception e){
 			Log.e("Sound Sel Remover", e.toString());
 		}

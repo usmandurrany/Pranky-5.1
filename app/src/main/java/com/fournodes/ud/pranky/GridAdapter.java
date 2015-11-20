@@ -109,7 +109,7 @@ public class GridAdapter extends BaseAdapter{
 						context.getResources().getDrawable(imageStatePressed));
 				states.addState(new int[] { },
 						context.getResources().getDrawable(img));
-				viewHolder.itemImage.setBackground(states);
+				viewHolder.itemImage.setBackgroundDrawable(states);
 			} catch (IllegalAccessException e ) {
 				e.printStackTrace();
 

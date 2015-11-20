@@ -33,17 +33,14 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected ImageView clock;
     protected ImageView timer;
     protected ImageView settings;
-    private int sound;
-    private String soundCus;
-    AppBGMusic mService;
-    boolean mBound;
+    private int sound = -1;
+    private String soundCus = null;
     private AppBGMusic player =getInstance();
     private int pageNo=0;
     int itemsOnPage=9;
     int soundRep;
     int soundVol;
-    TextView text;
-    View toast;
+    CustomToast cToast;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -54,7 +51,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             Log.d("receiver", "Got message: " + message);
 
 
-createFragments();
+            createFragments();
             mGridPager.setCurrentItem(pm.getCount() - 1);
 
         }
@@ -66,11 +63,7 @@ createFragments();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LayoutInflater inflater = getLayoutInflater();
-        toast = inflater.inflate(R.layout.toast,
-                (ViewGroup) findViewById(R.id.toastRoot));
 
-        text = (TextView) toast.findViewById(R.id.toastText);
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("custom-sound-added"));
@@ -116,18 +109,9 @@ createFragments();
         clock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sound == 0 && soundCus == null) {
-                    //Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
-
-
-                    text.setText("Hello! This is a custom toast!");
-
-                    Toast cusToast = new Toast(getApplicationContext());
-                    cusToast.setGravity(Gravity.BOTTOM, 0, 220);
-
-                    cusToast.setDuration(Toast.LENGTH_LONG);
-                    cusToast.setView(toast);
-                    cusToast.show();
+                if (sound == -1 && soundCus == null) {
+                    cToast = new CustomToast(Main.this,"Select a sound first");
+                    cToast.show();
                 }
                else{
                     ClockDialog cDialog = new ClockDialog(Main.this,sound, soundCus,soundRep,soundVol);
@@ -140,8 +124,10 @@ createFragments();
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sound == 0 && soundCus == null)
-                    Toast.makeText(Main.this, "Please select a sound first.", Toast.LENGTH_SHORT).show();
+                if (sound == -1 && soundCus == null) {
+                    cToast = new CustomToast(Main.this, "Select a sound first");
+                    cToast.show();
+                }
                  else {
                     TimerDialog tDialog = new TimerDialog(Main.this, sound,soundCus,soundRep,soundVol);
                     tDialog.show();
@@ -250,7 +236,6 @@ public void createFragments(){
     c.close();
 
 
-    mGridPager.setAdapter(null);
     pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments,Main.this);
     mGridPager.setAdapter(pm);
 }
@@ -263,7 +248,7 @@ public void createFragments(){
         this.soundRep= SoundRep;
         this.soundVol=Soundvol;
 
-        Toast.makeText(Main.this,"Repeat Count: " + soundRep + " Sound Vol : "+ soundVol, Toast.LENGTH_LONG).show();
+        //Toast.makeText(Main.this,"Repeat Count: " + soundRep + " Sound Vol : "+ soundVol, Toast.LENGTH_LONG).show();
 
 
     }

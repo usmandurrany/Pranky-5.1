@@ -45,4 +45,6 @@
     <dimen name="sel_sound_icon_scroll_width">270dp</dimen>
     <dimen name="sel_sound_icon_picker_margin_top">20dp</dimen>
 
+    <dimen name="settings_layout_margin_top">310dp</dimen>
+
 </resources>

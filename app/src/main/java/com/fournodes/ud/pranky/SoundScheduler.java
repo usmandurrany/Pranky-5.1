@@ -143,10 +143,9 @@ public class SoundScheduler {
                 return false;
         }else{
             if(hr == 0 && min == 0 && sec < 5 ) {
-                Toast.makeText(context, "Timer must at least be set to 5 sec.", Toast.LENGTH_SHORT).show();
                 return false;
-
             }
+            else
             return true;
         }
 

@@ -97,9 +97,10 @@ public class ClockDialog {
                             scheduler.ScheduleSoundPlayback("dialog_clock", scheduler.clockSchedule());
                         dialog.dismiss();
                     }
-                        else
-                            Toast.makeText(context, "Time has aready passed. Please reselect.", Toast.LENGTH_SHORT).show();
-
+                        else {
+                            CustomToast cToast = new CustomToast(context,"Selected time has passed.");
+                            cToast.show();
+                        }
 
                     }
                 });

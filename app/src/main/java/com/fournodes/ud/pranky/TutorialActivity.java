@@ -1,6 +1,7 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
      * The pager adapter, which provides the pages to the view pager widget.
      */
 
-    int[] images={R.drawable.help_screen1,R.drawable.help_screen2,R.drawable.help_screen3,R.drawable.help_screen4,R.drawable.help_screen5,R.drawable.help_screen6,R.drawable.help_screen7};
+    int[] images={R.mipmap.help_screen_1,R.mipmap.help_screen_2,R.mipmap.help_screen_3,R.mipmap.help_screen_4,R.mipmap.help_screen_5,R.mipmap.help_screen_6,R.mipmap.help_screen_7,R.mipmap.help_screen_8,R.mipmap.help_screen_9,R.mipmap.help_screen_10};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
 
         List<TutorialFragment> TFList = new ArrayList<TutorialFragment>();
 
-        for(int i=0;i<7;i++){
+        for(int i=0;i<10;i++){
             TutorialFragment tutFrag = new TutorialFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("Image",images[i]);
@@ -62,6 +63,10 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
                 if(mTutPager.getCurrentItem()==(pm.getCount()-1)) {
                     if (mUP < mDown) {
                         startActivity(new Intent(TutorialActivity.this, Main.class));
+                        SharedPreferences settings = TutorialActivity.this.getSharedPreferences("PrankySharedPref", 0);
+                        final SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("ShowTutorial",false);
+                        editor.commit();
                         TutorialActivity.this.finish();
                     }
                 }

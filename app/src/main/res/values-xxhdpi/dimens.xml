@@ -31,7 +31,7 @@
 
 
 
-    <dimen name="save_btn_margin_bottom">145dp</dimen>
+    <dimen name="save_btn_margin_bottom">142dp</dimen>
     <dimen name="close_btn_margin_right_long">23dp</dimen>
     <dimen name="close_btn_margin_top_long">170dp</dimen>
     <dimen name="sel_sound_margin_top">265dp</dimen>
@@ -46,5 +46,6 @@
     <dimen name="sel_sound_icon_picker_margin_top">10dp</dimen>
 
     <dimen name="settings_save_margin_bottom">169dp</dimen>
+    <dimen name="settings_layout_margin_top">270dp</dimen>
 
 </resources>

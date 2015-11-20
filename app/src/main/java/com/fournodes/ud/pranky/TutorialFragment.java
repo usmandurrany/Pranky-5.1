@@ -1,6 +1,7 @@
 package com.fournodes.ud.pranky;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Created by Usman-Durrani on 18-Nov-15.
@@ -19,6 +21,7 @@ public class TutorialFragment extends Fragment {
     Activity activity;
     int image;
     ImageView imgTut;
+    TextView skip;
     IFragment iFrag;
 
     @Override
@@ -29,6 +32,7 @@ public class TutorialFragment extends Fragment {
         Bundle bundle = getArguments();
         this.image = bundle.getInt("Image");
         imgTut = (ImageView) rootView.findViewById(R.id.imgTutorial);
+        skip = (TextView) rootView.findViewById(R.id.skip);
 
 
         return rootView;
@@ -73,6 +77,15 @@ public class TutorialFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     iFrag.TutImageClick();
+                }
+            });
+            skip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent main = new Intent(getActivity(),Main.class);
+                    startActivity(main);
+                    getActivity().finish();
+
                 }
             });
         }
