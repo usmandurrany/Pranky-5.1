@@ -47,4 +47,7 @@
 
     <dimen name="settings_layout_margin_top">310dp</dimen>
 
+    <dimen name="settings_font_small">24sp</dimen>
+
+
 </resources>

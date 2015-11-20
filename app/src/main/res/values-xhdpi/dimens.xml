@@ -45,4 +45,7 @@
     <dimen name="sel_sound_icon_picker_margin_top">10dp</dimen>
 
     <dimen name="settings_layout_margin_top">260dp</dimen>
+
+    <dimen name="settings_font_small">15sp</dimen>
+
 </resources>

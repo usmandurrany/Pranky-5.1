@@ -48,4 +48,7 @@
     <dimen name="settings_save_margin_bottom">169dp</dimen>
     <dimen name="settings_layout_margin_top">270dp</dimen>
 
+    <dimen name="settings_font_small">22sp</dimen>
+
+
 </resources>
