@@ -66,7 +66,7 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
                         SharedPreferences settings = TutorialActivity.this.getSharedPreferences("PrankySharedPref", 0);
                         final SharedPreferences.Editor editor = settings.edit();
                         editor.putBoolean("ShowTutorial",false);
-                        editor.commit();
+                        editor.apply();
                         TutorialActivity.this.finish();
                     }
                 }

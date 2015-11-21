@@ -21,8 +21,7 @@
         android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="00dp"/>
+/>
 
 
 
@@ -103,7 +102,7 @@
                 android:layout_alignParentBottom="true"
                 />
 <ImageView
-    android:layout_width="180dp"
+    android:layout_width="@dimen/prankit_width"
     android:layout_height="90dp"
     android:src="@drawable/prankit_states"
     android:scaleType="fitCenter"

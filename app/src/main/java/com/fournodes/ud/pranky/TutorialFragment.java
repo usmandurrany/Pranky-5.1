@@ -2,6 +2,7 @@ package com.fournodes.ud.pranky;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -83,6 +84,10 @@ public class TutorialFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent main = new Intent(getActivity(),Main.class);
+                    SharedPreferences settings = getActivity().getSharedPreferences("PrankySharedPref", 0);
+                    final SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean("ShowTutorial",false);
+                    editor.apply();
                     startActivity(main);
                     getActivity().finish();
 

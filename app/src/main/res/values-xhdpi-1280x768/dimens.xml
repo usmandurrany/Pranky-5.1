@@ -46,4 +46,7 @@
     <dimen name="settings_layout_margin_top">0dp</dimen>
     <dimen name="settings_font_small">15sp</dimen>
 
+    <dimen name="prankit_width">170dp</dimen>
+
+
 </resources>

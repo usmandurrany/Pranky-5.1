@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,6 +47,10 @@ public class SettingsDialog {
         dialog.setContentView(R.layout.dialog_settings);
         Switch btnmusic = (Switch) dialog.findViewById(R.id.btnMusicToggle);
         ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
+        TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
+
+
+        bgmusic.setTypeface(FontManager.getTypeFace(context,"roboto-light"));
 
         SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
         playMusic = settings.getBoolean("PlayBGMusic",true);
