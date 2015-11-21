@@ -11,13 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +20,21 @@ import java.util.List;
 import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 
 public class Main extends FragmentActivity implements SoundSelectListener {
-    protected   View decorView;
-
     public me.relex.circleindicator.CircleIndicator mIndicator;
+    protected View decorView;
     protected ViewPager mGridPager;
     protected PagerAdapter pm;
     protected ImageView clock;
     protected ImageView timer;
     protected ImageView settings;
-    private int sound = -1;
-    private String soundCus = null;
-    private AppBGMusic player =getInstance();
-    private int pageNo=0;
-    int itemsOnPage=9;
+    int itemsOnPage = 9;
     int soundRep;
     int soundVol;
     CustomToast cToast;
-
+    private int sound = -1;
+    private String soundCus = null;
+    private AppBGMusic player = getInstance();
+    private int pageNo = 0;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -62,7 +55,6 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -110,11 +102,10 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             @Override
             public void onClick(View view) {
                 if (sound == -1 && soundCus == null) {
-                    cToast = new CustomToast(Main.this,"Select a sound first");
+                    cToast = new CustomToast(Main.this, "Select  a  sound  first");
                     cToast.show();
-                }
-               else{
-                    ClockDialog cDialog = new ClockDialog(Main.this,sound, soundCus,soundRep,soundVol);
+                } else {
+                    ClockDialog cDialog = new ClockDialog(Main.this, sound, soundCus, soundRep, soundVol);
                     cDialog.show();
                 }
             }
@@ -125,11 +116,10 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             @Override
             public void onClick(View view) {
                 if (sound == -1 && soundCus == null) {
-                    cToast = new CustomToast(Main.this, "Select a sound first");
+                    cToast = new CustomToast(Main.this, "Select  a  sound  first");
                     cToast.show();
-                }
-                 else {
-                    TimerDialog tDialog = new TimerDialog(Main.this, sound,soundCus,soundRep,soundVol);
+                } else {
+                    TimerDialog tDialog = new TimerDialog(Main.this, sound, soundCus, soundRep, soundVol);
                     tDialog.show();
                 }
             }
@@ -144,9 +134,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         });
 
 
-
     }
-
 
 
     @Override
@@ -166,87 +154,100 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     @Override
     protected void onResume() {
         super.onResume();
-        try{if(player.mp!=null) {
-            player.mp.start();
-        }}catch(Exception e){Log.e("BG Music Resume",e.toString());}
+        try {
+            if (player.mp != null) {
+                player.mp.start();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Resume", e.toString());
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        try{if(player.mp!=null) {
-            player.mp.pause();
-        }}catch(Exception e){Log.e("BG Music Pause",e.toString());}
+        try {
+            if (player.mp != null) {
+                player.mp.pause();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        try{if(player.mp!=null) {
-            player.mp.release();
-        }}catch(Exception e){Log.e("BG Music Destroy",e.toString());}
-    }
-public void createFragments(){
-    int id=0;
-    int i=1;
-    boolean lastItemAdded=false;
-    List<GridFragment> gridGridFragments = new ArrayList<GridFragment>();
-
-
-    PrankyDB prankyDB = new PrankyDB(this);
-    SQLiteDatabase db = prankyDB.getReadableDatabase();
-
-
-    Cursor c = db.rawQuery("SELECT * FROM usr_sounds",null);
-
-    if (c.moveToFirst()) {
-
-        while (!c.isAfterLast() || !lastItemAdded) {
-            ArrayList<GridItems> imLst = new ArrayList<GridItems>();
-            if (!c.isAfterLast()) {
-                for ( i = 1; (i <= itemsOnPage) && (!c.isAfterLast()); i++) {
-                    id = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_ID));
-                    Integer image = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_PIC_LOC));
-                    String sound = c.getString(c.getColumnIndex(PrankyDB.COLUMN_SOUND_LOC));
-                    Integer soundRepeat = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_REPEAT_COUNT));
-                    Integer soundVol = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_SOUND_VOL));
-
-                    GridItems items = new GridItems(id, image, sound, soundRepeat,soundVol);
-                    imLst.add(items);
-                    c.moveToNext();
-
-                }
+        try {
+            if (player.mp != null) {
+                player.mp.release();
             }
-            if (c.isAfterLast() && i < itemsOnPage) {
-
-                GridItems lstItem = new GridItems(id, R.mipmap.addmore);
-                imLst.add(lstItem);
-                lastItemAdded=true;
-
-            }
-            GridItems[] gp = {};
-            GridItems[] gridPage = imLst.toArray(gp);
-            GridFragment Gfrag = new GridFragment(gridPage, Main.this);
-            Gfrag.setRetainInstance(true);
-            gridGridFragments.add(Gfrag);
-            i=1;
-
+        } catch (Exception e) {
+            Log.e("BG Music Destroy", e.toString());
         }
     }
-    c.close();
+
+    public void createFragments() {
+        int id = 0;
+        int i = 1;
+        boolean lastItemAdded = false;
+        List<GridFragment> gridGridFragments = new ArrayList<GridFragment>();
 
 
-    pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments,Main.this);
-    mGridPager.setAdapter(pm);
-}
+        PrankyDB prankyDB = new PrankyDB(this);
+        SQLiteDatabase db = prankyDB.getReadableDatabase();
+
+
+        Cursor c = db.rawQuery("SELECT * FROM usr_sounds", null);
+
+        if (c.moveToFirst()) {
+
+            while (!c.isAfterLast() || !lastItemAdded) {
+                ArrayList<GridItems> imLst = new ArrayList<GridItems>();
+                if (!c.isAfterLast()) {
+                    for (i = 1; (i <= itemsOnPage) && (!c.isAfterLast()); i++) {
+                        id = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_ID));
+                        Integer image = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_PIC_LOC));
+                        String sound = c.getString(c.getColumnIndex(PrankyDB.COLUMN_SOUND_LOC));
+                        Integer soundRepeat = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_REPEAT_COUNT));
+                        Integer soundVol = c.getInt(c.getColumnIndex(PrankyDB.COLUMN_SOUND_VOL));
+
+                        GridItems items = new GridItems(id, image, sound, soundRepeat, soundVol);
+                        imLst.add(items);
+                        c.moveToNext();
+
+                    }
+                }
+                if (c.isAfterLast() && i < itemsOnPage) {
+
+                    GridItems lstItem = new GridItems(id, R.mipmap.addmore);
+                    imLst.add(lstItem);
+                    lastItemAdded = true;
+
+                }
+                GridItems[] gp = {};
+                GridItems[] gridPage = imLst.toArray(gp);
+                GridFragment Gfrag = new GridFragment(gridPage, Main.this);
+                Gfrag.setRetainInstance(true);
+                gridGridFragments.add(Gfrag);
+                i = 1;
+
+            }
+        }
+        c.close();
+
+
+        pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments, Main.this);
+        mGridPager.setAdapter(pm);
+    }
 
 
     @Override
     public void selectedSound(int sound, String soundStr, int SoundRep, int Soundvol) {
-        this.sound=sound;
-        this.soundCus=soundStr;
-        this.soundRep= SoundRep;
-        this.soundVol=Soundvol;
+        this.sound = sound;
+        this.soundCus = soundStr;
+        this.soundRep = SoundRep;
+        this.soundVol = Soundvol;
 
         //Toast.makeText(Main.this,"Repeat Count: " + soundRep + " Sound Vol : "+ soundVol, Toast.LENGTH_LONG).show();
 

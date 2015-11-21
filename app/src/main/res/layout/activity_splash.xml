@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false" tools:context=".Splash"
-    android:background="@drawable/app_background"
     android:layout_gravity="center_horizontal|center_vertical"
-    android:padding="15dp">
+    android:background="@drawable/app_background"
+    android:fitsSystemWindows="false"
+    android:padding="15dp"
+    tools:context=".Splash">
+
     <LinearLayout
-        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal|center_vertical">
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
         <ImageView
+            android:id="@+id/logo_face"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/face_logo"
-            android:id="@+id/logo_face"
             android:layout_marginBottom="10dp"
-            />
+            android:src="@drawable/face_logo" />
 
         <ImageView
+            android:id="@+id/logo"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
 
-            android:id="@+id/logo"
-
-            android:background="@drawable/logo_2">
-        </ImageView>
+            android:background="@drawable/logo_2"></ImageView>
 
 
     </LinearLayout>

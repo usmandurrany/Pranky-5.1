@@ -22,90 +22,87 @@ public class TimerDialog {
     public int soundVol;
     public int soundRepeat;
 
-    public TimerDialog(Context context, int sound,String soundCus, int soundRepeat, int soundVol ){
-        this.context=context;
-        this.sound=sound;
-        this.soundCus=soundCus;
-        this.soundRepeat=soundRepeat;
-        this.soundVol=soundVol;
+    public TimerDialog(Context context, int sound, String soundCus, int soundRepeat, int soundVol) {
+        this.context = context;
+        this.sound = sound;
+        this.soundCus = soundCus;
+        this.soundRepeat = soundRepeat;
+        this.soundVol = soundVol;
     }
 
 
-    public void show(){
+    public void show() {
 
-                dialog = new Dialog(context, R.style.ClockDialog);
-                dialog.setContentView(R.layout.dialog_timer);
-
-
-                //Configure Hours Column
-                final WheelView hour = (WheelView) dialog.findViewById(R.id.timerhour);
-                NumericWheelAdapter hourAdapter = new NumericWheelAdapter(context, 0, 12);
-                hourAdapter.setItemResource(R.layout.wheel_item_time);
-                hourAdapter.setItemTextResource(R.id.time_item);
-                hour.setViewAdapter(hourAdapter);
-
-                //Configure Minutes Column
-                final WheelView min = (WheelView) dialog.findViewById(R.id.timerminute);
-                NumericWheelAdapter minAdapter = new NumericWheelAdapter(context, 00, 59);
-                minAdapter.setItemResource(R.layout.wheel_item_time);
-                minAdapter.setItemTextResource(R.id.time_item);
-                min.setViewAdapter(minAdapter);
-
-                //Configure Seconds Marker Column
-                final WheelView sec = (WheelView) dialog.findViewById(R.id.timersec);
-                NumericWheelAdapter secAdapter = new NumericWheelAdapter(context, 00, 59);
-                secAdapter.setItemResource(R.layout.wheel_item_time);
-                secAdapter.setItemTextResource(R.id.time_item);
-                sec.setViewAdapter(minAdapter);
-                ImageView close = (ImageView) dialog.findViewById(R.id.timerclose);
-
-                close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-
-                ImageView set = (ImageView) dialog.findViewById(R.id.timerset);
-                set.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        SoundScheduler scheduler = new SoundScheduler(context,hour.getCurrentItem(),min.getCurrentItem(),sec.getCurrentItem(),sound,soundCus,soundRepeat,soundVol);
-
-                        if (scheduler.validateTime(scheduler.timerSchedule(),"dialog_timer")){
-                            scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
-                            dialog.dismiss();
-                        }
-                        else{
-                            CustomToast cToast = new CustomToast(context, "Minimum time is 5 seconds");
-                            cToast.show();
-                        }
-                    }
+        dialog = new Dialog(context, R.style.ClockDialog);
+        dialog.setContentView(R.layout.dialog_timer);
 
 
+        //Configure Hours Column
+        final WheelView hour = (WheelView) dialog.findViewById(R.id.timerhour);
+        NumericWheelAdapter hourAdapter = new NumericWheelAdapter(context, 0, 12);
+        hourAdapter.setItemResource(R.layout.wheel_item_time);
+        hourAdapter.setItemTextResource(R.id.time_item);
+        hour.setViewAdapter(hourAdapter);
 
-                });
+        //Configure Minutes Column
+        final WheelView min = (WheelView) dialog.findViewById(R.id.timerminute);
+        NumericWheelAdapter minAdapter = new NumericWheelAdapter(context, 00, 59);
+        minAdapter.setItemResource(R.layout.wheel_item_time);
+        minAdapter.setItemTextResource(R.id.time_item);
+        min.setViewAdapter(minAdapter);
 
-                //Set the dialog to not focusable (makes navigation ignore us adding the window)
-                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        //Configure Seconds Marker Column
+        final WheelView sec = (WheelView) dialog.findViewById(R.id.timersec);
+        NumericWheelAdapter secAdapter = new NumericWheelAdapter(context, 00, 59);
+        secAdapter.setItemResource(R.layout.wheel_item_time);
+        secAdapter.setItemTextResource(R.id.time_item);
+        sec.setViewAdapter(minAdapter);
+        ImageView close = (ImageView) dialog.findViewById(R.id.timerclose);
 
-                //Show the dialog!
-                dialog.show();
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
 
-                //Set the dialog to immersive
+        ImageView set = (ImageView) dialog.findViewById(R.id.timerset);
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-                dialog.getWindow().getDecorView().setSystemUiVisibility(
-                        ((Activity) context).getWindow().getDecorView().getSystemUiVisibility());
+                SoundScheduler scheduler = new SoundScheduler(context, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem(), sound, soundCus, soundRepeat, soundVol);
 
-                //Clear the not focusable flag from the window
-                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-
-
+                if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")) {
+                    scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
+                    dialog.dismiss();
+                } else {
+                    CustomToast cToast = new CustomToast(context, "Minimum  time  is  5  seconds");
+                    cToast.show();
+                }
             }
 
 
+        });
+
+        //Set the dialog to not focusable (makes navigation ignore us adding the window)
+        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+        //Show the dialog!
+        dialog.show();
+
+        //Set the dialog to immersive
+
+        dialog.getWindow().getDecorView().setSystemUiVisibility(
+                ((Activity) context).getWindow().getDecorView().getSystemUiVisibility());
+
+        //Clear the not focusable flag from the window
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+
     }
+
+
+}
 
 

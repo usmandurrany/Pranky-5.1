@@ -30,7 +30,6 @@
     <dimen name="viewpager_padding_top">10dp</dimen>
 
 
-
     <dimen name="save_btn_margin_bottom">142dp</dimen>
     <dimen name="close_btn_margin_right_long">23dp</dimen>
     <dimen name="close_btn_margin_top_long">170dp</dimen>
@@ -61,7 +60,6 @@
     <dimen name="id_value_margin_left">85dp</dimen>
 
     <dimen name="prankit_width">180dp</dimen>
-
 
 
 </resources>

@@ -1,50 +1,34 @@
 package com.fournodes.ud.pranky;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.IBinder;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-
-import java.io.File;
-import java.io.IOException;
 
 import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 
 public class Splash extends AppCompatActivity {
 
     private final int SPLASH_DISPLAY_LENGTH = 3000;
-    private AppBGMusic player =getInstance();
+    private AppBGMusic player = getInstance();
     Intent mainIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        FontManager.createTypeFace(Splash.this,"grinched-regular");
+        FontManager.createTypeFace(Splash.this, "grinched-regular");
 
         final SharedPreferences settings = getSharedPreferences("PrankySharedPref", 0);
 
 
-
-        if (settings.getBoolean("PlayBGMusic",true)){
+        if (settings.getBoolean("PlayBGMusic", true)) {
             player.mp = MediaPlayer.create(getApplicationContext(), R.raw.app_bg);
 
             // player.mp.setLooping(true);
@@ -66,12 +50,12 @@ public class Splash extends AppCompatActivity {
                 }
             });
         }
-        ImageView logo = (ImageView)findViewById(R.id.logo);
+        ImageView logo = (ImageView) findViewById(R.id.logo);
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_bounce);
         logo.startAnimation(animation);
 
-        final ImageView logo_face= (ImageView)findViewById(R.id.logo_face);
-        final Animation animation2 = AnimationUtils.loadAnimation(getApplication(),R.anim.logo_drop);
+        final ImageView logo_face = (ImageView) findViewById(R.id.logo_face);
+        final Animation animation2 = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_drop);
         logo_face.startAnimation(animation2);
 
         animation2.setAnimationListener(new Animation.AnimationListener() {
@@ -82,7 +66,7 @@ public class Splash extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-            Animation animation3 = AnimationUtils.loadAnimation(getApplication(),R.anim.logo_rotate);
+                Animation animation3 = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_rotate);
                 logo_face.startAnimation(animation3);
             }
 
@@ -99,12 +83,12 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                if (settings.getBoolean("ShowTutorial",true))
+                if (settings.getBoolean("ShowTutorial", true))
 
 
-                mainIntent = new Intent(Splash.this, TutorialActivity.class);
-                    else
-                 mainIntent = new Intent(Splash.this, Main.class);
+                    mainIntent = new Intent(Splash.this, TutorialActivity.class);
+                else
+                    mainIntent = new Intent(Splash.this, Main.class);
 
                 Splash.this.startActivity(mainIntent);
 
@@ -112,6 +96,7 @@ public class Splash extends AppCompatActivity {
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

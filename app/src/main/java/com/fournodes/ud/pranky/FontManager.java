@@ -10,23 +10,23 @@ import java.util.Hashtable;
  */
 public class FontManager {
 
-        public static final String TYPEFACE_FOLDER = "fonts";
-        public static final String TYPEFACE_EXTENSION = ".ttf";
-        private static Typeface cTypeface;
+    public static final String TYPEFACE_FOLDER = "fonts";
+    public static final String TYPEFACE_EXTENSION = ".ttf";
+    private static Typeface cTypeface;
 
-        private static Hashtable<String, Typeface> sTypeFaces = new Hashtable<String, Typeface>(
-                4);
+    private static Hashtable<String, Typeface> sTypeFaces = new Hashtable<String, Typeface>(
+            4);
 
-        public static Typeface getTypeFace(Context context, String fontName) {
-            if (cTypeface == null)
-                cTypeface = sTypeFaces.get(fontName);
-            else
-                createTypeFace(context,fontName);
+    public static Typeface getTypeFace(Context context, String fontName) {
+        if (cTypeface == null)
+            cTypeface = sTypeFaces.get(fontName);
+        else
+            createTypeFace(context, fontName);
 
-            return cTypeface;
-        }
+        return cTypeface;
+    }
 
-    public static void createTypeFace(Context context, String fontName){
+    public static void createTypeFace(Context context, String fontName) {
         String fontPath = new StringBuilder(TYPEFACE_FOLDER).append('/').append(fontName).append(TYPEFACE_EXTENSION).toString();
         cTypeface = Typeface.createFromAsset(context.getAssets(), fontPath);
         sTypeFaces.put(fontName, cTypeface);

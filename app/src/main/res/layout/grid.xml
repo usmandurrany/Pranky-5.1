@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
+    android:paddingBottom="3dp"
     android:paddingLeft="3dp"
     android:paddingRight="3dp"
-    android:paddingBottom="3dp"
-    android:paddingTop="@dimen/viewpager_padding_top"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingTop="@dimen/viewpager_padding_top">
 
 
     <GridView
-    android:id="@+id/grid_view"
+        android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:horizontalSpacing="10dp"
         android:listSelector="@android:color/transparent"
         android:numColumns="3"
-        android:stretchMode="columnWidth"
         android:scrollbars="none"
-        android:layout_centerHorizontal="true"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        >
-    </GridView>
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"></GridView>
 
 </RelativeLayout>

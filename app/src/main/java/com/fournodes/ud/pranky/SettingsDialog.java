@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.View;
@@ -13,14 +12,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
-
-import kankan.wheel.widget.WheelView;
-import kankan.wheel.widget.adapters.ArrayWheelAdapter;
-import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
 import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 
@@ -30,17 +24,17 @@ import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 public class SettingsDialog {
     private Context context;
     private Dialog dialog;
-    private int clockDay, clockHour,clockMin,clockampm; //0 for am 1 for pm
+    private int clockDay, clockHour, clockMin, clockampm; //0 for am 1 for pm
     private int sound;
-    private AppBGMusic player =getInstance();
-    private boolean playMusic=true;
+    private AppBGMusic player = getInstance();
+    private boolean playMusic = true;
 
 
     public SettingsDialog(Context context) {
-        this.context=context;
+        this.context = context;
     }
 
-    public void show(){
+    public void show() {
 
 
         dialog = new Dialog(context, R.style.ClockDialog);
@@ -50,10 +44,10 @@ public class SettingsDialog {
         TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
 
 
-        bgmusic.setTypeface(FontManager.getTypeFace(context,"grinched-regular"));
+        bgmusic.setTypeface(FontManager.getTypeFace(context, "grinched-regular"));
 
         SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
-        playMusic = settings.getBoolean("PlayBGMusic",true);
+        playMusic = settings.getBoolean("PlayBGMusic", true);
         btnmusic.setChecked(playMusic);
 
         btndiagclose.setOnClickListener(new View.OnClickListener() {
@@ -68,18 +62,17 @@ public class SettingsDialog {
         btnmusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked){
-                   playMusic=true;
+                if (isChecked) {
+                    playMusic = true;
 
 
-                }
-                 else {
+                } else {
                     playMusic = false;
                 }
 
                 editor.putBoolean("PlayBGMusic", playMusic);
                 editor.commit();
-                if (playMusic){
+                if (playMusic) {
                     player.mp = MediaPlayer.create(context, R.raw.app_bg);
                     // player.mp.setLooping(true);
                     player.mp.setVolume(0, (float) 0.2);
@@ -99,15 +92,12 @@ public class SettingsDialog {
                             }, 2000);
                         }
                     });
-                }else{
+                } else {
                     player.mp.stop();
                     player.mp.release();
                 }
             }
         });
-
-
-
 
 
         //Set the dialog to not focusable (makes navigation ignore us adding the window)
@@ -126,12 +116,12 @@ public class SettingsDialog {
 
     }
 
-    public static ArrayList<Date> getNextNumberOfDays(Date originalDate,int days){
+    public static ArrayList<Date> getNextNumberOfDays(Date originalDate, int days) {
         ArrayList<Date> dates = new ArrayList<Date>();
         long offset;
-        for(int i= 0; i<= days; i++){
+        for (int i = 0; i <= days; i++) {
             offset = 86400 * 1000L * i;
-            Date date = new Date( originalDate.getTime()+offset);
+            Date date = new Date(originalDate.getTime() + offset);
             dates.add(date);
         }
         return dates;

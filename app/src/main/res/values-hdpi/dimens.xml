@@ -49,7 +49,6 @@
     <dimen name="settings_font_small">15sp</dimen>
 
 
-
     <dimen name="music_text_margin_right">62dp</dimen>
     <dimen name="music_switch_margin_left">25dp</dimen>
 
@@ -61,8 +60,6 @@
 
 
     <dimen name="prankit_width">140dp</dimen>
-
-
 
 
 </resources>

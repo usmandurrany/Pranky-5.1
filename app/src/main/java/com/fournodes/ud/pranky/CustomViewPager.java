@@ -1,11 +1,8 @@
 package com.fournodes.ud.pranky;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 /**
@@ -27,8 +24,8 @@ public class CustomViewPager extends ViewPager {
 
 
     @Override
-    public boolean onTouchEvent(MotionEvent ev){
-        if (ev.getAction()==MotionEvent.ACTION_UP){
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_UP) {
             mListener.onSwipeOutAtEnd(ev.getX());
         }
 

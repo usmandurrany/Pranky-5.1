@@ -2,148 +2,152 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_centerVertical="true"
-    android:layout_centerHorizontal="true">
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@mipmap/popup_small"
+        android:padding="10dp"
         android:scaleType="fitCenter"
-        android:padding="10dp"   />
+        android:src="@mipmap/popup_small" />
+
     <LinearLayout
         android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical|center_horizontal">
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:orientation="vertical">
+
         <LinearLayout
+            android:id="@+id/music"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="25dp"
             android:layout_centerHorizontal="true"
-            android:id="@+id/music">
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+
             <com.fournodes.ud.pranky.CustomTextView
                 android:id="@+id/txtBGMusic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/music_text_margin_right"
-                android:text="Music "
-                android:textSize="@dimen/settings_font_small"
-                android:textIsSelectable="false"
                 android:padding="8dp"
+                android:text="Music "
                 android:textAllCaps="true"
-                android:textStyle="bold"
                 android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold"
 
                 />
+
             <Switch
+                android:id="@+id/btnMusicToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnMusicToggle"
-                android:thumb="@drawable/toggle_states"
-                android:track="@drawable/toggle_body"
                 android:layout_marginLeft="@dimen/music_switch_margin_left"
                 android:showText="false"
                 android:textOff=""
                 android:textOn=""
+                android:thumb="@drawable/toggle_states"
                 android:thumbTextPadding="25dp"
+                android:track="@drawable/toggle_body"
 
                 />
-
 
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/myID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_below="@+id/music"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:id="@+id/myID">
+            android:orientation="horizontal">
+
             <com.fournodes.ud.pranky.CustomTextView
                 android:id="@+id/txtRemotePrank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/prank_text_margin_right"
-                android:text="Remote Prank "
-                android:textSize="@dimen/settings_font_small"
-                android:textIsSelectable="false"
                 android:padding="8dp"
+                android:text="Remote Prank "
                 android:textAllCaps="true"
-                android:textStyle="bold"
                 android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold"
 
                 />
+
             <Switch
+                android:id="@+id/swtRemotePrank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/swtRemotePrank"
-                android:thumb="@drawable/toggle_states"
-                android:track="@drawable/toggle_body"
                 android:layout_marginLeft="@dimen/prank_switch_margin_left"
                 android:showText="false"
                 android:textOff=""
                 android:textOn=""
-                android:thumbTextPadding="25dp"                />
-
+                android:thumb="@drawable/toggle_states"
+                android:thumbTextPadding="25dp"
+                android:track="@drawable/toggle_body" />
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_below="@+id/myID"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
             <com.fournodes.ud.pranky.CustomTextView
                 android:id="@+id/lblmyID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/id_text_margin_right"
-                android:text="My ID "
-                android:textSize="@dimen/settings_font_small"
-                android:textIsSelectable="false"
                 android:padding="8dp"
+                android:text="My ID "
                 android:textAllCaps="true"
-                android:textStyle="bold"
                 android:textColor="#bf071a"
-/>
+                android:textIsSelectable="false"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold" />
+
             <com.fournodes.ud.pranky.CustomTextView
-                android:padding="5dp"
+                android:id="@+id/txtmyID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtmyID"
-                android:text="4 5 1 2 "
-                android:textColor="#000"
-                android:textStyle="bold"
-                android:textSize="@dimen/settings_font_small"
                 android:layout_marginLeft="@dimen/id_value_margin_left"
                 android:layout_marginRight="0dp"
-                />
+                android:padding="5dp"
+                android:text="4 5 1 2 "
+                android:textColor="#000"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-     <ImageView
-        android:layout_marginTop="@dimen/close_btn_margin_top"
-        android:layout_marginRight="@dimen/close_btn_margin_right"
+    <ImageView
+        android:id="@+id/btnDiagClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnDiagClose"
-        android:src="@drawable/closestates"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/close_btn_margin_right"
+        android:layout_marginTop="@dimen/close_btn_margin_top"
+        android:src="@drawable/closestates" />
 
 
 </RelativeLayout>

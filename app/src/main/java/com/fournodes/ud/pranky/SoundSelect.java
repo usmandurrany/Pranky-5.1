@@ -3,16 +3,11 @@ package com.fournodes.ud.pranky;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +19,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 
 /**
@@ -32,7 +26,7 @@ import java.net.URISyntaxException;
  */
 public class SoundSelect extends Activity implements FileChooser.FileSelectedListener {
     private Dialog dialog;
-    protected   View decorView;
+    protected View decorView;
     PrankyDB prankyDB;
     int cusIconID;
     File soundFile;
@@ -40,6 +34,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
     String fileExt;
     ImageView btnsave;
     ImageView custom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +53,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
 
         prankyDB = new PrankyDB(SoundSelect.this);
         final EditText txtselsound = (EditText) findViewById(R.id.txtSelSound);
-        txtselsound.setTypeface(FontManager.getTypeFace(this,"grinched-regular"));
+        txtselsound.setTypeface(FontManager.getTypeFace(this, "grinched-regular"));
         ImageView btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
         ImageView btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
         btnsave = (ImageView) findViewById(R.id.btnSave);
@@ -77,72 +72,62 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
             public void onClick(View view) {
                 FileChooser filech = new FileChooser(SoundSelect.this);
                 filech.setFileListener(new FileChooser.FileSelectedListener() {
-                    @Override
-                    public void fileSelected(File file) {
-                        fileName = file.getName();
-                        fileExt = fileName.substring(fileName.lastIndexOf("."));
+                                           @Override
+                                           public void fileSelected(File file) {
+                                               fileName = file.getName();
+                                               fileExt = fileName.substring(fileName.lastIndexOf("."));
 
-                        Toast.makeText(SoundSelect.this, fileExt, Toast.LENGTH_SHORT).show();
+                                               Toast.makeText(SoundSelect.this, fileExt, Toast.LENGTH_SHORT).show();
 
-                        if (fileExt.equals(".mp3") || fileExt.equals(".wav") || fileExt.equals(".3gp") ||fileExt.equals(".ogg")) {
+                                               if (fileExt.equals(".mp3") || fileExt.equals(".wav") || fileExt.equals(".3gp") || fileExt.equals(".ogg")) {
 
-                           soundFile = file;
-                            txtselsound.setText(fileName);
+                                                   soundFile = file;
+                                                   txtselsound.setText(fileName);
 
-                        }else
-                            Toast.makeText(SoundSelect.this, "Invalid file! Select another", Toast.LENGTH_SHORT).show();
+                                               } else
+                                                   Toast.makeText(SoundSelect.this, "Invalid file! Select another", Toast.LENGTH_SHORT).show();
 
-                        }
-                    }
+                                           }
+                                       }
 
-                    )
-                            .
+                )
+                        .
 
-                    showDialog();
+                                showDialog();
 
 
-                }
-            });
-
+            }
+        });
 
 
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                    if(cusIconID!=0) {
-                        copyfile(soundFile.getAbsolutePath(), soundFile.getName());
-                        // Gets the data repository in write mode
-                        SQLiteDatabase db = prankyDB.getWritableDatabase();
+                if (cusIconID != 0) {
+                    copyfile(soundFile.getAbsolutePath(), soundFile.getName());
+                    // Gets the data repository in write mode
+                    SQLiteDatabase db = prankyDB.getWritableDatabase();
 
 // Create a new map of values, where column names are the keys
-                        ContentValues values = new ContentValues();
-                        values.put(PrankyDB.COLUMN_PIC_LOC, cusIconID);
-                        values.put(PrankyDB.COLUMN_PIC_ALIAS, soundFile.getName());
-                        values.put(PrankyDB.COLUMN_SOUND_LOC, soundFile.getAbsolutePath());
-                        values.put(PrankyDB.COLUMN_REPEAT_COUNT, 1);
-                        values.put(PrankyDB.COLUMN_SOUND_VOL, 1);
+                    ContentValues values = new ContentValues();
+                    values.put(PrankyDB.COLUMN_PIC_LOC, cusIconID);
+                    values.put(PrankyDB.COLUMN_PIC_ALIAS, soundFile.getName());
+                    values.put(PrankyDB.COLUMN_SOUND_LOC, soundFile.getAbsolutePath());
+                    values.put(PrankyDB.COLUMN_REPEAT_COUNT, 1);
+                    values.put(PrankyDB.COLUMN_SOUND_VOL, 1);
 
 
 // Insert the new row, returning the primary key value of the new row
-                        long newRowId;
-                        newRowId = db.insert(
-                                PrankyDB.TABLE_USER_SOUNDS,
-                                "null",
-                                values);
-                        Toast.makeText(SoundSelect.this, String.valueOf(newRowId), Toast.LENGTH_SHORT).show();
+                    long newRowId;
+                    newRowId = db.insert(
+                            PrankyDB.TABLE_USER_SOUNDS,
+                            "null",
+                            values);
+                    Toast.makeText(SoundSelect.this, String.valueOf(newRowId), Toast.LENGTH_SHORT).show();
 
-                    }
-                    else
-                        Toast.makeText(SoundSelect.this, "Pick an Icon", Toast.LENGTH_SHORT).show();
-
-
-
-
-
-
-
-
+                } else
+                    Toast.makeText(SoundSelect.this, "Pick an Icon", Toast.LENGTH_SHORT).show();
 
 
                 Log.d("sender", "Broadcasting message");
@@ -155,36 +140,31 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
         });
 
 
-
-
         //Set the dialog to not focusable (makes navigation ignore us adding the window)
 
 
-
     }
 
-public void iconClick(View v){
-    if (custom!=null)
-        custom.setImageResource(0);
-    custom = (ImageView)findViewById(v.getId());
-    String imgName = getResources().getResourceEntryName(v.getId());
-    try {
-        cusIconID = R.mipmap.class.getField(imgName).getInt(null);
-        int custom_hover = R.mipmap.class.getField(imgName+"_hover").getInt(null);
-        custom.setBackgroundResource(custom_hover);
-        custom.setImageResource(R.drawable.gridselectedanim);
-        AnimationDrawable boxsel = (AnimationDrawable) custom.getDrawable();
-         boxsel.start();
-    } catch (IllegalAccessException e) {
-        e.printStackTrace();
-    } catch (NoSuchFieldException e) {
-        e.printStackTrace();
+    public void iconClick(View v) {
+        if (custom != null)
+            custom.setImageResource(0);
+        custom = (ImageView) findViewById(v.getId());
+        String imgName = getResources().getResourceEntryName(v.getId());
+        try {
+            cusIconID = R.mipmap.class.getField(imgName).getInt(null);
+            int custom_hover = R.mipmap.class.getField(imgName + "_hover").getInt(null);
+            custom.setBackgroundResource(custom_hover);
+            custom.setImageResource(R.drawable.gridselectedanim);
+            AnimationDrawable boxsel = (AnimationDrawable) custom.getDrawable();
+            boxsel.start();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        btnsave.setEnabled(true);
+
     }
-    btnsave.setEnabled(true);
-
-}
-
-
 
 
     @Override
@@ -205,18 +185,15 @@ public void iconClick(View v){
     public void fileSelected(File file) {
     }
 
-    public void copyfile(String srcPath,String fileName){
+    public void copyfile(String srcPath, String fileName) {
         //String sourcePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TongueTwister/tt_temp.3gp";
         File source = new File(srcPath);
 
-        String destinationPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pranky/"+fileName;
+        String destinationPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pranky/" + fileName;
         File destination = new File(destinationPath);
-        try
-        {
+        try {
             FileUtils.copyFile(source, destination);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

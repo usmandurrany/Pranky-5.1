@@ -30,7 +30,6 @@
     <dimen name="viewpager_padding_top">10dp</dimen>
 
 
-
     <dimen name="save_btn_margin_bottom">167dp</dimen>
     <dimen name="close_btn_margin_right_long">28dp</dimen>
     <dimen name="close_btn_margin_top_long">195dp</dimen>

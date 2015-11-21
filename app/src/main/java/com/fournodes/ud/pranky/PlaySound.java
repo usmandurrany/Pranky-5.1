@@ -1,23 +1,17 @@
 package com.fournodes.ud.pranky;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class PlaySound extends BroadcastReceiver {
     MediaPlayer player = null;
-    int counter=1;
+    int counter = 1;
     String sound;
     String soundCus;
     String soundRepeat;
@@ -29,29 +23,29 @@ public class PlaySound extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         sound = intent.getStringExtra("Sound");
-      //     Log.e("System Sound",sound);
+        //     Log.e("System Sound",sound);
         soundCus = intent.getStringExtra("SoundCus");
-        Log.e("Custom Sound",soundCus);
+        Log.e("Custom Sound", soundCus);
         soundRepeat = intent.getStringExtra("SoundRepeat");
-        Log.e("Repeat Count",soundRepeat);
+        Log.e("Repeat Count", soundRepeat);
         soundVol = intent.getStringExtra("SoundVol");
-       Log.e("Sound Volume",soundVol);
+        Log.e("Sound Volume", soundVol);
 
         try {
 
             if (sound != null)
                 player = MediaPlayer.create(context, R.raw.class.getField(sound).getInt(null));
-            else{
+            else {
                 player = new MediaPlayer();
-            try {
-                player.setDataSource(soundCus);
-                player.setVolume(0,Integer.valueOf(soundVol));
-                player.prepareAsync();
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    player.setDataSource(soundCus);
+                    player.setVolume(0, Integer.valueOf(soundVol));
+                    player.prepareAsync();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-            final AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+            final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
             final int currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
@@ -62,14 +56,14 @@ public class PlaySound extends BroadcastReceiver {
                     player.start();
                 }
             });
-                 player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if(counter == Integer.valueOf(soundRepeat) ){
-                    mp.release();
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);}
-                    else
+                    if (counter == Integer.valueOf(soundRepeat)) {
+                        mp.release();
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
+                    } else
                         player.start();
                     counter++;
                 }

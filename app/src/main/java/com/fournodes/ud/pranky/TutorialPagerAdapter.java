@@ -1,11 +1,6 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.StateListDrawable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +12,6 @@ import android.widget.ImageView;
  */
 public class TutorialPagerAdapter extends BaseAdapter {
     Context context;
-
 
 
     public class ViewHolder {
@@ -43,7 +37,7 @@ public class TutorialPagerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(images != null) {
+        if (images != null) {
             return images.length;
         }
         return 0;
@@ -51,7 +45,7 @@ public class TutorialPagerAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int pos) {
-        if(images != null && pos >= 0 && pos < getCount()) {
+        if (images != null && pos >= 0 && pos < getCount()) {
             return images[pos];
         }
         return null;
@@ -59,7 +53,7 @@ public class TutorialPagerAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int pos) {
-        if(images != null && pos >= 0 && pos < getCount()) {
+        if (images != null && pos >= 0 && pos < getCount()) {
             return pos;
         }
         return 0;
@@ -72,7 +66,7 @@ public class TutorialPagerAdapter extends BaseAdapter {
         View view = convertView;
         ViewHolder viewHolder;
 
-        if(view == null) {
+        if (view == null) {
 
             view = mInflater.inflate(R.layout.custom, parent, false);
             viewHolder = new ViewHolder();
@@ -90,7 +84,7 @@ public class TutorialPagerAdapter extends BaseAdapter {
     }
 
     private void setImage(int pos, ViewHolder viewHolder, Integer img) {
-            viewHolder.imageView.setImageResource(img);
+        viewHolder.imageView.setImageResource(img);
     }
 
     @Override

@@ -14,7 +14,8 @@ import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 
 /**
  * Created by Usman-Durrani on 03-Nov-15.
- */ public class DayWheelAdapter extends AbstractWheelTextAdapter {
+ */
+public class DayWheelAdapter extends AbstractWheelTextAdapter {
 
     ArrayList<Date> dates;
 
@@ -41,8 +42,7 @@ import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
             //If it is the first date of the array, set the color blue
             weekday.setText("Today");
             //weekday.setTextColor(0xFF0000F0);
-        }
-        else{
+        } else {
             //If not set the color to black
             //weekday.setTextColor(0xFF111111);
         }

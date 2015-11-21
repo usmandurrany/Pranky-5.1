@@ -3,10 +3,10 @@
     android:id="@+id/time_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="18sp"
+    android:layout_gravity="center"
     android:lines="1"
-    android:textStyle="normal"
+    android:padding="3dp"
     android:text="TEST"
     android:textColor="#f4ead1"
-    android:padding="3dp"
-    android:layout_gravity="center"/>
+    android:textSize="18sp"
+    android:textStyle="normal" />

@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,7 +65,7 @@ public class TutorialFragment extends Fragment {
             imgTut.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    iFrag.TutImageTouch(view,motionEvent);
+                    iFrag.TutImageTouch(view, motionEvent);
 
 
                     return false;
@@ -83,10 +81,10 @@ public class TutorialFragment extends Fragment {
             skip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent main = new Intent(getActivity(),Main.class);
+                    Intent main = new Intent(getActivity(), Main.class);
                     SharedPreferences settings = getActivity().getSharedPreferences("PrankySharedPref", 0);
                     final SharedPreferences.Editor editor = settings.edit();
-                    editor.putBoolean("ShowTutorial",false);
+                    editor.putBoolean("ShowTutorial", false);
                     editor.apply();
                     startActivity(main);
                     getActivity().finish();

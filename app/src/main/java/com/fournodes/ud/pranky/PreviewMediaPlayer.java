@@ -8,7 +8,9 @@ import android.media.MediaPlayer;
 public class PreviewMediaPlayer {
     MediaPlayer mp;
     private static volatile PreviewMediaPlayer instance = null;
-    private PreviewMediaPlayer() { }
+
+    private PreviewMediaPlayer() {
+    }
 
     public static PreviewMediaPlayer getInstance() {
         if (instance == null) {
