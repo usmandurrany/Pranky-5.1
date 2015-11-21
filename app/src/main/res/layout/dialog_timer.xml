@@ -78,48 +78,39 @@
         android:gravity="center"
         android:layout_marginTop="@dimen/day_hh_mm_ss_margin_top"
         >
-        <TextView
+        <com.fournodes.ud.pranky.CustomTextView
             android:layout_width="26dp"
             android:layout_height="wrap_content"
             android:text="HH"
             android:textSize="18sp"
-            android:textColor="#ffffff"
+            android:textColor="#bf071a"
             android:textStyle="bold"
             android:textAllCaps="true"
-            android:shadowColor="#000"
-            android:shadowDy="0.3"
-            android:shadowDx="1.3"
-            android:shadowRadius="6"
+
             android:layout_marginRight="3dp"
-            android:layout_marginLeft="15dp"/>
-        <TextView
+            android:layout_marginLeft="25dp"/>
+        <com.fournodes.ud.pranky.CustomTextView
             android:layout_width="33dp"
             android:layout_height="wrap_content"
             android:text="MM"
             android:textSize="18sp"
-            android:textColor="#ffffff"
+            android:textColor="#bf071a"
             android:textStyle="bold"
             android:textAllCaps="true"
-            android:shadowColor="#000"
-            android:shadowDy="0.3"
-            android:shadowDx="1.3"
-            android:shadowRadius="6"
+
             android:layout_marginRight="22dp"
             android:layout_marginLeft="22dp"/>
-        <TextView
+        <com.fournodes.ud.pranky.CustomTextView
             android:layout_width="26dp"
             android:layout_height="wrap_content"
             android:text="SS"
             android:textSize="18sp"
-            android:textColor="#ffffff"
+            android:textColor="#bf071a"
             android:textStyle="bold"
             android:textAllCaps="true"
-            android:shadowColor="#000"
-            android:shadowDy="0.3"
-            android:shadowDx="1.3"
-            android:shadowRadius="6"
+
             android:layout_marginRight="15dp"
-            android:layout_marginLeft="3dp"/>
+            android:layout_marginLeft="0dp"/>
 
 
     </LinearLayout>

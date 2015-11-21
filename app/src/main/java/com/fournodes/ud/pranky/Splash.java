@@ -38,7 +38,7 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        FontManager.createTypeFace(Splash.this,"roboto-light");
+        FontManager.createTypeFace(Splash.this,"grinched-regular");
 
         final SharedPreferences settings = getSharedPreferences("PrankySharedPref", 0);
 

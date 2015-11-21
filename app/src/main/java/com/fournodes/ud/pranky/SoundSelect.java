@@ -58,6 +58,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
 
         prankyDB = new PrankyDB(SoundSelect.this);
         final EditText txtselsound = (EditText) findViewById(R.id.txtSelSound);
+        txtselsound.setTypeface(FontManager.getTypeFace(this,"grinched-regular"));
         ImageView btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
         ImageView btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
         btnsave = (ImageView) findViewById(R.id.btnSave);

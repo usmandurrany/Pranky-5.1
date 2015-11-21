@@ -50,7 +50,7 @@ public class SettingsDialog {
         TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
 
 
-        bgmusic.setTypeface(FontManager.getTypeFace(context,"roboto-light"));
+        bgmusic.setTypeface(FontManager.getTypeFace(context,"grinched-regular"));
 
         SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
         playMusic = settings.getBoolean("PlayBGMusic",true);
