@@ -4,15 +4,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     private String soundCus = null;
     private AppBGMusic player = getInstance();
     private int pageNo = 0;
+
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -50,12 +56,25 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         }
     };
 
+    private BroadcastReceiver mRegistrationBroadcastReceiver  = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences sharedPreferences =getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
+            boolean sentToken = sharedPreferences.getBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, false);
+            if (sentToken) {
+                Toast.makeText(Main.this, "Token sent to server", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Main.this, "There was an error", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        GCMRegister();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("custom-sound-added"));
@@ -251,6 +270,15 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
         //Toast.makeText(Main.this,"Repeat Count: " + soundRep + " Sound Vol : "+ soundVol, Toast.LENGTH_LONG).show();
 
+
+    }
+
+
+    public void GCMRegister(){
+
+
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
 
     }
 }
