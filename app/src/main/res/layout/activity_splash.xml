@@ -29,7 +29,7 @@
 
             android:layout_height="wrap_content"
 
-            android:background="@drawable/logo_2"></ImageView>
+            android:background="@drawable/logo_2"/>
 
 
     </LinearLayout>

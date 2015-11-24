@@ -42,11 +42,12 @@ public class SettingsDialog {
         Switch btnmusic = (Switch) dialog.findViewById(R.id.btnMusicToggle);
         ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
         TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
-
-
+        TextView myid = (TextView) dialog.findViewById(R.id.txtmyID);
         bgmusic.setTypeface(FontManager.getTypeFace(context, "grinched-regular"));
-
         SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
+
+        myid.setText(settings.getString(SharedPrefs.APP_ID,null));
+
         playMusic = settings.getBoolean("PlayBGMusic", true);
         btnmusic.setChecked(playMusic);
 

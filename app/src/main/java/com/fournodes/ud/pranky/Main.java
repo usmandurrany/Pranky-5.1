@@ -31,6 +31,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected ImageView clock;
     protected ImageView timer;
     protected ImageView settings;
+    protected ImageView prankbtn;
+
     int itemsOnPage = 9;
     int soundRep;
     int soundVol;
@@ -39,7 +41,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     private String soundCus = null;
     private AppBGMusic player = getInstance();
     private int pageNo = 0;
-
+    SharedPreferences sharedPreferences;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -59,7 +61,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     private BroadcastReceiver mRegistrationBroadcastReceiver  = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            SharedPreferences sharedPreferences =getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
+            sharedPreferences =getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
             boolean sentToken = sharedPreferences.getBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, false);
             if (sentToken) {
                 Toast.makeText(Main.this, "Token sent to server", Toast.LENGTH_SHORT).show();
@@ -74,7 +76,12 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GCMRegister();
+        final SharedPreferences prefs= getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
+       // if (prefs.getString(SharedPrefs.REGISTRATION_TOKEN, null)==null || prefs.getString(SharedPrefs.EXP_DATE,null)== null){
+            GCMRegister();
+      //  }
+
+
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("custom-sound-added"));
@@ -151,6 +158,23 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 sett.show();
             }
         });
+        prankbtn = (ImageView) findViewById(R.id.prankit);
+        prankbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sound == -1 && soundCus == null) {
+                    cToast = new CustomToast(Main.this, "Select  a  sound  first");
+                    cToast.show();
+                } else if(prefs.getString(SharedPrefs.FRIENDS_ID,null)== null) {
+                    PrankDialog pDialog = new PrankDialog(Main.this);
+                    pDialog.show();
+                } else{
+                    SendPrank sendPrank = new SendPrank(Main.this, sound,soundRep,soundVol);
+                    sendPrank.execute();
+
+                }
+            }
+        });
 
 
     }
@@ -204,6 +228,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         } catch (Exception e) {
             Log.e("BG Music Destroy", e.toString());
         }
+        sharedPreferences.edit().putString(SharedPrefs.FRIENDS_ID,null).apply();
     }
 
     public void createFragments() {

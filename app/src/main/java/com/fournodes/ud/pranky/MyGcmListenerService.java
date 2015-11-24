@@ -1,5 +1,6 @@
 package com.fournodes.ud.pranky;
 
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -28,7 +30,35 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
+        String sound = data.getString("sound");
+        String soundRep = data.getString("soundRep");
+        String soundVol = data.getString("soundVol");
+
+
+        Intent intent = new Intent(getApplicationContext(), PlaySound.class);
+
+        intent.putExtra("Sound", sound);
+        intent.putExtra("SoundCus", "");
+        intent.putExtra("SoundRepeat", soundRep);
+        intent.putExtra("SoundVol", soundVol);
+
+//        Toast.makeText(getApplicationContext(), String.valueOf(soundRepeat), Toast.LENGTH_SHORT).show();
+
+
+        final int _id = (int) System.currentTimeMillis();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), _id,
+                intent, PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+1000, pendingIntent);
+
+
+       // Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_LONG).show();
+
+
         String message = data.getString("message");
+
+
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
@@ -50,7 +80,7 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
+       // sendNotification(message);
         // [END_EXCLUDE]
     }
     // [END receive_message]

@@ -12,6 +12,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by Usman on 11/23/2015.
@@ -19,6 +21,7 @@ import java.io.IOException;
 public class RegistrationIntentService extends IntentService {
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
+    SharedPreferences sharedPreferences;
 
     public RegistrationIntentService() {
         super(TAG);
@@ -26,7 +29,7 @@ public class RegistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        SharedPreferences sharedPreferences = getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
+        sharedPreferences = getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
 
 
         try {
@@ -42,6 +45,8 @@ public class RegistrationIntentService extends IntentService {
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
+            sharedPreferences.edit().putString(SharedPrefs.REGISTRATION_TOKEN, token).apply();
+
 
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
@@ -52,7 +57,6 @@ public class RegistrationIntentService extends IntentService {
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
-            sharedPreferences.edit().putBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, true).apply();
             // [END register_for_gcm]
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
@@ -74,7 +78,14 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // Add custom implementation, as needed.
+        RemoteServer rs= new RemoteServer(getApplicationContext());
+        rs.execute();
+        Calendar exp_date = Calendar.getInstance(TimeZone.getDefault());
+        exp_date.set(Calendar.HOUR,(exp_date.get(Calendar.HOUR)+24));
+        Log.e("ExpiryDate", exp_date.getTime().toString());
+        sharedPreferences.edit().putBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, true).apply();
+
+
     }
 
     /**
