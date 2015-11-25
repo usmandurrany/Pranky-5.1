@@ -46,7 +46,7 @@ public class RemoteServer extends AsyncTask<String, String, String>{
         try {
             response = httpclient.execute(httpget);
             // Examine the response status
-            Log.i("ServerResponse", response.getStatusLine().toString());
+            Log.e("ServerResponse", response.toString());
 
             // Get hold of the response entity
             HttpEntity entity = response.getEntity();
@@ -57,7 +57,7 @@ public class RemoteServer extends AsyncTask<String, String, String>{
 
                 // A Simple JSON Response Read
                 InputStream instream = entity.getContent();
-                result= convertStreamToString(instream);
+                result = convertStreamToString(instream);
                 // now you have the string representation of the HTML request
                 instream.close();
             }
@@ -74,10 +74,12 @@ public class RemoteServer extends AsyncTask<String, String, String>{
     @Override
     protected void onPostExecute(String s) {
         SharedPreferences prefs = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
+        Log.e("Server", s);
         try {
             JSONObject resp= new JSONObject(s);
             Log.e("ServerRespnse", resp.getString("result"));
             Log.e("ServerRespnse", resp.getString("app_id"));
+            Log.e("ServerRespnse", resp.getString("time"));
             if  (resp.getString("result") == "1"){
                 prefs.edit().putString(SharedPrefs.APP_ID,resp.getString("app_id")).apply();
             }

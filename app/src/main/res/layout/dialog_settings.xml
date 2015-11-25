@@ -26,7 +26,6 @@
             android:id="@+id/music"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:orientation="horizontal">
 
@@ -66,8 +65,6 @@
             android:id="@+id/myID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/music"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
@@ -102,12 +99,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutRemoteID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/myID"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <com.fournodes.ud.pranky.CustomTextView
                 android:id="@+id/lblmyID"

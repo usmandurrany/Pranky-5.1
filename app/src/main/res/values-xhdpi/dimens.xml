@@ -53,7 +53,7 @@
     <dimen name="music_switch_margin_left">42dp</dimen>
 
     <dimen name="prank_text_margin_right">10dp</dimen>
-    <dimen name="prank_switch_margin_left">5dp</dimen>
+    <dimen name="prank_switch_margin_left">15dp</dimen>
 
     <dimen name="id_text_margin_right">60dp</dimen>
     <dimen name="id_value_margin_left">80dp</dimen>

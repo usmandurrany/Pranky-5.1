@@ -3,7 +3,6 @@ package com.fournodes.ud.pranky;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -22,23 +21,40 @@ public class SendPrank extends AsyncTask<String, String, String> {
     int sound;
     int soundRep;
     int soundVol;
+    HttpGet httpget;
+
     public SendPrank(Context context, int sound, int soundRep, int soundVol){
         this.context=context;
         this.sound=sound;
         this.soundRep=soundRep;
         this.soundVol=soundVol;
     }
+    public SendPrank(Context context)
+    {
+        this.context=context;
+        this.sound=0;
+        this.soundRep=0;
+        this.soundVol=0;
+    }
 
     @Override
     protected String doInBackground(String... strings) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
         String frnd_id = sharedPreferences.getString(SharedPrefs.FRIENDS_ID, null);
+        String app_id = sharedPreferences.getString(SharedPrefs.APP_ID, null);
+        String prankableResp = sharedPreferences.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
+        boolean prankable = sharedPreferences.getBoolean(SharedPrefs.PRANKABLE, true);
 
         HttpClient httpclient = new DefaultHttpClient();
 
         // Prepare a request object
-        HttpGet httpget = new HttpGet("http://motasimhussain.koding.io/usman/sendmsg.php?friend_id="+frnd_id+"&sound="+context.getResources().getResourceEntryName(sound)+"&soundRep="+String.valueOf(soundRep)+"&soundVol="+String.valueOf(soundVol));
 
+        if (sound==0){
+           httpget = new HttpGet("http://motasimhussain.koding.io/usman/sendmsg.php?friend_id=" + frnd_id + "&prank_id=" + app_id + "&sound=" + String.valueOf(sound) + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&response=" + prankableResp + "&prankable" + String.valueOf(prankable));
+        }
+        else {
+            httpget = new HttpGet("http://motasimhussain.koding.io/usman/sendmsg.php?friend_id=" + frnd_id + "&prank_id=" + app_id + "&sound=" + context.getResources().getResourceEntryName(sound) + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&response=" + prankableResp + "&prankable" + String.valueOf(prankable));
+        }
         // Execute the request
         HttpResponse response;
         try {

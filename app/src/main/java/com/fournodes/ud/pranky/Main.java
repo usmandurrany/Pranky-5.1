@@ -18,8 +18,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 
@@ -43,6 +50,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     private int pageNo = 0;
     SharedPreferences sharedPreferences;
 
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -61,7 +69,6 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     private BroadcastReceiver mRegistrationBroadcastReceiver  = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            sharedPreferences =getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
             boolean sentToken = sharedPreferences.getBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, false);
             if (sentToken) {
                 Toast.makeText(Main.this, "Token sent to server", Toast.LENGTH_SHORT).show();
@@ -76,10 +83,22 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
         final SharedPreferences prefs= getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
-       // if (prefs.getString(SharedPrefs.REGISTRATION_TOKEN, null)==null || prefs.getString(SharedPrefs.EXP_DATE,null)== null){
+
+        Calendar exp = Calendar.getInstance();
+        Calendar today= Calendar.getInstance(TimeZone.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+        try {
+            exp.setTime(sdf.parse(prefs.getString(SharedPrefs.EXP_DATE,today.getTime().toString())));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // if (prefs.getString(SharedPrefs.REGISTRATION_TOKEN, null)==null || prefs.getString(SharedPrefs.EXP_DATE,"null")== "null"||exp.before(today)){
             GCMRegister();
-      //  }
+        //}
 
 
 

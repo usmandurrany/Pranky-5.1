@@ -84,6 +84,7 @@ public class RegistrationIntentService extends IntentService {
         exp_date.set(Calendar.HOUR,(exp_date.get(Calendar.HOUR)+24));
         Log.e("ExpiryDate", exp_date.getTime().toString());
         sharedPreferences.edit().putBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, true).apply();
+        sharedPreferences.edit().putString(SharedPrefs.EXP_DATE, exp_date.getTime().toString()).apply();
 
 
     }

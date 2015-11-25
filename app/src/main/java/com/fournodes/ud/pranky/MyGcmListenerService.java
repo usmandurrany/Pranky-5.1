@@ -5,12 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -30,42 +30,56 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
+        SharedPreferences prefs = getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
+        String prankResp = data.getString("response");
         String sound = data.getString("sound");
         String soundRep = data.getString("soundRep");
         String soundVol = data.getString("soundVol");
 
+        if (prefs.getBoolean(SharedPrefs.PRANKABLE,true) && sound != "0") {
 
-        Intent intent = new Intent(getApplicationContext(), PlaySound.class);
 
-        intent.putExtra("Sound", sound);
-        intent.putExtra("SoundCus", "");
-        intent.putExtra("SoundRepeat", soundRep);
-        intent.putExtra("SoundVol", soundVol);
+
+
+            Intent intent = new Intent(getApplicationContext(), PlaySound.class);
+
+            intent.putExtra("Sound", sound);
+            intent.putExtra("SoundCus", "");
+            intent.putExtra("SoundRepeat", soundRep);
+            intent.putExtra("SoundVol", soundVol);
 
 //        Toast.makeText(getApplicationContext(), String.valueOf(soundRepeat), Toast.LENGTH_SHORT).show();
 
 
-        final int _id = (int) System.currentTimeMillis();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), _id,
-                intent, PendingIntent.FLAG_ONE_SHOT);
+            final int _id = (int) System.currentTimeMillis();
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), _id,
+                    intent, PendingIntent.FLAG_ONE_SHOT);
 
-        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+1000, pendingIntent);
-
-
-       // Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_LONG).show();
+            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
 
 
-        String message = data.getString("message");
+            // Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_LONG).show();
 
 
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
+            String message = data.getString("message");
 
-        if (from.startsWith("/topics/")) {
-            // message received from some topic.
-        } else {
-            // normal downstream message.
+
+            Log.d(TAG, "From: " + from);
+            Log.d(TAG, "Message: " + message);
+
+            if (from.startsWith("/topics/")) {
+                // message received from some topic.
+            } else {
+                // normal downstream message.
+            }
+        }else if (prankResp == "disabled" && sound == "0"){
+            Log.e("RESPONSE","YOUR FRIEND IS NOT PRANKABLE AT THE MOMENT");
+        }
+
+        else{
+            SendPrank notPrankable = new SendPrank(getApplicationContext());
+            notPrankable.execute();
         }
 
         // [START_EXCLUDE]

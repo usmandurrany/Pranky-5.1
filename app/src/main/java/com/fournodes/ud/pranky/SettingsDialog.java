@@ -10,11 +10,17 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 
@@ -40,11 +46,16 @@ public class SettingsDialog {
         dialog = new Dialog(context, R.style.ClockDialog);
         dialog.setContentView(R.layout.dialog_settings);
         Switch btnmusic = (Switch) dialog.findViewById(R.id.btnMusicToggle);
+        Switch remoteprank = (Switch) dialog.findViewById(R.id.swtRemotePrank);
         ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
         TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
-        TextView myid = (TextView) dialog.findViewById(R.id.txtmyID);
+        final LinearLayout remotePrankID  = (LinearLayout) dialog.findViewById(R.id.layoutRemoteID);
+
+        final TextView myid = (TextView) dialog.findViewById(R.id.txtmyID);
         bgmusic.setTypeface(FontManager.getTypeFace(context, "grinched-regular"));
-        SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
+
+
+        final SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
 
         myid.setText(settings.getString(SharedPrefs.APP_ID,null));
 
@@ -96,6 +107,40 @@ public class SettingsDialog {
                 } else {
                     player.mp.stop();
                     player.mp.release();
+                }
+            }
+        });
+            if (settings.getBoolean(SharedPrefs.PRANKABLE,true)){
+                remoteprank.setChecked(true);
+                remotePrankID.setVisibility(View.VISIBLE);
+
+            }
+        remoteprank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked){
+                    Calendar exp = Calendar.getInstance();
+                    Calendar today= Calendar.getInstance(TimeZone.getDefault());
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                    try {
+                        exp.setTime(sdf.parse(settings.getString(SharedPrefs.EXP_DATE, "null")));
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (settings.getString(SharedPrefs.REGISTRATION_TOKEN, null)==null || settings.getString(SharedPrefs.EXP_DATE,"null")== "null"||exp.before(today)){
+                        ((Main) context).GCMRegister();
+                    }
+                    remotePrankID.setVisibility(View.VISIBLE);
+
+                   editor.putBoolean(SharedPrefs.PRANKABLE,true).apply();
+                   editor.putString(SharedPrefs.PRANKABLE_RESP, "enabled").apply();
+                }
+                else {
+                    remotePrankID.setVisibility(View.INVISIBLE);
+                    editor.putBoolean(SharedPrefs.PRANKABLE, false).apply();
+                    editor.putString(SharedPrefs.PRANKABLE_RESP, "disabled").apply();
+
                 }
             }
         });

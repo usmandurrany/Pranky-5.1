@@ -11,5 +11,7 @@ public class SharedPrefs {
     public static final String EXP_DATE = "exp_date";
     public static final String APP_ID = "app_id";
     public static final String FRIENDS_ID = "frnd_id";
+    public static final String PRANKABLE = "prankable";
+    public static final String PRANKABLE_RESP = "prankableResp";
 
 }
