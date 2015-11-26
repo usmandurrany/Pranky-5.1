@@ -39,6 +39,7 @@ public class TimerDialog {
 
         //Configure Hours Column
         final WheelView hour = (WheelView) dialog.findViewById(R.id.timerhour);
+
         NumericWheelAdapter hourAdapter = new NumericWheelAdapter(context, 0, 12);
         hourAdapter.setItemResource(R.layout.wheel_item_time);
         hourAdapter.setItemTextResource(R.id.time_item);

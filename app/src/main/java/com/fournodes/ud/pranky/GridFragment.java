@@ -118,6 +118,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         } catch (Exception e) {
             Log.e("Preview MediaPlayer", e.toString());
         }
+
         if (img == null) {
             img = (ImageView) v.findViewById(R.id.grid_item_image);
 
@@ -125,6 +126,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             //Toast.makeText(activity,  Toast.LENGTH_SHORT).show();
 
         }
+
         if (viewPOS == pos) {
             if (lastView != -1)
                 lastView = viewPOS;
@@ -196,13 +198,14 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
 
                         previewSound.mp.start();
-                        lastView = 0;
+                        lastView=-2;
 
                     }
                 });
 
 
-            }
+            }else
+            lastView = -1;
 
 
             previewSound.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -236,12 +239,16 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         if (img != null) {
             img.setSelected(false);
             img.setImageResource(0);
+            img = null;
         }
         try {
             soundsel.selectedSound(-1, null, 0, 0);
         } catch (Exception e) {
             Log.e("Sound Sel Remover", e.toString());
         }
+
+        lastView = -1;
+        viewPOS = -1;
 
     }
 
