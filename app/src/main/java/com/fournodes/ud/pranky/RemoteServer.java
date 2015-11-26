@@ -39,7 +39,7 @@ public class RemoteServer extends AsyncTask<String, String, String>{
         HttpClient httpclient = new DefaultHttpClient();
 
         // Prepare a request object
-        HttpGet httpget = new HttpGet("http://motasimhussain.koding.io/usman/index.php?model="+model+"&gcm_id="+gcm_id);
+        HttpGet httpget = new HttpGet("http://pranky.four-nodes.com/index.php?model="+model+"&gcm_id="+gcm_id);
 
         // Execute the request
         HttpResponse response;

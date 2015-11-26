@@ -50,10 +50,10 @@ public class SendPrank extends AsyncTask<String, String, String> {
         // Prepare a request object
 
         if (sound==0){
-           httpget = new HttpGet("http://motasimhussain.koding.io/usman/sendmsg.php?friend_id=" + frnd_id + "&prank_id=" + app_id + "&sound=" + String.valueOf(sound) + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&response=" + prankableResp + "&prankable" + String.valueOf(prankable));
+           httpget = new HttpGet("http://pranky.four-nodes.com/sendmsg.php?friend_id=" + frnd_id + "&prank_id=" + app_id + "&sound=" + String.valueOf(sound) + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&response=" + prankableResp + "&prankable" + String.valueOf(prankable));
         }
         else {
-            httpget = new HttpGet("http://motasimhussain.koding.io/usman/sendmsg.php?friend_id=" + frnd_id + "&prank_id=" + app_id + "&sound=" + context.getResources().getResourceEntryName(sound) + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&response=" + prankableResp + "&prankable" + String.valueOf(prankable));
+            httpget = new HttpGet("http://pranky.four-nodes.com/sendmsg.php?friend_id=" + frnd_id + "&prank_id=" + app_id + "&sound=" + context.getResources().getResourceEntryName(sound) + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&response=" + prankableResp + "&prankable" + String.valueOf(prankable));
         }
         // Execute the request
         HttpResponse response;
