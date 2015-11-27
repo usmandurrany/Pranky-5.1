@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by Usman on 11/24/2015.
@@ -33,20 +34,23 @@ public class RemoteServer extends AsyncTask<String, String, String>{
     @Override
     protected String doInBackground(String... strings) {
         model = Build.MODEL;
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
-        String gcm_id = sharedPreferences.getString(SharedPrefs.REGISTRATION_TOKEN,null);
+        String gcm_id = strings[0];
+        String app_id = strings[1];
+
+        //SharedPreferences sharedPreferences = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
+        //String gcm_id = sharedPreferences.getString(SharedPrefs.MY_GCM_ID,null);
 
         HttpClient httpclient = new DefaultHttpClient();
 
         // Prepare a request object
-        HttpGet httpget = new HttpGet("http://pranky.four-nodes.com/index.php?model="+model+"&gcm_id="+gcm_id);
+        HttpGet httpget = new HttpGet("http://pranky.four-nodes.com/index.php?model="+model+"&gcm_id="+gcm_id+"&app_id="+app_id);
 
         // Execute the request
         HttpResponse response;
         try {
             response = httpclient.execute(httpget);
             // Examine the response status
-            Log.e("ServerResponse", response.toString());
+            Log.e("ServerResponse", response.getStatusLine().toString());
 
             // Get hold of the response entity
             HttpEntity entity = response.getEntity();
@@ -73,15 +77,20 @@ public class RemoteServer extends AsyncTask<String, String, String>{
 
     @Override
     protected void onPostExecute(String s) {
-        SharedPreferences prefs = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
-        Log.e("Server", s);
+        Calendar exp_date = Calendar.getInstance(TimeZone.getDefault());
+        exp_date.set(Calendar.HOUR, (exp_date.get(Calendar.HOUR) + 24));
+        Log.e("ExpiryDate", exp_date.getTime().toString());
+        //Log.e("Server", s);
         try {
             JSONObject resp= new JSONObject(s);
             Log.e("ServerRespnse", resp.getString("result"));
             Log.e("ServerRespnse", resp.getString("app_id"));
             Log.e("ServerRespnse", resp.getString("time"));
+
             if  (resp.getString("result") == "1"){
-                prefs.edit().putString(SharedPrefs.APP_ID,resp.getString("app_id")).apply();
+                SharedPrefs.setMyAppID(resp.getString("app_id")); // Store the recieved myAppID in shared prefs
+                SharedPrefs.setSentGcmIDToServer(true);// GCM ID has been sent successfully
+                SharedPrefs.setExpDate(exp_date.getTime().toString());// Expiry date for myAppId is saved
             }
 
         } catch (JSONException e) {

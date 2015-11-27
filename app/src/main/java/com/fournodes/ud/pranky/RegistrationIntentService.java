@@ -3,7 +3,6 @@ package com.fournodes.ud.pranky;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -44,15 +43,13 @@ public class RegistrationIntentService extends IntentService {
             String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
-            Log.i(TAG, "GCM Registration Token: " + token);
-            sharedPreferences.edit().putString(SharedPrefs.REGISTRATION_TOKEN, token).apply();
-
+            Log.i(TAG, "GCM ID: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
 
             // Subscribe to topic channels
-            subscribeTopics(token);
+            //subscribeTopics(token);
 
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
@@ -62,7 +59,7 @@ public class RegistrationIntentService extends IntentService {
             Log.d(TAG, "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
-            sharedPreferences.edit().putBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, false).apply();
+            sharedPreferences.edit().putBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false).apply();
         }
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(SharedPrefs.REGISTRATION_COMPLETE);
@@ -78,16 +75,14 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
+        SharedPrefs.setMyGcmID(token); // Store the GCM ID/Token in the Shared Prefs
+
+        // Send the stored GCM ID/Token to the server
         RemoteServer rs= new RemoteServer(getApplicationContext());
-        rs.execute();
-        Calendar exp_date = Calendar.getInstance(TimeZone.getDefault());
-        exp_date.set(Calendar.HOUR,(exp_date.get(Calendar.HOUR)+24));
-        Log.e("ExpiryDate", exp_date.getTime().toString());
-        sharedPreferences.edit().putBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, true).apply();
-        sharedPreferences.edit().putString(SharedPrefs.EXP_DATE, exp_date.getTime().toString()).apply();
-
-
-    }
+        //Send the GCM id and the myAppID as args
+        String[] args = {SharedPrefs.getMyGcmID(),""}; // myAppID is ""
+        rs.execute(args);
+        }
 
     /**
      * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.

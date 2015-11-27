@@ -12,22 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TutorialActivity extends FragmentActivity implements IFragment {
-    protected View decorView;
-    PagerAdapter pm;
-    int pagePOS;
-    float pageOffset;
-    float mDown;
-    float mUP;
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
+    private View decorView; // To apply the Immersive mode and remove nav/status bars on lower API Levels
+
+    private PagerAdapter mPagerAdapter;
+
+    // x coordinates from TouchEvents
+    private float mDown; // ImageView in fragment hijacks the ACTION_DOWN touch even so this x coordinate come from the fragment
+    private float mUP; // ACTION_UP touch event x coordinate comes form the ViewPager
+
+    // CustomViewPager that overrides the onTouch event used to detect the x coordinate for swipe direction
     private CustomViewPager mTutPager;
 
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-
+    // Images for the fragments
     int[] images = {R.mipmap.help_screen_1, R.mipmap.help_screen_2, R.mipmap.help_screen_3, R.mipmap.help_screen_4, R.mipmap.help_screen_5, R.mipmap.help_screen_6, R.mipmap.help_screen_7, R.mipmap.help_screen_8, R.mipmap.help_screen_9, R.mipmap.help_screen_10};
 
     @Override
@@ -35,9 +31,10 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
-
+        // A list of all the fragments
         List<TutorialFragment> TFList = new ArrayList<TutorialFragment>();
 
+        // Loop to create 10 fragments for 10 images and bundle the args
         for (int i = 0; i < 10; i++) {
             TutorialFragment tutFrag = new TutorialFragment();
             Bundle bundle = new Bundle();
@@ -46,25 +43,23 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
             TFList.add(tutFrag);
         }
 
-
-        pm = new PagerAdapter(getSupportFragmentManager(), TutorialActivity.this, TFList);
+        // Send the list of all the fragemtns to the Pager Adapter
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), TutorialActivity.this, TFList);
 
 
         // Instantiate a ViewPager and a PagerAdapter.
         mTutPager = (CustomViewPager) findViewById(R.id.pagerTutorial);
-        mTutPager.setAdapter(pm);
+        mTutPager.setAdapter(mPagerAdapter);
         mTutPager.setOnSwipeOutListener(new CustomViewPager.OnSwipeOutListener() {
             @Override
             public void onSwipeOutAtEnd(float x) {
                 Log.w("UP", String.valueOf(x));
                 mUP = x;
-                if (mTutPager.getCurrentItem() == (pm.getCount() - 1)) {
-                    if (mUP < mDown) {
+                if (mTutPager.getCurrentItem() == (mPagerAdapter.getCount() - 1)) {
+                    // If swiped forward on the last image then finish this activity
+                    if (mUP < mDown) {  // Check whether the swipe was forward
                         startActivity(new Intent(TutorialActivity.this, Main.class));
-                        SharedPreferences settings = TutorialActivity.this.getSharedPreferences("PrankySharedPref", 0);
-                        final SharedPreferences.Editor editor = settings.edit();
-                        editor.putBoolean("ShowTutorial", false);
-                        editor.apply();
+                        SharedPrefs.setAppFirstLaunch(false);
                         TutorialActivity.this.finish();
                     }
                 }
@@ -100,7 +95,7 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-
+    // Interface IFRAGMENT methods
     @Override
     public void pageScrolled() {
 
@@ -111,12 +106,15 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
 
     }
 
+    // ACTION_DOWN touch event x coordinates coming from fragments ImageView via Interface IFRAGMENT
     @Override
     public void TutImageTouch(View view, MotionEvent motionEvent) {
-        if (mTutPager.getCurrentItem() == (pm.getCount() - 1)) {
+        // Check if on the last fragment
+        if (mTutPager.getCurrentItem() == (mPagerAdapter.getCount() - 1)) {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     Log.w("DOWN", String.valueOf(motionEvent.getX()));
+                    // Store the value in the local var
                     mDown = motionEvent.getX();
                     break;
 

@@ -8,27 +8,23 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
+import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 
 public class Main extends FragmentActivity implements SoundSelectListener {
     public me.relex.circleindicator.CircleIndicator mIndicator;
@@ -46,9 +42,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     CustomToast cToast;
     private int sound = -1;
     private String soundCus = null;
-    private AppBGMusic player = getInstance();
+    private BackgroundMusic player = getInstance();
     private int pageNo = 0;
-    SharedPreferences sharedPreferences;
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -66,10 +61,10 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         }
     };
 
-    private BroadcastReceiver mRegistrationBroadcastReceiver  = new BroadcastReceiver() {
+   /* private BroadcastReceiver mRegistrationBroadcastReceiver  = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean sentToken = sharedPreferences.getBoolean(SharedPrefs.SENT_TOKEN_TO_SERVER, false);
+            boolean sentToken = sharedPreferences.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
             if (sentToken) {
                 Toast.makeText(Main.this, "Token sent to server", Toast.LENGTH_SHORT).show();
             } else {
@@ -77,29 +72,45 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             }
         }
     };
-
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sharedPreferences = getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
-        final SharedPreferences prefs= getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
 
-        Calendar exp = Calendar.getInstance();
-        Calendar today= Calendar.getInstance(TimeZone.getDefault());
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
-        try {
-            exp.setTime(sdf.parse(prefs.getString(SharedPrefs.EXP_DATE,today.getTime().toString())));
+        if (SharedPrefs.isPrankable()) {
+            try {
+                // Convert the expDate in shared prefs to CALENDAR type for comparision
+                Calendar exp = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                exp.setTime(sdf.parse(SharedPrefs.getExpDate()));
 
-        } catch (ParseException e) {
-            e.printStackTrace();
+                // Get current Time from device for comparision
+                Calendar today= Calendar.getInstance(TimeZone.getDefault());
+
+                // Perform Checks for true
+
+                // serverState is 0 and myAppId has not expired
+                if (SharedPrefs.getServerState() == 0 && exp.after(today)){
+                    // Resend the stored myAppID to server
+                }
+                // serverState is 0 and myAppId has expired
+                else if(SharedPrefs.getServerState() == 0 && exp.before(today)){
+                    // Request new appID from server
+                }
+                // serverState is 1 and myGcmId is not set or expDate is not set or expDate has passed
+                else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID()==null || SharedPrefs.getExpDate().equals("null")|| exp.before(today)))
+                {
+                    // Run the method
+                    GCMRegister();
+                }
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-
-        // if (prefs.getString(SharedPrefs.REGISTRATION_TOKEN, null)==null || prefs.getString(SharedPrefs.EXP_DATE,"null")== "null"||exp.before(today)){
-            GCMRegister();
-        //}
-
 
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -184,7 +195,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 if (sound == -1 && soundCus == null) {
                     cToast = new CustomToast(Main.this, "Select  a  sound  first");
                     cToast.show();
-                } else if(prefs.getString(SharedPrefs.FRIENDS_ID,null)== null) {
+                } else if(SharedPrefs.getFrndAppID()!=null) {
                     PrankDialog pDialog = new PrankDialog(Main.this);
                     pDialog.show();
                 } else{
@@ -247,7 +258,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         } catch (Exception e) {
             Log.e("BG Music Destroy", e.toString());
         }
-        sharedPreferences.edit().putString(SharedPrefs.FRIENDS_ID,null).apply();
+        SharedPrefs.setFrndAppID(null);
     }
 
     public void createFragments() {
@@ -319,8 +330,6 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
 
     public void GCMRegister(){
-
-
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
 

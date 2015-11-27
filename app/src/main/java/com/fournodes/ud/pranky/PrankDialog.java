@@ -4,21 +4,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
-import android.os.Handler;
-import android.text.Editable;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Date;
-
-import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 
 /**
  * Created by Usman on 11/6/2015.
@@ -52,7 +41,7 @@ public class PrankDialog {
             @Override
             public void onClick(View view) {
                 if (frndID.getText()!= null){
-                    prefs.edit().putString(SharedPrefs.FRIENDS_ID,frndID.getText().toString()).apply();
+                    prefs.edit().putString(SharedPrefs.FRND_APP_ID,frndID.getText().toString()).apply();
                     dialog.dismiss();
                 }
                 else{

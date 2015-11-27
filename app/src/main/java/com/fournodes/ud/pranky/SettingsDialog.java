@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
+import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 
 /**
  * Created by Usman on 11/6/2015.
@@ -30,37 +30,42 @@ import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
 public class SettingsDialog {
     private Context context;
     private Dialog dialog;
-    private int clockDay, clockHour, clockMin, clockampm; //0 for am 1 for pm
-    private int sound;
-    private AppBGMusic player = getInstance();
+    private BackgroundMusic player = getInstance();
     private boolean playMusic = true;
-
+    private  RemoteServer rs;
 
     public SettingsDialog(Context context) {
         this.context = context;
     }
 
     public void show() {
-
+        // Send the stored GCM ID/Token to the server
+        rs = new RemoteServer(context);
 
         dialog = new Dialog(context, R.style.ClockDialog);
         dialog.setContentView(R.layout.dialog_settings);
+
         Switch btnmusic = (Switch) dialog.findViewById(R.id.btnMusicToggle);
         Switch remoteprank = (Switch) dialog.findViewById(R.id.swtRemotePrank);
         ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
         TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
         final LinearLayout remotePrankID  = (LinearLayout) dialog.findViewById(R.id.layoutRemoteID);
-
         final TextView myid = (TextView) dialog.findViewById(R.id.txtmyID);
+
+        // Get the cached font and apply it
         bgmusic.setTypeface(FontManager.getTypeFace(context, "grinched-regular"));
 
+        // Get myAppID form shared prefs and display it in the dialog
+        myid.setText(SharedPrefs.getMyAppID());
 
-        final SharedPreferences settings = context.getSharedPreferences("PrankySharedPref", 0);
-
-        myid.setText(settings.getString(SharedPrefs.APP_ID,null));
-
-        playMusic = settings.getBoolean("PlayBGMusic", true);
-        btnmusic.setChecked(playMusic);
+        // Initialize the switchs on the dialog by checking shared prefs
+        if (SharedPrefs.isBgMusicEnabled()) {
+            btnmusic.setChecked(playMusic);
+        }
+        if (SharedPrefs.isPrankable()){
+            remoteprank.setChecked(true);
+            remotePrankID.setVisibility(View.VISIBLE);
+        }
 
         btndiagclose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,24 +74,18 @@ public class SettingsDialog {
             }
         });
 
-        final SharedPreferences.Editor editor = settings.edit();
-
         btnmusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    playMusic = true;
-
+                    SharedPrefs.setBgMusicEnabled(true);
 
                 } else {
-                    playMusic = false;
+                    SharedPrefs.setBgMusicEnabled(false);
                 }
 
-                editor.putBoolean("PlayBGMusic", playMusic);
-                editor.commit();
-                if (playMusic) {
+                if (SharedPrefs.isBgMusicEnabled()) {
                     player.mp = MediaPlayer.create(context, R.raw.app_bg);
-                    // player.mp.setLooping(true);
                     player.mp.setVolume(0, (float) 0.2);
                     player.mp.start();
                     player.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -110,36 +109,63 @@ public class SettingsDialog {
                 }
             }
         });
-            if (settings.getBoolean(SharedPrefs.PRANKABLE,true)){
-                remoteprank.setChecked(true);
-                remotePrankID.setVisibility(View.VISIBLE);
 
-            }
+
         remoteprank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
-                    Calendar exp = Calendar.getInstance();
-                    Calendar today= Calendar.getInstance(TimeZone.getDefault());
-                    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
                     try {
-                        exp.setTime(sdf.parse(settings.getString(SharedPrefs.EXP_DATE, "null")));
+                        // Convert the expDate in shared prefs to CALENDAR type for comparision
+                        Calendar exp = Calendar.getInstance();
+                        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                        exp.setTime(sdf.parse(SharedPrefs.getExpDate()));
+
+                        // Get current Time from device for comparision
+                        Calendar today= Calendar.getInstance(TimeZone.getDefault());
+
+                        // Perform Checks for true
+
+                        // serverState is 0 and myAppId has not expired
+                        if (SharedPrefs.getServerState() == 0 && exp.after(today)){
+                            // Resend the stored myAppID to server
+
+                            //Send the GCM id and the myAppID as args
+                            String[] args = {SharedPrefs.getMyGcmID(),SharedPrefs.getMyAppID()};
+                            rs.execute(args);
+                            SharedPrefs.setServerState(1);
+                        }
+                        // serverState is 0 and myAppId has expired
+                        else if(SharedPrefs.getServerState() == 0 && exp.before(today)){
+                            // Request new appID from server
+                            //Send the GCM id and the myAppID as args
+                            String[] args = {SharedPrefs.getMyGcmID(),""};
+                            rs.execute(args);
+                            SharedPrefs.setServerState(1);
+
+                        }
+                        // serverState is 1 and myGcmId is not set or expDate is not set or expDate has passed
+                        else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID()==null || SharedPrefs.getExpDate().equals("null")|| exp.before(today)))
+                        {
+                            // Run the method present in the Main activity
+                            ((Main) context).GCMRegister();
+                        }
+                        remotePrankID.setVisibility(View.VISIBLE);
+
+                        // Set prankable to true in Shared Prefs
+                        SharedPrefs.setPrankable(true);
+                        SharedPrefs.setPrankableResp("enabled"); // String that will go to the server
+
 
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    if (settings.getString(SharedPrefs.REGISTRATION_TOKEN, null)==null || settings.getString(SharedPrefs.EXP_DATE,"null")== "null"||exp.before(today)){
-                        ((Main) context).GCMRegister();
-                    }
-                    remotePrankID.setVisibility(View.VISIBLE);
 
-                   editor.putBoolean(SharedPrefs.PRANKABLE,true).apply();
-                   editor.putString(SharedPrefs.PRANKABLE_RESP, "enabled").apply();
                 }
                 else {
                     remotePrankID.setVisibility(View.INVISIBLE);
-                    editor.putBoolean(SharedPrefs.PRANKABLE, false).apply();
-                    editor.putString(SharedPrefs.PRANKABLE_RESP, "disabled").apply();
+                    SharedPrefs.setPrankable(false);
+                    SharedPrefs.setPrankableResp("disabled"); // String that will go to the server
 
                 }
             }

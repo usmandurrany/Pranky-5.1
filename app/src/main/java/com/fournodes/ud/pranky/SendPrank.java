@@ -40,8 +40,8 @@ public class SendPrank extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... strings) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
-        String frnd_id = sharedPreferences.getString(SharedPrefs.FRIENDS_ID, null);
-        String app_id = sharedPreferences.getString(SharedPrefs.APP_ID, null);
+        String frnd_id = sharedPreferences.getString(SharedPrefs.FRND_APP_ID, null);
+        String app_id = sharedPreferences.getString(SharedPrefs.MY_APP_ID, null);
         String prankableResp = sharedPreferences.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
         boolean prankable = sharedPreferences.getBoolean(SharedPrefs.PRANKABLE, true);
 

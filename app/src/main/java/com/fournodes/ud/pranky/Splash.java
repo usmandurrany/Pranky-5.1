@@ -1,7 +1,6 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,29 +10,37 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import static com.fournodes.ud.pranky.AppBGMusic.getInstance;
+import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 
 public class Splash extends AppCompatActivity {
 
+    // Time for this splash activity
     private final int SPLASH_DISPLAY_LENGTH = 3000;
-    private AppBGMusic player = getInstance();
-    Intent mainIntent;
+    // Loop delay for BG Music
+    private final int BG_MUSIC_DELAY = 2000;
+    // Static class to play BG Music
+    private BackgroundMusic player = getInstance();
+    // Intent to launch the next activity
+    private Intent mainIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        // Cache font in Memory
         FontManager.createTypeFace(Splash.this, "grinched-regular");
 
-        final SharedPreferences settings = getSharedPreferences("PrankySharedPref", 0);
+        // Initialize SharedPrefs will default values
+        new SharedPrefs(Splash.this).initAllPrefs();
 
-
-        if (settings.getBoolean("PlayBGMusic", true)) {
+        // Check if BG Music is enabled in shared prefs
+        if (SharedPrefs.isBgMusicEnabled()) {
             player.mp = MediaPlayer.create(getApplicationContext(), R.raw.app_bg);
-
-            // player.mp.setLooping(true);
             player.mp.setVolume(0, (float) 0.2);
             player.mp.start();
+
+            // Loop the music after a short delay once it has finished
             player.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
@@ -46,53 +53,58 @@ public class Splash extends AppCompatActivity {
                             } catch (IllegalStateException e) {
                             }
                         }
-                    }, 2000);
+                    },BG_MUSIC_DELAY);
                 }
             });
         }
+
+        // Logo text "PRANKY"
         ImageView logo = (ImageView) findViewById(R.id.logo);
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_bounce);
-        logo.startAnimation(animation);
+        // Apply the bounch animation
+        Animation bounceAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_bounce);
+        logo.startAnimation(bounceAnim);
 
+        // Logo icon "Joker Face"
         final ImageView logo_face = (ImageView) findViewById(R.id.logo_face);
-        final Animation animation2 = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_drop);
-        logo_face.startAnimation(animation2);
+        // Apply the first Drop animation
+        final Animation dropAnim = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_drop);
+        logo_face.startAnimation(dropAnim);
 
-        animation2.setAnimationListener(new Animation.AnimationListener() {
+        // Listen for animation complete
+        dropAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Animation animation3 = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_rotate);
-                logo_face.startAnimation(animation3);
+                // Apply Rotate Animation
+                Animation rotateAnim = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_rotate);
+                logo_face.startAnimation(rotateAnim);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
 
 
-        /* New Handler to start the Menu-Activity
+        /* New Handler to start the required activity
          * and close this Splash-Screen after some seconds.*/
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                if (settings.getBoolean("ShowTutorial", true))
-
-
+                // Check if app is launched for the first time
+                if (SharedPrefs.isAppFirstLaunch())
+                // Launch tutorial activity if true
                     mainIntent = new Intent(Splash.this, TutorialActivity.class);
                 else
+                // Launch main activity if false
                     mainIntent = new Intent(Splash.this, Main.class);
 
                 Splash.this.startActivity(mainIntent);
-
                 Splash.this.finish();
+
             }
         }, SPLASH_DISPLAY_LENGTH);
     }

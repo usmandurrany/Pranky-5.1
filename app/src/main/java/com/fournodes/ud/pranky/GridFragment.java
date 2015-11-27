@@ -214,6 +214,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                     previewSound.mp.release();
                     previewSound.mp = null;
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
+                    lastView= -1;
 
                 }
             });
