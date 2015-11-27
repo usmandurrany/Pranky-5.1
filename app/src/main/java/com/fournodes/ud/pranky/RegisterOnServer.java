@@ -24,11 +24,11 @@ import java.util.TimeZone;
 /**
  * Created by Usman on 11/24/2015.
  */
-public class RemoteServer extends AsyncTask<String, String, String>{
+public class RegisterOnServer extends AsyncTask<String, String, String>{
     String result;
     String model;
     Context context;
-    public RemoteServer(Context context){
+    public RegisterOnServer(Context context){
        this.context=context;
     }
     @Override
@@ -36,14 +36,12 @@ public class RemoteServer extends AsyncTask<String, String, String>{
         model = Build.MODEL;
         String gcm_id = strings[0];
         String app_id = strings[1];
-
-        //SharedPreferences sharedPreferences = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
-        //String gcm_id = sharedPreferences.getString(SharedPrefs.MY_GCM_ID,null);
+        int state = SharedPrefs.getServerState();
 
         HttpClient httpclient = new DefaultHttpClient();
 
         // Prepare a request object
-        HttpGet httpget = new HttpGet("http://pranky.four-nodes.com/index.php?model="+model+"&gcm_id="+gcm_id+"&app_id="+app_id);
+        HttpGet httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR+"index.php?model="+model+"&gcm_id="+gcm_id+"&app_id="+app_id+"&state="+String.valueOf(state));
 
         // Execute the request
         HttpResponse response;
@@ -84,13 +82,17 @@ public class RemoteServer extends AsyncTask<String, String, String>{
         try {
             JSONObject resp= new JSONObject(s);
             Log.e("ServerRespnse", resp.getString("result"));
-            Log.e("ServerRespnse", resp.getString("app_id"));
-            Log.e("ServerRespnse", resp.getString("time"));
 
-            if  (resp.getString("result") == "1"){
+            if  (resp.getString("result").equals("1")){
+                Log.e("ServerRespnse", resp.getString("app_id"));
+                Log.e("ServerRespnse", resp.getString("time"));
+
+
                 SharedPrefs.setMyAppID(resp.getString("app_id")); // Store the recieved myAppID in shared prefs
                 SharedPrefs.setSentGcmIDToServer(true);// GCM ID has been sent successfully
                 SharedPrefs.setExpDate(exp_date.getTime().toString());// Expiry date for myAppId is saved
+            } else if (resp.getString("result").equals("2")){
+                Log.e("Server Stats","App ID cleared");
             }
 
         } catch (JSONException e) {

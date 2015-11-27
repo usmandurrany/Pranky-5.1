@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
@@ -23,10 +25,14 @@ public class Splash extends AppCompatActivity {
     // Intent to launch the next activity
     private Intent mainIntent;
 
+    View rootView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        rootView = getLayoutInflater().inflate(R.layout.activity_splash,
+                null);
+        setContentView(rootView);
 
         // Cache font in Memory
         FontManager.createTypeFace(Splash.this, "grinched-regular");
@@ -97,10 +103,10 @@ public class Splash extends AppCompatActivity {
                 // Check if app is launched for the first time
                 if (SharedPrefs.isAppFirstLaunch())
                 // Launch tutorial activity if true
-                    mainIntent = new Intent(Splash.this, TutorialActivity.class);
+                    mainIntent = new Intent(getApplicationContext(), TutorialActivity.class);
                 else
                 // Launch main activity if false
-                    mainIntent = new Intent(Splash.this, Main.class);
+                    mainIntent = new Intent(getApplicationContext(), Main.class);
 
                 Splash.this.startActivity(mainIntent);
                 Splash.this.finish();
@@ -121,6 +127,33 @@ public class Splash extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    protected void unbindDrawables(View view) {
+        if (view != null) {
+            if (view.getBackground() != null) {
+                view.getBackground().setCallback(null);
+            }
+            if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
+                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                    unbindDrawables(((ViewGroup) view).getChildAt(i));
+                }
+                ((ViewGroup) view).removeAllViews();
+            }
+
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
+        unbindDrawables(rootView);
+        rootView = null;
+        System.gc();
+
     }
 
 

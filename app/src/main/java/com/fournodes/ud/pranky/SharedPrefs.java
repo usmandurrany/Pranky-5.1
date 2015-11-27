@@ -3,12 +3,18 @@ package com.fournodes.ud.pranky;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 /**
  * Created by Usman on 11/23/2015.
  */
 public class SharedPrefs {
 
     private static SharedPreferences prefs;
+    private static Calendar defaultExpDate;
+
+    public static final String APP_SERVER_ADDR = "http://192.168.1.2/pranky/"; // Shared Pref File Name
 
     public static final String SHARED_PREF_FILE = "PrankySharedPref"; // Shared Pref File Name
     public static final String SENT_GCM_ID_TO_SERVER = "sentGcmIDToServer"; // boolean
@@ -46,13 +52,15 @@ public class SharedPrefs {
 
     // Must be called every time an object of this class is created  to initialize the attributes;
     public void initAllPrefs() {
+        defaultExpDate = Calendar.getInstance(TimeZone.getDefault());
+
         bgMusicEnabled=prefs.getBoolean(SharedPrefs.BG_MUSIC_ENABLED, true);
         appFirstLaunch=prefs.getBoolean(SharedPrefs.APP_FIRST_LAUNCH, true);
         sentGcmIDToServer=prefs.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
         registrationComplete=prefs.getBoolean(SharedPrefs.REGISTRATION_COMPLETE, false);
         myGcmID=prefs.getString(SharedPrefs.MY_GCM_ID,null);
         myAppID=prefs.getString(SharedPrefs.MY_APP_ID,null);
-        expDate=prefs.getString(SharedPrefs.EXP_DATE,"null"); // Must be string null to avoid null pointer exception
+        expDate=prefs.getString(SharedPrefs.EXP_DATE,defaultExpDate.getTime().toString());
         frndAppID=prefs.getString(SharedPrefs.FRND_APP_ID, null);
         prankable=prefs.getBoolean(SharedPrefs.PRANKABLE, true);
         prankableResp=prefs.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
@@ -103,7 +111,7 @@ public class SharedPrefs {
 
     public static void setExpDate(String expDate) {
         prefs.edit().putString(SharedPrefs.EXP_DATE,expDate).apply();
-        SharedPrefs.expDate=prefs.getString(SharedPrefs.EXP_DATE,"null");
+        SharedPrefs.expDate=prefs.getString(SharedPrefs.EXP_DATE,defaultExpDate.getTime().toString());
 
     }
 

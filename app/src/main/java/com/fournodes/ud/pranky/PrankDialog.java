@@ -36,12 +36,13 @@ public class PrankDialog {
                 dialog.dismiss();
             }
         });
-        final SharedPreferences prefs = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE,0);
+
+
         btnset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (frndID.getText()!= null){
-                    prefs.edit().putString(SharedPrefs.FRND_APP_ID,frndID.getText().toString()).apply();
+                    SharedPrefs.setFrndAppID(frndID.getText().toString());
                     dialog.dismiss();
                 }
                 else{

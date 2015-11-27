@@ -11,8 +11,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 /**
  * Created by Usman on 11/23/2015.
@@ -78,7 +76,7 @@ public class RegistrationIntentService extends IntentService {
         SharedPrefs.setMyGcmID(token); // Store the GCM ID/Token in the Shared Prefs
 
         // Send the stored GCM ID/Token to the server
-        RemoteServer rs= new RemoteServer(getApplicationContext());
+        RegisterOnServer rs= new RegisterOnServer(getApplicationContext());
         //Send the GCM id and the myAppID as args
         String[] args = {SharedPrefs.getMyGcmID(),""}; // myAppID is ""
         rs.execute(args);

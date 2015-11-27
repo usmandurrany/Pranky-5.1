@@ -16,45 +16,39 @@ import java.io.InputStream;
 /**
  * Created by Usman on 11/24/2015.
  */
-public class SendPrank extends AsyncTask<String, String, String> {
+public class SendMessage extends AsyncTask<String, String, String> {
     Context context;
-    int sound;
-    int soundRep;
-    int soundVol;
+    int sound=0;
+    int soundRep=0;
+    int soundVol=0;
+    String soundName="";
     HttpGet httpget;
 
-    public SendPrank(Context context, int sound, int soundRep, int soundVol){
+    public SendMessage(Context context, int sound, int soundRep, int soundVol){
         this.context=context;
         this.sound=sound;
         this.soundRep=soundRep;
         this.soundVol=soundVol;
     }
-    public SendPrank(Context context)
-    {
+    public SendMessage(Context context){
         this.context=context;
-        this.sound=0;
-        this.soundRep=0;
-        this.soundVol=0;
     }
 
     @Override
     protected String doInBackground(String... strings) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
-        String frnd_id = sharedPreferences.getString(SharedPrefs.FRND_APP_ID, null);
-        String app_id = sharedPreferences.getString(SharedPrefs.MY_APP_ID, null);
-        String prankableResp = sharedPreferences.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
-        boolean prankable = sharedPreferences.getBoolean(SharedPrefs.PRANKABLE, true);
+        String app_id=SharedPrefs.getMyAppID();
+        String frnd_id=SharedPrefs.getFrndAppID();
+        String type=strings[0];
+
+        if (sound != 0)
+        {soundName= context.getResources().getResourceEntryName(sound);}
 
         HttpClient httpclient = new DefaultHttpClient();
 
         // Prepare a request object
 
-        if (sound==0){
-           httpget = new HttpGet("http://pranky.four-nodes.com/sendmsg.php?friend_id=" + frnd_id + "&prank_id=" + app_id + "&sound=" + String.valueOf(sound) + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&response=" + prankableResp + "&prankable" + String.valueOf(prankable));
-        }
-        else {
-            httpget = new HttpGet("http://pranky.four-nodes.com/sendmsg.php?friend_id=" + frnd_id + "&prank_id=" + app_id + "&sound=" + context.getResources().getResourceEntryName(sound) + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&response=" + prankableResp + "&prankable" + String.valueOf(prankable));
-        }
+         httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR+"sendmsg.php?friend_id=" + frnd_id + "&app_id=" + app_id + "&sound=" + soundName + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&type=" + type);
+
         // Execute the request
         HttpResponse response;
         try {

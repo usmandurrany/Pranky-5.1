@@ -5,11 +5,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
@@ -29,59 +29,58 @@ public class MyGcmListenerService extends GcmListenerService {
      */
     // [START receive_message]
     @Override
-    public void onMessageReceived(String from, Bundle data) {
-        SharedPreferences prefs = getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
-        String prankResp = data.getString("response");
-        String sound = data.getString("sound");
-        String soundRep = data.getString("soundRep");
-        String soundVol = data.getString("soundVol");
+    public void onMessageReceived(String from, Bundle data) { // Prank received will trigger this
+        String type = data.getString("type");
+        String senderAppID= data.getString("app_id");
 
-        if (prefs.getBoolean(SharedPrefs.PRANKABLE,true) && sound != "0") {
+        Log.e("Sender ID",senderAppID);
+        Log.e("Type",type);
 
 
 
+        switch(type) {
+            case "prank":
 
-            Intent intent = new Intent(getApplicationContext(), PlaySound.class);
+                if (SharedPrefs.isPrankable()) {
+                    String sound = data.getString("sound");
+                    String soundRep = data.getString("soundRep");
+                    String soundVol = data.getString("soundVol");
 
-            intent.putExtra("Sound", sound);
-            intent.putExtra("SoundCus", "");
-            intent.putExtra("SoundRepeat", soundRep);
-            intent.putExtra("SoundVol", soundVol);
-
-//        Toast.makeText(getApplicationContext(), String.valueOf(soundRepeat), Toast.LENGTH_SHORT).show();
-
-
-            final int _id = (int) System.currentTimeMillis();
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), _id,
-                    intent, PendingIntent.FLAG_ONE_SHOT);
-
-            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
+                    Intent intent = new Intent(getApplicationContext(), PlaySound.class);
+                    intent.putExtra("Sound", sound);
+                    intent.putExtra("SoundCus", "");
+                    intent.putExtra("SoundRepeat", soundRep);
+                    intent.putExtra("SoundVol", soundVol);
 
 
-            // Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_LONG).show();
+                    final int _id = (int) System.currentTimeMillis();
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), _id,
+                            intent, PendingIntent.FLAG_ONE_SHOT);
 
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
 
-            String message = data.getString("message");
+                } else {
+                    SharedPrefs.setServerState(0); // Set serverState to 0
+                    // Send request to app server to remove myAppID from database untill serverState becomes 1
+                    RegisterOnServer rs = new RegisterOnServer(getApplicationContext());
+                    String[] args = {SharedPrefs.getMyGcmID(), ""};
+                    rs.execute(args);
+                    // Once myAppID has been removed from the db on the server, generate a response for the sender
+                    SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
+                    SendMessage sendResponse= new SendMessage(getApplicationContext());// generate a request
+                    sendResponse.execute("response"); // with type response
+                }
+                break;
 
+            case "response":
+                // Broadcast the response to Main activity to display a toast
+                Intent intent = new Intent("main-activity-broadcast");
+                intent.putExtra("message", "prank-response-received");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 
-            Log.d(TAG, "From: " + from);
-            Log.d(TAG, "Message: " + message);
-
-            if (from.startsWith("/topics/")) {
-                // message received from some topic.
-            } else {
-                // normal downstream message.
-            }
-        }else if (prankResp == "disabled" && sound == "0"){
-            Log.e("RESPONSE","YOUR FRIEND IS NOT PRANKABLE AT THE MOMENT");
+                break;
         }
-
-        else{
-            SendPrank notPrankable = new SendPrank(getApplicationContext());
-            notPrankable.execute();
-        }
-
         // [START_EXCLUDE]
         /**
          * Production applications would usually process the message here.

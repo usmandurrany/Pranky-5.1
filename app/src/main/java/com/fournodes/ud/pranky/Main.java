@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,8 +12,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +29,7 @@ import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 public class Main extends FragmentActivity implements SoundSelectListener {
     public me.relex.circleindicator.CircleIndicator mIndicator;
     protected View decorView;
+    View rootView;
     protected ViewPager mGridPager;
     protected PagerAdapter pm;
     protected ImageView clock;
@@ -52,32 +53,27 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
             String message = intent.getStringExtra("message");
-            Log.d("receiver", "Got message: " + message);
-
-
-            createFragments();
-            mGridPager.setCurrentItem(pm.getCount() - 1);
-
-        }
-    };
-
-   /* private BroadcastReceiver mRegistrationBroadcastReceiver  = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            boolean sentToken = sharedPreferences.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
-            if (sentToken) {
-                Toast.makeText(Main.this, "Token sent to server", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(Main.this, "There was an error", Toast.LENGTH_SHORT).show();
+            if (message.equals("custom-sound-added")){
+                createFragments();
+                mGridPager.setCurrentItem(pm.getCount() - 1);
+            } else if (message.equals("prank-response-received")){
+                CustomToast cToast = new CustomToast(getApplicationContext(), "Your Friend is not prankable at the moment");
+                cToast.show();
             }
+
+
+
+
         }
     };
-*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        rootView = getLayoutInflater().inflate(R.layout.activity_main,
+                null);
+        setContentView(rootView);
+
 
         if (SharedPrefs.isPrankable()) {
             try {
@@ -100,7 +96,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                     // Request new appID from server
                 }
                 // serverState is 1 and myGcmId is not set or expDate is not set or expDate has passed
-                else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID()==null || SharedPrefs.getExpDate().equals("null")|| exp.before(today)))
+                else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID()==null || exp.before(today)))
                 {
                     // Run the method
                     GCMRegister();
@@ -114,7 +110,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("custom-sound-added"));
+                mMessageReceiver, new IntentFilter("main-activity-broadcast"));
 
         mGridPager = (ViewPager) findViewById(R.id.pager);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
@@ -158,7 +154,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             @Override
             public void onClick(View view) {
                 if (sound == -1 && soundCus == null) {
-                    cToast = new CustomToast(Main.this, "Select  a  sound  first");
+                    cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                 } else {
                     ClockDialog cDialog = new ClockDialog(Main.this, sound, soundCus, soundRep, soundVol);
@@ -172,7 +168,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             @Override
             public void onClick(View view) {
                 if (sound == -1 && soundCus == null) {
-                    cToast = new CustomToast(Main.this, "Select  a  sound  first");
+                    cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                 } else {
                     TimerDialog tDialog = new TimerDialog(Main.this, sound, soundCus, soundRep, soundVol);
@@ -193,19 +189,18 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             @Override
             public void onClick(View view) {
                 if (sound == -1 && soundCus == null) {
-                    cToast = new CustomToast(Main.this, "Select  a  sound  first");
+                    cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
-                } else if(SharedPrefs.getFrndAppID()!=null) {
+                } else if(SharedPrefs.getFrndAppID()== null) {
                     PrankDialog pDialog = new PrankDialog(Main.this);
                     pDialog.show();
                 } else{
-                    SendPrank sendPrank = new SendPrank(Main.this, sound,soundRep,soundVol);
-                    sendPrank.execute();
+                    SendMessage sendMessage = new SendMessage(getApplicationContext(), sound,soundRep,soundVol);
+                    sendMessage.execute("prank");
 
                 }
             }
         });
-
 
     }
 
@@ -259,6 +254,10 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             Log.e("BG Music Destroy", e.toString());
         }
         SharedPrefs.setFrndAppID(null);
+
+        unbindDrawables(rootView);
+        rootView = null;
+        System.gc();
     }
 
     public void createFragments() {
@@ -311,7 +310,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         c.close();
 
 
-        pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments, Main.this);
+        pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments, getApplicationContext());
         mGridPager.setAdapter(pm);
     }
 
@@ -323,7 +322,6 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         this.soundRep = SoundRep;
         this.soundVol = Soundvol;
 
-        //Toast.makeText(Main.this,"Repeat Count: " + soundRep + " Sound Vol : "+ soundVol, Toast.LENGTH_LONG).show();
 
 
     }
@@ -332,6 +330,22 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     public void GCMRegister(){
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
+
+    }
+
+    protected void unbindDrawables(View view) {
+        if (view != null) {
+            if (view.getBackground() != null) {
+                view.getBackground().setCallback(null);
+            }
+            if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
+                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                    unbindDrawables(((ViewGroup) view).getChildAt(i));
+                }
+                ((ViewGroup) view).removeAllViews();
+            }
+
+        }
 
     }
 }

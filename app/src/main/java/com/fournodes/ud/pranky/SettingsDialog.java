@@ -3,9 +3,9 @@ package com.fournodes.ud.pranky;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
@@ -32,7 +32,7 @@ public class SettingsDialog {
     private Dialog dialog;
     private BackgroundMusic player = getInstance();
     private boolean playMusic = true;
-    private  RemoteServer rs;
+    private RegisterOnServer rs;
 
     public SettingsDialog(Context context) {
         this.context = context;
@@ -40,7 +40,7 @@ public class SettingsDialog {
 
     public void show() {
         // Send the stored GCM ID/Token to the server
-        rs = new RemoteServer(context);
+        rs = new RegisterOnServer(context);
 
         dialog = new Dialog(context, R.style.ClockDialog);
         dialog.setContentView(R.layout.dialog_settings);
@@ -117,7 +117,7 @@ public class SettingsDialog {
                 if (isChecked){
                     try {
                         // Convert the expDate in shared prefs to CALENDAR type for comparision
-                        Calendar exp = Calendar.getInstance();
+                        Calendar exp = Calendar.getInstance(TimeZone.getDefault());
                         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
                         exp.setTime(sdf.parse(SharedPrefs.getExpDate()));
 
@@ -128,28 +128,34 @@ public class SettingsDialog {
 
                         // serverState is 0 and myAppId has not expired
                         if (SharedPrefs.getServerState() == 0 && exp.after(today)){
+                            Log.e("Condition1","True");
                             // Resend the stored myAppID to server
 
                             //Send the GCM id and the myAppID as args
+                            SharedPrefs.setServerState(1);
                             String[] args = {SharedPrefs.getMyGcmID(),SharedPrefs.getMyAppID()};
                             rs.execute(args);
-                            SharedPrefs.setServerState(1);
                         }
                         // serverState is 0 and myAppId has expired
                         else if(SharedPrefs.getServerState() == 0 && exp.before(today)){
+                            Log.e("Condition2","True");
+
                             // Request new appID from server
                             //Send the GCM id and the myAppID as args
+                            SharedPrefs.setServerState(1);
                             String[] args = {SharedPrefs.getMyGcmID(),""};
                             rs.execute(args);
-                            SharedPrefs.setServerState(1);
 
                         }
                         // serverState is 1 and myGcmId is not set or expDate is not set or expDate has passed
-                        else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID()==null || SharedPrefs.getExpDate().equals("null")|| exp.before(today)))
+                        else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID()==null || exp.before(today)))
                         {
+                            Log.e("Condition3","True");
+
                             // Run the method present in the Main activity
                             ((Main) context).GCMRegister();
                         }
+
                         remotePrankID.setVisibility(View.VISIBLE);
 
                         // Set prankable to true in Shared Prefs

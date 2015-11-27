@@ -11,6 +11,8 @@ import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -34,11 +36,14 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
     String fileExt;
     ImageView btnsave;
     ImageView custom;
+    View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_soundselect);
+        rootView = getLayoutInflater().inflate(R.layout.activity_soundselect,
+                null);
+        setContentView(rootView);
 
         decorView = getWindow().getDecorView();
 
@@ -62,7 +67,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
         btndiagclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SoundSelect.this.finish();
+                finish();
             }
         });
 
@@ -131,9 +136,9 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
 
 
                 Log.d("sender", "Broadcasting message");
-                Intent intent = new Intent("custom-sound-added");
+                Intent intent = new Intent("main-activity-broadcast");
                 // You can also include some extra data.
-                intent.putExtra("message", "This is my message!");
+                intent.putExtra("message", "custom-sound-added");
                 LocalBroadcastManager.getInstance(SoundSelect.this).sendBroadcast(intent);
                 finish();
             }
@@ -197,4 +202,33 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
             e.printStackTrace();
         }
     }
+
+    protected void unbindDrawables(View view) {
+        if (view != null) {
+            if (view.getBackground() != null) {
+                view.getBackground().setCallback(null);
+            }
+            if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
+                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                    unbindDrawables(((ViewGroup) view).getChildAt(i));
+                }
+                ((ViewGroup) view).removeAllViews();
+            }
+
+        }
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
+        unbindDrawables(rootView);
+        rootView = null;
+        System.gc();
+
+    }
+
 }
