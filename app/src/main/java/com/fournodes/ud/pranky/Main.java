@@ -45,6 +45,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     private String soundCus = null;
     private BackgroundMusic player = getInstance();
     private int pageNo = 0;
+    RegisterOnServer rs;
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -57,6 +58,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 createFragments();
                 mGridPager.setCurrentItem(pm.getCount() - 1);
             } else if (message.equals("prank-response-received")){
+                Log.e("ResponseLOG","Hey");
                 CustomToast cToast = new CustomToast(getApplicationContext(), "Your Friend is not prankable at the moment");
                 cToast.show();
             }
@@ -74,7 +76,6 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 null);
         setContentView(rootView);
 
-
         if (SharedPrefs.isPrankable()) {
             try {
                 // Convert the expDate in shared prefs to CALENDAR type for comparision
@@ -82,21 +83,24 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
                 exp.setTime(sdf.parse(SharedPrefs.getExpDate()));
 
-                // Get current Time from device for comparision
+                // Get current Time from device for comparison
                 Calendar today= Calendar.getInstance(TimeZone.getDefault());
 
-                // Perform Checks for true
 
-                // serverState is 0 and myAppId has not expired
-                if (SharedPrefs.getServerState() == 0 && exp.after(today)){
-                    // Resend the stored myAppID to server
-                }
-                // serverState is 0 and myAppId has expired
-                else if(SharedPrefs.getServerState() == 0 && exp.before(today)){
+                // Perform Checks for true
+                //serverState is 1 and myAppID has expired but myGcmID is set
+                if(SharedPrefs.getServerState() == 1 && exp.before(today) && SharedPrefs.getMyGcmID()!=null){
                     // Request new appID from server
+
+                    // Initialize the RegisterOnServer class
+                    rs = new RegisterOnServer(getApplicationContext());
+                    SharedPrefs.setMyAppID(""); // First clear the myAppID on device
+                     // Send myGcmID but empty myAppID
+                    String[] args = {SharedPrefs.getMyGcmID(),SharedPrefs.getMyAppID()};
+                    rs.execute(args);
                 }
-                // serverState is 1 and myGcmId is not set or expDate is not set or expDate has passed
-                else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID()==null || exp.before(today)))
+                // serverState is 1 and myGcmId is not set
+                else if (SharedPrefs.getServerState() == 1 && SharedPrefs.getMyGcmID() == null && SharedPrefs.getMyGcmID() == null)
                 {
                     // Run the method
                     GCMRegister();
@@ -109,8 +113,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         }
 
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("main-activity-broadcast"));
+
 
         mGridPager = (ViewPager) findViewById(R.id.pager);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
@@ -229,6 +232,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         } catch (Exception e) {
             Log.e("BG Music Resume", e.toString());
         }
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mMessageReceiver, new IntentFilter("main-activity-broadcast"));
     }
 
     @Override
@@ -241,6 +246,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         } catch (Exception e) {
             Log.e("BG Music Pause", e.toString());
         }
+
     }
 
     @Override
@@ -250,10 +256,12 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             if (player.mp != null) {
                 player.mp.release();
             }
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         } catch (Exception e) {
-            Log.e("BG Music Destroy", e.toString());
+            Log.e("Main Destroy", e.toString());
         }
         SharedPrefs.setFrndAppID(null);
+
 
         unbindDrawables(rootView);
         rootView = null;
@@ -328,7 +336,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
 
 
     public void GCMRegister(){
-        Intent intent = new Intent(this, RegistrationIntentService.class);
+        Intent intent = new Intent(getApplicationContext(), RegistrationIntentService.class);
         startService(intent);
 
     }

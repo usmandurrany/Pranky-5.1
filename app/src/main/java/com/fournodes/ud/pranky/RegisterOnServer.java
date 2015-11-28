@@ -92,7 +92,7 @@ public class RegisterOnServer extends AsyncTask<String, String, String>{
                 SharedPrefs.setSentGcmIDToServer(true);// GCM ID has been sent successfully
                 SharedPrefs.setExpDate(exp_date.getTime().toString());// Expiry date for myAppId is saved
             } else if (resp.getString("result").equals("2")){
-                Log.e("Server Stats","App ID cleared");
+                Log.e("Response","Server State Updated");
             }
 
         } catch (JSONException e) {

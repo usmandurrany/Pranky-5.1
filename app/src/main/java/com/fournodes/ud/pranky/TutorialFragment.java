@@ -82,10 +82,7 @@ public class TutorialFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent main = new Intent(getActivity(), Main.class);
-                    SharedPreferences settings = getActivity().getSharedPreferences("PrankySharedPref", 0);
-                    final SharedPreferences.Editor editor = settings.edit();
-                    editor.putBoolean("ShowTutorial", false);
-                    editor.apply();
+                    SharedPrefs.setAppFirstLaunch(false);
                     startActivity(main);
                     getActivity().finish();
 

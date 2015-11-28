@@ -64,8 +64,8 @@ public class MyGcmListenerService extends GcmListenerService {
                     SharedPrefs.setServerState(0); // Set serverState to 0
                     // Send request to app server to remove myAppID from database untill serverState becomes 1
                     RegisterOnServer rs = new RegisterOnServer(getApplicationContext());
-                    String[] args = {SharedPrefs.getMyGcmID(), ""};
-                    rs.execute(args);
+                    String[] args = {SharedPrefs.getMyGcmID(), SharedPrefs.getMyAppID()};
+                    rs.execute(args); // Params (myGcmID, myAppId, serverState(fom stored prefs))
                     // Once myAppID has been removed from the db on the server, generate a response for the sender
                     SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
                     SendMessage sendResponse= new SendMessage(getApplicationContext());// generate a request

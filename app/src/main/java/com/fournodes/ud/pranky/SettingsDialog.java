@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -40,13 +41,12 @@ public class SettingsDialog {
 
     public void show() {
         // Send the stored GCM ID/Token to the server
-        rs = new RegisterOnServer(context);
 
         dialog = new Dialog(context, R.style.ClockDialog);
         dialog.setContentView(R.layout.dialog_settings);
 
-        Switch btnmusic = (Switch) dialog.findViewById(R.id.btnMusicToggle);
-        Switch remoteprank = (Switch) dialog.findViewById(R.id.swtRemotePrank);
+        SwitchCompat btnmusic = (SwitchCompat) dialog.findViewById(R.id.btnMusicToggle);
+        SwitchCompat remoteprank = (SwitchCompat) dialog.findViewById(R.id.swtRemotePrank);
         ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
         TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
         final LinearLayout remotePrankID  = (LinearLayout) dialog.findViewById(R.id.layoutRemoteID);
@@ -114,6 +114,9 @@ public class SettingsDialog {
         remoteprank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                // Initialize the RegisterOnServer class
+                rs = new RegisterOnServer(context);
+
                 if (isChecked){
                     try {
                         // Convert the expDate in shared prefs to CALENDAR type for comparision
@@ -129,8 +132,8 @@ public class SettingsDialog {
                         // serverState is 0 and myAppId has not expired
                         if (SharedPrefs.getServerState() == 0 && exp.after(today)){
                             Log.e("Condition1","True");
-                            // Resend the stored myAppID to server
 
+                            // Resend the stored myAppID to server
                             //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
                             String[] args = {SharedPrefs.getMyGcmID(),SharedPrefs.getMyAppID()};
@@ -143,7 +146,8 @@ public class SettingsDialog {
                             // Request new appID from server
                             //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
-                            String[] args = {SharedPrefs.getMyGcmID(),""};
+                            SharedPrefs.setMyAppID(""); // Clear the myAppID before requesting form the server
+                            String[] args = {SharedPrefs.getMyGcmID(),SharedPrefs.getMyAppID()};
                             rs.execute(args);
 
                         }
