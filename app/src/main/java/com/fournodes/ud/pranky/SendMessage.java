@@ -24,11 +24,11 @@ public class SendMessage extends AsyncTask<String, String, String> {
     String soundName="";
     HttpGet httpget;
 
-    public SendMessage(Context context, int sound, int soundRep, int soundVol){
-        this.context=context;
-        this.sound=sound;
-        this.soundRep=soundRep;
-        this.soundVol=soundVol;
+    public SendMessage(Context context, boolean fromButton){
+        this.context = context;
+        this.sound = Sound.sysSound;
+        this.soundRep = Sound.repeatCount;
+        this.soundVol = (int) Sound.volume;
     }
     public SendMessage(Context context){
         this.context=context;
@@ -41,7 +41,9 @@ public class SendMessage extends AsyncTask<String, String, String> {
         String type=strings[0];
 
         if (sound != 0)
-        {soundName= context.getResources().getResourceEntryName(sound);}
+        {
+            soundName= Sound.soundName;
+        }
 
         HttpClient httpclient = new DefaultHttpClient();
 

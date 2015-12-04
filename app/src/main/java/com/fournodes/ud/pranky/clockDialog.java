@@ -22,18 +22,10 @@ public class ClockDialog {
     private Context context;
     private Dialog dialog;
     private int clockDay, clockHour, clockMin, clockampm; //0 for am 1 for pm
-    private int sound;
-    private String soundCus;
-    public int soundVol;
-    public int soundRepeat;
 
 
-    public ClockDialog(Context context, int sound, String soundCus, int soundRepeat, int soundVol) {
+    public ClockDialog(Context context) {
         this.context = context;
-        this.sound = sound;
-        this.soundCus = soundCus;
-        this.soundRepeat = soundRepeat;
-        this.soundVol = soundVol;
     }
 
 
@@ -92,7 +84,7 @@ public class ClockDialog {
                 clockHour = hour.getCurrentItem();
                 clockMin = min.getCurrentItem();
                 clockampm = ampm.getCurrentItem();
-                SoundScheduler scheduler = new SoundScheduler(context, clockDay, clockHour, clockMin, clockampm, sound, soundCus, soundRepeat, soundVol);
+                SoundScheduler scheduler = new SoundScheduler(context, clockDay, clockHour, clockMin, clockampm);
                 if (scheduler.validateTime(scheduler.clockSchedule(), "dialog_clock")) {
                     scheduler.ScheduleSoundPlayback("dialog_clock", scheduler.clockSchedule());
                     dialog.dismiss();

@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,7 +45,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     CustomToast cToast;
     private int sound = -1;
     private String soundCus = null;
-    private BackgroundMusic player = getInstance();
+//    private BackgroundMusic player = getInstance(getApplicationContext());
     private int pageNo = 0;
     RegisterOnServer rs;
 
@@ -75,8 +77,13 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         rootView = getLayoutInflater().inflate(R.layout.activity_main,
                 null);
         setContentView(rootView);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float scaleFactor = metrics.density;
 
+        Toast.makeText(Main.this, String.valueOf(scaleFactor), Toast.LENGTH_SHORT).show();
         if (SharedPrefs.isPrankable()) {
+
             try {
                 // Convert the expDate in shared prefs to CALENDAR type for comparision
                 Calendar exp = Calendar.getInstance();
@@ -156,11 +163,11 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         clock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sound == -1 && soundCus == null) {
+                if (Sound.sysSound == -1 && Sound.cusSound == null) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                 } else {
-                    ClockDialog cDialog = new ClockDialog(Main.this, sound, soundCus, soundRep, soundVol);
+                    ClockDialog cDialog = new ClockDialog(Main.this);
                     cDialog.show();
                 }
             }
@@ -170,11 +177,11 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sound == -1 && soundCus == null) {
+                if (Sound.sysSound == -1 && Sound.cusSound == null) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                 } else {
-                    TimerDialog tDialog = new TimerDialog(Main.this, sound, soundCus, soundRep, soundVol);
+                    TimerDialog tDialog = new TimerDialog(Main.this);
                     tDialog.show();
                 }
             }
@@ -191,14 +198,18 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         prankbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sound == -1 && soundCus == null) {
-                    cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
+                if (Sound.sysSound == -1 && Sound.cusSound == null) {
+                    cToast = new CustomToast(Main.this, "Select  a  non-custom   sound  first");
+                    cToast.show();
+                } else if(Sound.sysSound == -1 && Sound.cusSound != null) {
+
+                    cToast = new CustomToast(Main.this, "A  non-custom  sound  should  be  selected");
                     cToast.show();
                 } else if(SharedPrefs.getFrndAppID()== null) {
                     PrankDialog pDialog = new PrankDialog(Main.this);
                     pDialog.show();
                 } else{
-                    SendMessage sendMessage = new SendMessage(getApplicationContext(), sound,soundRep,soundVol);
+                    SendMessage sendMessage = new SendMessage(getApplicationContext(), true);
                     sendMessage.execute("prank");
 
                 }
@@ -226,8 +237,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected void onResume() {
         super.onResume();
         try {
-            if (player.mp != null) {
-                player.mp.start();
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.play();
             }
         } catch (Exception e) {
             Log.e("BG Music Resume", e.toString());
@@ -240,8 +251,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected void onPause() {
         super.onPause();
         try {
-            if (player.mp != null) {
-                player.mp.pause();
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.pause();
             }
         } catch (Exception e) {
             Log.e("BG Music Pause", e.toString());
@@ -253,8 +264,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     public void onDestroy() {
         super.onDestroy();
         try {
-            if (player.mp != null) {
-                player.mp.release();
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.stop();
             }
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         } catch (Exception e) {

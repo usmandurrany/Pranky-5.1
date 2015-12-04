@@ -47,10 +47,10 @@ public class MyGcmListenerService extends GcmListenerService {
                     String soundVol = data.getString("soundVol");
 
                     Intent intent = new Intent(getApplicationContext(), PlaySound.class);
-                    intent.putExtra("Sound", sound);
-                    intent.putExtra("SoundCus", "");
-                    intent.putExtra("SoundRepeat", soundRep);
-                    intent.putExtra("SoundVol", soundVol);
+                    intent.putExtra("sysSound", Sound.getSoundRes(sound));
+                    intent.putExtra("cusSound", "");
+                    intent.putExtra("repeatCount", Integer.valueOf(soundRep));
+                    intent.putExtra("volume", Integer.valueOf(soundVol));
 
 
                     final int _id = (int) System.currentTimeMillis();

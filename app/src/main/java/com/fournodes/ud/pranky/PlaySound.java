@@ -12,34 +12,32 @@ import java.io.IOException;
 public class PlaySound extends BroadcastReceiver {
     MediaPlayer player = null;
     int counter = 1;
-    String sound;
-    String soundCus;
-    String soundRepeat;
-    String soundVol;
+    int sysSound;
+    String cusSound;
+    int repeatCount;
+    int volume;
 
     public PlaySound() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        sound = intent.getStringExtra("Sound");
+        sysSound = intent.getIntExtra("sysSound", -1);
         //     Log.e("System Sound",sound);
-        soundCus = intent.getStringExtra("SoundCus");
-        Log.e("Custom Sound", soundCus);
-        soundRepeat = intent.getStringExtra("SoundRepeat");
-        Log.e("Repeat Count", soundRepeat);
-        soundVol = intent.getStringExtra("SoundVol");
-        Log.e("Sound Volume", soundVol);
+        cusSound = intent.getStringExtra("cusSound");
+        Log.e("Custom Sound", String.valueOf(cusSound));
+        repeatCount = intent.getIntExtra("repeatCount", 1);
+        Log.e("Repeat Count", String.valueOf(repeatCount));
+        volume = intent.getIntExtra("volume", 1);
+        Log.e("Sound Volume", String.valueOf(volume));
 
-        try {
-
-            if (sound != null)
-                player = MediaPlayer.create(context, R.raw.class.getField(sound).getInt(null));
+            if (sysSound != -1)
+                player = MediaPlayer.create(context, sysSound);
             else {
                 player = new MediaPlayer();
                 try {
-                    player.setDataSource(soundCus);
-                    player.setVolume(0, Integer.valueOf(soundVol));
+                    player.setDataSource(cusSound);
+                    player.setVolume(0, sysSound);
                     player.prepareAsync();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -60,7 +58,7 @@ public class PlaySound extends BroadcastReceiver {
 
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (counter == Integer.valueOf(soundRepeat)) {
+                    if (counter == repeatCount) {
                         mp.release();
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
                     } else
@@ -68,12 +66,6 @@ public class PlaySound extends BroadcastReceiver {
                     counter++;
                 }
             });
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
 
 
     }

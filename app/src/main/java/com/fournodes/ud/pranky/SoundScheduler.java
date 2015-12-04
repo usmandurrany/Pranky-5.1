@@ -19,8 +19,6 @@ public class SoundScheduler {
     Calendar schAlarm;
     private Context context;
     private int day, hr, min, sec, ampm;
-    private int sound;
-    private String soundCus;
 
 
     public SoundScheduler(Context context) {
@@ -28,28 +26,20 @@ public class SoundScheduler {
 
     }
 
-    public SoundScheduler(Context context, int day, int hr, int min, int ampm, int sound, String soundCus, int soundRepeat, int soundVol) {
+    public SoundScheduler(Context context, int day, int hr, int min, int ampm) {
         this.context = context;
         this.day = day;
         this.hr = (hr + 1);
 
         this.min = min;
         this.ampm = ampm;
-        this.sound = sound;
-        this.soundCus = soundCus;
-        this.soundRepeat = soundRepeat;
-        this.soundVol = soundVol;
     }
 
-    public SoundScheduler(Context context, int hr, int min, int sec, int sound, String soundCus, int soundRepeat, int soundVol) {
+    public SoundScheduler(Context context, int hr, int min, int sec) {
         this.context = context;
         this.hr = hr;
         this.min = min;
         this.sec = sec;
-        this.sound = sound;
-        this.soundCus = soundCus;
-        this.soundRepeat = soundRepeat;
-        this.soundVol = soundVol;
     }
 
     public void get24HrTime() {
@@ -104,13 +94,13 @@ public class SoundScheduler {
 
     public void ScheduleSoundPlayback(String type, Calendar schAlarm) {
         Intent intent = new Intent(context, PlaySound.class);
-        if (sound != 0)
-            intent.putExtra("Sound", context.getResources().getResourceEntryName(sound));
-        intent.putExtra("SoundCus", soundCus);
-        intent.putExtra("SoundRepeat", String.valueOf(soundRepeat));
-        intent.putExtra("SoundVol", String.valueOf(soundVol));
+        if (Sound.sysSound != 0)
+            intent.putExtra("sysSound",Sound.sysSound);
+        intent.putExtra("cusSound", Sound.cusSound);
+        intent.putExtra("repeatCount", Sound.repeatCount);
+        intent.putExtra("volume", (int) Sound.volume);
 
-        Toast.makeText(context, String.valueOf(soundRepeat), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, String.valueOf(Sound.repeatCount), Toast.LENGTH_SHORT).show();
 
 
         final int _id = (int) System.currentTimeMillis();

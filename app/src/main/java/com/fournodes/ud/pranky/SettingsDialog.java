@@ -31,7 +31,7 @@ import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 public class SettingsDialog {
     private Context context;
     private Dialog dialog;
-    private BackgroundMusic player = getInstance();
+    private BackgroundMusic player;
     private boolean playMusic = true;
     private RegisterOnServer rs;
 
@@ -49,7 +49,7 @@ public class SettingsDialog {
         SwitchCompat remoteprank = (SwitchCompat) dialog.findViewById(R.id.swtRemotePrank);
         ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
         TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
-        final LinearLayout remotePrankID  = (LinearLayout) dialog.findViewById(R.id.layoutRemoteID);
+        final LinearLayout remotePrankID = (LinearLayout) dialog.findViewById(R.id.layoutRemoteID);
         final TextView myid = (TextView) dialog.findViewById(R.id.txtmyID);
 
         // Get the cached font and apply it
@@ -62,7 +62,7 @@ public class SettingsDialog {
         if (SharedPrefs.isBgMusicEnabled()) {
             btnmusic.setChecked(playMusic);
         }
-        if (SharedPrefs.isPrankable()){
+        if (SharedPrefs.isPrankable()) {
             remoteprank.setChecked(true);
             remotePrankID.setVisibility(View.VISIBLE);
         }
@@ -85,27 +85,11 @@ public class SettingsDialog {
                 }
 
                 if (SharedPrefs.isBgMusicEnabled()) {
-                    player.mp = MediaPlayer.create(context, R.raw.app_bg);
-                    player.mp.setVolume(0, (float) 0.2);
-                    player.mp.start();
-                    player.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mediaPlayer) {
+                    BackgroundMusic.setContext(context);
 
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-                                    try {
-                                        player.mp.start();
-                                    } catch (IllegalStateException e) {
-                                    }
-                                }
-                            }, 2000);
-                        }
-                    });
+                    BackgroundMusic.play();
                 } else {
-                    player.mp.stop();
-                    player.mp.release();
+                    BackgroundMusic.stop();
                 }
             }
         });
@@ -117,7 +101,7 @@ public class SettingsDialog {
                 // Initialize the RegisterOnServer class
                 rs = new RegisterOnServer(context);
 
-                if (isChecked){
+                if (isChecked) {
                     try {
                         // Convert the expDate in shared prefs to CALENDAR type for comparision
                         Calendar exp = Calendar.getInstance(TimeZone.getDefault());
@@ -125,36 +109,35 @@ public class SettingsDialog {
                         exp.setTime(sdf.parse(SharedPrefs.getExpDate()));
 
                         // Get current Time from device for comparision
-                        Calendar today= Calendar.getInstance(TimeZone.getDefault());
+                        Calendar today = Calendar.getInstance(TimeZone.getDefault());
 
                         // Perform Checks for true
 
                         // serverState is 0 and myAppId has not expired
-                        if (SharedPrefs.getServerState() == 0 && exp.after(today)){
-                            Log.e("Condition1","True");
+                        if (SharedPrefs.getServerState() == 0 && exp.after(today)) {
+                            Log.e("Condition1", "True");
 
                             // Resend the stored myAppID to server
                             //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
-                            String[] args = {SharedPrefs.getMyGcmID(),SharedPrefs.getMyAppID()};
+                            String[] args = {SharedPrefs.getMyGcmID(), SharedPrefs.getMyAppID()};
                             rs.execute(args);
                         }
                         // serverState is 0 and myAppId has expired
-                        else if(SharedPrefs.getServerState() == 0 && exp.before(today)){
-                            Log.e("Condition2","True");
+                        else if (SharedPrefs.getServerState() == 0 && exp.before(today)) {
+                            Log.e("Condition2", "True");
 
                             // Request new appID from server
                             //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
                             SharedPrefs.setMyAppID(""); // Clear the myAppID before requesting form the server
-                            String[] args = {SharedPrefs.getMyGcmID(),SharedPrefs.getMyAppID()};
+                            String[] args = {SharedPrefs.getMyGcmID(), SharedPrefs.getMyAppID()};
                             rs.execute(args);
 
                         }
                         // serverState is 1 and myGcmId is not set or expDate is not set or expDate has passed
-                        else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID()==null || exp.before(today)))
-                        {
-                            Log.e("Condition3","True");
+                        else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID() == null || exp.before(today))) {
+                            Log.e("Condition3", "True");
 
                             // Run the method present in the Main activity
                             ((Main) context).GCMRegister();
@@ -171,8 +154,7 @@ public class SettingsDialog {
                         e.printStackTrace();
                     }
 
-                }
-                else {
+                } else {
                     remotePrankID.setVisibility(View.INVISIBLE);
                     SharedPrefs.setPrankable(false);
                     SharedPrefs.setPrankableResp("disabled"); // String that will go to the server
