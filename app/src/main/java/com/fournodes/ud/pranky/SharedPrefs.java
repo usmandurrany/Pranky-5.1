@@ -29,6 +29,7 @@ public class SharedPrefs {
     public static final String SERVER_STATE = "serverState"; // 0 for null, 1 for ready
     public static final String BG_MUSIC_ENABLED = "bgMusicEnabled"; // boolean
     public static final String APP_FIRST_LAUNCH = "appFirstLaunch"; // boolean
+    public static final String PRANK_BTN_ENABLED = "prankBtnEnabled"; // boolean
 
     private static int serverState;
     private static String myGcmID;
@@ -41,9 +42,11 @@ public class SharedPrefs {
     private static boolean appFirstLaunch;
     private static boolean sentGcmIDToServer;
     private static boolean registrationComplete;
+    private static boolean prankBtnEnabled;
 
 
     Context context;
+
 
     public SharedPrefs(Context context) {
         this.context = context;
@@ -56,6 +59,7 @@ public class SharedPrefs {
         defaultExpDate = Calendar.getInstance(TimeZone.getDefault());
 
         bgMusicEnabled=prefs.getBoolean(SharedPrefs.BG_MUSIC_ENABLED, true);
+        prankBtnEnabled=prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, false);
         appFirstLaunch=prefs.getBoolean(SharedPrefs.APP_FIRST_LAUNCH, true);
         sentGcmIDToServer=prefs.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
         registrationComplete=prefs.getBoolean(SharedPrefs.REGISTRATION_COMPLETE, false);
@@ -91,8 +95,8 @@ public class SharedPrefs {
     }
 
     public static void setMyGcmID(String myGcmID) {
-        prefs.edit().putString(SharedPrefs.MY_GCM_ID,myGcmID).apply();
-        SharedPrefs.myGcmID=prefs.getString(SharedPrefs.MY_GCM_ID,null);
+        prefs.edit().putString(SharedPrefs.MY_GCM_ID, myGcmID).apply();
+        SharedPrefs.myGcmID=prefs.getString(SharedPrefs.MY_GCM_ID, null);
 
     }
 
@@ -141,7 +145,7 @@ public class SharedPrefs {
     }
 
     public static void setPrankableResp(String prankableResp) {
-        prefs.edit().putString(SharedPrefs.PRANKABLE_RESP,prankableResp).apply();
+        prefs.edit().putString(SharedPrefs.PRANKABLE_RESP, prankableResp).apply();
         SharedPrefs.prankableResp=prefs.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
 
     }
@@ -161,7 +165,7 @@ public class SharedPrefs {
     }
 
     public static void setSentGcmIDToServer(boolean sentGcmIDToServer) {
-        prefs.edit().putBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER,sentGcmIDToServer).apply();
+        prefs.edit().putBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, sentGcmIDToServer).apply();
         SharedPrefs.sentGcmIDToServer=prefs.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
 
     }
@@ -175,6 +179,15 @@ public class SharedPrefs {
         SharedPrefs.registrationComplete=prefs.getBoolean(SharedPrefs.REGISTRATION_COMPLETE, false);
 
     }
+    public static boolean isPrankBtnEnabled() {
+        return prankBtnEnabled;
+    }
+
+    public static void setPrankBtnEnabled(boolean prankBtnEnabled) {
+        prefs.edit().putBoolean(SharedPrefs.PRANK_BTN_ENABLED,prankBtnEnabled).apply();
+        SharedPrefs.prankBtnEnabled = prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, false);
+    }
+
 
 
 }

@@ -8,11 +8,6 @@ public class GridItems {
     public Integer soundVol;
     public Integer soundRepeat;
 
-    public GridItems(int id, Integer res) {
-        this.id = id;
-        this.res = res;
-    }
-
     public GridItems(Integer id, Integer res, String sound) {
         this.id = id;
         this.res = res;

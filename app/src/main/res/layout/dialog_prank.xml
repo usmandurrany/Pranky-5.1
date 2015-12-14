@@ -56,7 +56,7 @@
                 android:textStyle="bold" />
 
             <EditText
-
+                android:singleLine="true"
                 android:id="@+id/txtfrndID"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"

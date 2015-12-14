@@ -93,7 +93,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     }
 
     public void onGridItemClick(GridView g, View v, final int pos, long id) throws NoSuchFieldException, IllegalAccessException {
-        Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
 
         try {
             if (previewSound.mp.isPlaying()) {
@@ -140,17 +139,16 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Repeat Count is: "+ gridItems[pos].soundRepeat, Toast.LENGTH_LONG).show();
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Volume is: "+ gridItems[pos].soundVol, Toast.LENGTH_LONG).show();
-        String name = getResources().getResourceEntryName(gridItems[pos].res);
 
 
-        if (Sound.soundName == "addmore") {
+        if (gridItems[pos].sound =="addmore") {
             Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
             //SoundSelect soundseldiag = new SoundSelect(activity);
             //soundseldiag.show();
             soundAct = new Intent(getActivity(), SoundSelect.class);
             startActivity(soundAct);
         } else {
-
+            Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
             if (Sound.sysSound != -1) {
                 previewSound.mp = MediaPlayer.create(activity, Sound.sysSound);
             } else if (Sound.cusSound != null) {

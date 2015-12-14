@@ -3,6 +3,7 @@ package com.fournodes.ud.pranky;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.widget.SwitchCompat;
@@ -140,7 +141,10 @@ public class SettingsDialog {
                             Log.e("Condition3", "True");
 
                             // Run the method present in the Main activity
-                            ((Main) context).GCMRegister();
+                            //((Main) context).GCMRegister();
+                            Intent intent = new Intent("CONNECTIVITY_CHECK");
+                            context.sendBroadcast(intent);
+
                         }
 
                         remotePrankID.setVisibility(View.VISIBLE);
