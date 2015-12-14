@@ -28,11 +28,9 @@ import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 public class GridFragment extends android.support.v4.app.Fragment implements IFragment {
 
     GridItems[] gridItems = {};
-    SoundSelectListener soundsel;
     ImageView img;
     Intent soundAct;
     int currVol;
-    int sound;
     int lastView = -1;
     private int viewPOS;
     private GridView mGridView;
@@ -62,17 +60,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         mGridView = (GridView) view.findViewById(R.id.grid_view);
 
         return view;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            soundsel = (SoundSelectListener) activity;
-
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement soundSelectListener");
-        }
     }
 
     @Override
@@ -106,7 +93,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     }
 
     public void onGridItemClick(GridView g, View v, final int pos, long id) throws NoSuchFieldException, IllegalAccessException {
-
 
         try {
             if (previewSound.mp.isPlaying()) {
@@ -153,26 +139,19 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Repeat Count is: "+ gridItems[pos].soundRepeat, Toast.LENGTH_LONG).show();
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Volume is: "+ gridItems[pos].soundVol, Toast.LENGTH_LONG).show();
-        String name = getResources().getResourceEntryName(gridItems[pos].res);
 
 
-        if (getResources().getResourceEntryName(gridItems[pos].res).equals("addmore")) {
+        if (gridItems[pos].sound =="addmore") {
             Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
             //SoundSelect soundseldiag = new SoundSelect(activity);
             //soundseldiag.show();
             soundAct = new Intent(getActivity(), SoundSelect.class);
             startActivity(soundAct);
         } else {
-
-            if (gridItems[pos].sound.equals("raw." + name)) {
-                sound = R.raw.class.getField(name).getInt(null);
-                soundsel.selectedSound(sound, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
-
-                previewSound.mp = MediaPlayer.create(activity, sound);
-
-
-            } else if (gridItems[pos].sound != ("raw." + name)) {
-                soundsel.selectedSound(sound, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+            Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+            if (Sound.sysSound != -1) {
+                previewSound.mp = MediaPlayer.create(activity, Sound.sysSound);
+            } else if (Sound.cusSound != null) {
                 previewSound.mp = new MediaPlayer();
                 try {
                     previewSound.mp.setDataSource(gridItems[pos].sound);
@@ -242,16 +221,12 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             img.setImageResource(0);
             img = null;
         }
-        try {
-            soundsel.selectedSound(-1, null, 0, 0);
-        } catch (Exception e) {
-            Log.e("Sound Sel Remover", e.toString());
-        }
-
         lastView = -1;
         viewPOS = -1;
+        Sound.clearSoundProp();
 
     }
+
 
     @Override
     public void TutImageClick() {

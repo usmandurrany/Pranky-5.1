@@ -18,10 +18,7 @@ public class Splash extends AppCompatActivity {
 
     // Time for this splash activity
     private final int SPLASH_DISPLAY_LENGTH = 3000;
-    // Loop delay for BG Music
-    private final int BG_MUSIC_DELAY = 2000;
-    // Static class to play BG Music
-    private BackgroundMusic player = getInstance();
+
     // Intent to launch the next activity
     private Intent mainIntent;
 
@@ -42,26 +39,10 @@ public class Splash extends AppCompatActivity {
 
         // Check if BG Music is enabled in shared prefs
         if (SharedPrefs.isBgMusicEnabled()) {
-            player.mp = MediaPlayer.create(getApplicationContext(), R.raw.app_bg);
-            player.mp.setVolume(0, (float) 0.2);
-            player.mp.start();
 
-            // Loop the music after a short delay once it has finished
-            player.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        public void run() {
-                            try {
-                                player.mp.start();
-                            } catch (IllegalStateException e) {
-                            }
-                        }
-                    },BG_MUSIC_DELAY);
-                }
-            });
+            // Static class to play BG Music
+            BackgroundMusic.setContext(getApplicationContext());
+            BackgroundMusic.play();
         }
 
         // Logo text "PRANKY"

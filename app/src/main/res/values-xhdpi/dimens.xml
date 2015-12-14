@@ -8,8 +8,8 @@
     <dimen name="close_btn_margin_top">194dp</dimen>
     <dimen name="close_btn_margin_right">22dp</dimen>
 
-    <dimen name="sett_btn_margin_top">52dp</dimen>
-    <dimen name="sett_btn_margin_right">22dp</dimen>
+    <dimen name="setBtnTopMar">52dp</dimen>
+    <dimen name="setBtnRightMar">22dp</dimen>
 
     <dimen name="clock_btn_margin_bottom">70dp</dimen>
     <dimen name="clock_btn_margin_left">40dp</dimen>

@@ -9,38 +9,47 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
+
 public class PlaySound extends BroadcastReceiver {
-    MediaPlayer player = null;
+    private PreviewMediaPlayer playSound = getInstance();
     int counter = 1;
-    String sound;
-    String soundCus;
-    String soundRepeat;
-    String soundVol;
+    int sysSound;
+    String cusSound;
+    int repeatCount;
+    int volume;
 
     public PlaySound() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        sound = intent.getStringExtra("Sound");
+        sysSound = intent.getIntExtra("sysSound", -1);
         //     Log.e("System Sound",sound);
-        soundCus = intent.getStringExtra("SoundCus");
-        Log.e("Custom Sound", soundCus);
-        soundRepeat = intent.getStringExtra("SoundRepeat");
-        Log.e("Repeat Count", soundRepeat);
-        soundVol = intent.getStringExtra("SoundVol");
-        Log.e("Sound Volume", soundVol);
-
+        cusSound = intent.getStringExtra("cusSound");
+        Log.e("Custom Sound", String.valueOf(cusSound));
+        repeatCount = intent.getIntExtra("repeatCount", 1);
+        Log.e("Repeat Count", String.valueOf(repeatCount));
+        volume = intent.getIntExtra("volume", 1);
+        Log.e("Sound Volume", String.valueOf(volume));
         try {
+            if (playSound.mp.isPlaying()) {
+                playSound.mp.stop();
+                playSound.mp.release();
+                playSound.mp = null;
 
-            if (sound != null)
-                player = MediaPlayer.create(context, R.raw.class.getField(sound).getInt(null));
+            }
+        } catch (Exception e) {
+            Log.e("Preview MediaPlayer", e.toString());
+        }
+            if (sysSound != -1)
+                playSound.mp = MediaPlayer.create(context, sysSound);
             else {
-                player = new MediaPlayer();
+                playSound.mp = new MediaPlayer();
                 try {
-                    player.setDataSource(soundCus);
-                    player.setVolume(0, Integer.valueOf(soundVol));
-                    player.prepareAsync();
+                    playSound.mp.setDataSource(cusSound);
+                    playSound.mp.setVolume(0, sysSound);
+                    playSound.mp.prepareAsync();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -49,31 +58,25 @@ public class PlaySound extends BroadcastReceiver {
 
             final int currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        playSound.mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        playSound.mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
-                    player.start();
+                    playSound.mp.start();
                 }
             });
-            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        playSound.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (counter == Integer.valueOf(soundRepeat)) {
+                    if (counter == repeatCount) {
                         mp.release();
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
                     } else
-                        player.start();
+                        playSound.mp.start();
                     counter++;
                 }
             });
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
 
 
     }

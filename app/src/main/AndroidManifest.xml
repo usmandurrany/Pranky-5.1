@@ -29,6 +29,13 @@
                 <category android:name="com.example.gcm" />
             </intent-filter>
         </receiver>
+        <receiver android:name="NetworkConnectivityCheck" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="CONNECTIVITY_CHECK"/>
+
+            </intent-filter>
+        </receiver>
         <service
             android:name=".MyGcmListenerService"
             android:exported="false" >

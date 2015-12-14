@@ -22,12 +22,8 @@ public class TimerDialog {
     public int soundVol;
     public int soundRepeat;
 
-    public TimerDialog(Context context, int sound, String soundCus, int soundRepeat, int soundVol) {
+    public TimerDialog(Context context) {
         this.context = context;
-        this.sound = sound;
-        this.soundCus = soundCus;
-        this.soundRepeat = soundRepeat;
-        this.soundVol = soundVol;
     }
 
 
@@ -72,7 +68,7 @@ public class TimerDialog {
             @Override
             public void onClick(View view) {
 
-                SoundScheduler scheduler = new SoundScheduler(context, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem(), sound, soundCus, soundRepeat, soundVol);
+                SoundScheduler scheduler = new SoundScheduler(context, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem());
 
                 if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")) {
                     scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());

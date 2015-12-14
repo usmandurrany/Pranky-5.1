@@ -47,10 +47,10 @@ public class MyGcmListenerService extends GcmListenerService {
                     String soundVol = data.getString("soundVol");
 
                     Intent intent = new Intent(getApplicationContext(), PlaySound.class);
-                    intent.putExtra("Sound", sound);
-                    intent.putExtra("SoundCus", "");
-                    intent.putExtra("SoundRepeat", soundRep);
-                    intent.putExtra("SoundVol", soundVol);
+                    intent.putExtra("sysSound", Sound.getSoundRes(sound));
+                    intent.putExtra("cusSound", "");
+                    intent.putExtra("repeatCount", Integer.valueOf(soundRep));
+                    intent.putExtra("volume", Integer.valueOf(soundVol));
 
 
                     final int _id = (int) System.currentTimeMillis();
@@ -59,6 +59,10 @@ public class MyGcmListenerService extends GcmListenerService {
 
                     AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
+
+                    SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
+                    SendMessage sendResponse= new SendMessage(getApplicationContext());// generate a request
+                    sendResponse.execute("success"); // with type response
 
                 } else {
                     SharedPrefs.setServerState(0); // Set serverState to 0
@@ -78,6 +82,13 @@ public class MyGcmListenerService extends GcmListenerService {
                 Intent intent = new Intent("main-activity-broadcast");
                 intent.putExtra("message", "prank-response-received");
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
+                break;
+            case "success":
+                // Broadcast the response to Main activity to display a toast
+                Intent succ = new Intent("main-activity-broadcast");
+                succ.putExtra("message", "prank-successful");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(succ);
 
                 break;
         }
