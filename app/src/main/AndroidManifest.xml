@@ -10,7 +10,11 @@
     <permission android:name="com.fournodes.ud.pranky.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="com.fournodes.ud.pranky.permission.C2D_MESSAGE" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <permission android:name="android.permission.FLASHLIGHT"
+        android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
+        android:protectionLevel="normal" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
 
     <application

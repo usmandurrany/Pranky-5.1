@@ -4,11 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
+import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
@@ -32,13 +37,13 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     Intent soundAct;
     int currVol;
     int lastView = -1;
+    int i;
     private int viewPOS;
     private GridView mGridView;
     private GridAdapter mGridAdapter;
     private Activity activity;
     private PreviewMediaPlayer previewSound = getInstance();
-
-
+    Camera cam=null;
     public GridFragment() {
     }
 
@@ -139,7 +144,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Repeat Count is: "+ gridItems[pos].soundRepeat, Toast.LENGTH_LONG).show();
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Volume is: "+ gridItems[pos].soundVol, Toast.LENGTH_LONG).show();
-
+        Log.w("IMAGE CLICKED",gridItems[pos].sound);
 
         if (gridItems[pos].sound =="addmore") {
             Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
@@ -147,7 +152,71 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             //soundseldiag.show();
             soundAct = new Intent(getActivity(), SoundSelect.class);
             startActivity(soundAct);
-        } else {
+        }else if (gridItems[pos].sound.equals("flash")) {
+            Toast.makeText(activity, "The Flash", Toast.LENGTH_SHORT).show();
+            if(activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH))
+            {
+                cam = Camera.open();
+                Camera.Parameters p = cam.getParameters();
+                p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                cam.setParameters(p);
+                cam.startPreview();
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                            cam.stopPreview();
+                            cam.release();
+
+                    }
+                }, gridItems[pos].soundRepeat*1000);
+            }
+
+        }else if (gridItems[pos].sound.equals("flash_blink")) {
+            Toast.makeText(activity, "The Flash Blink", Toast.LENGTH_SHORT).show();
+            if(activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+
+                for (i = 0; i < 10; i++) {
+                    if(cam==null)
+                    cam =  Camera.open();
+                    Camera.Parameters p = cam.getParameters();
+                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    cam.setParameters(p);
+                    cam.startPreview();
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            try {
+
+                                    Camera.Parameters p1 = cam.getParameters();
+                                    p1.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                                    cam.setParameters(p1);
+                                    cam.stopPreview();
+                                cam = null;
+
+
+                            } catch (Exception e) {
+
+                            }
+                            finally {
+                                cam.stopPreview();
+                                cam.release();
+                            }
+
+                        }
+                    }, gridItems[pos].soundRepeat*10);
+                }
+            }
+
+        }else  if (gridItems[pos].sound.equals("vibrate_hw")) {
+            Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
+            long[] pattern = new long[15];
+            Arrays.fill(pattern, 100);
+
+            ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern,-1);
+
+        }else {
             Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
             if (Sound.sysSound != -1) {
                 previewSound.mp = MediaPlayer.create(activity, Sound.sysSound);

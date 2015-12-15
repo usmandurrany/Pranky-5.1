@@ -115,8 +115,9 @@ public class NetworkConnectivityCheck extends BroadcastReceiver {
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(context);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog((Activity)context, resultCode, 9000)
-                        .show();
+                //apiAvailability.getErrorDialog((Activity)context, resultCode, 9000)
+                  //      .show();
+                Log.w("Play Services","Play Services Not Found");
             } else {
                 Log.i("Play Services", "This device is not supported.");
             }

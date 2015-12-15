@@ -1,7 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <dimen name="set_btn_margin_bottom">193dp</dimen>
+    <dimen name="set_btn_margin_bottom">192dp</dimen>
 
     <dimen name="day_hh_mm_ss_margin_top">270dp</dimen>
 
@@ -30,7 +30,7 @@
     <dimen name="viewpager_padding_top">10dp</dimen>
 
 
-    <dimen name="save_btn_margin_bottom">167dp</dimen>
+    <dimen name="save_btn_margin_bottom">164dp</dimen>
     <dimen name="close_btn_margin_right_long">28dp</dimen>
     <dimen name="close_btn_margin_top_long">195dp</dimen>
     <dimen name="sel_sound_margin_top">300dp</dimen>
@@ -53,7 +53,7 @@
     <dimen name="music_switch_margin_left">60dp</dimen>
 
     <dimen name="prank_text_margin_right">10dp</dimen>
-    <dimen name="prank_switch_margin_left">5dp</dimen>
+    <dimen name="prank_switch_margin_left">35dp</dimen>
 
     <dimen name="id_text_margin_right">60dp</dimen>
     <dimen name="id_value_margin_left">85dp</dimen>

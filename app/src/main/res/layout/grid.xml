@@ -21,6 +21,7 @@
         android:numColumns="3"
         android:scrollbars="none"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp"></GridView>
+        android:verticalSpacing="10dp"
+        android:gravity="center_horizontal"/>
 
 </RelativeLayout>
