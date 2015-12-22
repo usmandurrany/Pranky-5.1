@@ -113,6 +113,11 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 previewSound.mp = null;
 
             }
+            if (cam != null){
+                cam.stopPreview();
+                cam.release();
+                cam = null;
+            }
         } catch (Exception e) {
             Log.e("Preview MediaPlayer", e.toString());
         }
@@ -162,7 +167,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         } else if (gridItems[pos].sound.equals("raw.flash")) {
            // Toast.makeText(activity, "The Flash", Toast.LENGTH_SHORT).show();
             if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-                cam = Camera.open();
+                try {
+                    cam = Camera.open();
+                }catch (RuntimeException e ){Log.w("Camera Flash",e.toString());}
                 Camera.Parameters p = cam.getParameters();
                 p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 cam.setParameters(p);
@@ -171,11 +178,14 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        cam.stopPreview();
-                        cam.release();
+                        try {
+                            cam.stopPreview();
+                            cam.release();
+                        }
+                        catch(RuntimeException e){Log.w("Camera Flash",e.toString());}
 
                     }
-                }, gridItems[pos].soundRepeat * 1000);
+                }, 2000);
                 Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
             }
 
@@ -187,7 +197,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 flashBlinkRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        cam = Camera.open();
+                        try {
+                            cam = Camera.open();
+                        }catch (RuntimeException e ){Log.w("Camera Blink",e.toString());}
                         params = cam.getParameters();
                         try {
                             cam.setPreviewTexture(new SurfaceTexture(0));
@@ -206,9 +218,11 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                                 e.printStackTrace();
                             }
                         }
-                        cam.stopPreview();
-                        cam.release();
-                        //handler.post(flashBlinkRunnable);
+                        try {
+                            cam.stopPreview();
+                            cam.release();
+                        }
+                        catch(RuntimeException e){Log.w("Camera Blink",e.toString());}
 
                     }
                 };
@@ -317,14 +331,16 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     }
 
     private void flipFlash() {
-        if (isLighOn) {
-            params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-            cam.setParameters(params);
-            isLighOn = false;
-        } else {
-            params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            cam.setParameters(params);
-            isLighOn = true;
-        }
+        try {
+            if (isLighOn) {
+                params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                cam.setParameters(params);
+                isLighOn = false;
+            } else {
+                params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                cam.setParameters(params);
+                isLighOn = true;
+            }
+        } catch (RuntimeException e){Log.w("Camera Blink", e.toString());}
     }
 }

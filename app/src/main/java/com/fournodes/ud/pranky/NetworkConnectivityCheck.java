@@ -40,6 +40,7 @@ public class NetworkConnectivityCheck extends BroadcastReceiver {
         // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
         if ( networkInfo != null && networkInfo.isConnected() ) {
 
+            if (SharedPrefs.isPrankBtnEnabled() == false)
             SharedPrefs.setPrankBtnEnabled(true);
 
 
