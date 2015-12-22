@@ -3,11 +3,18 @@ package com.fournodes.ud.pranky;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
@@ -18,7 +25,9 @@ public class PlaySound extends BroadcastReceiver {
     String cusSound;
     int repeatCount;
     int volume;
-
+    Camera cam;
+    Camera.Parameters params;
+    boolean isLighOn;
     public PlaySound() {
     }
 
@@ -42,6 +51,73 @@ public class PlaySound extends BroadcastReceiver {
         } catch (Exception e) {
             Log.e("Preview MediaPlayer", e.toString());
         }
+
+    if (("raw.vibrate_hw").equals(cusSound)) {
+        Log.w("Vibrate", "SUCCESS");
+        long[] pattern = new long[15];
+        Arrays.fill(pattern, 100);
+        ((Vibrator) context.getSystemService(context.VIBRATOR_SERVICE)).vibrate(pattern, -1);
+
+    } else if (("raw.flash").equals(cusSound)) {
+        Log.w("Flash", "SUCCESS");
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+            cam = Camera.open();
+            Camera.Parameters p = cam.getParameters();
+            p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            cam.setParameters(p);
+            cam.startPreview();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    cam.stopPreview();
+                    cam.release();
+
+                }
+            }, repeatCount * 1000);
+
+        }
+
+    } else if (("raw.flash_blink").equals(cusSound)) {
+        Log.w("Blink", "SUCCESS");
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+
+
+            Runnable flashBlinkRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    cam = Camera.open();
+                    params = cam.getParameters();
+                    try {
+                        cam.setPreviewTexture(new SurfaceTexture(0));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    cam.startPreview();
+
+                    for (int i = 0; i < 2; i++) {
+                        try {
+                            flipFlash();
+                            Thread.sleep(500);
+                            flipFlash();
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    cam.stopPreview();
+                    cam.release();
+                    //handler.post(flashBlinkRunnable);
+
+                }
+            };
+
+            new Thread(flashBlinkRunnable).start();
+
+        }
+    }
+
+        else{
             if (sysSound != -1)
                 playSound.mp = MediaPlayer.create(context, sysSound);
             else {
@@ -67,17 +143,31 @@ public class PlaySound extends BroadcastReceiver {
             });
         playSound.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if (counter == repeatCount) {
-                        mp.release();
-                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
-                    } else
-                        playSound.mp.start();
-                    counter++;
-                }
-            });
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if (counter == repeatCount) {
+                    mp.release();
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
+                } else
+                    playSound.mp.start();
+                counter++;
+            }
+        });
 
 
+    }
+
+
+    }
+    private void flipFlash(){
+        if (isLighOn) {
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            cam.setParameters(params);
+            isLighOn = false;
+        } else {
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            cam.setParameters(params);
+            isLighOn = true;
+        }
     }
 }

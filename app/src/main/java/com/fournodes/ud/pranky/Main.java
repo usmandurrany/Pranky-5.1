@@ -167,7 +167,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             @Override
             public void onClick(View view) {
                 if (Sound.sysSound == -1 && Sound.cusSound == null) {
-                    cToast = new CustomToast(Main.this, "Select  a  non-custom   sound  first");
+                    cToast = new CustomToast(Main.this, "Select  a  sound  first");
                     cToast.show();
                 } else if(Sound.sysSound == -1 && Sound.cusSound != null) {
 

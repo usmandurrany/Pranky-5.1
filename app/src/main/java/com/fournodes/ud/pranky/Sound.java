@@ -20,13 +20,19 @@ public class Sound {
     // The rest are Repeat count and Volume, respectively
     //</summary>
     public static void setSoundProp(Context context, int iRes, String sound, int rCount, int vol) {
-        soundName = getSoundName(iRes, context);
-        if(sound.equals("raw." + soundName)){
-            cusSound = null;
-            sysSound = getSoundRes(soundName);
-        }else{
+        if (sound.equals("raw.flash") || sound.equals("raw.flash_blink") || sound.equals("raw.vibrate_hw")){
             sysSound = -1;
             cusSound = sound;
+        } else {
+
+            soundName = getSoundName(iRes, context);
+            if (sound.equals("raw." + soundName)) {
+                cusSound = null;
+                sysSound = getSoundRes(soundName);
+            } else {
+                sysSound = -1;
+                cusSound = sound;
+            }
         }
         repeatCount = rCount;
         volume = (float) vol;
@@ -44,9 +50,9 @@ public class Sound {
         try {
             return R.raw.class.getField(soundName).getInt(null);
         } catch (IllegalAccessException e) {
-            Log.w("Sound", e.toString());
+            Log.w("SoundRes", e.toString());
         } catch (NoSuchFieldException e) {
-            Log.w("Sound", e.toString());
+            Log.w("SoundRes", e.toString());
         }
 
         return 0;
@@ -57,7 +63,7 @@ public class Sound {
         try {
             return context.getResources().getResourceEntryName(iRes);
         } catch (Exception e) {
-            Log.w("Sound", e.toString());
+            Log.w("SoundName", e.toString());
         }
 
         return null;
