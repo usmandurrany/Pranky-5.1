@@ -5,11 +5,11 @@
 
     <dimen name="day_hh_mm_ss_margin_top">230dp</dimen>
 
-    <dimen name="close_btn_margin_top">192dp</dimen>
-    <dimen name="close_btn_margin_right">18dp</dimen>
+    <dimen name="close_btn_margin_top">188dp</dimen>
+    <dimen name="close_btn_margin_right">25dp</dimen>
 
-    <dimen name="sett_btn_margin_top">52dp</dimen>
-    <dimen name="sett_btn_margin_right">22dp</dimen>
+    <dimen name="setBtnTopMar">52dp</dimen>
+    <dimen name="setBtnRightMar">35dp</dimen>
 
     <dimen name="clock_btn_margin_bottom">75dp</dimen>
     <dimen name="clock_btn_margin_left">50dp</dimen>
@@ -23,10 +23,10 @@
     <dimen name="indicator_line_margin_top">-45dp</dimen>
 
 
-    <dimen name="viewpager_margin_top">120dp</dimen>
+    <dimen name="viewpager_margin_top">150dp</dimen>
     <dimen name="viewpager_margin_bottom">170dp</dimen>
-    <dimen name="viewpager_margin_left">50dp</dimen>
-    <dimen name="viewpager_margin_right">50dp</dimen>
+    <dimen name="viewpager_margin_left">55dp</dimen>
+    <dimen name="viewpager_margin_right">55dp</dimen>
     <dimen name="viewpager_padding_top">10dp</dimen>
 
     <dimen name="save_btn_margin_bottom">130dp</dimen>
@@ -47,6 +47,9 @@
     <dimen name="settings_font_small">15sp</dimen>
 
     <dimen name="prankit_width">170dp</dimen>
+
+    <dimen name="prank_text_margin_right">10dp</dimen>
+    <dimen name="prank_switch_margin_left">25dp</dimen>
 
 
 </resources>

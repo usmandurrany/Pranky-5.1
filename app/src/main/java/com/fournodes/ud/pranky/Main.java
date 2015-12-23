@@ -163,6 +163,14 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         });
 
         prankbtn = (ImageView) findViewById(R.id.prankit);
+        prankbtn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                cToast = new CustomToast(Main.this, "Long Press Detected");
+                cToast.show();
+                return false;
+            }
+        });
         prankbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

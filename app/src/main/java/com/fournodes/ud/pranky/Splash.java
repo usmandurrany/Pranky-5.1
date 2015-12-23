@@ -31,11 +31,14 @@ public class Splash extends AppCompatActivity {
                 null);
         setContentView(rootView);
 
-        // Cache font in Memory
-        FontManager.createTypeFace(Splash.this, "grinched-regular");
-
         // Initialize SharedPrefs will default values
         new SharedPrefs(Splash.this).initAllPrefs();
+
+
+        // Cache font in Memory
+        //FontManager.createTypeFace(Splash.this, "grinched-regular");
+        FontManager.createTypeFace(Splash.this, SharedPrefs.DEFAULT_FONT);
+
 
         // Check if BG Music is enabled in shared prefs
         if (SharedPrefs.isBgMusicEnabled()) {

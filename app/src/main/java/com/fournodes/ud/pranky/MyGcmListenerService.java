@@ -9,6 +9,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -36,6 +37,10 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.e("Sender ID",senderAppID);
         Log.e("Type",type);
 
+        if (SharedPrefs.prefs == null) {
+            SharedPrefs SP = new SharedPrefs(getApplicationContext());
+            SP.initAllPrefs();
+        }
 
 
         switch(type) {
@@ -43,12 +48,23 @@ public class MyGcmListenerService extends GcmListenerService {
 
                 if (SharedPrefs.isPrankable()) {
                     String sound = data.getString("sound");
+
                     String soundRep = data.getString("soundRep");
                     String soundVol = data.getString("soundVol");
 
                     Intent intent = new Intent(getApplicationContext(), PlaySound.class);
-                    intent.putExtra("sysSound", Sound.getSoundRes(sound));
-                    intent.putExtra("cusSound", "");
+                    if (sound.equals("raw.flash") || sound.equals("raw.flash_blink") || sound.equals("raw.vibrate_hw") || sound.equals("raw.message")){
+                        intent.putExtra("sysSound", -1);
+                        intent.putExtra("cusSound", sound.toString());
+
+                    }
+                    else
+                    {
+                        intent.putExtra("sysSound", Sound.getSoundRes(sound));
+                        intent.putExtra("cusSound", "");
+                    }
+
+
                     intent.putExtra("repeatCount", Integer.valueOf(soundRep));
                     intent.putExtra("volume", Integer.valueOf(soundVol));
 

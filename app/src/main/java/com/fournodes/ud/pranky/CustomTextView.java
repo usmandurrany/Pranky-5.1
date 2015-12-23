@@ -15,18 +15,18 @@ public class CustomTextView extends TextView {
         super(context);
 
 
-        setTypeface(FontManager.getTypeFace(context, "grinched-regular"));
+        setTypeface(FontManager.getTypeFace(context, SharedPrefs.DEFAULT_FONT));
     }
 
     public CustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setTypeface(FontManager.getTypeFace(context, "grinched-regular"));
+        setTypeface(FontManager.getTypeFace(context, SharedPrefs.DEFAULT_FONT));
 
     }
 
     public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setTypeface(FontManager.getTypeFace(context, "grinched-regular"));
+        setTypeface(FontManager.getTypeFace(context, SharedPrefs.DEFAULT_FONT));
 
     }
 

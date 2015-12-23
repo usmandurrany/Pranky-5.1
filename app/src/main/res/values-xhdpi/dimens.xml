@@ -23,10 +23,10 @@
     <dimen name="indicator_line_margin_top">-50dp</dimen>
 
 
-    <dimen name="viewpager_margin_top">120dp</dimen>
-    <dimen name="viewpager_margin_bottom">180dp</dimen>
-    <dimen name="viewpager_margin_left">50dp</dimen>
-    <dimen name="viewpager_margin_right">50dp</dimen>
+    <dimen name="viewpager_margin_top">150dp</dimen>
+    <dimen name="viewpager_margin_bottom">170dp</dimen>
+    <dimen name="viewpager_margin_left">55dp</dimen>
+    <dimen name="viewpager_margin_right">55dp</dimen>
     <dimen name="viewpager_padding_top">10dp</dimen>
 
 

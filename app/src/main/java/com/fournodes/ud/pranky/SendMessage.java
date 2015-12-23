@@ -40,10 +40,10 @@ public class SendMessage extends AsyncTask<String, String, String> {
         String frnd_id=SharedPrefs.getFrndAppID();
         String type=strings[0];
 
-        if (sound != 0)
-        {
-            soundName= Sound.soundName;
-        }
+        if (sound == -2) // condition for HW fucntions to be treated as a special type of sysSound
+            soundName = Sound.cusSound;
+        else
+            soundName = Sound.soundName;
 
         HttpClient httpclient = new DefaultHttpClient();
 

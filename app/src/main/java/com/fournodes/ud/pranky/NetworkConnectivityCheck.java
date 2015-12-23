@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.content.LocalBroadcastManager;
@@ -40,7 +41,11 @@ public class NetworkConnectivityCheck extends BroadcastReceiver {
         // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
         if ( networkInfo != null && networkInfo.isConnected() ) {
 
-            if (SharedPrefs.isPrankBtnEnabled() == false)
+            if (SharedPrefs.prefs == null) {
+                SharedPrefs SP = new SharedPrefs(context);
+                SP.initAllPrefs();
+            }
+
             SharedPrefs.setPrankBtnEnabled(true);
 
 

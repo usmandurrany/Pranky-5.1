@@ -8,6 +8,9 @@ import android.graphics.SurfaceTexture;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -159,17 +162,23 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         Log.w("IMAGE CLICKED", gridItems[pos].sound);
 
         if (gridItems[pos].sound == "addmore") {
+
             Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
-            //SoundSelect soundseldiag = new SoundSelect(activity);
-            //soundseldiag.show();
             soundAct = new Intent(getActivity(), SoundSelect.class);
             startActivity(soundAct);
+
         } else if (gridItems[pos].sound.equals("raw.flash")) {
-           // Toast.makeText(activity, "The Flash", Toast.LENGTH_SHORT).show();
+
             if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+
                 try {
                     cam = Camera.open();
-                }catch (RuntimeException e ){Log.w("Camera Flash",e.toString());}
+
+                }
+                catch (RuntimeException e )
+                {
+                    Log.w("Camera Flash",e.toString());
+                }
                 Camera.Parameters p = cam.getParameters();
                 p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 cam.setParameters(p);
@@ -190,7 +199,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             }
 
         } else if (gridItems[pos].sound.equals("raw.flash_blink")) {
-            Toast.makeText(activity, "The Flash Blink", Toast.LENGTH_SHORT).show();
+
             if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
 
 
@@ -211,9 +220,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                         for (int i = 0; i < 2; i++) {
                             try {
                                 flipFlash();
-                                Thread.sleep(500);
+                                Thread.sleep(100);
                                 flipFlash();
-                                Thread.sleep(500);
+                                Thread.sleep(100);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -231,15 +240,27 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 //flashBlinkRunnable.run();
                 Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
             }
-        } else if (gridItems[pos].sound.equals("raw.vibrate_hw")) {
-            Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
-            long[] pattern = new long[15];
-            Arrays.fill(pattern, 100);
 
-            ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern, -1);
+        } else if (gridItems[pos].sound.equals("raw.vibrate_hw")) {
+
+            Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
+            long[] pattern = {0, 2000,1000,2000};
+            ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern,-1);
             Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
 
-        } else {
+        } else if (gridItems[pos].sound.equals("raw.message")) {
+            try {
+                Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                Ringtone r = RingtoneManager.getRingtone(activity, notification);
+                r.play();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        else {
             Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
             if (Sound.sysSound != -1) {
                 previewSound.mp = MediaPlayer.create(activity, Sound.sysSound);
@@ -291,8 +312,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             });
 
 
-            AnimationDrawable boxsel = (AnimationDrawable) img.getDrawable();
-            boxsel.start();
 
             previewSound.mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
@@ -304,6 +323,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             });
         }
 
+        AnimationDrawable boxsel = (AnimationDrawable) img.getDrawable();
+        boxsel.start();
     }
 
     @Override

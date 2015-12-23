@@ -8,6 +8,9 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
@@ -54,11 +57,18 @@ public class PlaySound extends BroadcastReceiver {
 
     if (("raw.vibrate_hw").equals(cusSound)) {
         Log.w("Vibrate", "SUCCESS");
-        long[] pattern = new long[15];
-        Arrays.fill(pattern, 100);
+        long[] pattern = {0, 2000,1000,2000,1000,2000};
         ((Vibrator) context.getSystemService(context.VIBRATOR_SERVICE)).vibrate(pattern, -1);
 
-    } else if (("raw.flash").equals(cusSound)) {
+    } else if (("raw.message").equals(cusSound)) {
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(context, notification);
+            r.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }  else if (("raw.flash").equals(cusSound)) {
         Log.w("Flash", "SUCCESS");
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
             cam = Camera.open();
@@ -95,12 +105,12 @@ public class PlaySound extends BroadcastReceiver {
                     }
                     cam.startPreview();
 
-                    for (int i = 0; i < 2; i++) {
+                    for (int i = 0; i < 10; i++) {
                         try {
                             flipFlash();
-                            Thread.sleep(500);
+                            Thread.sleep(100);
                             flipFlash();
-                            Thread.sleep(500);
+                            Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

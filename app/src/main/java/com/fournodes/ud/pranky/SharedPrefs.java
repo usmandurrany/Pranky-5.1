@@ -11,7 +11,9 @@ import java.util.TimeZone;
  */
 public class SharedPrefs {
 
-    private static SharedPreferences prefs;
+    public static String DEFAULT_FONT="grinched-regular";// Name of the font used throughtout the app
+
+    public static SharedPreferences prefs;
     private static Calendar defaultExpDate;
 
     //public static final String APP_SERVER_ADDR = "http://192.168.2.107/pranky/"; // Shared Pref File Name
@@ -31,12 +33,15 @@ public class SharedPrefs {
     public static final String APP_FIRST_LAUNCH = "appFirstLaunch"; // boolean
     public static final String PRANK_BTN_ENABLED = "prankBtnEnabled"; // boolean
 
+    public static final String APP_FONT = "appFont";
+
     private static int serverState;
     private static String myGcmID;
     private static String myAppID;
     private static String expDate;
     private static String frndAppID;
     private static String prankableResp;
+    private static String appFont;
     private static boolean prankable;
     private static boolean bgMusicEnabled;
     private static boolean appFirstLaunch;
@@ -70,6 +75,8 @@ public class SharedPrefs {
         prankable=prefs.getBoolean(SharedPrefs.PRANKABLE, true);
         prankableResp=prefs.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
         serverState=prefs.getInt(SharedPrefs.SERVER_STATE, 1);
+
+        appFont=prefs.getString(SharedPrefs.APP_FONT,DEFAULT_FONT);
     }
 
     public static boolean isAppFirstLaunch() {
@@ -188,6 +195,12 @@ public class SharedPrefs {
         SharedPrefs.prankBtnEnabled = prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, false);
     }
 
+    public static String getAppFont() {
+        return appFont;
+    }
 
-
+    public static void setAppFont(String appFont) {
+        prefs.edit().putString(SharedPrefs.APP_FONT,appFont).apply();
+        SharedPrefs.appFont = prefs.getString(SharedPrefs.APP_FONT, DEFAULT_FONT);
+    }
 }

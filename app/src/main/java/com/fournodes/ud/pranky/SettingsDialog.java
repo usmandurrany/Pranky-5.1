@@ -54,7 +54,7 @@ public class SettingsDialog {
         final TextView myid = (TextView) dialog.findViewById(R.id.txtmyID);
 
         // Get the cached font and apply it
-        bgmusic.setTypeface(FontManager.getTypeFace(context, "grinched-regular"));
+        bgmusic.setTypeface(FontManager.getTypeFace(context, SharedPrefs.DEFAULT_FONT));
 
         // Get myAppID form shared prefs and display it in the dialog
         myid.setText(SharedPrefs.getMyAppID());
