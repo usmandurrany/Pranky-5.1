@@ -1,19 +1,23 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TutorialActivity extends FragmentActivity implements IFragment {
     private View decorView; // To apply the Immersive mode and remove nav/status bars on lower API Levels
-
+    private View rootView;
     private PagerAdapter mPagerAdapter;
 
     // x coordinates from TouchEvents
@@ -29,7 +33,9 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutorial);
+        rootView = getLayoutInflater().inflate(R.layout.activity_tutorial,
+                null);
+        setContentView(rootView);
 
         // A list of all the fragments
         List<TutorialFragment> TFList = new ArrayList<TutorialFragment>();
@@ -122,5 +128,54 @@ public class TutorialActivity extends FragmentActivity implements IFragment {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.pause();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        unbindDrawables(rootView);
+        rootView = null;
+        System.gc();
+    }
+
+    protected void unbindDrawables(View view) {
+        if (view != null) {
+            if (view.getBackground() != null) {
+                view.getBackground().setCallback(null);
+            }
+            if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
+                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                    unbindDrawables(((ViewGroup) view).getChildAt(i));
+                }
+                ((ViewGroup) view).removeAllViews();
+            }
+
+        }
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.play();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Resume", e.toString());
+        }
+
+    }
 
 }

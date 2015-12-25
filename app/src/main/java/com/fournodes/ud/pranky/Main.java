@@ -81,6 +81,9 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         rootView = getLayoutInflater().inflate(R.layout.activity_main,
                 null);
         setContentView(rootView);
+
+
+
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 //        float scaleFactor = metrics.density;
@@ -166,8 +169,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         prankbtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                cToast = new CustomToast(Main.this, "Long Press Detected");
-                cToast.show();
+                PrankDialog pDialog = new PrankDialog(Main.this);
+                pDialog.show();
                 return false;
             }
         });
@@ -185,7 +188,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                     PrankDialog pDialog = new PrankDialog(Main.this);
                     pDialog.show();
                 } else{
-                    SendMessage sendMessage = new SendMessage(getApplicationContext(), true);
+                    SendMessage sendMessage = new SendMessage(Main.this, true);
+                    sendMessage.initDialog();
                     sendMessage.execute("prank");
 
                 }
@@ -234,6 +238,8 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         } catch (Exception e) {
             Log.e("BG Music Pause", e.toString());
         }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
 
     }
 
@@ -244,11 +250,9 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             if (BackgroundMusic.mp != null) {
                 BackgroundMusic.stop();
             }
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         } catch (Exception e) {
             Log.e("Main Destroy", e.toString());
         }
-        SharedPrefs.setFrndAppID(null);
 
 
         unbindDrawables(rootView);

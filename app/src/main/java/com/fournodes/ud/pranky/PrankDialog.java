@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,7 +14,7 @@ import android.widget.ImageView;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class PrankDialog {
+public class PrankDialog implements DeviceValidation.AsyncResponse {
     private Context context;
     private Dialog dialog;
 
@@ -37,22 +39,41 @@ public class PrankDialog {
             }
         });
 
-
+        frndID.setText(SharedPrefs.getFrndAppID());
         btnset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (frndID.getText()!= null){
-                    SharedPrefs.setFrndAppID(frndID.getText().toString());
-                    dialog.dismiss();
-                }
-                else{
+                    new DeviceValidation(new DeviceValidation.AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            if (output.equals("1"))
+                            {
+                                SharedPrefs.setFrndAppID(frndID.getText().toString());
+                                dialog.dismiss();
+                            }else if (output.equals("0")){
+                                CustomToast cToast = new CustomToast(context, "Your friend is not prankable at the moment");
+                                cToast.show();
+                            }else{
+                                CustomToast cToast = new CustomToast(context, "Invalid ID");
+                                cToast.show();
+                            }
+                        }
+                    }).execute(frndID.getText().toString());
+
+
+                   }else{
                     CustomToast cToast = new CustomToast(context, "Enter friends ID");
                     cToast.show();
                 }
+
             }
         });
+
+
         //Set the dialog to not focusable (makes navigation ignore us adding the window)
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
 
         //Show the dialog!
         dialog.show();
@@ -68,5 +89,8 @@ public class PrankDialog {
     }
 
 
+    @Override
+    public void processFinish(String output) {
 
+    }
 }

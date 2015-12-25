@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true">
 
@@ -10,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:padding="10dp"
+                android:padding="10dp"
         android:scaleType="fitCenter"
         android:src="@mipmap/popup_small" />
 
@@ -63,6 +64,7 @@
                 android:gravity="center"
                 android:padding="0dp"
                 android:text="4512"
+                android:inputType="phone"
                 android:textColor="#000"
                 android:textSize="@dimen/settings_font_small"
                 android:background="@android:drawable/edit_text"

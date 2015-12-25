@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@android:drawable/edit_text"
-            android:enabled="false"
+            android:enabled="true"
             android:gravity="center"
             android:hint="SELECT A SOUND"
             android:textColor="#000"

@@ -1,9 +1,11 @@
 package com.fournodes.ud.pranky;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.WindowManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,6 +25,7 @@ public class SendMessage extends AsyncTask<String, String, String> {
     int soundVol=0;
     String soundName="";
     HttpGet httpget;
+    ProgressDialog pdialog;
 
     public SendMessage(Context context, boolean fromButton){
         this.context = context;
@@ -33,6 +36,18 @@ public class SendMessage extends AsyncTask<String, String, String> {
     public SendMessage(Context context){
         this.context=context;
     }
+
+
+public void initDialog(){
+    pdialog = new ProgressDialog(context);
+    pdialog.setMessage("Please wait..");
+    pdialog.setIndeterminate(true);
+    pdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    pdialog.setCancelable(false);
+    pdialog.show();
+
+}
+
 
     @Override
     protected String doInBackground(String... strings) {
@@ -75,5 +90,12 @@ public class SendMessage extends AsyncTask<String, String, String> {
 
         } catch (Exception e) {}
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+        if (pdialog != null)
+        pdialog.dismiss();
     }
 }
