@@ -32,6 +32,7 @@ public class SharedPrefs {
     public static final String BG_MUSIC_ENABLED = "bgMusicEnabled"; // boolean
     public static final String APP_FIRST_LAUNCH = "appFirstLaunch"; // boolean
     public static final String PRANK_BTN_ENABLED = "prankBtnEnabled"; // boolean
+    public static final String NETWORK_AVAILABLE = "networkAvailable"; // boolean
 
     public static final String APP_FONT = "appFont";
 
@@ -48,6 +49,7 @@ public class SharedPrefs {
     private static boolean sentGcmIDToServer;
     private static boolean registrationComplete;
     private static boolean prankBtnEnabled;
+    private static boolean networkAvailable;
 
 
     Context context;
@@ -62,9 +64,11 @@ public class SharedPrefs {
     // Must be called every time an object of this class is created  to initialize the attributes;
     public void initAllPrefs() {
         defaultExpDate = Calendar.getInstance(TimeZone.getDefault());
+        prankBtnEnabled=prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, true); // Unused for now
 
+
+        networkAvailable=prefs.getBoolean(SharedPrefs.NETWORK_AVAILABLE, true);
         bgMusicEnabled=prefs.getBoolean(SharedPrefs.BG_MUSIC_ENABLED, true);
-        prankBtnEnabled=prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, false);
         appFirstLaunch=prefs.getBoolean(SharedPrefs.APP_FIRST_LAUNCH, true);
         sentGcmIDToServer=prefs.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
         registrationComplete=prefs.getBoolean(SharedPrefs.REGISTRATION_COMPLETE, false);
@@ -202,5 +206,14 @@ public class SharedPrefs {
     public static void setAppFont(String appFont) {
         prefs.edit().putString(SharedPrefs.APP_FONT,appFont).apply();
         SharedPrefs.appFont = prefs.getString(SharedPrefs.APP_FONT, DEFAULT_FONT);
+    }
+
+    public static boolean isNetworkAvailable() {
+        return networkAvailable;
+    }
+
+    public static void setNetworkAvailable(boolean networkAvailable) {
+        prefs.edit().putBoolean(SharedPrefs.NETWORK_AVAILABLE,networkAvailable).apply();
+        SharedPrefs.networkAvailable = networkAvailable;
     }
 }

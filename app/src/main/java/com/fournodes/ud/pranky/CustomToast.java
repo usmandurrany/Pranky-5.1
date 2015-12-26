@@ -33,7 +33,7 @@ public class CustomToast {
 
         toast = new Toast(context);
         toast.setGravity(Gravity.BOTTOM, 0, 220);
-        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(customToast);
     }
 

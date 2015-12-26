@@ -1,11 +1,13 @@
 package com.fournodes.ud.pranky;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -19,6 +21,11 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -32,7 +39,7 @@ import java.util.TimeZone;
 
 import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 
-public class Main extends FragmentActivity implements SoundSelectListener {
+public class Main extends FragmentActivity implements SoundSelectListener, View.OnClickListener {
     public me.relex.circleindicator.CircleIndicator mIndicator;
     protected View decorView;
     View rootView;
@@ -42,7 +49,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     protected ImageView timer;
     protected ImageView settings;
     protected ImageView prankbtn;
-
+    ShowcaseView showcaseView;
     int itemsOnPage = 9;
     int soundRep;
     int soundVol;
@@ -51,6 +58,7 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     private String soundCus = null;
 //    private BackgroundMusic player = getInstance(getApplicationContext());
     private int pageNo = 0;
+    RegisterOnServer rs;
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -71,6 +79,12 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             else if (message.equals("prank-successful")){
                 CustomToast cToast = new CustomToast(getApplicationContext(), "Your Friend has been successfully pranked");
                 cToast.show();
+            } else if (message.equals("server-not-found")){
+                CustomToast cToast = new CustomToast(getApplicationContext(), "Cant connect to server");
+                cToast.show();
+            } else if (message.equals("network-not-available")){
+                CustomToast cToast = new CustomToast(getApplicationContext(), "Network is unavailable");
+                cToast.show();
             }
         }
     };
@@ -82,15 +96,58 @@ public class Main extends FragmentActivity implements SoundSelectListener {
                 null);
         setContentView(rootView);
 
+        decorView = getWindow().getDecorView();
+
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+
+        prankbtn = (ImageView) findViewById(R.id.prankit);
+
+        ViewTarget target = new ViewTarget(R.id.prankit,this);
+        /*Target target = new Target() {
+            @Override
+            public Point getPoint() {
+                // Get approximate position of overflow action icon's center
+
+                float centreX=prankbtn.getX() + prankbtn.getWidth()  / 2;
+                float centreY=prankbtn.getY() + prankbtn.getHeight() / 2;
+
+
+                return new Point((int) centreX, (int) centreY +125);
+            }
+        };*/
+        showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(target)
+                .setContentTitle("Settings menu")
+                .setContentText("Tap here to view and set the app settings")
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .hideOnTouchOutside()
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showcaseView.setShowcase(new ViewTarget(settings), true);
+                    }
+                })
+                .build();
 
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 //        float scaleFactor = metrics.density;
 //        Toast.makeText(Main.this, String.valueOf(scaleFactor), Toast.LENGTH_SHORT).show();
-
+/*
         Intent intent = new Intent("CONNECTIVITY_CHECK");
-        sendBroadcast(intent);
+        sendBroadcast(intent);*/
+
+
+        initGCM();
+
 
         mGridPager = (ViewPager) findViewById(R.id.pager);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
@@ -165,7 +222,6 @@ public class Main extends FragmentActivity implements SoundSelectListener {
             }
         });
 
-        prankbtn = (ImageView) findViewById(R.id.prankit);
         prankbtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -177,22 +233,24 @@ public class Main extends FragmentActivity implements SoundSelectListener {
         prankbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Sound.sysSound == -1 && Sound.cusSound == null) {
-                    cToast = new CustomToast(Main.this, "Select  a  sound  first");
-                    cToast.show();
-                } else if(Sound.sysSound == -1 && Sound.cusSound != null) {
+                    if (Sound.sysSound == -1 && Sound.cusSound == null) {
+                        cToast = new CustomToast(Main.this, "Select  a  sound  first");
+                        cToast.show();
+                    } else if (Sound.sysSound == -1 && Sound.cusSound != null) {
 
-                    cToast = new CustomToast(Main.this, "A  non-custom  sound  should  be  selected");
-                    cToast.show();
-                } else if(SharedPrefs.getFrndAppID()== null) {
-                    PrankDialog pDialog = new PrankDialog(Main.this);
-                    pDialog.show();
-                } else{
-                    SendMessage sendMessage = new SendMessage(Main.this, true);
-                    sendMessage.initDialog();
-                    sendMessage.execute("prank");
+                        cToast = new CustomToast(Main.this, "A  non-custom  sound  should  be  selected");
+                        cToast.show();
+                    } else if (SharedPrefs.getFrndAppID() == null) {
+                        PrankDialog pDialog = new PrankDialog(Main.this);
+                        pDialog.show();
+                    } else {
+                        SendMessage sendMessage = new SendMessage(Main.this);
+                        sendMessage.initDialog();
+                        sendMessage.execute("prank");
 
-                }
+                    }
+
+
             }
 
         });
@@ -346,8 +404,65 @@ public class Main extends FragmentActivity implements SoundSelectListener {
     }
 
 
-//    public boolean isNetworkAvailable() {
-//        final ConnectivityManager connectivityManager = ((ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE));
-//        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
-//    }
+public void initGCM() {
+    try {
+        // Convert the expDate in shared prefs to CALENDAR type for comparision
+        Calendar exp = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+        exp.setTime(sdf.parse(SharedPrefs.getExpDate()));
+
+        // Get current Time from device for comparison
+        Calendar today = Calendar.getInstance(TimeZone.getDefault());
+
+
+        // Perform Checks for true
+        //serverState is 1 and myAppID has expired but myGcmID is set
+        if (SharedPrefs.getServerState() == 1 && exp.before(today) && SharedPrefs.getMyGcmID() != null) {
+            // Request new appID from server
+
+            // Initialize the RegisterOnServer class
+            rs = new RegisterOnServer(Main.this);
+            SharedPrefs.setMyAppID(""); // First clear the myAppID on device
+            // Send myGcmID but empty myAppID
+            String[] args = {SharedPrefs.getMyGcmID(), SharedPrefs.getMyAppID()};
+            rs.execute(args);
+        }
+        // serverState is 1 and myGcmId is not set
+        else if (SharedPrefs.getServerState() == 1 && SharedPrefs.getMyGcmID() == null && SharedPrefs.getMyGcmID() == null) {
+            if (checkPlayServices()) {
+                Intent register = new Intent(Main.this, RegistrationIntentService.class);
+                Main.this.startService(register);
+            }
+
+
+        }
+
+
+    } catch (Exception e) {
+        Log.e("Init GCM", e.toString());
+    }
 }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(Main.this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+               apiAvailability.getErrorDialog(Main.this, resultCode, 9000)
+                .show();
+                Log.w("Play Services","Play Services Not Found");
+            } else {
+                Log.i("Play Services", "This device is not supported.");
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public void onClick(View view) {
+     //showcaseView.setShowcase(new ViewTarget(settings), true);
+    }
+}
+

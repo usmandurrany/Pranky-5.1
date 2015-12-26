@@ -2,18 +2,27 @@ package com.fournodes.ud.pranky;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.TokenWatcher;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 
 /**
  * Created by Usman on 11/24/2015.
@@ -27,18 +36,16 @@ public class SendMessage extends AsyncTask<String, String, String> {
     HttpGet httpget;
     ProgressDialog pdialog;
 
-    public SendMessage(Context context, boolean fromButton){
-        this.context = context;
-        this.sound = Sound.sysSound;
-        this.soundRep = Sound.repeatCount;
-        this.soundVol = (int) Sound.volume;
-    }
-    public SendMessage(Context context){
-        this.context=context;
-    }
+
+
+
+  public SendMessage(Context context){
+      this.context = context;
+  }
 
 
 public void initDialog(){
+
     pdialog = new ProgressDialog(context);
     pdialog.setMessage("Please wait..");
     pdialog.setIndeterminate(true);
@@ -51,45 +58,49 @@ public void initDialog(){
 
     @Override
     protected String doInBackground(String... strings) {
-        String app_id=SharedPrefs.getMyAppID();
-        String frnd_id=SharedPrefs.getFrndAppID();
-        String type=strings[0];
 
-        if (sound == -2) // condition for HW fucntions to be treated as a special type of sysSound
-            soundName = Sound.cusSound;
-        else
-            soundName = Sound.soundName;
+        this.sound = Sound.sysSound;
+        this.soundRep = Sound.repeatCount;
+        this.soundVol = (int) Sound.volume;
 
-        HttpClient httpclient = new DefaultHttpClient();
+        String app_id = SharedPrefs.getMyAppID();
+            String frnd_id = SharedPrefs.getFrndAppID();
+            String type = strings[0];
 
-        // Prepare a request object
+            if (sound == -2) // condition for HW fucntions to be treated as a special type of sysSound
+                soundName = Sound.cusSound;
+            else
+                soundName = Sound.soundName;
 
-         httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR+"sendmsg.php?friend_id=" + frnd_id + "&app_id=" + app_id + "&sound=" + soundName + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&type=" + type);
+            HttpClient httpclient = new DefaultHttpClient();
 
-        // Execute the request
-        HttpResponse response;
-        try {
-            response = httpclient.execute(httpget);
-            // Examine the response status
-            Log.i("ServerResponse", response.getStatusLine().toString());
+            // Prepare a request object
 
-            // Get hold of the response entity
-            HttpEntity entity = response.getEntity();
-            // If the response does not enclose an entity, there is no need
-            // to worry about connection release
+            httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + frnd_id + "&app_id=" + app_id + "&sound=" + soundName + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&type=" + type);
 
-            if (entity != null) {
+            // Execute the request
+            HttpResponse response;
+            try {
+                response = httpclient.execute(httpget);
+                // Examine the response status
+                Log.i("ServerResponse", response.getStatusLine().toString());
 
-                // A Simple JSON Response Read
-                InputStream instream = entity.getContent();
-                //result= convertStreamToString(instream);
-                // now you have the string representation of the HTML request
-                instream.close();
+            } catch (HttpHostConnectException e) {
+                Log.e("Send Prank", e.toString());
+                Intent intent = new Intent("main-activity-broadcast");
+                intent.putExtra("message", "server-not-found");
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+            } catch (IOException e) {
+                Log.e("Send Prank", e.toString());
+                Intent intent = new Intent("main-activity-broadcast");
+                intent.putExtra("message", "network-not-available");
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+
             }
 
-
-        } catch (Exception e) {}
-        return null;
+    return null;
     }
 
     @Override
@@ -97,5 +108,6 @@ public void initDialog(){
                 super.onPostExecute(s);
         if (pdialog != null)
         pdialog.dismiss();
+
     }
 }

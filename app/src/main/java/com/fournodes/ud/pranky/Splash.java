@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -139,6 +140,20 @@ public class Splash extends AppCompatActivity {
         System.gc();
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.pause();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+
+    }
+
 
 
 }

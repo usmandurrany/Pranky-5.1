@@ -55,6 +55,7 @@ public class RegistrationIntentService extends IntentService {
             // [END register_for_gcm]
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
+
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             SharedPrefs.setSentGcmIDToServer(false);

@@ -140,10 +140,10 @@ public class SettingsDialog {
                         else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID() == null || exp.before(today))) {
                             Log.e("Condition3", "True");
 
-                            // Run the method present in the Main activity
-                            //((Main) context).GCMRegister();
-                            Intent intent = new Intent("CONNECTIVITY_CHECK");
-                            context.sendBroadcast(intent);
+                             //Run the method present in the Main activity
+                            ((Main) context).initGCM();
+                            //Intent intent = new Intent("CONNECTIVITY_CHECK");
+                            //context.sendBroadcast(intent);
 
                         }
 

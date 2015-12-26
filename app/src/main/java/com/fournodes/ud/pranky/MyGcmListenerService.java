@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.net.http.HttpResponseCache;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.ShareCompat;
@@ -14,6 +15,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+
+import org.apache.commons.io.IOExceptionWithCause;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
 
 /**
  * Created by Usman on 11/23/2015.
@@ -77,8 +86,19 @@ public class MyGcmListenerService extends GcmListenerService {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
 
                     SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
-                    SendMessage sendResponse= new SendMessage(getApplicationContext());// generate a request
-                    sendResponse.execute("success"); // with type response
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                           HttpGet httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + SharedPrefs.getFrndAppID() + "&app_id=" + SharedPrefs.getMyAppID() + "&sound=" + String.valueOf(0) + "&soundRep=" + String.valueOf(0) + "&soundVol=" + String.valueOf(0) + "&type=success");
+                            try{
+                                HttpClient httpclient = new DefaultHttpClient();
+                                HttpResponse response = httpclient.execute(httpget);
+
+                            }catch (IOException e){}
+                        }
+                    });
+                    thread.start();
+
 
                 } else {
                     SharedPrefs.setServerState(0); // Set serverState to 0
@@ -88,8 +108,19 @@ public class MyGcmListenerService extends GcmListenerService {
                     rs.execute(args); // Params (myGcmID, myAppId, serverState(fom stored prefs))
                     // Once myAppID has been removed from the db on the server, generate a response for the sender
                     SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
-                    SendMessage sendResponse= new SendMessage(getApplicationContext());// generate a request
-                    sendResponse.execute("response"); // with type response
+
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            HttpGet httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + SharedPrefs.getFrndAppID() + "&app_id=" + SharedPrefs.getMyAppID() + "&sound=" + String.valueOf(0) + "&soundRep=" + String.valueOf(0) + "&soundVol=" + String.valueOf(0) + "&type=response");
+                            try{
+                                HttpClient httpclient = new DefaultHttpClient();
+                                HttpResponse response = httpclient.execute(httpget);
+
+                            }catch (IOException e){}
+                        }
+                    });
+                    thread.start();
                 }
                 break;
 

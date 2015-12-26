@@ -31,22 +31,25 @@ public class NetworkConnectivityCheck extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        this.context = context;
+       /* this.context = context;
 
         ConnectivityManager conn =  (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conn.getActiveNetworkInfo();
+        if (SharedPrefs.prefs == null) {
+            SharedPrefs SP = new SharedPrefs(context);
+            SP.initAllPrefs();
+        }
 
         // Checks the user prefs and the network connection. Based on the result, decides whether
         // to refresh the display or keep the current display.
         // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
         if ( networkInfo != null && networkInfo.isConnected() ) {
 
-            if (SharedPrefs.prefs == null) {
-                SharedPrefs SP = new SharedPrefs(context);
-                SP.initAllPrefs();
-            }
 
-            SharedPrefs.setPrankBtnEnabled(true);
+
+            //SharedPrefs.setPrankBtnEnabled(true);
+
+            SharedPrefs.setNetworkAvailable(true);
 
 
 
@@ -99,16 +102,16 @@ public class NetworkConnectivityCheck extends BroadcastReceiver {
             // is no Wi-Fi connection.
             // Sets refreshDisplay to false.
         } else {
-            SharedPrefs.setPrankBtnEnabled(false);
+           // SharedPrefs.setPrankBtnEnabled(false);
+            SharedPrefs.setNetworkAvailable(false);
 
-            cToast = new CustomToast(context, "No network connectivity");
-            cToast.show();
+
         }
 
         Intent prankBtnEnable = new Intent();
         prankBtnEnable.setAction("main-activity-broadcast");
         prankBtnEnable.putExtra("message", "network-changed");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(prankBtnEnable);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(prankBtnEnable);*/
 
     }
     /**
