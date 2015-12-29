@@ -1,6 +1,65 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="sett_btn_margin_top">80dp</dimen>
-    <dimen name="sett_btn_margin_right">7dp</dimen>
+    <dimen name="setBtnTopMar">52dp</dimen>
+    <dimen name="setBtnRightMar">22dp</dimen>
+
+    <dimen name="set_btn_margin_bottom">166dp</dimen>
+
+    <dimen name="day_hh_mm_ss_margin_top">245dp</dimen>
+
+    <dimen name="close_btn_margin_top">196dp</dimen>
+    <dimen name="close_btn_margin_right">23dp</dimen>
+
+
+    <dimen name="clock_btn_margin_bottom">70dp</dimen>
+    <dimen name="clock_btn_margin_left">40dp</dimen>
+
+    <dimen name="timer_btn_margin_bottom">70dp</dimen>
+    <dimen name="timer_btn_margin_right">40dp</dimen>
+
+    <dimen name="prankit_btn_margin_bottom">40dp</dimen>
+
+    <dimen name="circle_indicator_margin_bottom">40dp</dimen>
+    <dimen name="indicator_line_margin_top">-50dp</dimen>
+
+
+    <dimen name="viewpager_margin_top">170dp</dimen>
+    <dimen name="viewpager_margin_bottom">190dp</dimen>
+    <dimen name="viewpager_margin_left">50dp</dimen>
+    <dimen name="viewpager_margin_right">50dp</dimen>
+    <dimen name="viewpager_padding_top">10dp</dimen>
+
+
+    <dimen name="save_btn_margin_bottom">142dp</dimen>
+    <dimen name="close_btn_margin_right_long">23dp</dimen>
+    <dimen name="close_btn_margin_top_long">170dp</dimen>
+    <dimen name="sel_sound_margin_top">265dp</dimen>
+
+    <dimen name="sel_sound_icon_width">50dp</dimen>
+    <dimen name="sel_sound_icon_height">50dp</dimen>
+
+
+    <dimen name="sel_sound_h1">20dp</dimen>
+    <dimen name="sel_sound_txt_box">18dp</dimen>
+    <dimen name="sel_sound_icon_scroll_width">215dp</dimen>
+    <dimen name="sel_sound_icon_picker_margin_top">10dp</dimen>
+
+    <dimen name="settings_save_margin_bottom">169dp</dimen>
+    <dimen name="settings_layout_margin_top">270dp</dimen>
+
+    <dimen name="settings_font_small">22sp</dimen>
+
+
+    <dimen name="music_text_margin_right">62dp</dimen>
+    <dimen name="music_switch_margin_left">45dp</dimen>
+
+    <dimen name="prank_text_margin_right">10dp</dimen>
+    <dimen name="prank_switch_margin_left">25dp</dimen>
+
+    <dimen name="id_text_margin_right">60dp</dimen>
+    <dimen name="id_value_margin_left">85dp</dimen>
+
+    <dimen name="prankit_width">180dp</dimen>
+
 
 </resources>
