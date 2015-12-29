@@ -14,14 +14,17 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="35dp">
+
 
         <ImageView
             android:id="@+id/logo_face"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/face_logo" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/wait_anim" />
 
         <ImageView
             android:id="@+id/logo"
@@ -29,7 +32,8 @@
 
             android:layout_height="wrap_content"
 
-            android:background="@drawable/logo_2"/>
+            android:background="@drawable/logo_2"
+            />
 
 
     </LinearLayout>

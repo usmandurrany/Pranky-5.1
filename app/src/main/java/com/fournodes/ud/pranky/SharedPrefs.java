@@ -41,6 +41,8 @@ public class SharedPrefs {
     public static final String ADD_MORE_FIRST_LAUNCH = "addmoreFirstLaunch"; // boolean
     public static final String REMOTE_PRANK_FIRST_LAUNCH = "remotePrankFirstLaunch"; // boolean
 
+    public static final String BG_MUSIC_PLAYING = "bgMusicPlaying"; // boolean
+
     private static int serverState;
     private static String myGcmID;
     private static String myAppID;
@@ -61,6 +63,8 @@ public class SharedPrefs {
     private static boolean settingsFirstLaunch;
     private static boolean addmoreFirstLaunch;
     private static boolean remotePrankFirstLaunch;
+
+    private static boolean bgMusicPlaying;
 
 
     Context context;
@@ -97,6 +101,8 @@ public class SharedPrefs {
         settingsFirstLaunch=prefs.getBoolean(SharedPrefs.SETTINGS_FIRST_LAUNCH, true);
         addmoreFirstLaunch=prefs.getBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH, true);
         remotePrankFirstLaunch=prefs.getBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, true);
+
+        bgMusicPlaying=prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, true);
     }
 
     public static boolean isAppFirstLaunch() {
@@ -167,6 +173,10 @@ public class SharedPrefs {
 
     public static boolean isRemotePrankFirstLaunch() {
         return remotePrankFirstLaunch;
+    }
+
+    public static boolean isBgMusicPlaying() {
+        return bgMusicPlaying;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -271,5 +281,10 @@ public class SharedPrefs {
     public static void setRemotePrankFirstLaunch(boolean remotePrankFirstLaunch) {
         prefs.edit().putBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH,remotePrankFirstLaunch).apply();
         SharedPrefs.remotePrankFirstLaunch = remotePrankFirstLaunch;
+    }
+
+    public static void setBgMusicPlaying(boolean bgMusicPlaying) {
+        prefs.edit().putBoolean(SharedPrefs.BG_MUSIC_PLAYING,bgMusicPlaying).apply();
+        SharedPrefs.bgMusicPlaying = bgMusicPlaying;
     }
 }

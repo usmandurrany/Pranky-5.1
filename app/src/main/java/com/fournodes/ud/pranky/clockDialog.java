@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -126,6 +127,37 @@ public class ClockDialog extends Activity{
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.pause();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.play();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPrefs.setBgMusicPlaying(false);
+        System.gc();
+
     }
 
 }

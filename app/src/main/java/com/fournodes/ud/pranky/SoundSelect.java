@@ -65,6 +65,8 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
         txtselsound.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
         ImageView btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
         ImageView btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
+        final ImageView customImage = (ImageView) findViewById(R.id.custom2);
+
         btnsave = (ImageView) findViewById(R.id.btnSave);
         btnsave.setEnabled(false);
 
@@ -82,7 +84,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
                         steps++;
                             switch (steps) {
                                 case 2:
-                                    showcaseView.setShowcase(new ViewTarget(btnsave), true);
+                                    showcaseView.setShowcase(new ViewTarget(customImage), true);
                                     showcaseView.setContentTitle("Pick an icon");
                                     showcaseView.setContentText("Choose an icon for your sound");
                                 break;
@@ -263,12 +265,37 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SharedPrefs.setBgMusicPlaying(false);
 
 
         unbindDrawables(rootView);
         rootView = null;
         System.gc();
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.pause();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.play();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
     }
 
 }

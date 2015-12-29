@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -14,28 +16,37 @@ import android.widget.ImageView;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class PrankDialog{
+public class PrankDialog extends Activity{
     private Context context;
     private Dialog dialog;
+    View decorView;
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_prank);
 
-    public PrankDialog(Context context) {
-        this.context = context;
-    }
-
-    public void show() {
+        Log.e("Prank Dialog","Created");
 
 
-        dialog = new Dialog(context, R.style.ClockDialog);
-        dialog.setContentView(R.layout.dialog_prank);
-        ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.close);
-        ImageView btnset = (ImageView) dialog.findViewById(R.id.set);
-        final EditText frndID = (EditText) dialog.findViewById(R.id.txtfrndID);
+        decorView = getWindow().getDecorView();
+
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        ImageView btndiagclose = (ImageView) findViewById(R.id.close);
+        ImageView btnset = (ImageView) findViewById(R.id.set);
+        final EditText frndID = (EditText) findViewById(R.id.txtfrndID);
         btndiagclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                finish();
             }
         });
 
@@ -50,28 +61,28 @@ public class PrankDialog{
                             if (output.equals("1"))
                             {
                                 SharedPrefs.setFrndAppID(frndID.getText().toString());
-                                dialog.dismiss();
+                                finish();
                             }else if (output.equals("0")){
-                                CustomToast cToast = new CustomToast(context, "Your friend is not prankable at the moment");
+                                CustomToast cToast = new CustomToast(PrankDialog.this, "Your friend is not prankable at the moment");
                                 cToast.show();
                             }else if (output.equals("-10")){ //Server Unreachable
-                                CustomToast cToast = new CustomToast(context, "Can't connect to server");
+                                CustomToast cToast = new CustomToast(PrankDialog.this, "Can't connect to server");
                                 cToast.show();
 
                             }else if (output.equals("-20")){//Network Unavailable
-                                CustomToast cToast = new CustomToast(context, "Network Unavailable");
+                                CustomToast cToast = new CustomToast(PrankDialog.this, "Network Unavailable");
                                 cToast.show();
                             }
                             else{
-                                CustomToast cToast = new CustomToast(context, "Invalid ID");
+                                CustomToast cToast = new CustomToast(PrankDialog.this, "Invalid ID");
                                 cToast.show();
                             }
                         }
                     }).execute(frndID.getText().toString());
 
 
-                   }else{
-                    CustomToast cToast = new CustomToast(context, "Enter friends ID");
+                }else{
+                    CustomToast cToast = new CustomToast(PrankDialog.this, "Enter friends ID");
                     cToast.show();
                 }
 
@@ -79,23 +90,52 @@ public class PrankDialog{
         });
 
 
-        //Set the dialog to not focusable (makes navigation ignore us adding the window)
-        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-
-        //Show the dialog!
-        dialog.show();
-
-        //Set the dialog to immersive
-        dialog.getWindow().getDecorView().setSystemUiVisibility(
-                ((Activity) context).getWindow().getDecorView().getSystemUiVisibility());
-
-        //Clear the not focusable flag from the window
-        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
 
     }
 
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        decorView = getWindow().getDecorView();
 
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.pause();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.play();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPrefs.setBgMusicPlaying(false);
+        System.gc();
+
+    }
 }

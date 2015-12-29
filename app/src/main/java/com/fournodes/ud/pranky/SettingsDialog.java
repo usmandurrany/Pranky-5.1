@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
 
 import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 
@@ -55,8 +56,12 @@ public class SettingsDialog extends Activity implements View.OnClickListener{
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
+        // Initialize the switchs on the dialog by checking shared prefs
         SwitchCompat btnmusic = (SwitchCompat) findViewById(R.id.btnMusicToggle);
         SwitchCompat remoteprank = (SwitchCompat) findViewById(R.id.swtRemotePrank);
+
+        btnmusic.setChecked(SharedPrefs.isBgMusicEnabled());
+
 
         btnmusic.setOnClickListener(this);
         btnmusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -69,12 +74,19 @@ public class SettingsDialog extends Activity implements View.OnClickListener{
                     SharedPrefs.setBgMusicEnabled(false);
                 }
 
-                if (SharedPrefs.isBgMusicEnabled()) {
-                    BackgroundMusic.setContext(SettingsDialog.this);
 
-                    BackgroundMusic.play();
+
+                if (SharedPrefs.isBgMusicEnabled()) {
+                try {
+                        BackgroundMusic.setContext(SettingsDialog.this);
+                        BackgroundMusic.play();
+                     }catch(IllegalStateException e){Log.e("Settings Dialog",e.toString());}
                 } else {
-                    BackgroundMusic.stop();
+                    try
+                    {
+                        BackgroundMusic.stop();
+                    }catch (IllegalStateException e){Log.e("Settings Dialog",e.toString());}
+
                 }
             }
         });
@@ -90,10 +102,7 @@ public class SettingsDialog extends Activity implements View.OnClickListener{
         // Get myAppID form shared prefs and display it in the dialog
         myid.setText(SharedPrefs.getMyAppID());
 
-        // Initialize the switchs on the dialog by checking shared prefs
-        if (SharedPrefs.isBgMusicEnabled()) {
-            btnmusic.setChecked(playMusic);
-        }
+
         if (SharedPrefs.isPrankable()) {
             remoteprank.setChecked(true);
             remotePrankID.setVisibility(View.VISIBLE);
@@ -219,5 +228,38 @@ public class SettingsDialog extends Activity implements View.OnClickListener{
     public void onClick(View view) {
         /*String imgName = getResources().getResourceEntryName(view.getId());
         Toast.makeText(SettingsDialog.this, imgName, Toast.LENGTH_SHORT).show();*/
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.pause();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.play();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Pause", e.toString());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPrefs.setBgMusicPlaying(false);
+        System.gc();
+
     }
 }

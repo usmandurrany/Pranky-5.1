@@ -1,6 +1,7 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,7 @@ import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 public class Splash extends AppCompatActivity {
 
     // Time for this splash activity
-    private final int SPLASH_DISPLAY_LENGTH = 3000;
+    private final int SPLASH_DISPLAY_LENGTH = 3500;
 
     // Intent to launch the next activity
     private Intent mainIntent;
@@ -70,8 +71,11 @@ public class Splash extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 // Apply Rotate Animation
-                Animation rotateAnim = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_rotate);
-                logo_face.startAnimation(rotateAnim);
+
+                AnimationDrawable boxsel = (AnimationDrawable) logo_face.getDrawable();
+                boxsel.start();
+              //  Animation rotateAnim = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_rotate);
+               // logo_face.startAnimation(rotateAnim);
             }
 
             @Override
@@ -128,7 +132,6 @@ public class Splash extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
 
         unbindDrawables(rootView);
         rootView = null;

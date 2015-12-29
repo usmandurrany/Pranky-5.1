@@ -1,5 +1,6 @@
 package com.fournodes.ud.pranky;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,10 +16,15 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
@@ -26,6 +32,7 @@ import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -60,7 +67,8 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
     private int pageNo = 0;
     RegisterOnServer rs;
     int steps=1;
-
+    boolean open = false;
+    ObjectAnimator anim;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -114,6 +122,32 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
 
         prankbtn = (ImageView) findViewById(R.id.prankit);
         timer = (ImageView) findViewById(R.id.timer_btn);
+        final RelativeLayout sideMenu = (RelativeLayout) findViewById(R.id.sideMenu);
+        final ImageView smInfo = (ImageView) findViewById(R.id.smInfo);
+        final ImageView smHelp = (ImageView) findViewById(R.id.smHelp);
+
+        sideMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!open) {
+
+                    sideMenu.setBackgroundResource(R.drawable.sm_hide);
+                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(80));
+                    open=true;
+
+
+                }else{
+                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(80), 0);
+                    open=false;
+                    sideMenu.setBackgroundResource(R.drawable.sm_show);
+          }
+
+                anim.setDuration(500);
+                anim.start();
+
+                }
+
+        });
 
 
         ViewTarget target = new ViewTarget(R.id.pager,this);
@@ -240,6 +274,8 @@ if (mGridPager.getCurrentItem() == pm.getCount()-1 && state == 0) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                 } else {
+                    SharedPrefs.setBgMusicPlaying(true);
+
                     Intent clockDialog = new Intent(Main.this,ClockDialog.class);
                     startActivity(clockDialog);
                 }
@@ -253,7 +289,9 @@ if (mGridPager.getCurrentItem() == pm.getCount()-1 && state == 0) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                 } else {
-                   Intent timerDialog = new Intent(Main.this,TimerDialog.class);
+                    SharedPrefs.setBgMusicPlaying(true);
+
+                    Intent timerDialog = new Intent(Main.this,TimerDialog.class);
                     startActivity(timerDialog);
                 }
             }
@@ -262,6 +300,7 @@ if (mGridPager.getCurrentItem() == pm.getCount()-1 && state == 0) {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPrefs.setBgMusicPlaying(true);
                 Intent settingsDialog = new Intent(Main.this,SettingsDialog.class);
                 startActivity(settingsDialog);
 
@@ -271,8 +310,10 @@ if (mGridPager.getCurrentItem() == pm.getCount()-1 && state == 0) {
         prankbtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                PrankDialog pDialog = new PrankDialog(Main.this);
-                pDialog.show();
+                SharedPrefs.setBgMusicPlaying(true);
+                Intent prankDialog = new Intent(Main.this,PrankDialog.class);
+                startActivity(prankDialog);
+
                 return false;
             }
         });
@@ -287,8 +328,10 @@ if (mGridPager.getCurrentItem() == pm.getCount()-1 && state == 0) {
                         cToast = new CustomToast(Main.this, "A  non-custom  sound  should  be  selected");
                         cToast.show();
                     } else if (SharedPrefs.getFrndAppID() == null) {
-                        PrankDialog pDialog = new PrankDialog(Main.this);
-                        pDialog.show();
+                        SharedPrefs.setBgMusicPlaying(true);
+                        Intent prankDialog = new Intent(Main.this,PrankDialog.class);
+                        startActivity(prankDialog);
+
                     } else {
                         SendMessage sendMessage = new SendMessage(Main.this);
                         sendMessage.initDialog();
@@ -332,11 +375,14 @@ if (mGridPager.getCurrentItem() == pm.getCount()-1 && state == 0) {
                 mMessageReceiver, new IntentFilter("main-activity-broadcast"));
     }
 
+
+
     @Override
     protected void onPause() {
         super.onPause();
+        Log.e("Main","Paused");
         try {
-            if (BackgroundMusic.mp != null) {
+            if (BackgroundMusic.mp != null && !SharedPrefs.isBgMusicPlaying()) {
                 BackgroundMusic.pause();
             }
         } catch (Exception e) {
@@ -509,6 +555,12 @@ public void initGCM() {
     @Override
     public void onClick(View view) {
      //showcaseView.setShowcase(new ViewTarget(settings), true);
+    }
+
+    private int dipsToPixels(int dips)
+    {
+        final float scale = getResources().getDisplayMetrics().density;
+        return (int)(dips * scale + 0.5f);
     }
 }
 

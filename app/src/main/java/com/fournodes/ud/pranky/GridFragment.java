@@ -168,6 +168,7 @@ ShowcaseView showcaseView;
         if (gridItems[pos].sound == "addmore") {
 
             Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
+            SharedPrefs.setBgMusicPlaying(true);
             soundAct = new Intent(getActivity(), SoundSelect.class);
             startActivity(soundAct);
 
