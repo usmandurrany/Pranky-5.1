@@ -32,6 +32,7 @@
             android:orientation="horizontal">
 
             <com.fournodes.ud.pranky.CustomTextView
+                android:layout_marginTop="10dp"
                 android:id="@+id/txtBGMusic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,6 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/music_switch_margin_left"
+                android:paddingBottom="35dp"
+
                 android:textOff="OFF"
                 android:textOn="ON"
                 app:showText="false"
@@ -73,6 +76,8 @@
             android:orientation="horizontal">
 
             <com.fournodes.ud.pranky.CustomTextView
+                android:layout_marginTop="10dp"
+
                 android:id="@+id/txtRemotePrank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/prank_switch_margin_left"
+                android:paddingBottom="35dp"
                 android:textOff="OFF"
                 android:textOn="ON"
                 app:showText="false"

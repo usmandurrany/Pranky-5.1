@@ -30,11 +30,16 @@ public class SharedPrefs {
     public static final String PRANKABLE_RESP = "prankableResp"; //disabled for response msg, enabled for normal prank msg
     public static final String SERVER_STATE = "serverState"; // 0 for null, 1 for ready
     public static final String BG_MUSIC_ENABLED = "bgMusicEnabled"; // boolean
-    public static final String APP_FIRST_LAUNCH = "appFirstLaunch"; // boolean
     public static final String PRANK_BTN_ENABLED = "prankBtnEnabled"; // boolean
     public static final String NETWORK_AVAILABLE = "networkAvailable"; // boolean
-
     public static final String APP_FONT = "appFont";
+
+    public static final String APP_FIRST_LAUNCH = "appFirstLaunch"; // boolean
+    public static final String TIMER_FIRST_LAUNCH = "timerFirstLaunch"; // boolean
+    public static final String CLOCK_FIRST_LAUNCH = "clockFirstLaunch"; // boolean
+    public static final String SETTINGS_FIRST_LAUNCH = "settingsFirstLaunch"; // boolean
+    public static final String ADD_MORE_FIRST_LAUNCH = "addmoreFirstLaunch"; // boolean
+    public static final String REMOTE_PRANK_FIRST_LAUNCH = "remotePrankFirstLaunch"; // boolean
 
     private static int serverState;
     private static String myGcmID;
@@ -45,11 +50,17 @@ public class SharedPrefs {
     private static String appFont;
     private static boolean prankable;
     private static boolean bgMusicEnabled;
-    private static boolean appFirstLaunch;
     private static boolean sentGcmIDToServer;
     private static boolean registrationComplete;
     private static boolean prankBtnEnabled;
     private static boolean networkAvailable;
+
+    private static boolean appFirstLaunch;
+    private static boolean timerFirstLaunch;
+    private static boolean clockFirstLaunch;
+    private static boolean settingsFirstLaunch;
+    private static boolean addmoreFirstLaunch;
+    private static boolean remotePrankFirstLaunch;
 
 
     Context context;
@@ -69,7 +80,6 @@ public class SharedPrefs {
 
         networkAvailable=prefs.getBoolean(SharedPrefs.NETWORK_AVAILABLE, true);
         bgMusicEnabled=prefs.getBoolean(SharedPrefs.BG_MUSIC_ENABLED, true);
-        appFirstLaunch=prefs.getBoolean(SharedPrefs.APP_FIRST_LAUNCH, true);
         sentGcmIDToServer=prefs.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
         registrationComplete=prefs.getBoolean(SharedPrefs.REGISTRATION_COMPLETE, false);
         myGcmID=prefs.getString(SharedPrefs.MY_GCM_ID,null);
@@ -79,141 +89,187 @@ public class SharedPrefs {
         prankable=prefs.getBoolean(SharedPrefs.PRANKABLE, true);
         prankableResp=prefs.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
         serverState=prefs.getInt(SharedPrefs.SERVER_STATE, 1);
-
         appFont=prefs.getString(SharedPrefs.APP_FONT,DEFAULT_FONT);
+
+        appFirstLaunch=prefs.getBoolean(SharedPrefs.APP_FIRST_LAUNCH, true);
+        timerFirstLaunch=prefs.getBoolean(SharedPrefs.TIMER_FIRST_LAUNCH, true);
+        clockFirstLaunch=prefs.getBoolean(SharedPrefs.CLOCK_FIRST_LAUNCH, true);
+        settingsFirstLaunch=prefs.getBoolean(SharedPrefs.SETTINGS_FIRST_LAUNCH, true);
+        addmoreFirstLaunch=prefs.getBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH, true);
+        remotePrankFirstLaunch=prefs.getBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, true);
     }
 
     public static boolean isAppFirstLaunch() {
         return appFirstLaunch;
     }
 
-    public static void setAppFirstLaunch(boolean appFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.APP_FIRST_LAUNCH,appFirstLaunch).apply();
-        SharedPrefs.appFirstLaunch=prefs.getBoolean(SharedPrefs.APP_FIRST_LAUNCH, true);
-    }
-
     public static boolean isBgMusicEnabled() {
         return bgMusicEnabled;
-    }
-
-    public static void setBgMusicEnabled(boolean bgMusicEnabled) {
-        prefs.edit().putBoolean(SharedPrefs.BG_MUSIC_ENABLED,bgMusicEnabled).apply();
-        SharedPrefs.bgMusicEnabled=prefs.getBoolean(SharedPrefs.BG_MUSIC_ENABLED, true);
-    }
-
-    public static String getMyGcmID() {
-        return myGcmID;
-    }
-
-    public static void setMyGcmID(String myGcmID) {
-        prefs.edit().putString(SharedPrefs.MY_GCM_ID, myGcmID).apply();
-        SharedPrefs.myGcmID=prefs.getString(SharedPrefs.MY_GCM_ID, null);
-
-    }
-
-    public static String getMyAppID() {
-        return myAppID;
-    }
-
-    public static void setMyAppID(String myAppID) {
-        prefs.edit().putString(SharedPrefs.MY_APP_ID,myAppID).apply();
-        SharedPrefs.myAppID=prefs.getString(SharedPrefs.MY_APP_ID,null);
-
-    }
-
-    public static String getExpDate() {
-        return expDate;
-    }
-
-    public static void setExpDate(String expDate) {
-        prefs.edit().putString(SharedPrefs.EXP_DATE,expDate).apply();
-        SharedPrefs.expDate=prefs.getString(SharedPrefs.EXP_DATE,defaultExpDate.getTime().toString());
-
-    }
-
-    public static String getFrndAppID() {
-        return frndAppID;
-    }
-
-    public static void setFrndAppID(String frndAppID) {
-        prefs.edit().putString(SharedPrefs.FRND_APP_ID,frndAppID).apply();
-        SharedPrefs.frndAppID=prefs.getString(SharedPrefs.FRND_APP_ID, null);
-
     }
 
     public static boolean isPrankable() {
         return prankable;
     }
 
-    public static  void setPrankable(boolean prankable) {
-        prefs.edit().putBoolean(SharedPrefs.PRANKABLE, prankable).apply();
-        SharedPrefs.prankable=prefs.getBoolean(SharedPrefs.PRANKABLE, true);
-
-    }
-
-    public static String getPrankableResp() {
-        return prankableResp;
-    }
-
-    public static void setPrankableResp(String prankableResp) {
-        prefs.edit().putString(SharedPrefs.PRANKABLE_RESP, prankableResp).apply();
-        SharedPrefs.prankableResp=prefs.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
-
-    }
-
-    public static int getServerState() {
-        return serverState;
-    }
-
-    public static void setServerState(int serverState) {
-        prefs.edit().putInt(SharedPrefs.SERVER_STATE, serverState).apply();
-        SharedPrefs.serverState=prefs.getInt(SharedPrefs.SERVER_STATE, 1);
-
-    }
-
     public static boolean isSentGcmIDToServer() {
         return sentGcmIDToServer;
     }
 
-    public static void setSentGcmIDToServer(boolean sentGcmIDToServer) {
-        prefs.edit().putBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, sentGcmIDToServer).apply();
-        SharedPrefs.sentGcmIDToServer=prefs.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
-
-    }
-
-    public static boolean isRegistrationComplete() {
-        return registrationComplete;
-    }
-
-    public static void setRegistrationComplete(boolean registrationComplete) {
-        prefs.edit().putBoolean(SharedPrefs.REGISTRATION_COMPLETE,registrationComplete).apply();
-        SharedPrefs.registrationComplete=prefs.getBoolean(SharedPrefs.REGISTRATION_COMPLETE, false);
-
-    }
     public static boolean isPrankBtnEnabled() {
         return prankBtnEnabled;
     }
 
-    public static void setPrankBtnEnabled(boolean prankBtnEnabled) {
-        prefs.edit().putBoolean(SharedPrefs.PRANK_BTN_ENABLED,prankBtnEnabled).apply();
-        SharedPrefs.prankBtnEnabled = prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, false);
+    public static boolean isRegistrationComplete() { return registrationComplete;}
+
+    public static boolean isNetworkAvailable() {
+        return networkAvailable;
+    }
+
+    public static String getMyGcmID() {
+        return myGcmID;
+    }
+
+    public static String getMyAppID() {
+        return myAppID;
+    }
+
+    public static String getExpDate() {
+        return expDate;
+    }
+
+    public static String getFrndAppID() { return frndAppID; }
+
+    public static String getPrankableResp() { return prankableResp; }
+
+    public static int getServerState() {
+        return serverState;
     }
 
     public static String getAppFont() {
         return appFont;
     }
 
-    public static void setAppFont(String appFont) {
-        prefs.edit().putString(SharedPrefs.APP_FONT,appFont).apply();
-        SharedPrefs.appFont = prefs.getString(SharedPrefs.APP_FONT, DEFAULT_FONT);
+    public static boolean isTimerFirstLaunch() {
+        return timerFirstLaunch;
     }
 
-    public static boolean isNetworkAvailable() {
-        return networkAvailable;
+    public static boolean isClockFirstLaunch() {
+        return clockFirstLaunch;
+    }
+
+    public static boolean isSettingsFirstLaunch() {
+        return settingsFirstLaunch;
+    }
+
+    public static boolean isAddmoreFirstLaunch() {
+        return addmoreFirstLaunch;
+    }
+
+    public static boolean isRemotePrankFirstLaunch() {
+        return remotePrankFirstLaunch;
+    }
+
+    public static void setAppFirstLaunch(boolean appFirstLaunch) {
+        prefs.edit().putBoolean(SharedPrefs.APP_FIRST_LAUNCH,appFirstLaunch).apply();
+        SharedPrefs.appFirstLaunch=appFirstLaunch;
+    }
+
+    public static void setBgMusicEnabled(boolean bgMusicEnabled) {
+        prefs.edit().putBoolean(SharedPrefs.BG_MUSIC_ENABLED,bgMusicEnabled).apply();
+        SharedPrefs.bgMusicEnabled=bgMusicEnabled;
+    }
+
+    public static void setMyGcmID(String myGcmID) {
+        prefs.edit().putString(SharedPrefs.MY_GCM_ID, myGcmID).apply();
+        SharedPrefs.myGcmID=myGcmID;
+
+    }
+
+    public static void setMyAppID(String myAppID) {
+        prefs.edit().putString(SharedPrefs.MY_APP_ID,myAppID).apply();
+        SharedPrefs.myAppID=myAppID;
+
+    }
+
+    public static void setExpDate(String expDate) {
+        prefs.edit().putString(SharedPrefs.EXP_DATE,expDate).apply();
+        SharedPrefs.expDate=expDate;
+
+    }
+
+    public static void setFrndAppID(String frndAppID) {
+        prefs.edit().putString(SharedPrefs.FRND_APP_ID,frndAppID).apply();
+        SharedPrefs.frndAppID=frndAppID;
+
+    }
+
+    public static  void setPrankable(boolean prankable) {
+        prefs.edit().putBoolean(SharedPrefs.PRANKABLE, prankable).apply();
+        SharedPrefs.prankable=prankable;
+
+    }
+
+    public static void setPrankableResp(String prankableResp) {
+        prefs.edit().putString(SharedPrefs.PRANKABLE_RESP, prankableResp).apply();
+        SharedPrefs.prankableResp=prankableResp;
+
+    }
+    public static void setServerState(int serverState) {
+        prefs.edit().putInt(SharedPrefs.SERVER_STATE, serverState).apply();
+        SharedPrefs.serverState=serverState;
+
+    }
+
+    public static void setSentGcmIDToServer(boolean sentGcmIDToServer) {
+        prefs.edit().putBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, sentGcmIDToServer).apply();
+        SharedPrefs.sentGcmIDToServer=sentGcmIDToServer;
+
+    }
+
+    public static void setRegistrationComplete(boolean registrationComplete) {
+        prefs.edit().putBoolean(SharedPrefs.REGISTRATION_COMPLETE,registrationComplete).apply();
+        SharedPrefs.registrationComplete=registrationComplete;
+
+    }
+
+    public static void setPrankBtnEnabled(boolean prankBtnEnabled) {
+        prefs.edit().putBoolean(SharedPrefs.PRANK_BTN_ENABLED,prankBtnEnabled).apply();
+        SharedPrefs.prankBtnEnabled = prankBtnEnabled;
+    }
+
+    public static void setAppFont(String appFont) {
+        prefs.edit().putString(SharedPrefs.APP_FONT,appFont).apply();
+        SharedPrefs.appFont = appFont;
     }
 
     public static void setNetworkAvailable(boolean networkAvailable) {
         prefs.edit().putBoolean(SharedPrefs.NETWORK_AVAILABLE,networkAvailable).apply();
         SharedPrefs.networkAvailable = networkAvailable;
+    }
+
+
+    public static void setTimerFirstLaunch(boolean timerFirstLaunch) {
+        prefs.edit().putBoolean(SharedPrefs.TIMER_FIRST_LAUNCH,timerFirstLaunch).apply();
+        SharedPrefs.timerFirstLaunch = timerFirstLaunch;
+    }
+
+    public static void setClockFirstLaunch(boolean clockFirstLaunch) {
+        prefs.edit().putBoolean(SharedPrefs.CLOCK_FIRST_LAUNCH,clockFirstLaunch).apply();
+        SharedPrefs.clockFirstLaunch = clockFirstLaunch;
+    }
+
+    public static void setSettingsFirstLaunch(boolean settingsFirstLaunch) {
+        prefs.edit().putBoolean(SharedPrefs.SETTINGS_FIRST_LAUNCH,settingsFirstLaunch).apply();
+        SharedPrefs.settingsFirstLaunch = settingsFirstLaunch;
+    }
+
+    public static void setAddmoreFirstLaunch(boolean addmoreFirstLaunch) {
+        prefs.edit().putBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH,addmoreFirstLaunch).apply();
+        SharedPrefs.addmoreFirstLaunch = addmoreFirstLaunch;
+    }
+
+    public static void setRemotePrankFirstLaunch(boolean remotePrankFirstLaunch) {
+        prefs.edit().putBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH,remotePrankFirstLaunch).apply();
+        SharedPrefs.remotePrankFirstLaunch = remotePrankFirstLaunch;
     }
 }

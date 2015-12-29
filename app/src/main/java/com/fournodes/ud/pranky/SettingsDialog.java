@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,32 +32,60 @@ import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class SettingsDialog {
+public class SettingsDialog extends Activity implements View.OnClickListener{
     private Context context;
     private Dialog dialog;
     private BackgroundMusic player;
     private boolean playMusic = true;
     private RegisterOnServer rs;
+    View decorView;
 
-    public SettingsDialog(Context context) {
-        this.context = context;
-    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_settings);
 
-    public void show() {
-        // Send the stored GCM ID/Token to the server
+        decorView = getWindow().getDecorView();
 
-        dialog = new Dialog(context, R.style.ClockDialog);
-        dialog.setContentView(R.layout.dialog_settings);
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-        SwitchCompat btnmusic = (SwitchCompat) dialog.findViewById(R.id.btnMusicToggle);
-        SwitchCompat remoteprank = (SwitchCompat) dialog.findViewById(R.id.swtRemotePrank);
-        ImageView btndiagclose = (ImageView) dialog.findViewById(R.id.btnDiagClose);
-        TextView bgmusic = (TextView) dialog.findViewById(R.id.txtBGMusic);
-        final LinearLayout remotePrankID = (LinearLayout) dialog.findViewById(R.id.layoutRemoteID);
-        final TextView myid = (TextView) dialog.findViewById(R.id.txtmyID);
+        SwitchCompat btnmusic = (SwitchCompat) findViewById(R.id.btnMusicToggle);
+        SwitchCompat remoteprank = (SwitchCompat) findViewById(R.id.swtRemotePrank);
+
+        btnmusic.setOnClickListener(this);
+        btnmusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    SharedPrefs.setBgMusicEnabled(true);
+
+                } else {
+                    SharedPrefs.setBgMusicEnabled(false);
+                }
+
+                if (SharedPrefs.isBgMusicEnabled()) {
+                    BackgroundMusic.setContext(SettingsDialog.this);
+
+                    BackgroundMusic.play();
+                } else {
+                    BackgroundMusic.stop();
+                }
+            }
+        });
+
+        ImageView btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
+        TextView bgmusic = (TextView) findViewById(R.id.txtBGMusic);
+        final LinearLayout remotePrankID = (LinearLayout) findViewById(R.id.layoutRemoteID);
+        final TextView myid = (TextView) findViewById(R.id.txtmyID);
 
         // Get the cached font and apply it
-        bgmusic.setTypeface(FontManager.getTypeFace(context, SharedPrefs.DEFAULT_FONT));
+        bgmusic.setTypeface(FontManager.getTypeFace(SettingsDialog.this, SharedPrefs.DEFAULT_FONT));
 
         // Get myAppID form shared prefs and display it in the dialog
         myid.setText(SharedPrefs.getMyAppID());
@@ -71,36 +102,18 @@ public class SettingsDialog {
         btndiagclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                finish();
             }
         });
 
-        btnmusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    SharedPrefs.setBgMusicEnabled(true);
 
-                } else {
-                    SharedPrefs.setBgMusicEnabled(false);
-                }
-
-                if (SharedPrefs.isBgMusicEnabled()) {
-                    BackgroundMusic.setContext(context);
-
-                    BackgroundMusic.play();
-                } else {
-                    BackgroundMusic.stop();
-                }
-            }
-        });
-
+        remoteprank.setOnClickListener(this);
 
         remoteprank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 // Initialize the RegisterOnServer class
-                rs = new RegisterOnServer(context);
+                rs = new RegisterOnServer(SettingsDialog.this);
 
                 if (isChecked) {
                     try {
@@ -140,9 +153,12 @@ public class SettingsDialog {
                         else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID() == null || exp.before(today))) {
                             Log.e("Condition3", "True");
 
-                             //Run the method present in the Main activity
-                            ((Main) context).initGCM();
-                            //Intent intent = new Intent("CONNECTIVITY_CHECK");
+                            //Run the method present in the Main activity
+
+                            Intent intent = new Intent("main-activity-broadcast");
+                            // You can also include some extra data.
+                            intent.putExtra("message", "get-id");
+                            LocalBroadcastManager.getInstance(SettingsDialog.this).sendBroadcast(intent);                            //Intent intent = new Intent("CONNECTIVITY_CHECK");
                             //context.sendBroadcast(intent);
 
                         }
@@ -168,21 +184,11 @@ public class SettingsDialog {
         });
 
 
-        //Set the dialog to not focusable (makes navigation ignore us adding the window)
-        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-        //Show the dialog!
-        dialog.show();
-
-        //Set the dialog to immersive
-        dialog.getWindow().getDecorView().setSystemUiVisibility(
-                ((Activity) context).getWindow().getDecorView().getSystemUiVisibility());
-
-        //Clear the not focusable flag from the window
-        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
 
     }
+
+
 
     public static ArrayList<Date> getNextNumberOfDays(Date originalDate, int days) {
         ArrayList<Date> dates = new ArrayList<Date>();
@@ -195,5 +201,23 @@ public class SettingsDialog {
         return dates;
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        decorView = getWindow().getDecorView();
 
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    @Override
+    public void onClick(View view) {
+        /*String imgName = getResources().getResourceEntryName(view.getId());
+        Toast.makeText(SettingsDialog.this, imgName, Toast.LENGTH_SHORT).show();*/
+    }
 }

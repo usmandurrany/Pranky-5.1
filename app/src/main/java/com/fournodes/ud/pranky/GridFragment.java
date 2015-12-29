@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,6 +26,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -49,7 +53,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     private Activity activity;
     private PreviewMediaPlayer previewSound = getInstance();
     private Handler handler = new Handler();
-
+ShowcaseView showcaseView;
     public GridFragment() {
     }
 
@@ -83,27 +87,27 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
             if (mGridView != null) {
                 mGridView.setAdapter(mGridAdapter);
-            }
 
-            mGridView.setOnItemClickListener(new OnItemClickListener() {
+                mGridView.setOnItemClickListener(new OnItemClickListener() {
 
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int pos, long id) {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int pos, long id) {
 
-                    try {
-                        onGridItemClick((GridView) parent, view, pos, id);
-                    } catch (NoSuchFieldException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        try {
+                            onGridItemClick((GridView) parent, view, pos, id);
+                        } catch (NoSuchFieldException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -338,6 +342,38 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         viewPOS = -1;
         Sound.clearSoundProp();
 
+    }
+
+    @Override
+    public void pageLast() {
+        if (SharedPrefs.isAppFirstLaunch()) {
+            final int size = mGridView.getChildCount();
+            for (int i = 0; i < size; i++) {
+                ImageView gridChild = (ImageView) mGridView.getChildAt(i);
+                Log.e("Grid Child", gridChild.getTag().toString());
+                Log.e("Grid Child TAG", String.valueOf(R.drawable.addstates));
+
+                if (gridChild.getTag().toString().equals(String.valueOf(R.drawable.addstates))) {
+                    Log.e("Add More", "Found");
+                    ViewTarget target = new ViewTarget(gridChild);
+                    showcaseView = new ShowcaseView.Builder(activity)
+                            .setTarget(target)
+                            .setContentTitle("Add more sounds")
+                            .setContentText("Tap on the '+' to add a custom sound of your choice")
+                            .setStyle(R.style.CustomShowcaseTheme2)
+                            .hideOnTouchOutside()
+                            .setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    showcaseView.hide();
+                                    SharedPrefs.setAppFirstLaunch(false);
+                                }
+                            })
+                            .build();
+
+                }
+            }
+        }
     }
 
 

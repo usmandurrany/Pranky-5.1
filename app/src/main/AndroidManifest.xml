@@ -79,18 +79,33 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog" >
         </activity>
-
+        <activity
+            android:name=".TimerDialog"
+            android:excludeFromRecents="true"
+            android:label="TimerDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityDialog" >
+        </activity>
+        <activity
+            android:name=".ClockDialog"
+            android:excludeFromRecents="true"
+            android:label="ClockDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityDialog" >
+        </activity>
+        <activity
+            android:name=".SettingsDialog"
+            android:excludeFromRecents="true"
+            android:label="SettingsDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityDialog" >
+        </activity>
         <receiver
             android:name=".PlaySound"
             android:enabled="true"
             android:exported="true" >
         </receiver>
 
-        <activity android:name=".TutorialActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            >
-        </activity>
         <service
             android:name=".RegistrationIntentService"
             android:exported="false">

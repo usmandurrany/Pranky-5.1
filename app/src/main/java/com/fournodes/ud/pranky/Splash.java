@@ -85,13 +85,8 @@ public class Splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Check if app is launched for the first time
-                if (SharedPrefs.isAppFirstLaunch())
-                // Launch tutorial activity if true
-                    mainIntent = new Intent(getApplicationContext(), TutorialActivity.class);
-                else
-                // Launch main activity if false
-                    mainIntent = new Intent(getApplicationContext(), Main.class);
+
+                 mainIntent = new Intent(getApplicationContext(), Main.class);
 
                 Splash.this.startActivity(mainIntent);
                 Splash.this.finish();

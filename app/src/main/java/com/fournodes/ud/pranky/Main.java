@@ -59,6 +59,7 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
 //    private BackgroundMusic player = getInstance(getApplicationContext());
     private int pageNo = 0;
     RegisterOnServer rs;
+    int steps=1;
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -85,6 +86,8 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
             } else if (message.equals("network-not-available")){
                 CustomToast cToast = new CustomToast(getApplicationContext(), "Network is unavailable");
                 cToast.show();
+            }else if (message.equals("get-id")){
+                initGCM();
             }
         }
     };
@@ -106,10 +109,14 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
+        mGridPager = (ViewPager) findViewById(R.id.pager);
+        mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
 
         prankbtn = (ImageView) findViewById(R.id.prankit);
+        timer = (ImageView) findViewById(R.id.timer_btn);
 
-        ViewTarget target = new ViewTarget(R.id.prankit,this);
+
+        ViewTarget target = new ViewTarget(R.id.pager,this);
         /*Target target = new Target() {
             @Override
             public Point getPoint() {
@@ -122,40 +129,6 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
                 return new Point((int) centreX, (int) centreY +125);
             }
         };*/
-        showcaseView = new ShowcaseView.Builder(this)
-                .setTarget(target)
-                .setContentTitle("Settings menu")
-                .setContentText("Tap here to view and set the app settings")
-                .setStyle(R.style.CustomShowcaseTheme2)
-                .hideOnTouchOutside()
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showcaseView.setShowcase(new ViewTarget(settings), true);
-                    }
-                })
-                .build();
-
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-//        float scaleFactor = metrics.density;
-//        Toast.makeText(Main.this, String.valueOf(scaleFactor), Toast.LENGTH_SHORT).show();
-/*
-        Intent intent = new Intent("CONNECTIVITY_CHECK");
-        sendBroadcast(intent);*/
-
-
-        initGCM();
-
-
-        mGridPager = (ViewPager) findViewById(R.id.pager);
-        mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
-
-
-        createFragments();
-
-
         mGridPager.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         mGridPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -170,18 +143,91 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
                 Log.e("POSITION", String.valueOf(position));
 
                 android.support.v4.app.Fragment fragment = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, pageNo);
+                //ImageView test = (ImageView) fragment.getView().findViewById(R.id.grid_item_image);
+
+
                 if (fragment instanceof IFragment) {
                     ((IFragment) fragment).pageScrolled();
                 }
 
                 pageNo = position;
+
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+if (mGridPager.getCurrentItem() == pm.getCount()-1 && state == 0) {
+    android.support.v4.app.Fragment frag = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, pm.getCount() - 1);
+    ((IFragment) frag).pageLast();
+}
             }
         });
+
+    if (SharedPrefs.isAppFirstLaunch()) {
+
+        showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(target)
+                .setContentTitle("Pick a sound")
+                .setContentText("Tap on the image to preview sound and select it")
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .hideOnTouchOutside()
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        steps++;
+                        switch (steps) {
+                            case 2:
+                                showcaseView.setShowcase(new ViewTarget(timer), true);
+                                showcaseView.setContentTitle("Set playback time");
+                                showcaseView.setContentText("Tap on the timer icon to play the sound after a specified interval");
+                                break;
+                            case 3:
+                                showcaseView.setShowcase(new ViewTarget(clock), true);
+                                showcaseView.setContentTitle("Set playback time");
+                                showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
+                                break;
+
+                            case 4:
+                                showcaseView.setShowcase(new ViewTarget(settings), true);
+                                showcaseView.setContentTitle("App settings");
+                                showcaseView.setContentText("Tap on the settings icon to view application settings");
+                                break;
+                            case 5:
+                                showcaseView.setShowcase(new ViewTarget(prankbtn), true);
+                                showcaseView.setContentTitle("Prank a friend");
+                                showcaseView.setContentText("Pick a sound then press 'Prank' to send it directly to your friend's phone");
+                                break;
+                            case 6:
+                                showcaseView.hide();
+                                mGridPager.setCurrentItem(pm.getCount() - 1);
+
+                                break;
+
+
+                        }
+
+
+                    }
+                })
+                .build();
+    }
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//        float scaleFactor = metrics.density;
+//        Toast.makeText(Main.this, String.valueOf(scaleFactor), Toast.LENGTH_SHORT).show();
+/*
+        Intent intent = new Intent("CONNECTIVITY_CHECK");
+        sendBroadcast(intent);*/
+
+
+        initGCM();
+
+
+
+
+        createFragments();
+
 
 
         mIndicator.setViewPager(mGridPager);
@@ -194,13 +240,12 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                 } else {
-                    ClockDialog cDialog = new ClockDialog(Main.this);
-                    cDialog.show();
+                    Intent clockDialog = new Intent(Main.this,ClockDialog.class);
+                    startActivity(clockDialog);
                 }
             }
         });
 
-        timer = (ImageView) findViewById(R.id.timer_btn);
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,8 +253,8 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                 } else {
-                    TimerDialog tDialog = new TimerDialog(Main.this);
-                    tDialog.show();
+                   Intent timerDialog = new Intent(Main.this,TimerDialog.class);
+                    startActivity(timerDialog);
                 }
             }
         });
@@ -217,8 +262,9 @@ public class Main extends FragmentActivity implements SoundSelectListener, View.
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SettingsDialog sett = new SettingsDialog(Main.this);
-                sett.show();
+                Intent settingsDialog = new Intent(Main.this,SettingsDialog.class);
+                startActivity(settingsDialog);
+
             }
         });
 

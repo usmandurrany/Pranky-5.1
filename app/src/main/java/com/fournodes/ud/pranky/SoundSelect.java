@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -37,6 +40,8 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
     ImageView btnsave;
     ImageView custom;
     View rootView;
+    ShowcaseView showcaseView;
+    int steps=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,6 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-
         prankyDB = new PrankyDB(SoundSelect.this);
         final EditText txtselsound = (EditText) findViewById(R.id.txtSelSound);
         txtselsound.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
@@ -63,6 +67,42 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
         ImageView btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
         btnsave = (ImageView) findViewById(R.id.btnSave);
         btnsave.setEnabled(false);
+
+        if (SharedPrefs.isAddmoreFirstLaunch()) {
+            ViewTarget target = new ViewTarget(btnselsound);
+            showcaseView = new ShowcaseView.Builder(this)
+                    .useDecorViewAsParent()
+                    .setTarget(target)
+                    .setContentTitle("Select a sound")
+                    .setContentText("Tap on the icon to pick a sound from your phone")
+                    .setStyle(R.style.CustomShowcaseTheme2)
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        steps++;
+                            switch (steps) {
+                                case 2:
+                                    showcaseView.setShowcase(new ViewTarget(btnsave), true);
+                                    showcaseView.setContentTitle("Pick an icon");
+                                    showcaseView.setContentText("Choose an icon for your sound");
+                                break;
+
+                                case 3:
+                                    showcaseView.setShowcase(new ViewTarget(btnsave), true);
+                                    showcaseView.setContentTitle("Save your sound");
+                                    showcaseView.setContentText("Tap on save to add your sound to the list");
+                                break;
+                                case 4:
+                                   showcaseView.hide();
+                                    SharedPrefs.setAddmoreFirstLaunch(false);
+                                    break;
+                            }
+
+                        }
+                    })
+                    .build();
+
+        }
 
         btndiagclose.setOnClickListener(new View.OnClickListener() {
             @Override

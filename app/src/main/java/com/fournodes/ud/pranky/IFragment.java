@@ -8,6 +8,7 @@ import android.view.View;
  */
 public interface IFragment {
     public void pageScrolled();
+    public void pageLast();
 
     public void TutImageClick();
 

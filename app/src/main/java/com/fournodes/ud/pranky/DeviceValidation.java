@@ -1,12 +1,15 @@
 package com.fournodes.ud.pranky;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +68,22 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
             }
 
 
-        } catch (Exception e) {}
+        }catch (HttpHostConnectException e) {
+            Log.e("Send Prank", e.toString());
+            delegate.processFinish("-10");
+          /*  Intent intent = new Intent("main-activity-broadcast");
+            intent.putExtra("message", "server-not-found");
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
+
+        } catch (IOException e) {
+            Log.e("Send Prank", e.toString());
+            delegate.processFinish("-20");
+          /*  Intent intent = new Intent("main-activity-broadcast");
+            intent.putExtra("message", "network-not-available");
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
+
+
+        }
         return result;
     }
 

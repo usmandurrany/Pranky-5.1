@@ -35,6 +35,7 @@ public class SendMessage extends AsyncTask<String, String, String> {
     String soundName="";
     HttpGet httpget;
     ProgressDialog pdialog;
+    WaitDialog wDialog;
 
 
 
@@ -45,6 +46,7 @@ public class SendMessage extends AsyncTask<String, String, String> {
 
 
 public void initDialog(){
+/*
 
     pdialog = new ProgressDialog(context);
     pdialog.setMessage("Please wait..");
@@ -52,7 +54,10 @@ public void initDialog(){
     pdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
     pdialog.setCancelable(false);
     pdialog.show();
+*/
 
+    wDialog = new WaitDialog(context);
+    wDialog.show();
 }
 
 
@@ -106,8 +111,8 @@ public void initDialog(){
     @Override
     protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-        if (pdialog != null)
-        pdialog.dismiss();
+        if (wDialog != null)
+        wDialog.dismiss();
 
     }
 }

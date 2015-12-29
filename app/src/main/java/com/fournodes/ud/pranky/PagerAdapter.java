@@ -12,7 +12,6 @@ import java.util.List;
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
     private List<GridFragment> gfragments;
-    private List<TutorialFragment> Tfragments;
 
     public PagerAdapter(FragmentManager fm, List<GridFragment> gridFragments, Context context) {
         super(fm);
@@ -20,27 +19,17 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     }
 
-    public PagerAdapter(FragmentManager fm, Context context, List<TutorialFragment> fragments) {
-        super(fm);
-        this.Tfragments = fragments;
 
-    }
 
     @Override
     public android.support.v4.app.Fragment getItem(int pos) {
-        if (gfragments != null)
-            return this.gfragments.get(pos);
-        else
-            return this.Tfragments.get(pos);
+           return this.gfragments.get(pos);
 
     }
 
     @Override
     public int getCount() {
-        if (gfragments != null)
-            return this.gfragments.size();
-        else
-            return this.Tfragments.size();
+           return this.gfragments.size();
 
     }
 

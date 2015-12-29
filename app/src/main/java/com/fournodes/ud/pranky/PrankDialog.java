@@ -14,7 +14,7 @@ import android.widget.ImageView;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class PrankDialog implements DeviceValidation.AsyncResponse {
+public class PrankDialog{
     private Context context;
     private Dialog dialog;
 
@@ -54,7 +54,15 @@ public class PrankDialog implements DeviceValidation.AsyncResponse {
                             }else if (output.equals("0")){
                                 CustomToast cToast = new CustomToast(context, "Your friend is not prankable at the moment");
                                 cToast.show();
-                            }else{
+                            }else if (output.equals("-10")){ //Server Unreachable
+                                CustomToast cToast = new CustomToast(context, "Can't connect to server");
+                                cToast.show();
+
+                            }else if (output.equals("-20")){//Network Unavailable
+                                CustomToast cToast = new CustomToast(context, "Network Unavailable");
+                                cToast.show();
+                            }
+                            else{
                                 CustomToast cToast = new CustomToast(context, "Invalid ID");
                                 cToast.show();
                             }
@@ -89,8 +97,5 @@ public class PrankDialog implements DeviceValidation.AsyncResponse {
     }
 
 
-    @Override
-    public void processFinish(String output) {
 
-    }
 }

@@ -3,6 +3,7 @@ package com.fournodes.ud.pranky;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,22 +19,26 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class ClockDialog {
+public class ClockDialog extends Activity{
     private Context context;
     private Dialog dialog;
     private int clockDay, clockHour, clockMin, clockampm; //0 for am 1 for pm
+    View decorView;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_clock);
 
-    public ClockDialog(Context context) {
-        this.context = context;
-    }
+        decorView = getWindow().getDecorView();
 
-
-    public void show() {
-
-
-        dialog = new Dialog(context, R.style.ClockDialog);
-        dialog.setContentView(R.layout.dialog_clock);
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         //Array for the am/pm marker column
         String[] ampmArray = {"AM", "PM"};
@@ -42,72 +47,59 @@ public class ClockDialog {
 
 
         //Configure Days Column
-        final WheelView day = (WheelView) dialog.findViewById(R.id.day);
-        day.setViewAdapter(new DayWheelAdapter(context, days));
+        final WheelView day = (WheelView) findViewById(R.id.day);
+        day.setViewAdapter(new DayWheelAdapter(ClockDialog.this, days));
 
         //Configure Hours Column
-        final WheelView hour = (WheelView) dialog.findViewById(R.id.hour);
-        NumericWheelAdapter hourAdapter = new NumericWheelAdapter(context, 1, 12);
+        final WheelView hour = (WheelView) findViewById(R.id.hour);
+        NumericWheelAdapter hourAdapter = new NumericWheelAdapter(ClockDialog.this, 1, 12);
         hourAdapter.setItemResource(R.layout.wheel_item_time);
         hourAdapter.setItemTextResource(R.id.time_item);
         hour.setViewAdapter(hourAdapter);
 
         //Configure Minutes Column
-        final WheelView min = (WheelView) dialog.findViewById(R.id.minute);
-        NumericWheelAdapter minAdapter = new NumericWheelAdapter(context, 00, 59);
+        final WheelView min = (WheelView) findViewById(R.id.minute);
+        NumericWheelAdapter minAdapter = new NumericWheelAdapter(ClockDialog.this, 00, 59);
         minAdapter.setItemResource(R.layout.wheel_item_time);
         minAdapter.setItemTextResource(R.id.time_item);
         min.setViewAdapter(minAdapter);
 
         //Configure am/pm Marker Column
-        final WheelView ampm = (WheelView) dialog.findViewById(R.id.ampm);
-        ArrayWheelAdapter<String> ampmAdapter = new ArrayWheelAdapter<String>(context, ampmArray);
+        final WheelView ampm = (WheelView) findViewById(R.id.ampm);
+        ArrayWheelAdapter<String> ampmAdapter = new ArrayWheelAdapter<String>(ClockDialog.this, ampmArray);
         ampmAdapter.setItemResource(R.layout.wheel_item_time);
         ampmAdapter.setItemTextResource(R.id.time_item);
         ampm.setViewAdapter(ampmAdapter);
 
-        ImageView close = (ImageView) dialog.findViewById(R.id.close);
+        ImageView close = (ImageView) findViewById(R.id.close);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                finish();
             }
         });
 
-        ImageView clockset = (ImageView) dialog.findViewById(R.id.set);
+        ImageView clockset = (ImageView) findViewById(R.id.set);
         clockset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, String.valueOf(ampm.getCurrentItem()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClockDialog.this, String.valueOf(ampm.getCurrentItem()), Toast.LENGTH_SHORT).show();
                 clockDay = day.getCurrentItem();
                 clockHour = hour.getCurrentItem();
                 clockMin = min.getCurrentItem();
                 clockampm = ampm.getCurrentItem();
-                SoundScheduler scheduler = new SoundScheduler(context, clockDay, clockHour, clockMin, clockampm);
+                SoundScheduler scheduler = new SoundScheduler(ClockDialog.this, clockDay, clockHour, clockMin, clockampm);
                 if (scheduler.validateTime(scheduler.clockSchedule(), "dialog_clock")) {
                     scheduler.ScheduleSoundPlayback("dialog_clock", scheduler.clockSchedule());
-                    dialog.dismiss();
+                    finish();
                 } else {
-                    CustomToast cToast = new CustomToast(context, "Selected time has passed.");
+                    CustomToast cToast = new CustomToast(ClockDialog.this, "Selected time has passed.");
                     cToast.show();
                 }
 
             }
         });
-
-        //Set the dialog to not focusable (makes navigation ignore us adding the window)
-        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-        //Show the dialog!
-        dialog.show();
-
-        //Set the dialog to immersive
-        dialog.getWindow().getDecorView().setSystemUiVisibility(
-                ((Activity) context).getWindow().getDecorView().getSystemUiVisibility());
-
-        //Clear the not focusable flag from the window
-        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
 
     }
@@ -122,6 +114,18 @@ public class ClockDialog {
         }
         return dates;
     }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        decorView = getWindow().getDecorView();
 
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
 
 }
