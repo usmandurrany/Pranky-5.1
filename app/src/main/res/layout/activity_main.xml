@@ -14,13 +14,13 @@
         android:layout_height="match_parent">
 <RelativeLayout
     android:id="@+id/sideMenu"
-    android:layout_width="160dp"
+    android:layout_width="190dp"
     android:layout_height="40dp"
     android:layout_marginTop="5dp"
     android:layout_alignParentTop="true"
     android:layout_alignParentLeft="true"
     android:background="@drawable/sm_show"
-    android:layout_marginLeft="-115dp"
+    android:layout_marginLeft="-150dp"
     android:scaleType="fitEnd"
 
     >
@@ -30,7 +30,7 @@
         android:layout_height="35dp"
         android:src="@mipmap/help"
         android:layout_marginTop="4dp"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="63dp"
         />
     <ImageView
         android:id="@+id/smInfo"
@@ -38,10 +38,18 @@
         android:layout_height="35dp"
         android:src="@mipmap/info"
         android:layout_marginTop="4dp"
-        android:layout_marginLeft="73dp"
+        android:layout_marginLeft="100dp"
 
         />
+    <ImageView
+        android:id="@+id/smTerms"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:src="@mipmap/terms"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="25dp"
 
+        />
 
 
 </RelativeLayout>

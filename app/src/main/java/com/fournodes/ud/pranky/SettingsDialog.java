@@ -4,20 +4,18 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,9 +24,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.concurrent.ExecutionException;
-
-import static com.fournodes.ud.pranky.BackgroundMusic.getInstance;
 
 /**
  * Created by Usman on 11/6/2015.
@@ -161,15 +156,8 @@ public class SettingsDialog extends Activity implements View.OnClickListener{
                         // serverState is 1 and myGcmId is not set or expDate is not set or expDate has passed
                         else if (SharedPrefs.getServerState() == 1 && (SharedPrefs.getMyGcmID() == null || exp.before(today))) {
                             Log.e("Condition3", "True");
-
-                            //Run the method present in the Main activity
-
-                            Intent intent = new Intent("main-activity-broadcast");
-                            // You can also include some extra data.
-                            intent.putExtra("message", "get-id");
-                            LocalBroadcastManager.getInstance(SettingsDialog.this).sendBroadcast(intent);                            //Intent intent = new Intent("CONNECTIVITY_CHECK");
-                            //context.sendBroadcast(intent);
-
+                            GCMRegister gcmRegister = new GCMRegister(SettingsDialog.this);
+                            gcmRegister.run();
                         }
 
                         remotePrankID.setVisibility(View.VISIBLE);
@@ -262,4 +250,6 @@ public class SettingsDialog extends Activity implements View.OnClickListener{
         System.gc();
 
     }
+
+
 }

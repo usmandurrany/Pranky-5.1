@@ -14,10 +14,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 

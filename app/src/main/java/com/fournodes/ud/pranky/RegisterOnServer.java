@@ -1,11 +1,11 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
+import org.apache.commons.io.input.NullInputStream;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -65,7 +65,7 @@ public class RegisterOnServer extends AsyncTask<String, String, String>{
             }
 
 
-        } catch (Exception e) {}
+        } catch (Exception e) {Log.e("RegisterOnServer",e.toString());}
 
 
 
@@ -97,7 +97,7 @@ public class RegisterOnServer extends AsyncTask<String, String, String>{
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        } catch (NullPointerException e){}
 
         super.onPostExecute(s);
     }

@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Pranky</string>
-    <string name="action_settings">Settings</string>
+    <string name="version">Version - 1.0.2</string>
     <string name="title_activity_main">Main</string>
+
+    <string name="copyright">Copyrights <a href="http://www.four-nodes.com">Four Nodes</a>\nAll rights reserved</string>
+    <string name="sounds">Royalty Free Sounds from <a href="http://www.soundbible.com">SoundBible</a></string>
+    <string name="icons"><a href="http://www.flaticon.com/">Freepik</a>\nLicensed under <a href="http://www.creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></string>
+    <string name="music">Royalty Free Music from <a href="http://www.bensound.com/">Bensound</a></string>
+
 </resources>

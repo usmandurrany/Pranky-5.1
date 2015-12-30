@@ -1,8 +1,6 @@
 package com.fournodes.ud.pranky;
 
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -18,8 +16,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 /**
  * Created by Usman on 12/25/2015.
@@ -114,7 +110,7 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        } catch (NullPointerException e){}
 
         super.onPostExecute(s);
     }

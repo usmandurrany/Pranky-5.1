@@ -2,16 +2,20 @@ package com.fournodes.ud.pranky;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 /**
  * Created by Usman on 11/6/2015.
@@ -20,6 +24,33 @@ public class PrankDialog extends Activity{
     private Context context;
     private Dialog dialog;
     View decorView;
+    ShowcaseView showcaseView;
+
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            if (message.equals("not-prankable")){
+                CustomToast cToast = new CustomToast(PrankDialog.this, "Your friend is not prankable at the moment");
+                cToast.show();
+
+            } else if (message.equals("server-unreachable")){
+                CustomToast cToast = new CustomToast(PrankDialog.this, "Can't connect to server");
+                cToast.show();
+
+            } else if (message.equals("network-unavailable")) {
+                CustomToast cToast = new CustomToast(PrankDialog.this, "Network Unavailable");
+                cToast.show();
+            }
+            else if (message.equals("invalid-id")){
+                CustomToast cToast = new CustomToast(getApplicationContext(), "Invalid ID");
+                cToast.show();
+            }
+        }
+    };
 
 
     @Override
@@ -58,25 +89,36 @@ public class PrankDialog extends Activity{
                     new DeviceValidation(new DeviceValidation.AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
+                            Intent intent = new Intent("prank-dialog-activity-broadcast");
                             if (output.equals("1"))
                             {
+                                intent.putExtra("message", "default");
                                 SharedPrefs.setFrndAppID(frndID.getText().toString());
                                 finish();
                             }else if (output.equals("0")){
-                                CustomToast cToast = new CustomToast(PrankDialog.this, "Your friend is not prankable at the moment");
-                                cToast.show();
+
+                                // You can also include some extra data.
+                                intent.putExtra("message", "not-prankable");
+
+
                             }else if (output.equals("-10")){ //Server Unreachable
-                                CustomToast cToast = new CustomToast(PrankDialog.this, "Can't connect to server");
-                                cToast.show();
+                                // You can also include some extra data.
+                                intent.putExtra("message", "server-unreachable");
+
 
                             }else if (output.equals("-20")){//Network Unavailable
-                                CustomToast cToast = new CustomToast(PrankDialog.this, "Network Unavailable");
-                                cToast.show();
+                                intent.putExtra("message", "network-unavailable");
+
+
+
                             }
                             else{
-                                CustomToast cToast = new CustomToast(PrankDialog.this, "Invalid ID");
-                                cToast.show();
+
+                                intent.putExtra("message", "invalid-id");
+
+
                             }
+                            LocalBroadcastManager.getInstance(PrankDialog.this).sendBroadcast(intent);
                         }
                     }).execute(frndID.getText().toString());
 
@@ -88,8 +130,24 @@ public class PrankDialog extends Activity{
 
             }
         });
-
-
+        if (SharedPrefs.isRemotePrankFirstLaunch()) {
+            ViewTarget target = new ViewTarget(frndID);
+            showcaseView = new ShowcaseView.Builder(this)
+                    .withMaterialShowcase()
+                    .setTarget(target)
+                    .setContentTitle("Prank a friend")
+                    .setContentText("Enter your 'Frieend's ID' found in the settings popup of your friends phone")
+                    .setStyle(R.style.CustomShowcaseTheme3)
+                    .hideOnTouchOutside()
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            showcaseView.hide();
+                            SharedPrefs.setRemotePrankFirstLaunch(false);
+                        }
+                    })
+                    .build();
+        }
 
     }
 
@@ -118,6 +176,8 @@ public class PrankDialog extends Activity{
         } catch (Exception e) {
             Log.e("BG Music Pause", e.toString());
         }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
     }
 
     @Override
@@ -130,6 +190,8 @@ public class PrankDialog extends Activity{
         } catch (Exception e) {
             Log.e("BG Music Pause", e.toString());
         }
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mMessageReceiver, new IntentFilter("prank-dialog-activity-broadcast"));
     }
     @Override
     protected void onDestroy() {

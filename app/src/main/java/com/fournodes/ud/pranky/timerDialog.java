@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
@@ -101,6 +100,7 @@ View decorView;
 if (SharedPrefs.isTimerFirstLaunch()) {
     ViewTarget target = new ViewTarget(sec);
     showcaseView = new ShowcaseView.Builder(this)
+            .withMaterialShowcase()
             .setTarget(target)
             .setContentTitle("Time Attack")
             .setContentText("Select the timer to 5 seconds by moving the wheel")

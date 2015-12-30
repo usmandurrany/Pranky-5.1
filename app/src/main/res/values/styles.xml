@@ -43,12 +43,16 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:backgroundDimEnabled">true</item>
 
+
     </style>
     <style name="CustomShowcaseTheme2" parent="ShowcaseView">
         <item name="sv_backgroundColor">#dae51249</item>
         <item name="sv_showcaseColor">#7a2526</item>
         <item name="sv_buttonText">Next</item>
 
+    </style>
+    <style name="CustomShowcaseTheme3" parent="CustomShowcaseTheme2">
+        <item name="sv_buttonText">Close</item>
     </style>
 
 </resources>

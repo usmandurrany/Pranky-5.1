@@ -1,7 +1,6 @@
 package com.fournodes.ud.pranky;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,12 +9,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 /**
  * Created by Usman on 11/24/2015.

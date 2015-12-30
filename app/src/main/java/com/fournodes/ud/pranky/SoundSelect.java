@@ -73,7 +73,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
         if (SharedPrefs.isAddmoreFirstLaunch()) {
             ViewTarget target = new ViewTarget(btnselsound);
             showcaseView = new ShowcaseView.Builder(this)
-                    .useDecorViewAsParent()
+                    .withMaterialShowcase()
                     .setTarget(target)
                     .setContentTitle("Select a sound")
                     .setContentText("Tap on the icon to pick a sound from your phone")
@@ -177,11 +177,7 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
                     Toast.makeText(SoundSelect.this, "Pick an Icon", Toast.LENGTH_SHORT).show();
 
 
-                Log.d("sender", "Broadcasting message");
-                Intent intent = new Intent("main-activity-broadcast");
-                // You can also include some extra data.
-                intent.putExtra("message", "custom-sound-added");
-                LocalBroadcastManager.getInstance(SoundSelect.this).sendBroadcast(intent);
+                SharedPrefs.setCusSoundAdded(true);
                 finish();
             }
         });

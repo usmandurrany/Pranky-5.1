@@ -43,6 +43,8 @@ public class SharedPrefs {
 
     public static final String BG_MUSIC_PLAYING = "bgMusicPlaying"; // boolean
 
+    public static final String CUSTOM_SOUND_ADDED = "cusSoundAdded"; // boolean
+
     private static int serverState;
     private static String myGcmID;
     private static String myAppID;
@@ -65,6 +67,9 @@ public class SharedPrefs {
     private static boolean remotePrankFirstLaunch;
 
     private static boolean bgMusicPlaying;
+
+    private static boolean cusSoundAdded;
+
 
 
     Context context;
@@ -103,6 +108,8 @@ public class SharedPrefs {
         remotePrankFirstLaunch=prefs.getBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, true);
 
         bgMusicPlaying=prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, true);
+
+        cusSoundAdded=prefs.getBoolean(SharedPrefs.CUSTOM_SOUND_ADDED, false);
     }
 
     public static boolean isAppFirstLaunch() {
@@ -177,6 +184,10 @@ public class SharedPrefs {
 
     public static boolean isBgMusicPlaying() {
         return bgMusicPlaying;
+    }
+
+    public static boolean isCusSoundAdded() {
+        return cusSoundAdded;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -286,5 +297,10 @@ public class SharedPrefs {
     public static void setBgMusicPlaying(boolean bgMusicPlaying) {
         prefs.edit().putBoolean(SharedPrefs.BG_MUSIC_PLAYING,bgMusicPlaying).apply();
         SharedPrefs.bgMusicPlaying = bgMusicPlaying;
+    }
+
+    public static void setCusSoundAdded(boolean cusSoundAdded) {
+        prefs.edit().putBoolean(SharedPrefs.CUSTOM_SOUND_ADDED,cusSoundAdded).apply();
+        SharedPrefs.cusSoundAdded = cusSoundAdded;
     }
 }

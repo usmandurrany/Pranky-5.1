@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,7 +30,6 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
@@ -358,10 +356,11 @@ ShowcaseView showcaseView;
                     Log.e("Add More", "Found");
                     ViewTarget target = new ViewTarget(gridChild);
                     showcaseView = new ShowcaseView.Builder(activity)
+                            .withMaterialShowcase()
                             .setTarget(target)
                             .setContentTitle("Add more sounds")
                             .setContentText("Tap on the '+' to add a custom sound of your choice")
-                            .setStyle(R.style.CustomShowcaseTheme2)
+                            .setStyle(R.style.CustomShowcaseTheme3)
                             .hideOnTouchOutside()
                             .setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -378,15 +377,6 @@ ShowcaseView showcaseView;
     }
 
 
-    @Override
-    public void TutImageClick() {
-
-    }
-
-    @Override
-    public void TutImageTouch(View view, MotionEvent motionEvent) {
-
-    }
 
     private void flipFlash() {
         try {

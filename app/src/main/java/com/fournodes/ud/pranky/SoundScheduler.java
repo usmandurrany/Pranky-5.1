@@ -20,12 +20,6 @@ public class SoundScheduler {
     private Context context;
     private int day, hr, min, sec, ampm;
 
-
-    public SoundScheduler(Context context) {
-        this.context = context;
-
-    }
-
     public SoundScheduler(Context context, int day, int hr, int min, int ampm) {
         this.context = context;
         this.day = day;
