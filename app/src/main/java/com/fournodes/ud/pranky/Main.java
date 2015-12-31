@@ -39,13 +39,13 @@ public class Main extends FragmentActivity {
     private View rootView;
     private ShowcaseView showcaseView;
     private CustomToast cToast;
-    private RegisterOnServer rs;
     private ObjectAnimator anim;
 
     private int itemsOnPage = 9;
     private int pageNo = 0;
-    private int steps = 1;
+    private int steps = 2;
     private boolean open = false;
+    private boolean timerLaunch = false;
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -60,22 +60,22 @@ public class Main extends FragmentActivity {
                     mGridPager.setCurrentItem(pm.getCount() - 1);
                     break;
                 case "prank-response-received": {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Your Friend is not prankable at the moment");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), "Your  friend  is  unavailable ");
                     cToast.show();
                     break;
                 }
                 case "prank-successful": {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Your Friend has been successfully pranked");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), "Your  friend  has  been  pranked ");
                     cToast.show();
                     break;
                 }
                 case "server-not-found": {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Cant connect to server");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), "Can't  connect  to  server ");
                     cToast.show();
                     break;
                 }
                 case "network-not-available": {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Network is unavailable");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), "Network  unavailable ");
                     cToast.show();
                     break;
                 }
@@ -151,7 +151,7 @@ public class Main extends FragmentActivity {
                 SharedPrefs.setAddmoreFirstLaunch(true);
                 SharedPrefs.setSettingsFirstLaunch(true);
                 SharedPrefs.setRemotePrankFirstLaunch(true);
-                steps = 1;
+                steps = 2;
                 showTutorial();
             }
         });
@@ -160,7 +160,7 @@ public class Main extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 Intent terms = new Intent(Intent.ACTION_VIEW);
-                terms.setData(Uri.parse("http://pranky.four-nodes.com/terms"));
+                terms.setData(Uri.parse("http://pranky.four-nodes.com/terms.html"));
                 startActivity(terms);
             }
         });
@@ -235,7 +235,7 @@ public class Main extends FragmentActivity {
                     cToast.show();
                 } else {
                     SharedPrefs.setBgMusicPlaying(true);
-
+                    timerLaunch=true;
                     Intent timerDialog = new Intent(Main.this, TimerDialog.class);
                     startActivity(timerDialog);
                 }
@@ -452,42 +452,46 @@ public class Main extends FragmentActivity {
                     .setContentTitle("Pick a sound")
                     .setContentText("Tap on the image to preview sound and select it")
                     .setStyle(R.style.CustomShowcaseTheme2)
-                    .hideOnTouchOutside()
                     .setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            steps++;
-                            switch (steps) {
-                                case 2:
-                                    showcaseView.setShowcase(new ViewTarget(timer), true);
-                                    showcaseView.setContentTitle("Set playback time");
-                                    showcaseView.setContentText("Tap on the timer icon to play the sound after a specified interval");
-                                    break;
-                                case 3:
-                                    showcaseView.setShowcase(new ViewTarget(clock), true);
-                                    showcaseView.setContentTitle("Set playback time");
-                                    showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
-                                    break;
+                            if (Sound.sysSound != -1 || Sound.cusSound != null) {
+                                if (steps == 3 && !timerLaunch) //Dont proceed untill timer dialog has been launched once
+                                    steps=2;
+                                switch (steps) {
+                                    case 2:
+                                        showcaseView.setShowcase(new ViewTarget(timer), true);
+                                        showcaseView.setContentTitle("Set playback time");
+                                        showcaseView.setContentText("Tap on the timer icon to play the sound after a specified interval");
+                                        steps++;
+                                        break;
+                                    case 3:
+                                        showcaseView.setShowcase(new ViewTarget(clock), true);
+                                        showcaseView.setContentTitle("Set playback time");
+                                        showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
+                                        steps++;
+                                        break;
 
-                                case 4:
-                                    showcaseView.setShowcase(new ViewTarget(settings), true);
-                                    showcaseView.setContentTitle("App settings");
-                                    showcaseView.setContentText("Tap on the settings icon to view application settings");
-                                    break;
-                                case 5:
-                                    showcaseView.setShowcase(new ViewTarget(prankbtn), true);
-                                    showcaseView.setContentTitle("Prank a friend");
-                                    showcaseView.setContentText("Pick a sound then press 'Prank' to send it directly to your friend's phone");
-                                    break;
-                                case 6:
-                                    showcaseView.hide();
-                                    mGridPager.setCurrentItem(pm.getCount() - 1);
+                                    case 4:
+                                        showcaseView.setShowcase(new ViewTarget(settings), true);
+                                        showcaseView.setContentTitle("App settings");
+                                        showcaseView.setContentText("Tap on the settings icon to view application settings");
+                                        steps++;
+                                        break;
+                                    case 5:
+                                        showcaseView.setShowcase(new ViewTarget(prankbtn), true);
+                                        showcaseView.setContentTitle("Prank a friend");
+                                        showcaseView.setContentText("Pick a sound then press 'Prank' to send it directly to your friend's phone");
+                                        steps++;
+                                        break;
+                                    case 6:
+                                        showcaseView.hide();
+                                        mGridPager.setCurrentItem(pm.getCount() - 1);
+                                        break;
 
-                                    break;
 
-
+                                }
                             }
-
 
                         }
                     })

@@ -27,8 +27,9 @@ public class TimerDialog extends Activity{
     public int soundVol;
     public int soundRepeat;
     ShowcaseView showcaseView;
-    int steps=1;
-View decorView;
+    int steps=2;
+    View decorView;
+    SoundScheduler scheduler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +81,13 @@ View decorView;
             @Override
             public void onClick(View view) {
 
-                SoundScheduler scheduler = new SoundScheduler(TimerDialog.this, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem());
+        scheduler = new SoundScheduler(TimerDialog.this, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem());
 
                 if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")) {
                     scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
+                    if (showcaseView != null)
+                        showcaseView.hide();
+
                     finish();
                 } else {
                     CustomToast cToast = new CustomToast(TimerDialog.this, "Minimum  time  is  5  seconds");
@@ -108,18 +112,23 @@ if (SharedPrefs.isTimerFirstLaunch()) {
             .setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    steps++;
-                    switch(steps) {
+                    scheduler = new SoundScheduler(TimerDialog.this, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem());
+                    if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")) {
+
+                    switch (steps) {
                         case 2:
-                        showcaseView.setShowcase(new ViewTarget(set), true);
-                        showcaseView.setContentTitle("Time Attack");
-                        showcaseView.setContentText("Tap on the set button to set the timer and wait for your sound to play");
+                            showcaseView.setShowcase(new ViewTarget(set), true);
+                            showcaseView.setContentTitle("Time Attack");
+                            showcaseView.setContentText("Tap on the set button to set the timer and wait for your sound to play");
+                            steps++;
+
                             break;
                         case 3:
                             showcaseView.hide();
                             SharedPrefs.setTimerFirstLaunch(false);
                             break;
                     }
+                }
 
                 }
             })

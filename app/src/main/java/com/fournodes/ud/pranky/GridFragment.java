@@ -51,7 +51,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     private Activity activity;
     private PreviewMediaPlayer previewSound = getInstance();
     private Handler handler = new Handler();
-ShowcaseView showcaseView;
+    ShowcaseView showcaseView;
+    Ringtone r;
+
     public GridFragment() {
     }
 
@@ -118,14 +120,29 @@ ShowcaseView showcaseView;
                 previewSound.mp = null;
 
             }
+
+        } catch (Exception e) {
+            Log.e("Preview Sound", e.toString());
+        }
+        try{
             if (cam != null){
                 cam.stopPreview();
                 cam.release();
                 cam = null;
             }
-        } catch (Exception e) {
-            Log.e("Preview MediaPlayer", e.toString());
+
+        }catch (Exception e) {
+            Log.e("Camera Controls", e.toString());
         }
+    try {
+        if (r.isPlaying()){
+            r.stop();
+            r = null;
+         }
+    }catch (Exception e) {
+          Log.e("Ringtone Manager", e.toString());
+        }
+
 
         if (img == null) {
             img = (ImageView) v.findViewById(R.id.grid_item_image);
@@ -165,7 +182,7 @@ ShowcaseView showcaseView;
 
         if (gridItems[pos].sound == "addmore") {
 
-            Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
             SharedPrefs.setBgMusicPlaying(true);
             soundAct = new Intent(getActivity(), SoundSelect.class);
             startActivity(soundAct);
@@ -256,8 +273,31 @@ ShowcaseView showcaseView;
                 Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
 
                 Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                Ringtone r = RingtoneManager.getRingtone(activity, notification);
+                r = RingtoneManager.getRingtone(activity, notification);
                 r.play();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if (gridItems[pos].sound.equals("raw.ringtone")) {
+            try {
+
+                if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
+
+
+                    Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                    r = RingtoneManager.getRingtone(activity, notification);
+                    r.play();
+                    lastView = -2;
+
+
+
+
+                } else
+                    lastView = -1;
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -294,13 +334,27 @@ ShowcaseView showcaseView;
 
                         previewSound.mp.start();
                         lastView = -2;
-
+                        try{
+                            if (BackgroundMusic.mp.isPlaying()){
+                                BackgroundMusic.pause();
+                            }
+                        }catch (Exception e){
+                            Log.e("Grid Fragment",e.toString());
+                        }
                     }
                 });
 
 
-            } else
+            } else {
                 lastView = -1;
+                try{
+
+                    BackgroundMusic.play();
+
+                }catch (Exception e){
+                    Log.e("Grid Fragment",e.toString());
+                }
+            }
 
 
             previewSound.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -310,6 +364,13 @@ ShowcaseView showcaseView;
                     previewSound.mp = null;
                     // audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
                     lastView = -1;
+                    try{
+
+                            BackgroundMusic.play();
+
+                    }catch (Exception e){
+                        Log.e("Grid Fragment",e.toString());
+                    }
 
                 }
             });

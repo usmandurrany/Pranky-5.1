@@ -95,7 +95,10 @@ public class SettingsDialog extends Activity implements View.OnClickListener{
         bgmusic.setTypeface(FontManager.getTypeFace(SettingsDialog.this, SharedPrefs.DEFAULT_FONT));
 
         // Get myAppID form shared prefs and display it in the dialog
-        myid.setText(SharedPrefs.getMyAppID());
+        String myID = SharedPrefs.getMyAppID();
+        if (myID!=null)
+        myID = myID.replaceAll(".(?=.)", "$0 ");
+        myid.setText(myID);
 
 
         if (SharedPrefs.isPrankable()) {

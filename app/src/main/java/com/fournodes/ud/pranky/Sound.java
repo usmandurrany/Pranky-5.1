@@ -20,7 +20,7 @@ public class Sound {
     // The rest are Repeat count and Volume, respectively
     //</summary>
     public static void setSoundProp(Context context, int iRes, String sound, int rCount, int vol) {
-        if (sound.equals("raw.flash") || sound.equals("raw.flash_blink") || sound.equals("raw.vibrate_hw") || sound.equals("raw.message")){
+        if (sound.equals("raw.flash") || sound.equals("raw.flash_blink") || sound.equals("raw.vibrate_hw") || sound.equals("raw.message") || sound.equals("raw.ringtone")){
             sysSound = -2; //Special condition to treat HW functions as a special type of  sysSound for network
             cusSound = sound;
         } else {

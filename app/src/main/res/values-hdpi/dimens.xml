@@ -56,7 +56,7 @@
     <dimen name="prank_switch_margin_left">30dp</dimen>
 
     <dimen name="id_text_margin_right">60dp</dimen>
-    <dimen name="id_value_margin_left">55dp</dimen>
+    <dimen name="id_value_margin_left">50dp</dimen>
 
 
     <dimen name="prankit_width">140dp</dimen>

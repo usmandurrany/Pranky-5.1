@@ -31,9 +31,10 @@ public class BackgroundMusic {
 
     public static void setContext(Context context) {
         BackgroundMusic.context = context;
-        mp = MediaPlayer.create(context, R.raw.app_bg);
+        mp = MediaPlayer.create(context, R.raw.app_bg_delay);
         mp.setVolume(0, (float) 0.1);
-
+        mp.setLooping(true);
+/*
         // Loop the music after a short delay once it has finished
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -49,7 +50,7 @@ public class BackgroundMusic {
                     }
                 }, BG_MUSIC_DELAY);
             }
-        });
+        });*/
     }
 
     public static void play(){

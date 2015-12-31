@@ -11,13 +11,13 @@ import java.util.TimeZone;
  */
 public class SharedPrefs {
 
-    public static String DEFAULT_FONT="grinched-regular";// Name of the font used throughtout the app
+    public static String DEFAULT_FONT="grinched-regular";// Name of the font used throughout the app
 
     public static SharedPreferences prefs;
     private static Calendar defaultExpDate;
 
-    //public static final String APP_SERVER_ADDR = "http://192.168.2.107/pranky/"; // Shared Pref File Name
-    public static final String APP_SERVER_ADDR = "http://pranky.four-nodes.com/"; // Shared Pref File Name
+    //public static final String APP_SERVER_ADDR = "http://192.168.2.107/pranky/";
+    public static final String APP_SERVER_ADDR = "http://pranky.four-nodes.com/appserver/";
 
     public static final String SHARED_PREF_FILE = "PrankySharedPref"; // Shared Pref File Name
     public static final String SENT_GCM_ID_TO_SERVER = "sentGcmIDToServer"; // boolean

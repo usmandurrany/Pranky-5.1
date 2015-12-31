@@ -59,7 +59,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     String soundVol = data.getString("soundVol");
 
                     Intent intent = new Intent(getApplicationContext(), PlaySound.class);
-                    if (sound.equals("raw.flash") || sound.equals("raw.flash_blink") || sound.equals("raw.vibrate_hw") || sound.equals("raw.message")){
+                    if (sound.equals("raw.flash") || sound.equals("raw.flash_blink") || sound.equals("raw.vibrate_hw") || sound.equals("raw.message")|| sound.equals("raw.ringtone")){
                         intent.putExtra("sysSound", -1);
                         intent.putExtra("cusSound", sound.toString());
 

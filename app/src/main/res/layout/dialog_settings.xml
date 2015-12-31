@@ -102,7 +102,7 @@
                 android:textOn="ON"
                 app:showText="false"
                 app:track="@drawable/toggle_body"
-                android:thumb="@drawable/toggle_states"
+                android:thumb="@drawable/onoff_states"
                 android:thumbTextPadding="20dp"
                  />
 
@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/id_value_margin_left"
-                android:layout_marginRight="0dp"
+                android:layout_marginRight="05dp"
                 android:padding="5dp"
                 android:text="4 5 1 2 "
                 android:textColor="#000"
