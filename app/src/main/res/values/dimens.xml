@@ -1,5 +1,6 @@
 <resources>
-    <dimen name="showcase_radius">90dp</dimen>
-    <dimen name="showcase_radius_inner">90dp</dimen>
-    <dimen name="showcase_radius_outer">90dp</dimen>
+    <dimen name="showcase_radius">55dp</dimen>
+    <dimen name="showcase_radius_inner">50dp</dimen>
+    <dimen name="showcase_radius_outer">50dp</dimen>
+    <dimen name="showcase_radius_material">65dip</dimen>
 </resources>

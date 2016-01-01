@@ -2,6 +2,7 @@ package com.fournodes.ud.pranky;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.bluetooth.BluetoothClass;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ public class PrankDialog extends Activity{
     private Dialog dialog;
     View decorView;
     ShowcaseView showcaseView;
+    EditText frndID;
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -33,7 +35,10 @@ public class PrankDialog extends Activity{
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
             String message = intent.getStringExtra("message");
-            if (message.equals("not-prankable")){
+            if (message.equals("valid-id")){
+                SharedPrefs.setFrndAppID(frndID.getText().toString());
+                finish();
+            }else if (message.equals("not-prankable")){
                 CustomToast cToast = new CustomToast(PrankDialog.this, "Your friend is not prankable at the moment");
                 cToast.show();
 
@@ -49,6 +54,7 @@ public class PrankDialog extends Activity{
                 CustomToast cToast = new CustomToast(getApplicationContext(), "Invalid ID");
                 cToast.show();
             }
+
         }
     };
 
@@ -73,7 +79,7 @@ public class PrankDialog extends Activity{
 
         ImageView btndiagclose = (ImageView) findViewById(R.id.close);
         ImageView btnset = (ImageView) findViewById(R.id.set);
-        final EditText frndID = (EditText) findViewById(R.id.txtfrndID);
+        frndID = (EditText) findViewById(R.id.txtfrndID);
         btndiagclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,43 +92,9 @@ public class PrankDialog extends Activity{
             @Override
             public void onClick(View view) {
                 if (frndID.getText()!= null){
-                    new DeviceValidation(new DeviceValidation.AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                            Intent intent = new Intent("prank-dialog-activity-broadcast");
-                            if (output.equals("1"))
-                            {
-                                intent.putExtra("message", "default");
-                                SharedPrefs.setFrndAppID(frndID.getText().toString());
-                                finish();
-                            }else if (output.equals("0")){
-
-                                // You can also include some extra data.
-                                intent.putExtra("message", "not-prankable");
-
-
-                            }else if (output.equals("-10")){ //Server Unreachable
-                                // You can also include some extra data.
-                                intent.putExtra("message", "server-unreachable");
-
-
-                            }else if (output.equals("-20")){//Network Unavailable
-                                intent.putExtra("message", "network-unavailable");
-
-
-
-                            }
-                            else{
-
-                                intent.putExtra("message", "invalid-id");
-
-
-                            }
-                            LocalBroadcastManager.getInstance(PrankDialog.this).sendBroadcast(intent);
-                        }
-                    }).execute(frndID.getText().toString());
-
-
+                    DeviceValidation validate = new DeviceValidation(PrankDialog.this);
+                    validate.init();
+                    validate.execute(frndID.getText().toString());
                 }else{
                     CustomToast cToast = new CustomToast(PrankDialog.this, "Enter friends ID");
                     cToast.show();
@@ -136,7 +108,7 @@ public class PrankDialog extends Activity{
                     .withMaterialShowcase()
                     .setTarget(target)
                     .setContentTitle("Prank a friend")
-                    .setContentText("Enter your 'Frieend's ID' found in the settings popup of your friends phone")
+                    .setContentText("Enter your 'Friend's ID' found in the settings popup of your friends phone")
                     .setStyle(R.style.CustomShowcaseTheme3)
                     .hideOnTouchOutside()
                     .setOnClickListener(new View.OnClickListener() {

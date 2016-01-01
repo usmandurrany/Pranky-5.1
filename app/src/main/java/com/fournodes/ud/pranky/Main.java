@@ -15,10 +15,11 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
@@ -309,6 +310,12 @@ public class Main extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (showcaseView != null && timerLaunch){
+            showcaseView.setShowcase(new ViewTarget(clock), true);
+            showcaseView.setContentTitle("Set playback time");
+            showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
+            steps++;
+        }
 
         if (SharedPrefs.isCusSoundAdded()) {
             createFragments();
@@ -456,8 +463,29 @@ public class Main extends FragmentActivity {
                         @Override
                         public void onClick(View view) {
                             if (Sound.sysSound != -1 || Sound.cusSound != null) {
-                                if (steps == 3 && !timerLaunch) //Dont proceed untill timer dialog has been launched once
-                                    steps=2;
+                                if (steps == 3 && !timerLaunch) { //Dont proceed untill timer dialog has been launched once
+                                    Animation grow = AnimationUtils.loadAnimation(Main.this,R.anim.grow_bounce);
+                                    grow.setAnimationListener(new Animation.AnimationListener() {
+                                        @Override
+                                        public void onAnimationStart(Animation animation) {
+
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animation animation) {
+                                            Animation shrink = AnimationUtils.loadAnimation(Main.this,R.anim.shrink);
+                                            timer.startAnimation(shrink);
+                                        }
+
+                                        @Override
+                                        public void onAnimationRepeat(Animation animation) {
+
+                                        }
+                                    });
+                                    timer.startAnimation(grow);
+
+                                    steps = 2;
+                                }
                                 switch (steps) {
                                     case 2:
                                         showcaseView.setShowcase(new ViewTarget(timer), true);

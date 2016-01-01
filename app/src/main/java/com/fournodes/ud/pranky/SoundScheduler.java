@@ -94,7 +94,7 @@ public class SoundScheduler {
         intent.putExtra("repeatCount", Sound.repeatCount);
         intent.putExtra("volume", (int) Sound.volume);
 
-        Toast.makeText(context, String.valueOf(Sound.repeatCount), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, String.valueOf(Sound.repeatCount), Toast.LENGTH_SHORT).show();
 
 
         final int _id = (int) System.currentTimeMillis();
@@ -107,7 +107,7 @@ public class SoundScheduler {
         else
             alarmManager.set(AlarmManager.RTC_WAKEUP, schAlarm.getTimeInMillis(), pendingIntent);
 
-        Toast.makeText(context, "Alarm set", Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "Alarm set", Toast.LENGTH_LONG).show();
 
     }
 

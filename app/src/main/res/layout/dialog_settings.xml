@@ -27,12 +27,12 @@
         <LinearLayout
             android:id="@+id/music"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:layout_marginTop="25dp"
             android:orientation="horizontal">
 
             <com.fournodes.ud.pranky.CustomTextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:id="@+id/txtBGMusic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +53,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/music_switch_margin_left"
                 android:paddingBottom="35dp"
-
                 android:textOff="OFF"
                 android:textOn="ON"
                 app:showText="false"
@@ -71,12 +70,12 @@
         <LinearLayout
             android:id="@+id/myID"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
             <com.fournodes.ud.pranky.CustomTextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
 
                 android:id="@+id/txtRemotePrank"
                 android:layout_width="wrap_content"
@@ -112,12 +111,13 @@
         <LinearLayout
             android:id="@+id/layoutRemoteID"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="0dp"
             android:orientation="horizontal"
             android:visibility="invisible">
 
             <com.fournodes.ud.pranky.CustomTextView
+                android:layout_marginTop="15dp"
                 android:id="@+id/lblmyID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -131,6 +131,7 @@
                 android:textStyle="bold" />
 
             <com.fournodes.ud.pranky.CustomTextView
+                android:layout_marginTop="15dp"
                 android:id="@+id/txtmyID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

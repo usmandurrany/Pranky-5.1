@@ -16,14 +16,13 @@ public class WaitDialog {
 
     public WaitDialog(Context context) {
         this.context = context;
+        dialog = new Dialog(context, R.style.ClockDialog);
+        dialog.setContentView(R.layout.dialog_wait);
     }
 
 
     public void show() {
 
-
-        dialog = new Dialog(context, R.style.ClockDialog);
-        dialog.setContentView(R.layout.dialog_wait);
 
         ImageView wait = (ImageView) dialog.findViewById(R.id.imgWait);
         AnimationDrawable boxsel = (AnimationDrawable) wait.getDrawable();
@@ -47,6 +46,15 @@ public class WaitDialog {
     }
     public void dismiss(){
         dialog.dismiss();
+    }
+
+    public void setWaitText(String s){
+        CustomTextView waitText = (CustomTextView) dialog.findViewById(R.id.waitText);
+        waitText.setText(s);
+    }
+
+    public void setCancelable(Boolean cancelable){
+        dialog.setCancelable(cancelable);
     }
 
 }

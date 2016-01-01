@@ -103,24 +103,5 @@ public class NetworkConnectivityCheck extends BroadcastReceiver {
         LocalBroadcastManager.getInstance(context).sendBroadcast(prankBtnEnable);*/
 
     }
-    /**
-     * Check the device to make sure it has the Google Play Services APK. If
-     * it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
-     */
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(context);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                //apiAvailability.getErrorDialog((Activity)context, resultCode, 9000)
-                  //      .show();
-                Log.w("Play Services","Play Services Not Found");
-            } else {
-                Log.i("Play Services", "This device is not supported.");
-            }
-            return false;
-        }
-        return true;
-    }
+
 }

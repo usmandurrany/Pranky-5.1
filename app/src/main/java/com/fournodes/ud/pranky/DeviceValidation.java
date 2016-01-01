@@ -1,6 +1,9 @@
 package com.fournodes.ud.pranky;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -25,19 +28,27 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
     private HttpGet httpget;
     private HttpClient httpclient;
     private String result;
+    private WaitDialog wDialog;
+    private Context context;
+    private Intent intent;
 
-    public interface AsyncResponse {
-       void processFinish(String output);
+    public DeviceValidation(Context context){
+
+        this.context=context;
+
     }
 
-    public AsyncResponse delegate = null;
-
-    public DeviceValidation(AsyncResponse delegate){
-        this.delegate = delegate;
+    public void init(){
+        intent = new Intent("prank-dialog-activity-broadcast");
+        wDialog = new WaitDialog(context);
+        wDialog.setWaitText("P a i r i n g ...");
+        wDialog.show();
     }
+
 
     @Override
     protected String doInBackground(String... strings) {
+
 
         httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR+"index.php?app_id=" + strings[0]); // Friends APP ID for verification
 
@@ -66,18 +77,12 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
 
         }catch (HttpHostConnectException e) {
             Log.e("Send Prank", e.toString());
-            delegate.processFinish("-10");
-          /*  Intent intent = new Intent("main-activity-broadcast");
-            intent.putExtra("message", "server-not-found");
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
+            intent.putExtra("message", "server-unreachable");
+
 
         } catch (IOException e) {
             Log.e("Send Prank", e.toString());
-            delegate.processFinish("-20");
-          /*  Intent intent = new Intent("main-activity-broadcast");
-            intent.putExtra("message", "network-not-available");
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
-
+            intent.putExtra("message", "network-unavailable");
 
         }
         return result;
@@ -85,6 +90,8 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
 
     @Override
     protected void onPostExecute(String s) {
+        if (wDialog != null)
+            wDialog.dismiss();
 
         try {
             JSONObject resp= new JSONObject(s);
@@ -93,18 +100,20 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
             if  (resp.getString("result").equals("1")){ // Device exists and IS prankable
 
                 Log.e("ServerRespnse", "Device exists and IS prankable");
-               // SharedPrefs.setFrndAppID(resp.getString("app_id")); // Store the recieved AppID AS FRIENDS ID in shared prefs
-                delegate.processFinish(resp.getString("result"));
+                intent.putExtra("message", "valid-id");
+
 
             } else if (resp.getString("result").equals("0")){ // Device exists and is NOT prankable
 
                 Log.e("Device Validation","Device exists and is NOT prankable");
-                delegate.processFinish(resp.getString("result"));
+                intent.putExtra("message", "not-prankable");
+
 
             }else { // Device does not exist
 
-                Log.e("Device Validation","Device does not exist");
-                delegate.processFinish(resp.getString("result"));
+                Log.e("Device Validation","Device does n ot exist");
+                intent.putExtra("message", "invalid-id");
+
 
             }
 
@@ -112,6 +121,7 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
             e.printStackTrace();
         } catch (NullPointerException e){}
 
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
         super.onPostExecute(s);
     }
 

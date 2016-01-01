@@ -17,7 +17,6 @@ import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,6 +34,7 @@ import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
 public class GridFragment extends android.support.v4.app.Fragment implements IFragment {
 
+    static Ringtone r;
     GridItems[] gridItems = {};
     ImageView img;
     Intent soundAct;
@@ -45,14 +45,13 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     Camera.Parameters params;
     boolean isLighOn;
     Runnable flashBlinkRunnable;
+    ShowcaseView showcaseView;
     private int viewPOS;
     private GridView mGridView;
     private GridAdapter mGridAdapter;
     private Activity activity;
     private PreviewMediaPlayer previewSound = getInstance();
     private Handler handler = new Handler();
-    ShowcaseView showcaseView;
-    Ringtone r;
 
     public GridFragment() {
     }
@@ -124,23 +123,28 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         } catch (Exception e) {
             Log.e("Preview Sound", e.toString());
         }
-        try{
-            if (cam != null){
+        try {
+            if (cam != null) {
                 cam.stopPreview();
                 cam.release();
                 cam = null;
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.e("Camera Controls", e.toString());
         }
-    try {
-        if (r.isPlaying()){
-            r.stop();
-            r = null;
-         }
-    }catch (Exception e) {
-          Log.e("Ringtone Manager", e.toString());
+        try {
+            if (r.isPlaying()) {
+                r.stop();
+                r = null;
+
+                if (r == null)
+                {
+                    Log.e("Ringtone Manager", String.valueOf(r));
+                }
+            }
+        } catch (Exception e) {
+            Log.e("Ringtone Manager", e.toString());
         }
 
 
@@ -182,7 +186,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
         if (gridItems[pos].sound == "addmore") {
 
-           // Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
             SharedPrefs.setBgMusicPlaying(true);
             soundAct = new Intent(getActivity(), SoundSelect.class);
             startActivity(soundAct);
@@ -194,10 +198,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 try {
                     cam = Camera.open();
 
-                }
-                catch (RuntimeException e )
-                {
-                    Log.w("Camera Flash",e.toString());
+                } catch (RuntimeException e) {
+                    Log.w("Camera Flash", e.toString());
                 }
                 Camera.Parameters p = cam.getParameters();
                 p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
@@ -210,8 +212,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                         try {
                             cam.stopPreview();
                             cam.release();
+                        } catch (RuntimeException e) {
+                            Log.w("Camera Flash", e.toString());
                         }
-                        catch(RuntimeException e){Log.w("Camera Flash",e.toString());}
 
                     }
                 }, 2000);
@@ -228,7 +231,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                     public void run() {
                         try {
                             cam = Camera.open();
-                        }catch (RuntimeException e ){Log.w("Camera Blink",e.toString());}
+                        } catch (RuntimeException e) {
+                            Log.w("Camera Blink", e.toString());
+                        }
                         params = cam.getParameters();
                         try {
                             cam.setPreviewTexture(new SurfaceTexture(0));
@@ -250,8 +255,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                         try {
                             cam.stopPreview();
                             cam.release();
+                        } catch (RuntimeException e) {
+                            Log.w("Camera Blink", e.toString());
                         }
-                        catch(RuntimeException e){Log.w("Camera Blink",e.toString());}
 
                     }
                 };
@@ -264,8 +270,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         } else if (gridItems[pos].sound.equals("raw.vibrate_hw")) {
 
             Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
-            long[] pattern = {0, 2000,1000,2000};
-            ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern,-1);
+            long[] pattern = {0, 2000, 1000, 2000};
+            ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern, -1);
             Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
 
         } else if (gridItems[pos].sound.equals("raw.message")) {
@@ -278,7 +284,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (gridItems[pos].sound.equals("raw.ringtone")) {
+        } else if (gridItems[pos].sound.equals("raw.ringtone")) {
             try {
 
                 if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
@@ -292,8 +298,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                     lastView = -2;
 
 
-
-
                 } else
                     lastView = -1;
 
@@ -301,9 +305,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        else {
+        } else {
             Sound.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
             if (Sound.sysSound != -1) {
                 previewSound.mp = MediaPlayer.create(activity, Sound.sysSound);
@@ -334,12 +336,12 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
                         previewSound.mp.start();
                         lastView = -2;
-                        try{
-                            if (BackgroundMusic.mp.isPlaying()){
+                        try {
+                            if (BackgroundMusic.mp.isPlaying()) {
                                 BackgroundMusic.pause();
                             }
-                        }catch (Exception e){
-                            Log.e("Grid Fragment",e.toString());
+                        } catch (Exception e) {
+                            Log.e("Grid Fragment", e.toString());
                         }
                     }
                 });
@@ -347,12 +349,12 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
             } else {
                 lastView = -1;
-                try{
+                try {
 
                     BackgroundMusic.play();
 
-                }catch (Exception e){
-                    Log.e("Grid Fragment",e.toString());
+                } catch (Exception e) {
+                    Log.e("Grid Fragment", e.toString());
                 }
             }
 
@@ -364,17 +366,16 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                     previewSound.mp = null;
                     // audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
                     lastView = -1;
-                    try{
+                    try {
 
-                            BackgroundMusic.play();
+                        BackgroundMusic.play();
 
-                    }catch (Exception e){
-                        Log.e("Grid Fragment",e.toString());
+                    } catch (Exception e) {
+                        Log.e("Grid Fragment", e.toString());
                     }
 
                 }
             });
-
 
 
             previewSound.mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -438,7 +439,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     }
 
 
-
     private void flipFlash() {
         try {
             if (isLighOn) {
@@ -450,6 +450,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 cam.setParameters(params);
                 isLighOn = true;
             }
-        } catch (RuntimeException e){Log.w("Camera Blink", e.toString());}
+        } catch (RuntimeException e) {
+            Log.w("Camera Blink", e.toString());
+        }
     }
 }

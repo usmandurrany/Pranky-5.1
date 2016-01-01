@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
+import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
@@ -67,7 +68,24 @@ public class TimerDialog extends Activity{
         secAdapter.setItemResource(R.layout.wheel_item_time);
         secAdapter.setItemTextResource(R.id.time_item);
         sec.setViewAdapter(minAdapter);
+        final ImageView set = (ImageView) findViewById(R.id.timerset);
+
+
+        sec.addChangingListener(new OnWheelChangedListener() {
+            @Override
+            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+                if (showcaseView!=null && sec.getCurrentItem() == 5){
+                    showcaseView.setShowcase(new ViewTarget(set), true);
+                    showcaseView.setContentTitle("Time Attack");
+                    showcaseView.setContentText("Tap on the set button to set the timer and wait for your sound to play");
+                    steps++;
+                }
+            }
+        });
+
+
         ImageView close = (ImageView) findViewById(R.id.timerclose);
+
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +94,6 @@ public class TimerDialog extends Activity{
             }
         });
 
-        final ImageView set = (ImageView) findViewById(R.id.timerset);
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,7 +130,7 @@ if (SharedPrefs.isTimerFirstLaunch()) {
                 @Override
                 public void onClick(View view) {
                     scheduler = new SoundScheduler(TimerDialog.this, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem());
-                    if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")) {
+                    if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer") || steps ==3) {
 
                     switch (steps) {
                         case 2:
@@ -180,7 +197,6 @@ if (SharedPrefs.isTimerFirstLaunch()) {
     protected void onDestroy() {
         super.onDestroy();
         SharedPrefs.setBgMusicPlaying(false);
-          System.gc();
 
     }
 }
