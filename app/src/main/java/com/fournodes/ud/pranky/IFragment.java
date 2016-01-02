@@ -9,4 +9,5 @@ import android.view.View;
 public interface IFragment {
     void pageScrolled();
     void pageLast();
+    void animateIcon();
 }

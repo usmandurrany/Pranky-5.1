@@ -1,13 +1,5 @@
 [
     {
-        "merged": "E:\\AndroidDev\\Projects\\Pranky-5.1\\wheel\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\wheel_bg.xml",
-        "source": "E:\\AndroidDev\\Projects\\Pranky-5.1\\wheel\\build\\intermediates\\bundles\\debug\\res\\drawable\\wheel_bg.xml"
-    },
-    {
-        "merged": "E:\\AndroidDev\\Projects\\Pranky-5.1\\wheel\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\wheel_val.xml",
-        "source": "E:\\AndroidDev\\Projects\\Pranky-5.1\\wheel\\build\\intermediates\\bundles\\debug\\res\\drawable\\wheel_val.xml"
-    },
-    {
         "merged": "C:\\Users\\Usman\\Documents\\Android Studio Projects\\Pranky-5.1\\wheel\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\wheel_val.xml",
         "source": "C:\\Users\\Usman\\Documents\\Android Studio Projects\\Pranky-5.1\\wheel\\build\\intermediates\\bundles\\debug\\res\\drawable\\wheel_val.xml"
     },

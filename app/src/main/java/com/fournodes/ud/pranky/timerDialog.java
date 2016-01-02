@@ -12,6 +12,7 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import kankan.wheel.widget.OnWheelChangedListener;
+import kankan.wheel.widget.OnWheelScrollListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
@@ -70,10 +71,14 @@ public class TimerDialog extends Activity{
         sec.setViewAdapter(minAdapter);
         final ImageView set = (ImageView) findViewById(R.id.timerset);
 
-
-        sec.addChangingListener(new OnWheelChangedListener() {
+        sec.addScrollingListener(new OnWheelScrollListener() {
             @Override
-            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+            public void onScrollingStarted(WheelView wheel) {
+
+            }
+
+            @Override
+            public void onScrollingFinished(WheelView wheel) {
                 if (showcaseView!=null && sec.getCurrentItem() == 5){
                     showcaseView.setShowcase(new ViewTarget(set), true);
                     showcaseView.setContentTitle("Time Attack");
@@ -129,8 +134,7 @@ if (SharedPrefs.isTimerFirstLaunch()) {
             .setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    scheduler = new SoundScheduler(TimerDialog.this, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem());
-                    if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer") || steps ==3) {
+                    if (sec.getCurrentItem() == 5 || steps ==3) {
 
                     switch (steps) {
                         case 2:

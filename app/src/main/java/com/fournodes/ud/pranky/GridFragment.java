@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -407,7 +409,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
     @Override
     public void pageLast() {
-        if (SharedPrefs.isAppFirstLaunch()) {
+        if (SharedPrefs.isLastPageFirstLaunch()) {
             final int size = mGridView.getChildCount();
             for (int i = 0; i < size; i++) {
                 ImageView gridChild = (ImageView) mGridView.getChildAt(i);
@@ -428,7 +430,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                                 @Override
                                 public void onClick(View view) {
                                     showcaseView.hide();
-                                    SharedPrefs.setAppFirstLaunch(false);
+                                    SharedPrefs.setLastPageFirstLaunch(false);
                                 }
                             })
                             .build();
@@ -436,6 +438,53 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 }
             }
         }
+    }
+
+    @Override
+    public void animateIcon() {
+        //final ImageView animImg = (ImageView) mGridView.getChildAt(4);
+        //animImg.setImageResource(R.drawable.gridselectedanim);
+        Animation animation = AnimationUtils.loadAnimation(activity,R.anim.shake);
+        animation.setDuration(200);
+
+        final int size = mGridView.getChildCount();
+        for (int i = 0; i < size; i++) {
+            ImageView animImg = (ImageView) mGridView.getChildAt(i);
+            animImg.startAnimation(animation);
+        }
+
+
+        //AnimationDrawable boxsel = (AnimationDrawable) animImg.getDrawable();
+        //boxsel.start();
+
+       /* animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Animation shrink = AnimationUtils.loadAnimation(activity, R.anim.shrink);
+                animImg.startAnimation(shrink);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });*/
+        //animImg.startAnimation(animation);
+
+
+       /* Handler anim = new Handler();
+        anim.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+              animImg.setImageResource(0);
+            }
+        },700);
+*/
     }
 
 

@@ -2,6 +2,7 @@ package com.fournodes.ud.pranky;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -19,18 +20,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 
 /**
  * Created by Usman on 12/25/2015.
  */
 public class DeviceValidation extends AsyncTask<String,String,String> {
 
-    private HttpGet httpget;
-    private HttpClient httpclient;
     private String result;
     private WaitDialog wDialog;
     private Context context;
     private Intent intent;
+
+    private HttpURLConnection conn;
+    private URL url;
 
     public DeviceValidation(Context context){
 
@@ -49,40 +55,20 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
     @Override
     protected String doInBackground(String... strings) {
 
-
-        httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR+"index.php?app_id=" + strings[0]); // Friends APP ID for verification
-
-        // Execute the request
-        HttpResponse response;
         try {
-            httpclient = new DefaultHttpClient();
-            response = httpclient.execute(httpget);
-            // Examine the response status
-            Log.i("ServerResponse", response.getStatusLine().toString());
-
-            // Get hold of the response entity
-            HttpEntity entity = response.getEntity();
-            // If the response does not enclose an entity, there is no need
-            // to worry about connection release
-
-            if (entity != null) {
-
-                // A Simple JSON Response Read
-                InputStream instream = entity.getContent();
-                result= convertStreamToString(instream);
-                // now you have the string representation of the HTML request
-                instream.close();
-            }
+            url = new URL(SharedPrefs.APP_SERVER_ADDR+"index.php?app_id=" + strings[0]);
+            conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            result = convertStreamToString(conn.getInputStream());
 
 
-        }catch (HttpHostConnectException e) {
-            Log.e("Send Prank", e.toString());
-            intent.putExtra("message", "server-unreachable");
 
-
-        } catch (IOException e) {
-            Log.e("Send Prank", e.toString());
-            intent.putExtra("message", "network-unavailable");
+        }catch (MalformedURLException e) {
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+            intent.putExtra("message", "network-error");
 
         }
         return result;
@@ -135,7 +121,7 @@ public class DeviceValidation extends AsyncTask<String,String,String> {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 
-        String line = null;
+        String line;
         try {
             while ((line = reader.readLine()) != null) {
                 sb.append(line + "\n");

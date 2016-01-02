@@ -30,18 +30,22 @@ import java.io.IOException;
  * Created by Usman-Durrani on 10-Nov-15.
  */
 public class SoundSelect extends Activity implements FileChooser.FileSelectedListener {
-    private Dialog dialog;
-    protected View decorView;
-    PrankyDB prankyDB;
-    int cusIconID;
-    File soundFile;
-    String fileName;
-    String fileExt;
-    ImageView btnsave;
-    ImageView custom;
-    View rootView;
-    ShowcaseView showcaseView;
-    int steps=1;
+
+    private View decorView;
+    private PrankyDB prankyDB;
+    private int cusIconID;
+    private File soundFile;
+    private String fileName;
+    private String fileExt;
+    private ImageView btnsave;
+    private ImageView custom;
+    private View rootView;
+    private ShowcaseView showcaseView;
+    private int steps=1;
+    private EditText txtselsound;
+    private ImageView btndiagclose;
+    private ImageView btnselsound;
+    private ImageView customImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,25 +53,16 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
         rootView = getLayoutInflater().inflate(R.layout.activity_soundselect,
                 null);
         setContentView(rootView);
-
-        decorView = getWindow().getDecorView();
-
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        onWindowFocusChanged(true);
 
         prankyDB = new PrankyDB(SoundSelect.this);
-        final EditText txtselsound = (EditText) findViewById(R.id.txtSelSound);
+        txtselsound = (EditText) findViewById(R.id.txtSelSound);
         txtselsound.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
-        ImageView btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
-        ImageView btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
-        final ImageView customImage = (ImageView) findViewById(R.id.custom2);
-
+        btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
+        btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
+        customImage = (ImageView) findViewById(R.id.custom2);
         btnsave = (ImageView) findViewById(R.id.btnSave);
+
         btnsave.setEnabled(false);
 
         if (SharedPrefs.isAddmoreFirstLaunch()) {
@@ -112,7 +107,6 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
                 finish();
             }
         });
-
 
         btnselsound.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,22 +235,6 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
         }
     }
 
-    protected void unbindDrawables(View view) {
-        if (view != null) {
-            if (view.getBackground() != null) {
-                view.getBackground().setCallback(null);
-            }
-            if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
-                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                    unbindDrawables(((ViewGroup) view).getChildAt(i));
-                }
-                ((ViewGroup) view).removeAllViews();
-            }
-
-        }
-
-    }
-
 
     @Override
     protected void onDestroy() {
@@ -264,9 +242,8 @@ public class SoundSelect extends Activity implements FileChooser.FileSelectedLis
         SharedPrefs.setBgMusicPlaying(false);
 
 
-        unbindDrawables(rootView);
+        Cleaner.unbindDrawables(rootView);
         rootView = null;
-        System.gc();
 
     }
 

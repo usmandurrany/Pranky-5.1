@@ -14,20 +14,23 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by Usman on 11/24/2015.
  */
 public class SendMessage extends AsyncTask<String, String, String> {
-    Context context;
-    int sound=0;
-    int soundRep=0;
-    int soundVol=0;
-    String soundName="";
-    HttpGet httpget;
-    ProgressDialog pdialog;
-    WaitDialog wDialog;
-
+    private Context context;
+    private int sound=0;
+    private int soundRep=0;
+    private int soundVol=0;
+    private String soundName="";
+    private WaitDialog wDialog;
+    private HttpURLConnection conn;
+    private URL url;
+    private Intent intent;
 
 
 
@@ -37,16 +40,7 @@ public class SendMessage extends AsyncTask<String, String, String> {
 
 
 public void initDialog(){
-/*
-
-    pdialog = new ProgressDialog(context);
-    pdialog.setMessage("Please wait..");
-    pdialog.setIndeterminate(true);
-    pdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    pdialog.setCancelable(false);
-    pdialog.show();
-*/
-
+    intent = new Intent("main-activity-broadcast");
     wDialog = new WaitDialog(context);
     wDialog.show();
 }
@@ -68,33 +62,22 @@ public void initDialog(){
             else
                 soundName = Sound.soundName;
 
-            HttpClient httpclient = new DefaultHttpClient();
+        try {
+            url = new URL(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + frnd_id + "&app_id=" + app_id + "&sound=" + soundName + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&type=" + type +"&currenttime="+System.currentTimeMillis());
+            conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
 
-            // Prepare a request object
+            intent.putExtra("message", "prank-sent");
 
-            httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + frnd_id + "&app_id=" + app_id + "&sound=" + soundName + "&soundRep=" + String.valueOf(soundRep) + "&soundVol=" + String.valueOf(soundVol) + "&type=" + type +"&currenttime="+System.currentTimeMillis());
+        }catch (MalformedURLException e) {
+            e.printStackTrace();
 
-            // Execute the request
-            HttpResponse response;
-            try {
-                response = httpclient.execute(httpget);
-                // Examine the response status
-                Log.i("ServerResponse", response.getStatusLine().toString());
+        }catch (IOException e){
+            e.printStackTrace();
+            intent.putExtra("message", "network-not-available");
 
-            } catch (HttpHostConnectException e) {
-                Log.e("Send Prank", e.toString());
-                Intent intent = new Intent("main-activity-broadcast");
-                intent.putExtra("message", "server-not-found");
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-
-            } catch (IOException e) {
-                Log.e("Send Prank", e.toString());
-                Intent intent = new Intent("main-activity-broadcast");
-                intent.putExtra("message", "network-not-available");
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-
-
-            }
+        }
 
     return null;
     }
@@ -104,6 +87,7 @@ public void initDialog(){
                 super.onPostExecute(s);
         if (wDialog != null)
         wDialog.dismiss();
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
     }
 }

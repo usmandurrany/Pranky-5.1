@@ -20,7 +20,7 @@ public class PrankyDB extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "pranky.db";
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 23;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
@@ -43,9 +43,10 @@ public class PrankyDB extends SQLiteOpenHelper {
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.annoyed + ",'annoyed','raw.annoyed'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.vibrate + ",'vibrate','raw.vibrate'," + 3 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.bee + ",'bee','raw.bee'," + 1 + "," + 1 + ");");
-        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.gun + ",'gun','raw.gun'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.cricket + ",'cricket','raw.cricket'," + 2 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.farting + ",'farting','raw.farting'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.hammer + ",'hammer','raw.hammer'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.gun + ",'gun','raw.gun'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.cat + ",'cat','raw.cat'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.current + ",'current','raw.current'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.waterdrop + ",'waterdrop','raw.waterdrop'," + 3 + "," + 1 + ");");
@@ -56,7 +57,6 @@ public class PrankyDB extends SQLiteOpenHelper {
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.footsteps + ",'footsteps','raw.footsteps'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.windblow + ",'windblow','raw.windblow'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.elecrazor + ",'elecrazor','raw.elecrazor'," + 2 + "," + 1 + ");");
-        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.farting + ",'farting','raw.farting'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.spoon + ",'spoon','raw.spoon'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.door + ",'door','raw.door'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.airhorn + ",'airhorn','raw.airhorn'," + 1 + "," + 1 + ");");

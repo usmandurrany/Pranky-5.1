@@ -35,6 +35,7 @@ public class SharedPrefs {
     public static final String APP_FONT = "appFont";
 
     public static final String APP_FIRST_LAUNCH = "appFirstLaunch"; // boolean
+    public static final String LAST_PAGE_FIRST_LAUNCH = "lastPageFirstLaunch"; // boolean
     public static final String TIMER_FIRST_LAUNCH = "timerFirstLaunch"; // boolean
     public static final String CLOCK_FIRST_LAUNCH = "clockFirstLaunch"; // boolean
     public static final String SETTINGS_FIRST_LAUNCH = "settingsFirstLaunch"; // boolean
@@ -65,6 +66,7 @@ public class SharedPrefs {
     private static boolean settingsFirstLaunch;
     private static boolean addmoreFirstLaunch;
     private static boolean remotePrankFirstLaunch;
+    private static boolean lastPageFirstLaunch;
 
     private static boolean bgMusicPlaying;
 
@@ -106,6 +108,7 @@ public class SharedPrefs {
         settingsFirstLaunch=prefs.getBoolean(SharedPrefs.SETTINGS_FIRST_LAUNCH, true);
         addmoreFirstLaunch=prefs.getBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH, true);
         remotePrankFirstLaunch=prefs.getBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, true);
+        lastPageFirstLaunch=prefs.getBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH, true);
 
         bgMusicPlaying=prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, true);
 
@@ -188,6 +191,10 @@ public class SharedPrefs {
 
     public static boolean isCusSoundAdded() {
         return cusSoundAdded;
+    }
+
+    public static boolean isLastPageFirstLaunch() {
+        return lastPageFirstLaunch;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -302,5 +309,10 @@ public class SharedPrefs {
     public static void setCusSoundAdded(boolean cusSoundAdded) {
         prefs.edit().putBoolean(SharedPrefs.CUSTOM_SOUND_ADDED,cusSoundAdded).apply();
         SharedPrefs.cusSoundAdded = cusSoundAdded;
+    }
+
+    public static void setLastPageFirstLaunch(boolean lastPageFirstLaunch) {
+        prefs.edit().putBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH,lastPageFirstLaunch).apply();
+        SharedPrefs.lastPageFirstLaunch = lastPageFirstLaunch;
     }
 }
