@@ -31,6 +31,8 @@ public class RegisterOnServer extends AsyncTask<String, String, String>{
     public RegisterOnServer(Context context){
        this.context=context;
     }
+
+
     @Override
     protected String doInBackground(String... strings) {
         model = Build.MODEL;

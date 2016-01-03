@@ -67,6 +67,7 @@ public class Main extends FragmentActivity {
             String message = intent.getStringExtra("message");
             switch (message) {
                 case "prank-sent":
+                    Log.e("Prank Sent","Successfully");
                     break;
 
                 case "custom-sound-added":

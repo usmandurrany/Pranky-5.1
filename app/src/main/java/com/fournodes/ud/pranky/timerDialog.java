@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -79,12 +80,25 @@ public class TimerDialog extends Activity{
 
             @Override
             public void onScrollingFinished(WheelView wheel) {
-                if (showcaseView!=null && sec.getCurrentItem() == 5){
-                    showcaseView.setShowcase(new ViewTarget(set), true);
-                    showcaseView.setContentTitle("Time Attack");
-                    showcaseView.setContentText("Tap on the set button to set the timer and wait for your sound to play");
-                    steps++;
-                }
+                if (sec.getCurrentItem()>5)
+                    sec.setCurrentItem(5);
+                new CountDownTimer(700,500){
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        if (showcaseView!=null && sec.getCurrentItem() == 5){
+                            showcaseView.setShowcase(new ViewTarget(set), true);
+                            showcaseView.setContentTitle("Time Attack");
+                            showcaseView.setContentText("Tap on the set button to set the timer and wait for your sound to play");
+                            steps++;
+                        }
+                    }
+                }.start();
+
             }
         });
 
