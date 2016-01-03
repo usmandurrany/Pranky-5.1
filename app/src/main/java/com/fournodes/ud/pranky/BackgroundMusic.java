@@ -2,7 +2,6 @@ package com.fournodes.ud.pranky;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.os.Handler;
 
 public class BackgroundMusic {
     static MediaPlayer mp;

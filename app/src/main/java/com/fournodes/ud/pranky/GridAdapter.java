@@ -19,20 +19,20 @@ public class GridAdapter extends BaseAdapter {
         public ImageView itemImage;
     }
 
-    private GridItems[] items;
+    private GridItem[] items;
     private LayoutInflater mInflater;
 
-    public GridAdapter(Context context, GridItems[] images) {
+    public GridAdapter(Context context, GridItem[] images) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         items = images;
     }
 
-    public GridItems[] getItems() {
+    public GridItem[] getItems() {
         return items;
     }
 
-    public void setItems(GridItems[] items) {
+    public void setItems(GridItem[] items) {
         this.items = items;
     }
 
@@ -75,7 +75,7 @@ public class GridAdapter extends BaseAdapter {
 
         if (view == null) {
 
-            view = mInflater.inflate(R.layout.custom, parent, false);
+            view = mInflater.inflate(R.layout.fragment_gridview_item, parent, false);
             viewHolder = new ViewHolder();
             //viewHolder.imageView = (ImageView) view.findViewById(R.id.grid_item_bg);
             viewHolder.itemImage = (ImageView) view.findViewById(R.id.grid_item_image);
@@ -85,8 +85,8 @@ public class GridAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        GridItems gridItems = items[pos];
-        setCatImage(pos, viewHolder, gridItems.res);
+        GridItem gridItem = items[pos];
+        setCatImage(pos, viewHolder, gridItem.res);
 
         return view;
     }

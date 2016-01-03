@@ -22,7 +22,7 @@ public class DayWheelAdapter extends AbstractWheelTextAdapter {
     //An object of this class must be initialized with an array of Date type
     protected DayWheelAdapter(Context context, ArrayList<Date> dates) {
         //Pass the context and the custom layout for the text to the super method
-        super(context, R.layout.wheel_item_time);
+        super(context, R.layout.wheel_picker_item);
         this.dates = dates;
     }
 

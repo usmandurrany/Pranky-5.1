@@ -27,7 +27,7 @@ public class CustomToast {
 
     public void init() {
         LayoutInflater inflater = LayoutInflater.from(context);
-        customToast = inflater.inflate(R.layout.toast, null);
+        customToast = inflater.inflate(R.layout.custom_toast, null);
         toastText = (TextView) customToast.findViewById(R.id.toastText);
         toastText.setText(ToastText);
 

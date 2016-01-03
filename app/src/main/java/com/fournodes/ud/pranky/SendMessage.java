@@ -1,17 +1,11 @@
 package com.fournodes.ud.pranky;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.HttpHostConnectException;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,18 +48,18 @@ public void initDialog(){
     @Override
     protected String doInBackground(String... strings) {
 
-        this.sound = Sound.sysSound;
-        this.soundRep = Sound.repeatCount;
-        this.soundVol = (int) Sound.volume;
+        this.sound = SelectedItem.sysSound;
+        this.soundRep = SelectedItem.repeatCount;
+        this.soundVol = (int) SelectedItem.volume;
 
         String app_id = SharedPrefs.getMyAppID();
             String frnd_id = SharedPrefs.getFrndAppID();
             String type = strings[0];
 
             if (sound == -2) // condition for HW fucntions to be treated as a special type of sysSound
-                soundName = Sound.cusSound;
+                soundName = SelectedItem.cusSound;
             else
-                soundName = Sound.soundName;
+                soundName = SelectedItem.soundName;
 
         try {
             Log.e("Friend ID",String.valueOf(frnd_id));

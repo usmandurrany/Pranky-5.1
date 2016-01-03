@@ -11,11 +11,11 @@ import java.util.List;
  */
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<GridFragment> gfragments;
+    private List<GridFragment> fragments;
 
-    public PagerAdapter(FragmentManager fm, List<GridFragment> gridFragments, Context context) {
+    public PagerAdapter(FragmentManager fm, List<GridFragment> gridFragments) {
         super(fm);
-        this.gfragments = gridFragments;
+        this.fragments = gridFragments;
 
     }
 
@@ -23,13 +23,13 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public android.support.v4.app.Fragment getItem(int pos) {
-           return this.gfragments.get(pos);
+           return this.fragments.get(pos);
 
     }
 
     @Override
     public int getCount() {
-           return this.gfragments.size();
+           return this.fragments.size();
 
     }
 
