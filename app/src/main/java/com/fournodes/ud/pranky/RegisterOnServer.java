@@ -18,6 +18,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -28,6 +31,8 @@ public class RegisterOnServer extends AsyncTask<String, String, String>{
     String result;
     String model;
     Context context;
+    private HttpURLConnection conn;
+    private URL url;
     public RegisterOnServer(Context context){
        this.context=context;
     }
@@ -40,36 +45,22 @@ public class RegisterOnServer extends AsyncTask<String, String, String>{
         String app_id = strings[1];
         int state = SharedPrefs.getServerState();
 
-        HttpClient httpclient = new DefaultHttpClient();
 
-        // Prepare a request object
-        HttpGet httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR+"index.php?model="+model+"&gcm_id="+gcm_id+"&app_id="+app_id+"&state="+String.valueOf(state));
-
-        // Execute the request
-        HttpResponse response;
         try {
-            response = httpclient.execute(httpget);
-            // Examine the response status
-            Log.e("ServerResponse", response.getStatusLine().toString());
-
-            // Get hold of the response entity
-            HttpEntity entity = response.getEntity();
-            // If the response does not enclose an entity, there is no need
-            // to worry about connection release
-
-            if (entity != null) {
-
-                // A Simple JSON Response Read
-                InputStream instream = entity.getContent();
-                result = convertStreamToString(instream);
-                // now you have the string representation of the HTML request
-                instream.close();
-            }
+            url = new URL(SharedPrefs.APP_SERVER_ADDR+"index.php?model="+model+"&gcm_id="+gcm_id+"&app_id="+app_id+"&state="+String.valueOf(state));
+            conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            result = convertStreamToString(conn.getInputStream());
 
 
-        } catch (Exception e) {Log.e("RegisterOnServer",e.toString());}
 
+        }catch (MalformedURLException e) {
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
 
+        }
 
 
         return result;

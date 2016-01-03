@@ -8,8 +8,8 @@ android {
         applicationId "com.fournodes.ud.pranky"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 6
-        versionName '1.0.5'
+        versionCode 7
+        versionName '1.0.6'
     }
     buildTypes {
         release {
