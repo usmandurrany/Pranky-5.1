@@ -18,7 +18,7 @@ import java.util.TimeZone;
  */
 public class GCMInitiate {
     Context context;
-    RegisterOnServer rs;
+    AppServerConn appServerConn;
 
     public GCMInitiate(Context context) {
         this.context = context;
@@ -39,14 +39,11 @@ public class GCMInitiate {
             // Perform Checks for true
             //serverState is 1 and myAppID has expired but myGcmID is set
             if (SharedPrefs.getServerState() == 1 && exp.before(today) && SharedPrefs.getMyGcmID() != null) {
-                // Request new appID from server
 
-                // Initialize the RegisterOnServer class
-                rs = new RegisterOnServer(context);
-                SharedPrefs.setMyAppID(""); // First clear the myAppID on device
-                // Send myGcmID but empty myAppID
-                String[] args = {SharedPrefs.getMyGcmID(), SharedPrefs.getMyAppID()};
-                rs.execute(args);
+                SharedPrefs.setMyAppID("");
+                appServerConn= new AppServerConn(context,ActionType.REGISTER_APP_ID);
+                appServerConn.execute();
+
             }
             // serverState is 1 and myGcmId is not set
             else if (SharedPrefs.getServerState() == 1 && SharedPrefs.getMyGcmID() == null && SharedPrefs.getMyGcmID() == null) {

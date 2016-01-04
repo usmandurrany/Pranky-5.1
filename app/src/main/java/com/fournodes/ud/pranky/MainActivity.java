@@ -220,9 +220,13 @@ public class MainActivity extends FragmentActivity {
                     startActivity(prankDialog);
 
                 } else {
-                    SendMessage sendMessage = new SendMessage(MainActivity.this);
+                    AppServerConn appServerConn= new AppServerConn(MainActivity.this,ActionType.PRANK);
+                    appServerConn.showWaitDialog("P r a n k i n g ...");
+                    appServerConn.execute();
+
+                    /*SendMessage sendMessage = new SendMessage(MainActivity.this);
                     sendMessage.initDialog();
-                    sendMessage.execute("prank");
+                    sendMessage.execute("prank");*/
 
                 }
 

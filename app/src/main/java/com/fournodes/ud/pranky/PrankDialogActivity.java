@@ -25,6 +25,7 @@ public class PrankDialogActivity extends Activity{
     View decorView;
     ShowcaseView showcaseView;
     EditText frndID;
+    private AppServerConn appServerConn;
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -86,9 +87,9 @@ public class PrankDialogActivity extends Activity{
             @Override
             public void onClick(View view) {
                 if (frndID.getText()!= null){
-                    DeviceValidation validate = new DeviceValidation(PrankDialogActivity.this);
-                    validate.init();
-                    validate.execute(frndID.getText().toString());
+                    appServerConn = new AppServerConn(PrankDialogActivity.this,ActionType.DEVICE_VALIDATE,frndID.getText().toString());
+                    appServerConn.showWaitDialog("P a i r i n g ...");
+                    appServerConn.execute();
                 }else{
                     CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Enter friends ID");
                     cToast.show();

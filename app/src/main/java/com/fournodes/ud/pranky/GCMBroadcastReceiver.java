@@ -14,13 +14,6 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.IOException;
-
 /**
  * Created by Usman on 11/23/2015.
  */
@@ -35,13 +28,17 @@ public class GCMBroadcastReceiver extends GcmListenerService {
      *             For Set of keys use data.keySet().
      */
     // [START receive_message]
+    private AppServerConn appServerConn;
+
     @Override
     public void onMessageReceived(String from, Bundle data) { // Prank received will trigger this
-        String type = data.getString("type");
+
+
+
         String senderAppID= data.getString("app_id");
 
         Log.e("Sender ID",senderAppID);
-        Log.e("Type",type);
+        Log.e("Type",data.getString("type"));
 
         if (SharedPrefs.prefs == null) {
             SharedPrefs SP = new SharedPrefs(getApplicationContext());
@@ -49,8 +46,8 @@ public class GCMBroadcastReceiver extends GcmListenerService {
         }
 
 
-        switch(type) {
-            case "prank":
+        switch(ActionType.valueOf(data.getString("type"))) {
+            case PRANK:
 
                 if (SharedPrefs.isPrankable()) {
                     String sound = data.getString("sound");
@@ -83,52 +80,32 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
 
                     SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                           HttpGet httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + SharedPrefs.getFrndAppID() + "&app_id=" + SharedPrefs.getMyAppID() + "&sound=" + String.valueOf(0) + "&soundRep=" + String.valueOf(0) + "&soundVol=" + String.valueOf(0) + "&type=success");
-                            try{
-                                HttpClient httpclient = new DefaultHttpClient();
-                                HttpResponse response = httpclient.execute(httpget);
-
-                            }catch (IOException e){}
-                        }
-                    });
-                    thread.start();
+                    appServerConn = new AppServerConn(ActionType.PRANK_SUCCESSFUL);
+                    appServerConn.execute();
 
 
                 } else {
                     SharedPrefs.setServerState(0); // Set serverState to 0
                     // Send request to app server to remove myAppID from database untill serverState becomes 1
-                    RegisterOnServer rs = new RegisterOnServer(getApplicationContext());
-                    String[] args = {SharedPrefs.getMyGcmID(), SharedPrefs.getMyAppID()};
-                    rs.execute(args); // Params (myGcmID, myAppId, serverState(fom stored prefs))
+                    appServerConn = new AppServerConn(ActionType.UPDATE_STATE);
+                    appServerConn.execute();
+                     // Params (myGcmID, myAppId, serverState(fom stored prefs))
                     // Once myAppID has been removed from the db on the server, generate a response for the sender
                     SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
+                    appServerConn = new AppServerConn(ActionType.RESPONSE);
+                    appServerConn.execute();
 
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpGet httpget = new HttpGet(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + SharedPrefs.getFrndAppID() + "&app_id=" + SharedPrefs.getMyAppID() + "&sound=" + String.valueOf(0) + "&soundRep=" + String.valueOf(0) + "&soundVol=" + String.valueOf(0) + "&type=response");
-                            try{
-                                HttpClient httpclient = new DefaultHttpClient();
-                                HttpResponse response = httpclient.execute(httpget);
-
-                            }catch (IOException e){}
-                        }
-                    });
-                    thread.start();
                 }
                 break;
 
-            case "response":
+            case RESPONSE:
                 // Broadcast the response to Main activity to display a toast
                 Intent intent = new Intent("main-activity-broadcast");
                 intent.putExtra("message", "prank-response-received");
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 
                 break;
-            case "success":
+            case PRANK_SUCCESSFUL:
                 // Broadcast the response to Main activity to display a toast
                 Intent succ = new Intent("main-activity-broadcast");
                 succ.putExtra("message", "prank-successful");

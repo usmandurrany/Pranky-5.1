@@ -17,7 +17,8 @@ import java.io.IOException;
 public class GCMRegistrationService extends IntentService {
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
+    private AppServerConn appServerConn;
 
     public GCMRegistrationService() {
         super(TAG);
@@ -76,10 +77,11 @@ public class GCMRegistrationService extends IntentService {
         SharedPrefs.setMyGcmID(token); // Store the GCM ID/Token in the Shared Prefs
 
         // Send the stored GCM ID/Token to the server
-        RegisterOnServer rs= new RegisterOnServer(getApplicationContext());
+
         //Send the GCM id and the myAppID as args
-        String[] args = {SharedPrefs.getMyGcmID(),""}; // myAppID is ""
-        rs.execute(args);
+        SharedPrefs.setMyAppID("");
+        appServerConn= new AppServerConn(ActionType.REGISTER_APP_ID);
+        appServerConn.execute();
         }
 
     /**

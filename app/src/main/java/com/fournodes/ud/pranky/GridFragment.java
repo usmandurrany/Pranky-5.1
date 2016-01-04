@@ -425,7 +425,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                             .setContentTitle("Add more sounds")
                             .setContentText("Tap on the '+' to add a custom sound of your choice")
                             .setStyle(R.style.CustomShowcaseTheme3)
-                            .hideOnTouchOutside()
                             .setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

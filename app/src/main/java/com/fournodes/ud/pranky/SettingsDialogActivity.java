@@ -28,8 +28,8 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
     private Dialog dialog;
     private BackgroundMusic player;
     private boolean playMusic = true;
-    private RegisterOnServer rs;
-    View decorView;
+    private View decorView;
+    private AppServerConn appServerConn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +114,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
         remoteprank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                // Initialize the RegisterOnServer class
-                rs = new RegisterOnServer(SettingsDialogActivity.this);
+
 
                 if (isChecked) {
                     try {
@@ -136,19 +135,18 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
                             // Resend the stored myAppID to server
                             //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
-                            String[] args = {SharedPrefs.getMyGcmID(), SharedPrefs.getMyAppID()};
-                            rs.execute(args);
+                            appServerConn= new AppServerConn(ActionType.UPDATE_STATE);
+                            appServerConn.execute();;
                         }
                         // serverState is 0 and myAppId has expired
                         else if (SharedPrefs.getServerState() == 0 && exp.before(today)) {
                             Log.e("Condition2", "True");
 
                             // Request new appID from server
-                            //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
-                            SharedPrefs.setMyAppID(""); // Clear the myAppID before requesting form the server
-                            String[] args = {SharedPrefs.getMyGcmID(), SharedPrefs.getMyAppID()};
-                            rs.execute(args);
+                            SharedPrefs.setMyAppID("");
+                            appServerConn= new AppServerConn(ActionType.REGISTER_APP_ID);
+                            appServerConn.execute();
 
                         }
                         // serverState is 1 and myGcmId is not set or expDate is not set or expDate has passed
