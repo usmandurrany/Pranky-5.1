@@ -115,7 +115,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     public void onGridItemClick(GridView g, View v, final int pos, long id) throws NoSuchFieldException, IllegalAccessException, IOException, InterruptedException {
 
         try {
-            if (previewSound.mp.isPlaying()) {
+            if (previewSound.mp != null) {
                 previewSound.mp.stop();
                 previewSound.mp.release();
                 previewSound.mp = null;
@@ -220,7 +220,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
                     }
                 }, 2000);
-                SelectedItem.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+                Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
             }
 
         } else if (gridItems[pos].sound.equals("raw.flash_blink")) {
@@ -266,7 +266,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
                 new Thread(flashBlinkRunnable).start();
                 //flashBlinkRunnable.run();
-                SelectedItem.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+                Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
             }
 
         } else if (gridItems[pos].sound.equals("raw.vibrate_hw")) {
@@ -274,11 +274,11 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
             long[] pattern = {0, 2000, 1000, 2000};
             ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern, -1);
-            SelectedItem.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+            Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
 
         } else if (gridItems[pos].sound.equals("raw.message")) {
             try {
-                SelectedItem.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+                Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
 
                 Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 r = RingtoneManager.getRingtone(activity, notification);
@@ -292,7 +292,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
 
 
-                    SelectedItem.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+                    Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
 
                     Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
                     r = RingtoneManager.getRingtone(activity, notification);
@@ -308,10 +308,10 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 e.printStackTrace();
             }
         } else {
-            SelectedItem.setSoundProp(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
-            if (SelectedItem.sysSound != -1) {
-                previewSound.mp = MediaPlayer.create(activity, SelectedItem.sysSound);
-            } else if (SelectedItem.cusSound != null) {
+            Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+            if (Selection.itemSound != -1) {
+                previewSound.mp = MediaPlayer.create(activity, Selection.itemSound);
+            } else if (Selection.itemCustomSound != null) {
                 previewSound.mp = new MediaPlayer();
                 try {
                     previewSound.mp.setDataSource(gridItems[pos].sound);
@@ -403,7 +403,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         }
         lastView = -1;
         viewPOS = -1;
-        SelectedItem.clearSoundProp();
+        Selection.clearSoundProp();
 
     }
 

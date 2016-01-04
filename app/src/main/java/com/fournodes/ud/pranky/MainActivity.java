@@ -152,7 +152,7 @@ public class MainActivity extends FragmentActivity {
         clock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SelectedItem.sysSound == -1 && SelectedItem.cusSound == null) {
+                if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                     if (currPage!=null)
@@ -169,7 +169,7 @@ public class MainActivity extends FragmentActivity {
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SelectedItem.sysSound == -1 && SelectedItem.cusSound == null) {
+                if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                     if (currPage!=null)
@@ -205,12 +205,12 @@ public class MainActivity extends FragmentActivity {
         prankbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SelectedItem.sysSound == -1 && SelectedItem.cusSound == null) {
+                if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(MainActivity.this, "Select  a  sound  first");
                     cToast.show();
                     if (currPage!=null)
                         ((IFragment) currPage).animateIcon();
-                } else if (SelectedItem.sysSound == -1 && SelectedItem.cusSound != null) {
+                } else if (Selection.itemSound == -1 && Selection.itemCustomSound != null) {
 
                     cToast = new CustomToast(MainActivity.this, "A  non-custom  sound  should  be  selected");
                     cToast.show();
@@ -383,7 +383,7 @@ public class MainActivity extends FragmentActivity {
                         @Override
                         public void onClick(View view) {
                             Log.e("Step",String.valueOf(steps));
-                            if (SelectedItem.sysSound != -1 || SelectedItem.cusSound != null || steps > 2 ) {
+                            if (Selection.itemSound != -1 || Selection.itemCustomSound != null || steps > 2 ) {
                                 if (steps == 3 && !timerLaunch) { //Dont proceed untill timer dialog has been launched once
                                     Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_bounce);
                                     grow.setAnimationListener(new Animation.AnimationListener() {

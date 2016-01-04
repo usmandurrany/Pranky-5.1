@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -29,31 +28,28 @@ public class GCMBroadcastReceiver extends GcmListenerService {
      */
     // [START receive_message]
     private AppServerConn appServerConn;
+    private String message;
+
+
 
     @Override
     public void onMessageReceived(String from, Bundle data) { // Prank received will trigger this
-
-
-
-        String senderAppID= data.getString("app_id");
-
-        Log.e("Sender ID",senderAppID);
-        Log.e("Type",data.getString("type"));
-
         if (SharedPrefs.prefs == null) {
             SharedPrefs SP = new SharedPrefs(getApplicationContext());
             SP.initAllPrefs();
         }
 
+        message = data.getString("message");
+      //  SharedPrefs.setFrndAppID(data.getString("sender_id"));
 
-        switch(ActionType.valueOf(data.getString("type"))) {
+        switch(ActionType.valueOf(message)) {
             case PRANK:
 
                 if (SharedPrefs.isPrankable()) {
-                    String sound = data.getString("sound");
+                    String sound = data.getString("item");
 
-                    String soundRep = data.getString("soundRep");
-                    String soundVol = data.getString("soundVol");
+                    String soundRep = data.getString("repeat_count");
+                    String soundVol = data.getString("volume");
 
                     Intent intent = new Intent(getApplicationContext(), PlayPrank.class);
                     if (sound.equals("raw.flash") || sound.equals("raw.flash_blink") || sound.equals("raw.vibrate_hw") || sound.equals("raw.message")|| sound.equals("raw.ringtone")){
@@ -63,7 +59,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     }
                     else
                     {
-                        intent.putExtra("sysSound", SelectedItem.getSoundRes(sound));
+                        intent.putExtra("sysSound", Selection.getSoundRes(sound));
                         intent.putExtra("cusSound", "");
                     }
 
@@ -79,7 +75,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
 
-                    SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
+                    SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
                     appServerConn = new AppServerConn(ActionType.PRANK_SUCCESSFUL);
                     appServerConn.execute();
 
@@ -91,14 +87,14 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     appServerConn.execute();
                      // Params (myGcmID, myAppId, serverState(fom stored prefs))
                     // Once myAppID has been removed from the db on the server, generate a response for the sender
-                    SharedPrefs.setFrndAppID(senderAppID); // Temporarily save the senders ID as frndsAppID
-                    appServerConn = new AppServerConn(ActionType.RESPONSE);
+                    SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
+                    appServerConn = new AppServerConn(ActionType.PRANK_FAILED);
                     appServerConn.execute();
 
                 }
                 break;
 
-            case RESPONSE:
+            case PRANK_FAILED:
                 // Broadcast the response to Main activity to display a toast
                 Intent intent = new Intent("main-activity-broadcast");
                 intent.putExtra("message", "prank-response-received");

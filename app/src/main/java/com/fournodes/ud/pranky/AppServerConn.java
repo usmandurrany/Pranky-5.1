@@ -68,20 +68,18 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                     url = new URL(SharedPrefs.APP_SERVER_ADDR+"index.php?model="+URLEncoder.encode(Build.MODEL,"UTF-8")+"&gcm_id="+SharedPrefs.getMyGcmID()+"&app_id="+SharedPrefs.getMyAppID()+"&state="+SharedPrefs.getServerState());
                     break;
                 case PRANK:
-                    if (SelectedItem.sysSound == -2) // condition for HW fucntions to be treated as a special type of sysSound
-                        selectedItem = SelectedItem.cusSound;
+                    if (Selection.itemSound == -2) // condition for HW fucntions to be treated as a special type of itemSound
+                        selectedItem = Selection.itemCustomSound;
                     else
-                        selectedItem = SelectedItem.soundName;
+                        selectedItem = Selection.itemName;
 
                     broadcastResult = new Intent("main-activity-broadcast");
-                    url = new URL(SharedPrefs.APP_SERVER_ADDR+"sendmsg.php?friend_id=" + SharedPrefs.getFrndAppID() + "&app_id=" + SharedPrefs.getMyAppID() + "&sound=" + selectedItem + "&soundRep=" + SelectedItem.repeatCount + "&soundVol=" + (int) SelectedItem.volume + "&type="+ActionType.PRANK+"&currenttime="+System.currentTimeMillis());
+                    url = new URL(SharedPrefs.APP_SERVER_ADDR+"sendmsg.php?receiver_id=" + SharedPrefs.getFrndAppID() + "&sender_id=" + SharedPrefs.getMyAppID() + "&item=" + selectedItem + "&repeat_count=" + Selection.itemRepeatCount + "&volume=" + (int) Selection.itemVolume + "&message="+ActionType.PRANK+"&currenttime="+System.currentTimeMillis());
 
                     break;
-                case RESPONSE:
-                    url = new URL(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + SharedPrefs.getFrndAppID() + "&app_id=" + SharedPrefs.getMyAppID() + "&sound=0&soundRep=0&soundVol=0&type="+type.RESPONSE);
-                    break;
+                case PRANK_FAILED:
                 case PRANK_SUCCESSFUL:
-                    url = new URL(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?friend_id=" + SharedPrefs.getFrndAppID() + "&app_id=" + SharedPrefs.getMyAppID() + "&sound=0&soundRep=0&soundVol=0&type="+type.PRANK_SUCCESSFUL);
+                    url = new URL(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?receiver_id=" + SharedPrefs.getFrndAppID() + "&sender_id=" + SharedPrefs.getMyAppID() + "&message="+type);
                     break;
 
             }
@@ -106,6 +104,9 @@ public class AppServerConn extends AsyncTask<String,String,String> {
 
         }catch (IOException e){
             e.printStackTrace();
+            if (broadcastResult==null)
+                broadcastResult = new Intent("main-activity-broadcast");
+
             broadcastResult.putExtra("message", "network-error");
         }
 

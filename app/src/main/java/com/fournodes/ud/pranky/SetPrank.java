@@ -87,13 +87,13 @@ public class SetPrank {
 
     public void ScheduleSoundPlayback(String type, Calendar schAlarm) {
         Intent intent = new Intent(context, PlayPrank.class);
-        if (SelectedItem.sysSound != 0)
-            intent.putExtra("sysSound", SelectedItem.sysSound);
-        intent.putExtra("cusSound", SelectedItem.cusSound);
-        intent.putExtra("repeatCount", SelectedItem.repeatCount);
-        intent.putExtra("volume", (int) SelectedItem.volume);
+        if (Selection.itemSound != 0)
+            intent.putExtra("sysSound", Selection.itemSound);
+        intent.putExtra("cusSound", Selection.itemCustomSound);
+        intent.putExtra("repeatCount", Selection.itemRepeatCount);
+        intent.putExtra("volume", (int) Selection.itemVolume);
 
-       // Toast.makeText(context, String.valueOf(Sound.repeatCount), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, String.valueOf(Sound.itemRepeatCount), Toast.LENGTH_SHORT).show();
 
 
         final int _id = (int) System.currentTimeMillis();
