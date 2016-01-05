@@ -182,18 +182,18 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
 
         //Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
-        //Toast.makeText(activity,"Position Clicked: " + pos + " & Repeat Count is: "+ gridItems[pos].soundRepeat, Toast.LENGTH_LONG).show();
-        //Toast.makeText(activity,"Position Clicked: " + pos + " & Volume is: "+ gridItems[pos].soundVol, Toast.LENGTH_LONG).show();
-        Log.w("IMAGE CLICKED", gridItems[pos].sound);
+        //Toast.makeText(activity,"Position Clicked: " + pos + " & Repeat Count is: "+ gridItems[pos].itemRepeatCount, Toast.LENGTH_LONG).show();
+        //Toast.makeText(activity,"Position Clicked: " + pos + " & Volume is: "+ gridItems[pos].itemVolume, Toast.LENGTH_LONG).show();
+        Log.w("IMAGE CLICKED", gridItems[pos].item);
 
-        if (gridItems[pos].sound == "addmore") {
+        if (gridItems[pos].item.equals("addSound")) {
 
             // Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
             SharedPrefs.setBgMusicPlaying(true);
             soundAct = new Intent(getActivity(), AddSoundActivity.class);
             startActivity(soundAct);
 
-        } else if (gridItems[pos].sound.equals("raw.flash")) {
+        } else if (gridItems[pos].item.equals("raw.flash")) {
 
             if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
 
@@ -220,10 +220,10 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
                     }
                 }, 2000);
-                Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+                Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
             }
 
-        } else if (gridItems[pos].sound.equals("raw.flash_blink")) {
+        } else if (gridItems[pos].item.equals("raw.flash_blink")) {
 
             if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
 
@@ -266,19 +266,19 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
                 new Thread(flashBlinkRunnable).start();
                 //flashBlinkRunnable.run();
-                Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+                Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
             }
 
-        } else if (gridItems[pos].sound.equals("raw.vibrate_hw")) {
+        } else if (gridItems[pos].item.equals("raw.vibrate_hw")) {
 
             Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
             long[] pattern = {0, 2000, 1000, 2000};
             ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern, -1);
-            Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+            Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
 
-        } else if (gridItems[pos].sound.equals("raw.message")) {
+        } else if (gridItems[pos].item.equals("raw.message")) {
             try {
-                Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+                Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
 
                 Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 r = RingtoneManager.getRingtone(activity, notification);
@@ -286,13 +286,13 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (gridItems[pos].sound.equals("raw.ringtone")) {
+        } else if (gridItems[pos].item.equals("raw.ringtone")) {
             try {
 
                 if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
 
 
-                    Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+                    Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
 
                     Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
                     r = RingtoneManager.getRingtone(activity, notification);
@@ -308,13 +308,13 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 e.printStackTrace();
             }
         } else {
-            Selection.setValues(activity, gridItems[pos].res, gridItems[pos].sound, gridItems[pos].soundRepeat, gridItems[pos].soundVol);
+            Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
             if (Selection.itemSound != -1) {
                 previewSound.mp = MediaPlayer.create(activity, Selection.itemSound);
             } else if (Selection.itemCustomSound != null) {
                 previewSound.mp = new MediaPlayer();
                 try {
-                    previewSound.mp.setDataSource(gridItems[pos].sound);
+                    previewSound.mp.setDataSource(gridItems[pos].item);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

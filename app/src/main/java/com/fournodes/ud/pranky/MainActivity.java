@@ -338,7 +338,7 @@ public class MainActivity extends FragmentActivity {
                 }
                 if (c.isAfterLast() && i < itemsOnPage) {
 
-                    GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addmore");
+                    GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
                     imLst.add(lstItem);
                     lastItemAdded = true;
 

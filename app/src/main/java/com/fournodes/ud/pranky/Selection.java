@@ -15,7 +15,7 @@ public class Selection {
     public static float itemVolume = 0f;
 
     //<summary>
-    // Takes Image ID as 1st parameter to convert into image/sound name
+    // Takes Image ID as 1st parameter to convert into image/item name
     // Takes Custom Sound location as 2nd parameter
     // The rest are Repeat count and Volume, respectively
     //</summary>

@@ -37,7 +37,7 @@ public class PlayPrank extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         sysSound = intent.getIntExtra("sysSound", -1);
-        //     Log.e("System Sound",sound);
+        //     Log.e("System Sound",item);
         cusSound = intent.getStringExtra("cusSound");
         Log.e("Custom Sound", String.valueOf(cusSound));
         repeatCount = intent.getIntExtra("repeatCount", 1);

@@ -55,14 +55,14 @@ public class GridAdapter extends BaseAdapter {
     @Override
     public long getItemId(int pos) {
         if (items != null && pos >= 0 && pos < getCount()) {
-            return items[pos].id;
+            return items[pos].itemID;
         }
         return 0;
     }
 
     public String getImageSound(int pos) {
         if (items != null && pos >= 0 && pos < getCount()) {
-            return items[pos].sound;
+            return items[pos].item;
         }
         return null;
     }
@@ -86,7 +86,7 @@ public class GridAdapter extends BaseAdapter {
         }
 
         GridItem gridItem = items[pos];
-        setCatImage(pos, viewHolder, gridItem.res);
+        setCatImage(pos, viewHolder, gridItem.itemResID);
 
         return view;
     }

@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fournodes.ud.pranky" >
+    package="com.fournodes.ud.pranky">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:name="com.fournodes.ud.pranky.permission.C2D_MESSAGE"
+
+    <permission
+        android:name="com.fournodes.ud.pranky.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.fournodes.ud.pranky.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <permission android:name="android.permission.FLASHLIGHT"
+
+    <permission
+        android:name="android.permission.FLASHLIGHT"
         android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
         android:protectionLevel="normal" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.example.gcm" />
             </intent-filter>
         </receiver>
 
         <service
             android:name=".GCMBroadcastReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -44,7 +51,7 @@
             android:name=".GCMInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
 
@@ -52,7 +59,7 @@
             android:name=".SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,54 +71,49 @@
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustNothing">
-        </activity>
+            android:windowSoftInputMode="adjustNothing"></activity>
         <activity
             android:name=".AddSoundActivity"
             android:excludeFromRecents="true"
             android:label="SoundSelectDialog"
             android:screenOrientation="portrait"
-            android:theme="@style/ActivityDialog" >
-        </activity>
+            android:theme="@style/ActivityDialog"></activity>
         <activity
             android:name=".TimerDialogActivity"
             android:excludeFromRecents="true"
             android:label="TimerDialog"
             android:screenOrientation="portrait"
-            android:theme="@style/ActivityDialog" >
-        </activity>
+            android:theme="@style/ActivityDialog"></activity>
         <activity
             android:name=".ClockDialogActivity"
             android:excludeFromRecents="true"
             android:label="ClockDialog"
             android:screenOrientation="portrait"
-            android:theme="@style/ActivityDialog" >
-        </activity>
+            android:theme="@style/ActivityDialog"></activity>
         <activity
             android:name=".SettingsDialogActivity"
             android:excludeFromRecents="true"
             android:label="SettingsDialog"
             android:screenOrientation="portrait"
-            android:theme="@style/ActivityDialog" >
-        </activity>
+            android:theme="@style/ActivityDialog"></activity>
         <activity
             android:name=".PrankDialogActivity"
             android:excludeFromRecents="true"
             android:label="PrankDialog"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|adjustResize"
-            android:theme="@style/ActivityDialog" >
-        </activity>
+            android:theme="@style/ActivityDialog"
+            android:windowSoftInputMode="adjustPan|adjustResize"></activity>
+
         <receiver
             android:name=".PlayPrank"
             android:enabled="true"
-            android:exported="true" >
-        </receiver>
+            android:exported="true"></receiver>
 
         <service
             android:name=".GCMRegistrationService"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
+
+        <activity android:name=".UserRegisterationActivity"></activity>
     </application>
 
 </manifest>
