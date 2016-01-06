@@ -19,7 +19,6 @@ import java.util.TimeZone;
 public class GCMInitiate {
     Context context;
     AppServerConn appServerConn;
-
     public GCMInitiate(Context context) {
         this.context = context;
     }
@@ -77,5 +76,6 @@ public class GCMInitiate {
         }
         return true;
     }
+
 }
 

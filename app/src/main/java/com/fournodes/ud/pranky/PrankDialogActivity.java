@@ -1,7 +1,9 @@
 package com.fournodes.ud.pranky;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,12 +23,13 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
  * Created by Usman on 11/6/2015.
  */
 public class PrankDialogActivity extends Activity{
-    private Context context;
-    private Dialog dialog;
-    View decorView;
-    ShowcaseView showcaseView;
-    EditText frndID;
+
+    private View decorView;
+    private ShowcaseView showcaseView;
+    private EditText frndID;
     private AppServerConn appServerConn;
+    private int invIDCount=0;
+
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -46,8 +50,24 @@ public class PrankDialogActivity extends Activity{
                 cToast.show();
             }
             else if (message.equals("invalid-id")){
+                if (invIDCount==3){
+                    SharedPrefs.setInvalidIDCount(invIDCount);
+
+                    Intent timeout = new Intent(PrankDialogActivity.this,InvalidIDTimeout.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,
+                            timeout, PendingIntent.FLAG_ONE_SHOT);
+
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60000, pendingIntent);
+                    CustomToast cToast = new CustomToast(getApplicationContext(), "Please wait 60 seconds before trying again");
+                    cToast.show();
+                    finish();
+                    Log.e("Invalid ID Count",String.valueOf(invIDCount));
+
+                }
                 CustomToast cToast = new CustomToast(getApplicationContext(), "Invalid ID");
                 cToast.show();
+                invIDCount++;
             }
 
         }
@@ -73,7 +93,7 @@ public class PrankDialogActivity extends Activity{
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         ImageView btndiagclose = (ImageView) findViewById(R.id.close);
-        ImageView btnset = (ImageView) findViewById(R.id.set);
+        final ImageView btnset = (ImageView) findViewById(R.id.set);
         frndID = (EditText) findViewById(R.id.txtfrndID);
         btndiagclose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,10 +103,26 @@ public class PrankDialogActivity extends Activity{
         });
 
         frndID.setText(SharedPrefs.getFrndAppID());
+        frndID.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (frndID.getText().toString().trim().length() == 4 && showcaseView!=null){
+                    showcaseView.setShowcase(new ViewTarget(btnset),true);
+                    showcaseView.setStyle(R.style.CustomShowcaseTheme3);
+                }
+                return false;
+            }
+        });
         btnset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (frndID.getText()!= null){
+                if (frndID.getText().toString().trim().length() > 0){
+                    if (showcaseView != null){
+                        showcaseView.hide();
+                        showcaseView=null;
+                        SharedPrefs.setTimerFirstLaunch(false);
+
+                    }
                     appServerConn = new AppServerConn(PrankDialogActivity.this,ActionType.DEVICE_VALIDATE,frndID.getText().toString());
                     appServerConn.showWaitDialog("P a i r i n g ...");
                     appServerConn.execute();
@@ -110,6 +146,7 @@ public class PrankDialogActivity extends Activity{
                         @Override
                         public void onClick(View view) {
                             showcaseView.hide();
+                            showcaseView=null;
                             SharedPrefs.setRemotePrankFirstLaunch(false);
                         }
                     })

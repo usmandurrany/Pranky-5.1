@@ -51,6 +51,8 @@ public class MainActivity extends FragmentActivity {
     private int steps = 2;
     private boolean open = false;
     private boolean timerLaunch = false;
+    private boolean clockLaunch = false;
+    private boolean prankLaunch = false;
     private Handler smClose;
     private android.support.v4.app.Fragment currPage;
 
@@ -158,6 +160,9 @@ public class MainActivity extends FragmentActivity {
                     if (currPage!=null)
                         ((IFragment) currPage).animateIcon();
                 } else {
+                    if (timerLaunch)
+                        timerLaunch=false;
+                    clockLaunch=true;
                     SharedPrefs.setBgMusicPlaying(true);
 
                     Intent clockDialog = new Intent(MainActivity.this, ClockDialogActivity.class);
@@ -195,16 +200,31 @@ public class MainActivity extends FragmentActivity {
         prankbtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                if (timerLaunch || clockLaunch) {
+                    timerLaunch = false;
+                    clockLaunch = false;
+                }
+                prankLaunch =true;
+                if (SharedPrefs.getInvalidIDCount()<3) {
                 SharedPrefs.setBgMusicPlaying(true);
                 Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
                 startActivity(prankDialog);
-
+                }else{
+                    cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
+                    cToast.show();
+                }
                 return false;
             }
         });
         prankbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (timerLaunch || clockLaunch) {
+                    timerLaunch = false;
+                    clockLaunch = false;
+                }
+                prankLaunch =true;
+
                 if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(MainActivity.this, "Select  a  sound  first");
                     cToast.show();
@@ -215,18 +235,19 @@ public class MainActivity extends FragmentActivity {
                     cToast = new CustomToast(MainActivity.this, "A  non-custom  sound  should  be  selected");
                     cToast.show();
                 } else if (SharedPrefs.getFrndAppID() == null) {
-                    SharedPrefs.setBgMusicPlaying(true);
-                    Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
-                    startActivity(prankDialog);
-
+                    if (SharedPrefs.getInvalidIDCount()<3) {
+                        SharedPrefs.setBgMusicPlaying(true);
+                        Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
+                        startActivity(prankDialog);
+                    }else{
+                        cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
+                        cToast.show();
+                    }
                 } else {
                     AppServerConn appServerConn= new AppServerConn(MainActivity.this,ActionType.PRANK);
                     appServerConn.showWaitDialog("P r a n k i n g ...");
                     appServerConn.execute();
 
-                    /*SendMessage sendMessage = new SendMessage(MainActivity.this);
-                    sendMessage.initDialog();
-                    sendMessage.execute("prank");*/
 
                 }
 
@@ -471,17 +492,22 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         if (showcaseView != null && timerLaunch && SharedPrefs.isAppFirstLaunch()) {
+
             showcaseView.hide();
-        new CountDownTimer(5000,1000){
+            new CountDownTimer(5000,1000){
 
             @Override
             public void onTick(long l) {
-
+                /*int i =5;
+                WaitDialog waitForIt= new WaitDialog(MainActivity.this);
+                waitForIt.setWaitText(String.valueOf(i--));
+                waitForIt.show();
+                */
             }
 
             @Override
             public void onFinish() {
-            //showTutorial();
+                //showTutorial();
                 showcaseView.show();
                 showcaseView.setShowcase(new ViewTarget(clock), true);
                 showcaseView.setContentTitle("Set playback time");
@@ -490,13 +516,21 @@ public class MainActivity extends FragmentActivity {
 
             }
         }.start();
-            /*showcaseView.setShowcase(new ViewTarget(clock), true);
-            showcaseView.setContentTitle("Set playback time");
-            showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
-            steps++;*/
+
+        }else if (showcaseView != null && clockLaunch && !prankLaunch && SharedPrefs.isAppFirstLaunch()){
+            showcaseView.setShowcase(new ViewTarget(prankbtn), true);
+            showcaseView.setContentTitle("Prank a friend");
+            showcaseView.setContentText("Pick a sound then press 'Prank' to send it directly to your friend's phone");
+            showcaseView.setStyle(R.style.CustomShowcaseTheme3);
+            steps++;
+        } else if (showcaseView != null && prankLaunch && !clockLaunch && SharedPrefs.isAppFirstLaunch()){
+            showcaseView.hide();
+            showcaseView=null;
+            SharedPrefs.setAppFirstLaunch(false);
+
         }
 
-        if (SharedPrefs.isCusSoundAdded()) {
+            if (SharedPrefs.isCusSoundAdded()) {
             createFragments();
             mGridPager.setCurrentItem(pm.getCount() - 1);
 

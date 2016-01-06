@@ -93,7 +93,7 @@
     <com.fournodes.ud.pranky.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="S i g n  U p "
+        android:text="S I G N  U P  "
         android:gravity="center"
         android:textSize="30sp"
         android:padding="15dp"

@@ -81,6 +81,12 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                 case PRANK_SUCCESSFUL:
                     url = new URL(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?receiver_id=" + SharedPrefs.getFrndAppID() + "&sender_id=" + SharedPrefs.getMyAppID() + "&message="+type);
                     break;
+                case SIGN_UP:
+                    broadcastResult = new Intent("user-register-activity-broadcast");
+
+                    url = new URL(SharedPrefs.APP_SERVER_ADDR+"index.php?model="+URLEncoder.encode(Build.MODEL,"UTF-8")+"&gcm_id="+SharedPrefs.getMyGcmID()+"&app_id="+SharedPrefs.getMyAppID()+"&state="+SharedPrefs.getServerState()+"&name=" +URLEncoder.encode(SharedPrefs.getUserName(),"UTF-8")+"&country_code="+URLEncoder.encode(SharedPrefs.getUserCountryCode(),"UTF-8")+"&phone="+URLEncoder.encode(SharedPrefs.getUserPhoneNumber(),"UTF-8"));
+                    Log.e("SignUp Details", String.valueOf(url));
+                    break;
 
             }
         }catch (MalformedURLException e){e.printStackTrace();}
@@ -144,6 +150,16 @@ public class AppServerConn extends AsyncTask<String,String,String> {
 
                     }
                     break;
+                case SIGN_UP:
+                    if  (resp.getString("result").equals("1")){
+                        Log.e(TAG, resp.getString("app_id"));
+                        Log.e(TAG, resp.getString("time"));
+
+                    } else if (resp.getString("result").equals("2")){
+                        Log.e(TAG,"Server State Updated");
+                    }
+                    break;
+
                 case UPDATE_STATE:
                 case REGISTER_APP_ID:
                     Calendar exp_date = Calendar.getInstance(TimeZone.getDefault());
@@ -167,9 +183,6 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                     Log.e("Success", resp.getString("success"));
                     Log.e("Failure", resp.getString("failure"));
                     break;
-                case RESPONSE:
-                    Log.e(TAG,"Response generated.");
-                break;
 
 
             }

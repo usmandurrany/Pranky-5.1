@@ -82,7 +82,7 @@ public class TimerDialogActivity extends Activity{
                 if (SharedPrefs.isAppFirstLaunch()) {
                     if (sec.getCurrentItem() > 5)
                         sec.setCurrentItem(5);
-                    new CountDownTimer(700, 500) {
+                    new CountDownTimer(500, 500) {
                         @Override
                         public void onTick(long l) {
 
@@ -121,8 +121,12 @@ public class TimerDialogActivity extends Activity{
 
                 if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")) {
                     scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
-                    if (showcaseView != null)
+                    if (showcaseView != null){
                         showcaseView.hide();
+                        showcaseView=null;
+                        SharedPrefs.setTimerFirstLaunch(false);
+
+                    }
 
                     finish();
                 } else {

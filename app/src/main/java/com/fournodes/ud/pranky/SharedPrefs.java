@@ -46,6 +46,20 @@ public class SharedPrefs {
 
     public static final String CUSTOM_SOUND_ADDED = "cusSoundAdded"; // boolean
 
+    public static final String INVALID_ID_COUNT = "invalidIDCount";
+
+
+
+    public static final String USER_NAME = "userName";
+    public static final String USER_COUNTRY = "userCountry";
+    public static final String USER_COUNTRY_CODE = "userCountryCode";
+    public static final String USER_PHONE_NUMBER = "userPhoneNumber";
+
+
+
+
+    private static int invalidIDCount;
+
     private static int serverState;
     private static String myGcmID;
     private static String myAppID;
@@ -71,6 +85,15 @@ public class SharedPrefs {
     private static boolean bgMusicPlaying;
 
     private static boolean cusSoundAdded;
+
+
+    private static String userName;
+    private static String userCountry;
+    private static String userCountryCode;
+    private static String userPhoneNumber;
+
+
+
 
 
 
@@ -113,6 +136,13 @@ public class SharedPrefs {
         bgMusicPlaying=prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, true);
 
         cusSoundAdded=prefs.getBoolean(SharedPrefs.CUSTOM_SOUND_ADDED, false);
+
+        userName=prefs.getString(SharedPrefs.USER_NAME, null);
+        userCountry=prefs.getString(SharedPrefs.USER_COUNTRY, null);
+        userCountryCode=prefs.getString(SharedPrefs.USER_COUNTRY_CODE, null);
+        userPhoneNumber=prefs.getString(SharedPrefs.USER_PHONE_NUMBER, null);
+
+        invalidIDCount=prefs.getInt(SharedPrefs.INVALID_ID_COUNT,0);
     }
 
     public static boolean isAppFirstLaunch() {
@@ -195,6 +225,26 @@ public class SharedPrefs {
 
     public static boolean isLastPageFirstLaunch() {
         return lastPageFirstLaunch;
+    }
+
+    public static String getUserName() {
+        return userName;
+    }
+
+    public static String getUserCountry() {
+        return userCountry;
+    }
+
+    public static String getUserCountryCode() {
+        return userCountryCode;
+    }
+
+    public static String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public static int getInvalidIDCount() {
+        return invalidIDCount;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -314,5 +364,30 @@ public class SharedPrefs {
     public static void setLastPageFirstLaunch(boolean lastPageFirstLaunch) {
         prefs.edit().putBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH,lastPageFirstLaunch).apply();
         SharedPrefs.lastPageFirstLaunch = lastPageFirstLaunch;
+    }
+
+    public static void setUserName(String userName) {
+        prefs.edit().putString(SharedPrefs.USER_NAME,userName).apply();
+        SharedPrefs.userName = userName;
+    }
+
+    public static void setUserCountry(String userCountry) {
+        prefs.edit().putString(SharedPrefs.USER_COUNTRY,userCountry).apply();
+        SharedPrefs.userCountry = userCountry;
+    }
+
+    public static void setUserCountryCode(String userCountryCode) {
+        prefs.edit().putString(SharedPrefs.USER_COUNTRY_CODE,userCountryCode).apply();
+        SharedPrefs.userCountryCode = userCountryCode;
+    }
+
+    public static void setUserPhoneNumber(String userPhoneNumber) {
+        prefs.edit().putString(SharedPrefs.USER_PHONE_NUMBER,userPhoneNumber).apply();
+        SharedPrefs.userPhoneNumber = userPhoneNumber;
+    }
+
+    public static void setInvalidIDCount(int invalidIDCount) {
+        prefs.edit().putInt(SharedPrefs.INVALID_ID_COUNT,invalidIDCount).apply();
+        SharedPrefs.invalidIDCount = invalidIDCount;
     }
 }
