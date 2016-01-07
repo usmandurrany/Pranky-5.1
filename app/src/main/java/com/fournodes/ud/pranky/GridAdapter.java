@@ -3,6 +3,7 @@ package com.fournodes.ud.pranky;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.StateListDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,30 +74,35 @@ public class GridAdapter extends BaseAdapter {
         View view = convertView;
         ViewHolder viewHolder;
 
-        if (view == null) {
+         if (view == null) {
 
             view = mInflater.inflate(R.layout.fragment_gridview_item, parent, false);
             viewHolder = new ViewHolder();
             //viewHolder.imageView = (ImageView) view.findViewById(R.id.grid_item_bg);
             viewHolder.itemImage = (ImageView) view.findViewById(R.id.grid_item_image);
             view.setTag(viewHolder);
+            //Log.e("Grid Adapter View","Null");
 
         } else {
-            viewHolder = (ViewHolder) view.getTag();
+         //   Log.e("Grid Adapter View","Not Null");
+
+           viewHolder = (ViewHolder) view.getTag();
+
         }
 
         GridItem gridItem = items[pos];
         setCatImage(pos, viewHolder, gridItem.itemResID);
+
 
         return view;
     }
 
     private void setCatImage(int pos, ViewHolder viewHolder, Integer img) {
         if (img == R.mipmap.addmore) {
-            viewHolder.itemImage.setBackgroundResource(R.drawable.addstates);
-            viewHolder.itemImage.setTag(R.drawable.addstates);
+        viewHolder.itemImage.setBackgroundResource(R.drawable.addstates);
+        //viewHolder.itemImage.setTag(R.drawable.addstates);
         }
-        else {
+       else {
 
             try {
                 String name = context.getResources().getResourceEntryName(img) + "_hover";

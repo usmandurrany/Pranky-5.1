@@ -47,6 +47,11 @@ public class MainActivity extends FragmentActivity {
     private me.relex.circleindicator.CircleIndicator mIndicator;
 
     private int itemsOnPage = 9;
+    private int itemCount=0;
+    private int lastPage=0;
+    private int addSoundLoc=0;
+
+
     private int pageNo = 0;
     private int steps = 2;
     private boolean open = false;
@@ -143,7 +148,7 @@ public class MainActivity extends FragmentActivity {
 
                 if (mGridPager.getCurrentItem() == pm.getCount() - 1 && state == 0) { //State 0 = page has settled
                     android.support.v4.app.Fragment frag = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, pm.getCount() - 1);
-                    ((IFragment) frag).pageLast();
+                    ((IFragment) frag).pageLast(addSoundLoc);
                 }
             }
         });
@@ -308,7 +313,9 @@ public class MainActivity extends FragmentActivity {
                 SharedPrefs.setAddmoreFirstLaunch(true);
                 SharedPrefs.setSettingsFirstLaunch(true);
                 SharedPrefs.setRemotePrankFirstLaunch(true);
+                SharedPrefs.setLastPageFirstLaunch(true);
                 steps = 2;
+                mGridPager.setCurrentItem(0,true);
                 showTutorial();
             }
         });
@@ -338,6 +345,19 @@ public class MainActivity extends FragmentActivity {
 
 
         Cursor c = db.rawQuery("SELECT * FROM usr_sounds", null);
+        itemCount = c.getCount();
+
+        addSoundLoc = addSoundLocation(itemCount); //Items count start from 0, func calculates form 1
+        lastPage= (int) Math.ceil(totalPages(itemCount)-1); //ViewPager page count starts from 0,  func calculates form 1
+        if (addSoundLoc==0)
+            lastPage++; //Add sound button will be first icon on new page
+
+        Log.e("Minimum Pages",String.valueOf(totalPages(itemCount)));
+        Log.e("Actual Pages/Last Page",String.valueOf(lastPage+1));
+        Log.e("Total Items",String.valueOf(itemCount));
+        Log.e("Add Sound Loc",String.valueOf(addSoundLoc));
+
+
 
         if (c.moveToFirst()) {
 
@@ -357,7 +377,7 @@ public class MainActivity extends FragmentActivity {
 
                     }
                 }
-                if (c.isAfterLast() && i < itemsOnPage) {
+                if (c.isAfterLast() && i <= itemsOnPage) {
 
                     GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
                     imLst.add(lstItem);
@@ -378,6 +398,8 @@ public class MainActivity extends FragmentActivity {
 
         pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments);
         mGridPager.setAdapter(pm);
+        mGridPager.setOffscreenPageLimit(2);
+
         if (SharedPrefs.prefs == null)
             new SharedPrefs(this);
         SharedPrefs.setCusSoundAdded(false);
@@ -507,13 +529,13 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onFinish() {
-                //showTutorial();
-                showcaseView.show();
-                showcaseView.setShowcase(new ViewTarget(clock), true);
-                showcaseView.setContentTitle("Set playback time");
-                showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
-                steps++;
-
+                if (showcaseView!=null) {
+                    showcaseView.show();
+                    showcaseView.setShowcase(new ViewTarget(clock), true);
+                    showcaseView.setContentTitle("Set playback time");
+                    showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
+                    steps++;
+                }
             }
         }.start();
 
@@ -577,5 +599,15 @@ public class MainActivity extends FragmentActivity {
         Cleaner.unbindDrawables(rootView);
         rootView = null;
     }
+
+    public double totalPages(int itemCount){
+        return itemCount/itemsOnPage;
+    }
+    public int addSoundLocation(int ItemCount){
+        double minPages = totalPages(ItemCount);
+        int minItems = (int) minPages * itemsOnPage;
+        return (ItemCount-minItems);
+    }
 }
+
 

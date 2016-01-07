@@ -20,7 +20,7 @@ public class AppDB extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "pranky.db";
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 27;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
@@ -76,6 +76,35 @@ public class AppDB extends SQLiteOpenHelper {
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.flash_blink + ",'flash_blink','raw.flash_blink'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.vibrate_hw + ",'vibrate_hw','raw.vibrate_hw'," + 10 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.ringtone + ",'ringtone','raw.ringtone'," + 1 + "," + 1 + ");");
+/*
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) SELECT " + R.mipmap.axe + " AS pic_loc, 'axe' AS pic_alias, 'raw.axe' AS sound_loc, " + 2 + " AS  repeat_count, " + 1 + " AS sound_vol UNION ALL SELECT " + R.mipmap.bottle + ",'bottle','raw.bottle'," + 2 + "," + 1 + " UNION ALL SELECT " + R.mipmap.burp + ",'burp','raw.burp'," + 3 + "," + 1 + " UNION ALL SELECT " + R.mipmap.coin + ",'coin','raw.coin'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.cow + ",'cow','raw.cow'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.dove + ",'dove','raw.dove'," + 2 + "," + 1 + " UNION ALL SELECT " + R.mipmap.eating + ",'eating','raw.eating'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.kid_laugh + ",'kid_laugh','raw.kid_laugh'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.machine_gun + ",'machine_gun','raw.machine_gun'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.pan + ",'pan','raw.pan'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.pen + ",'pen','raw.pen'," + 2 + "," + 1 + " UNION ALL SELECT " + R.mipmap.power + ",'power','raw.power'," + 2 + "," + 1 + " UNION ALL SELECT " + R.mipmap.scream + ",'scream','raw.scream'," + 3 + "," + 1 + " UNION ALL SELECT " + R.mipmap.shower + ",'shower','raw.shower'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.toilet + ",'toilet','raw.toilet'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.turkey + ",'turkey','raw.turkey'," + 2 + "," + 1 + " UNION ALL SELECT " + R.mipmap.tv + ",'tv','raw.tv'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.vomit + ",'vomit','raw.vomit'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.zip + ",'zip','raw.zip'," + 1 + "," + 1 + " UNION ALL SELECT " + R.mipmap.zombie + ",'zombie','raw.zombie'," + 1 + "," + 1 );*/
+
+
+
+
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.axe + ",'axe','raw.axe'," + 2 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.bottle + ",'bottle','raw.bottle'," + 2 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.burp + ",'burp','raw.burp'," + 3 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.coin + ",'coin','raw.coin'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.cow + ",'cow','raw.cow'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.dove + ",'dove','raw.dove'," + 2 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.eating + ",'eating','raw.eating'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.kid_laugh + ",'kid_laugh','raw.kid_laugh'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.machine_gun + ",'machine_gun','raw.machine_gun'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.pan + ",'pan','raw.pan'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.pen + ",'pen','raw.pen'," + 2 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.power + ",'power','raw.power'," + 2 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.scream + ",'scream','raw.scream'," + 3 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.shower + ",'shower','raw.shower'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.toilet + ",'toilet','raw.toilet'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.turkey + ",'turkey','raw.turkey'," + 2 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.tv + ",'tv','raw.tv'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.vomit + ",'vomit','raw.vomit'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.zip + ",'zip','raw.zip'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.zombie + ",'zombie','raw.zombie'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.keyboard + ",'keyboard','raw.keyboard'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.baby_cry + ",'baby_cry','raw.baby_cry'," + 1 + "," + 1 + ");");
+        database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.man_laugh + ",'man_laugh','raw.man_laugh'," + 1 + "," + 1 + ");");
     }
 
     @Override

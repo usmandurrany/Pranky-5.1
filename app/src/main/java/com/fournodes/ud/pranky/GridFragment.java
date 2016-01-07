@@ -408,17 +408,10 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     }
 
     @Override
-    public void pageLast() {
+    public void pageLast(int addSoundLoc) {
         if (SharedPrefs.isLastPageFirstLaunch()) {
-            final int size = mGridView.getChildCount();
-            for (int i = 0; i < size; i++) {
-                ImageView gridChild = (ImageView) mGridView.getChildAt(i);
-                Log.e("Grid Child", gridChild.getTag().toString());
-                Log.e("Grid Child TAG", String.valueOf(R.drawable.addstates));
-
-                if (gridChild.getTag().toString().equals(String.valueOf(R.drawable.addstates))) {
-                    Log.e("Add More", "Found");
-                    ViewTarget target = new ViewTarget(gridChild);
+                ImageView gridChild = (ImageView) mGridView.getChildAt(addSoundLoc);
+                ViewTarget target = new ViewTarget(gridChild);
                     showcaseView = new ShowcaseView.Builder(activity)
                             .withMaterialShowcase()
                             .setTarget(target)
@@ -436,8 +429,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
                 }
             }
-        }
-    }
+
 
     @Override
     public void animateIcon() {

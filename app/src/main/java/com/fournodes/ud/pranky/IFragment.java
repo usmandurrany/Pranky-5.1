@@ -5,6 +5,6 @@ package com.fournodes.ud.pranky;
  */
 public interface IFragment {
     void pageScrolled();
-    void pageLast();
+    void pageLast(int addSoundLoc);
     void animateIcon();
 }
