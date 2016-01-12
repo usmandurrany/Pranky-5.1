@@ -5,6 +5,8 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.fournodes.ud.pranky.utils.FontManager;
+
 /**
  * Created by Usman on 11/21/2015.
  */

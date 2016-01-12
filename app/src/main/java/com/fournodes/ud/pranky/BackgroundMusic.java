@@ -4,7 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 public class BackgroundMusic {
-    static MediaPlayer mp;
+    public static MediaPlayer mp;
     static Context context;
     private static volatile BackgroundMusic instance = null;
     // Loop delay for BG Music

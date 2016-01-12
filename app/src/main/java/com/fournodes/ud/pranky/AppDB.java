@@ -1,9 +1,20 @@
 package com.fournodes.ud.pranky;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Usman on 11/9/2015.
@@ -19,11 +30,19 @@ public class AppDB extends SQLiteOpenHelper {
     public static final String COLUMN_SOUND_VOL = "sound_vol";
 
 
+    public static final String TABLE_CONTACTS = "contacts";
+    public static final String COLUMN_NAME = "contact_name";
+    public static final String COLUMN_NUMBER = "contact_number";
+    public static final String COLUMN_VERSION= "contact_version";
+    public static final String COLUMN_REGISTERED = "contact_registered";
+    public static final String COLUMN_NUM_IDS = "server_id";
+
+
     private static final String DATABASE_NAME = "pranky.db";
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 31;
 
     // Database creation sql statement
-    private static final String DATABASE_CREATE = "create table "
+    private static final String CREATE_PRANK_TABLE = "create table "
             + TABLE_USER_SOUNDS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_PIC_LOC
             + " integer not null, " + COLUMN_PIC_ALIAS
@@ -32,13 +51,23 @@ public class AppDB extends SQLiteOpenHelper {
             + " integer not null, " + COLUMN_SOUND_VOL
             + " integer not null);";
 
+    private static final String CREATE_CONTACTS_TABLE = "create table "
+            + TABLE_CONTACTS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_NAME
+            + " text not null, " + COLUMN_NUMBER
+            + " text not null, " + COLUMN_VERSION
+            + " integer default 0, " + COLUMN_REGISTERED
+            + " text not null, "  + COLUMN_NUM_IDS
+            + " integer default null);";
+
     public AppDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(DATABASE_CREATE);
+        database.execSQL(CREATE_PRANK_TABLE);
+        database.execSQL(CREATE_CONTACTS_TABLE);
 
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.annoyed + ",'annoyed','raw.annoyed'," + 1 + "," + 1 + ");");
         database.execSQL("INSERT INTO usr_sounds (pic_loc,pic_alias,sound_loc,repeat_count,sound_vol) VALUES (" + R.mipmap.vibrate + ",'vibrate','raw.vibrate'," + 3 + "," + 1 + ");");
@@ -115,4 +144,141 @@ public class AppDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_SOUNDS);
         onCreate(db);
     }
+
+    /***********************************************************************************************
+     * Updates the existing contact with the number sent from server if registered
+     ***********************************************************************************************/
+
+    public void storeRegisteredContact(String id,String[] numIDs, String[] number){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_REGISTERED, Arrays.toString(number));
+        values.put(COLUMN_NUM_IDS, Arrays.toString(numIDs));
+
+        db.update(TABLE_CONTACTS,values,COLUMN_ID+"=?",new String[] {id});
+        db.close();
+    }
+
+    /***********************************************************************************************
+     * Stores all the contacts received in form of a HashMap in the database
+     ***********************************************************************************************/
+
+    public JSONArray storeContacts(Map<String, String[]> contacts) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        List<String[]> allNumbers = new ArrayList<>();
+        for ( Map.Entry<String, String[]> entry : contacts.entrySet()) {
+            List<String> numbersOnly = new ArrayList<>();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NAME, entry.getKey()); // Contact Name
+            String[] value = entry.getValue();
+            for(int i=0; i<value.length; i++){
+                if (i==0){
+                    values.put(COLUMN_ID,value[0]);
+                }
+                else if(i==1) {
+                    values.put(COLUMN_VERSION, value[1]); // Contact Name
+                }
+                else {
+                    numbersOnly.add(value[i]);
+                }
+            }
+
+            // do something with key and/or tab
+            String[] numbers = new String[numbersOnly.size()];
+            numbersOnly.toArray(numbers);
+            allNumbers.add(numbers);
+            values.put(COLUMN_NUMBER, Arrays.toString(numbers)); // Contact Name
+            //Log.e("123noo: ", Arrays.toString(numbers));
+            values.put(COLUMN_REGISTERED, 0); // Contact Name
+            //values.put(COLUMN_NUM_IDS, ); // Contact Name
+                db.insert(TABLE_CONTACTS, null, values);
+        }
+        db.close();
+        SharedPrefs.setContactsStored(true);
+        return new JSONArray(allNumbers);
+
+    }
+
+    /***********************************************************************************************
+     *  Returns an array containing all records of the table in an array with each record/contact
+     *  being a JSONObject, containing its row ID and all its numbers
+     ***********************************************************************************************/
+
+    public JSONArray contactDetails(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_CONTACTS,new String[] {COLUMN_ID, COLUMN_NUMBER},null,null,null,null,null);
+        List<JSONObject> allContacts= new ArrayList<>();
+        if (cursor.getCount() >0){
+            while (cursor.moveToNext()){
+                Map<String,String> contact = new HashMap<>();
+                contact.put("id",cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+                String[] numbers = cursor.getString(cursor.getColumnIndex(COLUMN_NUMBER)).replace("[","").replace("]","").split(",");
+                for(int i=0;i<numbers.length;i++){
+                    contact.put("number"+(i+1),numbers[i]);
+                }
+                allContacts.add(new JSONObject(contact));
+            }
+        }
+        cursor.close();
+        db.close();
+        return new JSONArray(allContacts);
+    }
+
+    /***********************************************************************************************
+     *  Checks for the updated contact by comparing the stored version with the received version
+     *  using the recieved id to find the contact
+     ***********************************************************************************************/
+
+    public boolean isUpdated(String id, String ver){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Cursor cursor = db.query(TABLE_CONTACTS,new String[] {COLUMN_NUMBER,COLUMN_VERSION},COLUMN_ID+"=?",new String[] {id},null,null,null);
+        if (cursor.getCount() > 0 ) {
+            while (cursor.moveToNext()) {
+                if (!cursor.getString(cursor.getColumnIndex(COLUMN_VERSION)).equals(ver)) {
+                    values.put(COLUMN_VERSION,ver);
+                    db.update(TABLE_CONTACTS,values,COLUMN_ID+"=?",new String[] {id});
+                    Log.e("isUpdated",id);
+                    cursor.close();
+                    db.close();
+                    return true;
+                } else {
+                    cursor.close();
+                    db.close();
+                    return false;
+                }
+            }
+        }
+        else{
+            //Possibly a new contact
+            cursor.close();
+            db.close();
+
+        }
+        cursor.close();
+        db.close();
+        return false;
+    }
+
+    /***********************************************************************************************
+     * Fetches all the contacts form the DB with their IDs, Number IDs and Registered Numbers
+     ***********************************************************************************************/
+
+    public ArrayList<ContactDetails> getAllContacts(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_CONTACTS,null,COLUMN_NUM_IDS+"!=?",new String[] {""},null,null,null);
+        ArrayList<ContactDetails> allContactDetails=new ArrayList<>();
+        while (cursor.moveToNext()) {
+            ContactDetails contactDetail = new ContactDetails();
+            contactDetail.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+            contactDetail.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            contactDetail.setRegNumbers(cursor.getString(cursor.getColumnIndex(COLUMN_REGISTERED)));
+            contactDetail.setNumIDs(cursor.getString(cursor.getColumnIndex(COLUMN_NUM_IDS)));
+            allContactDetails.add(contactDetail);
+        }
+        return allContactDetails;
+    }
+
+
 }

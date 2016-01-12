@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.fournodes.ud.pranky.UserRegisterationActivity"
+    tools:context=".activities.UserRegisterationActivity"
     android:background="@drawable/app_background">
 
 
@@ -82,12 +82,23 @@
         </LinearLayout>
 
     </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="If you don&apos;t want to sign up at the moment, you can always skip it."
+        android:id="@+id/infoText"
+        android:textSize="14sp"
+        android:layout_below="@+id/regForm"
+        android:layout_alignLeft="@+id/regForm"
+        android:layout_alignStart="@+id/regForm"
+        android:gravity="center" />
     <ImageView
         android:id="@+id/signUp"
-        android:layout_margin="15dp"
-        android:layout_below="@id/regForm"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/infoText"
         android:layout_width="140dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:src="@drawable/btn_done_states"
         android:layout_centerInParent="true"/>
     <com.fournodes.ud.pranky.CustomTextView
@@ -100,5 +111,25 @@
         android:layout_marginBottom="15dp"
         android:textColor="#bf071a"
         android:layout_above="@id/regForm"/>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="SKIP"
+        android:id="@+id/skip"
+        android:layout_toRightOf="@+id/signUp"
+        android:layout_below="@id/infoText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="0dp"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:gravity="end"
+        android:textSize="15dp"/>
 
 </RelativeLayout>

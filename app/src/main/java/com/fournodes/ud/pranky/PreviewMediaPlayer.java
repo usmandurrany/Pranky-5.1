@@ -6,7 +6,7 @@ import android.media.MediaPlayer;
  * Created by Usman on 11/14/2015.
  */
 public class PreviewMediaPlayer {
-    MediaPlayer mp;
+    public static  MediaPlayer mp;
     private static volatile PreviewMediaPlayer instance = null;
 
     private PreviewMediaPlayer() {

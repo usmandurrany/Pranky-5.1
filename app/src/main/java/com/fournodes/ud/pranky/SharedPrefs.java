@@ -11,13 +11,16 @@ import java.util.TimeZone;
  */
 public class SharedPrefs {
 
+    public static String APP_SERVER_ID="appServerID";// Name of the font used throughout the app
+
+
     public static String DEFAULT_FONT="grinched-regular";// Name of the font used throughout the app
 
     public static SharedPreferences prefs;
     private static Calendar defaultExpDate;
 
-    //public static final String APP_SERVER_ADDR = "http://192.168.1.2/prankynew/";
-    public static final String APP_SERVER_ADDR = "http://pranky.four-nodes.com/appserver/";
+    public static final String APP_SERVER_ADDR = "http://192.168.2.107/pranky/";
+    //public static final String APP_SERVER_ADDR = "http://pranky.four-nodes.com/appserver/";
 
     public static final String SHARED_PREF_FILE = "PrankySharedPref"; // Shared Pref File Name
     public static final String SENT_GCM_ID_TO_SERVER = "sentGcmIDToServer"; // boolean
@@ -56,11 +59,20 @@ public class SharedPrefs {
     public static final String USER_PHONE_NUMBER = "userPhoneNumber";
 
 
+    public static final String SIGN_UP_SKIPPED = "signUpSkipped";
+    public static final String SIGN_UP_COMPLETE = "signUpComplete";
+
+    public static final String CONTACTS_STORED = "contactsStored";
+
+
 
 
     private static int invalidIDCount;
 
     private static int serverState;
+
+    private static String appServerID;
+
     private static String myGcmID;
     private static String myAppID;
     private static String expDate;
@@ -93,6 +105,12 @@ public class SharedPrefs {
     private static String userPhoneNumber;
 
 
+    private static boolean signUpSkipped;
+    private static boolean signUpComplete;
+
+    private static boolean contactsStored;
+
+
 
 
 
@@ -110,6 +128,8 @@ public class SharedPrefs {
     public void initAllPrefs() {
         defaultExpDate = Calendar.getInstance(TimeZone.getDefault());
         prankBtnEnabled=prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, true); // Unused for now
+
+        appServerID=prefs.getString(SharedPrefs.APP_SERVER_ID,null);
 
 
         networkAvailable=prefs.getBoolean(SharedPrefs.NETWORK_AVAILABLE, true);
@@ -137,12 +157,17 @@ public class SharedPrefs {
 
         cusSoundAdded=prefs.getBoolean(SharedPrefs.CUSTOM_SOUND_ADDED, false);
 
-        userName=prefs.getString(SharedPrefs.USER_NAME, null);
-        userCountry=prefs.getString(SharedPrefs.USER_COUNTRY, null);
-        userCountryCode=prefs.getString(SharedPrefs.USER_COUNTRY_CODE, null);
-        userPhoneNumber=prefs.getString(SharedPrefs.USER_PHONE_NUMBER, null);
+        userName=prefs.getString(SharedPrefs.USER_NAME, "null");
+        userCountry=prefs.getString(SharedPrefs.USER_COUNTRY, "null");
+        userCountryCode=prefs.getString(SharedPrefs.USER_COUNTRY_CODE, "null");
+        userPhoneNumber=prefs.getString(SharedPrefs.USER_PHONE_NUMBER, "null");
 
         invalidIDCount=prefs.getInt(SharedPrefs.INVALID_ID_COUNT,0);
+
+        signUpSkipped=prefs.getBoolean(SharedPrefs.SIGN_UP_SKIPPED, false);
+        signUpComplete=prefs.getBoolean(SharedPrefs.SIGN_UP_COMPLETE, false);
+
+        contactsStored=prefs.getBoolean(SharedPrefs.CONTACTS_STORED, false);
     }
 
     public static boolean isAppFirstLaunch() {
@@ -245,6 +270,23 @@ public class SharedPrefs {
 
     public static int getInvalidIDCount() {
         return invalidIDCount;
+    }
+
+
+    public static boolean isSignUpSkipped() {
+        return signUpSkipped;
+    }
+
+    public static boolean isSignUpComplete() {
+        return signUpComplete;
+    }
+
+    public static boolean isContactsStored() {
+        return contactsStored;
+    }
+
+    public static String getAppServerID() {
+        return appServerID;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -389,5 +431,25 @@ public class SharedPrefs {
     public static void setInvalidIDCount(int invalidIDCount) {
         prefs.edit().putInt(SharedPrefs.INVALID_ID_COUNT,invalidIDCount).apply();
         SharedPrefs.invalidIDCount = invalidIDCount;
+    }
+
+    public static void setSignUpSkipped(boolean signUpSkipped) {
+        prefs.edit().putBoolean(SharedPrefs.SIGN_UP_SKIPPED,signUpSkipped).apply();
+        SharedPrefs.signUpSkipped = signUpSkipped;
+    }
+
+    public static void setSignUpComplete(boolean signUpComplete) {
+        prefs.edit().putBoolean(SharedPrefs.SIGN_UP_COMPLETE,signUpComplete).apply();
+        SharedPrefs.signUpComplete = signUpComplete;
+    }
+
+    public static void setContactsStored(boolean contactsStored) {
+        prefs.edit().putBoolean(SharedPrefs.CONTACTS_STORED,contactsStored).apply();
+        SharedPrefs.contactsStored = contactsStored;
+    }
+
+    public static void setAppServerID(String appServerID) {
+        prefs.edit().putString(SharedPrefs.APP_SERVER_ID,appServerID).apply();
+        SharedPrefs.appServerID = appServerID;
     }
 }
