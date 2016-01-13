@@ -45,6 +45,6 @@ public class ContactDetails {
     }
 
     public String[] toArray(String s){
-        return s.replace("[","").replace("]","").split(",");
+        return s.replace(" ","").replace("[","").replace("]","").split(",");
     }
 }

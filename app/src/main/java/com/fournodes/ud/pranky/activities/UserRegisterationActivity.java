@@ -5,9 +5,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fournodes.ud.pranky.AppDB;
+import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.GetContacts;
 import com.fournodes.ud.pranky.R;
@@ -26,7 +31,7 @@ import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 import com.fournodes.ud.pranky.services.MonitorContacts;
 
-public class UserRegisterationActivity extends Activity {
+public class UserRegisterationActivity extends Activity implements View.OnKeyListener {
 
     private View decorView;
     private EditText name;
@@ -71,11 +76,19 @@ public class UserRegisterationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registeration);
         onWindowFocusChanged(true);
-
+        int color = Color.parseColor("#ffffff");
         name = (EditText) findViewById(R.id.usrName);
+        name.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        name.setOnKeyListener(this);
         country = (AutoCompleteTextView) findViewById(R.id.usrCountry);
+        country.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        country.setOnKeyListener(this);
         countryCode = (EditText) findViewById(R.id.countryCode);
+        countryCode.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        countryCode.setOnKeyListener(this);
         number = (EditText) findViewById(R.id.usrNumber);
+        number.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        number.setOnKeyListener(this);
         btnDone = (ImageView) findViewById(R.id.signUp);
         btnSkip = (TextView) findViewById(R.id.skip);
         cArray = getResources().getStringArray(R.array.countries);
@@ -114,31 +127,33 @@ public class UserRegisterationActivity extends Activity {
         });
 
 
-
+        btnDone.setEnabled(false);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPrefs.setSignUpComplete(true);
-                SharedPrefs.setUserName(name.getText().toString());
-                SharedPrefs.setUserCountry(country.getText().toString());
-                SharedPrefs.setUserCountryCode(countryCode.getText().toString().replace("+",""));
-                SharedPrefs.setUserPhoneNumber(number.getText().toString());
 
-                /******************************** Contacts sync testing code **********************************/
-                prankyDB = new AppDB(UserRegisterationActivity.this);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GetContacts getContacts = new GetContacts(UserRegisterationActivity.this);
-                        ContactsAsync sync = new ContactsAsync(UserRegisterationActivity.this);
-                        prankyDB.storeContacts(getContacts.ReadPhoneContacts());
-                        sync.execute(prankyDB.contactDetails());
-                    }
-                }).start();
 
-                //getContacts.ReadPhoneContacts();
-                Intent monitorContacts = new Intent(UserRegisterationActivity.this, MonitorContacts.class);
-                startService(monitorContacts);
+                    SharedPrefs.setSignUpComplete(true);
+                    SharedPrefs.setUserName(name.getText().toString());
+                    SharedPrefs.setUserCountry(country.getText().toString());
+                    SharedPrefs.setUserCountryCode(countryCode.getText().toString().replace("+", ""));
+                    SharedPrefs.setUserPhoneNumber(number.getText().toString());
+
+                    /******************************** Contacts sync testing code **********************************/
+                    prankyDB = new AppDB(UserRegisterationActivity.this);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            GetContacts getContacts = new GetContacts(UserRegisterationActivity.this);
+                            ContactsAsync sync = new ContactsAsync(UserRegisterationActivity.this);
+                            prankyDB.storeContacts(getContacts.ReadPhoneContacts());
+                            sync.execute(prankyDB.contactDetails());
+                        }
+                    }).start();
+
+                    //getContacts.ReadPhoneContacts();
+                    Intent monitorContacts = new Intent(UserRegisterationActivity.this, MonitorContacts.class);
+                    startService(monitorContacts);
 
 /*
             if (SharedPrefs.isSentGcmIDToServer()) {
@@ -150,16 +165,18 @@ public class UserRegisterationActivity extends Activity {
                 getGCMID.run();
             }
 */
-                if (SharedPrefs.isSentGcmIDToServer()){
-                    appServerConn = new AppServerConn(ActionType.SIGN_UP);
-                    appServerConn.execute();
-                }
+                    if (SharedPrefs.isSentGcmIDToServer()) {
+                        appServerConn = new AppServerConn(ActionType.SIGN_UP);
+                        appServerConn.execute();
+                    }
 
-                startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
-                finish();
+                    startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
+                    finish();
+
 
             }
         });
+
     }
 
     @Override
@@ -179,6 +196,13 @@ public class UserRegisterationActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.play();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Resume", e.toString());
+        }
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("user-register-activity-broadcast"));
     }
@@ -187,11 +211,28 @@ public class UserRegisterationActivity extends Activity {
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-
+        try {
+            if (BackgroundMusic.mp != null) {
+                BackgroundMusic.pause();
+            }
+        } catch (Exception e) {
+            Log.e("BG Music Resume", e.toString());
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+    }
+
+    @Override
+    public boolean onKey(View view, int i, KeyEvent keyEvent) {
+        if (name.getText().length() > 0 && country.getText().length() > 0 && countryCode.getText().length() > 0 && number.getText().length() == 10) {
+            btnDone.setEnabled(true);
+        }else{
+            btnDone.setEnabled(false);
+        }
+        return false;
     }
 }

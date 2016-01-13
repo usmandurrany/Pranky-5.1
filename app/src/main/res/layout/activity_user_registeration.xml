@@ -9,15 +9,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activities.UserRegisterationActivity"
     android:background="@drawable/app_background">
-
+    <com.fournodes.ud.pranky.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="S I G N  U P  "
+        android:gravity="center"
+        android:textSize="30sp"
+        android:padding="15dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="#bf071a"
+        android:id="@+id/title"
+        />
 
     <LinearLayout
+        android:layout_below="@+id/title"
         android:id="@+id/regForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_centerVertical="false"
         android:gravity="center">
         <LinearLayout
             android:layout_margin="10dp"
@@ -69,6 +80,7 @@
     android:layout_height="wrap_content"
     android:inputType="phone"
     android:id="@+id/countryCode"
+    android:hint="+"
     />
 
 
@@ -77,7 +89,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:id="@+id/usrNumber" />
+                android:id="@+id/usrNumber"
+                android:maxLength="10"/>
 
         </LinearLayout>
 
@@ -101,16 +114,7 @@
         android:layout_height="55dp"
         android:src="@drawable/btn_done_states"
         android:layout_centerInParent="true"/>
-    <com.fournodes.ud.pranky.CustomTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="S I G N  U P  "
-        android:gravity="center"
-        android:textSize="30sp"
-        android:padding="15dp"
-        android:layout_marginBottom="15dp"
-        android:textColor="#bf071a"
-        android:layout_above="@id/regForm"/>
+
 
 
 

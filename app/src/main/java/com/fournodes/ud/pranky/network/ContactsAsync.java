@@ -2,7 +2,6 @@ package com.fournodes.ud.pranky.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.fournodes.ud.pranky.AppDB;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -97,7 +96,7 @@ public class ContactsAsync extends AsyncTask<JSONArray,String,String> {
         }
 
 
-        Log.e("Server Resp",result);
+        //Log.e("Server Resp",result);
         return result;
     }
 
@@ -130,6 +129,7 @@ public class ContactsAsync extends AsyncTask<JSONArray,String,String> {
             }
 
         }catch (JSONException e){e.printStackTrace();}
+        catch (NullPointerException e){e.printStackTrace();}
         super.onPostExecute(result);
     }
 

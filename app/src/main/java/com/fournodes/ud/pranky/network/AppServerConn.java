@@ -42,9 +42,19 @@ public class AppServerConn extends AsyncTask<String,String,String> {
     private JSONObject resp;
     private WaitDialog wDiag;
     private String selectedItem;
+    private String numID;
+    private String number;
 
     public AppServerConn(ActionType type){
         this.type=type;
+        initialize();
+    }
+
+    public AppServerConn(Context context, ActionType type, String numID, String number){
+        this.context = context;
+        this.type=type;
+        this.numID =numID;
+        this.number=number;
         initialize();
     }
 
@@ -67,17 +77,24 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                 case DEVICE_VALIDATE:
                     broadcastResult = new Intent("prank-dialog-activity-broadcast");
                     url = new URL(SharedPrefs.APP_SERVER_ADDR + "index.php?app_id=" + URLEncoder.encode(validate_id,"UTF-8"));
+                    Log.e("VALIDATE DEVICE", String.valueOf(url));
+
                     break;
                 case UPDATE_STATE:
                     url = new URL(SharedPrefs.APP_SERVER_ADDR+"index.php?id="+SharedPrefs.getAppServerID()+"&state="+SharedPrefs.getServerState());
+                    Log.e("UPDATE STATE", String.valueOf(url));
+
                     break;
 
                 case RENEW_APP_ID:
                     url = new URL(SharedPrefs.APP_SERVER_ADDR+"index.php?id="+SharedPrefs.getAppServerID()+"&state="+SharedPrefs.getServerState());
+                    Log.e("RENEW APP ID", String.valueOf(url));
+
                     break;
 
                 case SEND_GCM_ID: //Returns app id
                     url = new URL(SharedPrefs.APP_SERVER_ADDR+"index.php?model="+URLEncoder.encode(Build.MODEL,"UTF-8")+"&gcm_id="+SharedPrefs.getMyGcmID()+"&state="+SharedPrefs.getServerState());
+                    Log.e("SEND GCM ID", String.valueOf(url));
 
                     break;
                 case PRANK:
@@ -88,12 +105,17 @@ public class AppServerConn extends AsyncTask<String,String,String> {
 
                     broadcastResult = new Intent("main-activity-broadcast");
                     url = new URL(SharedPrefs.APP_SERVER_ADDR+"sendmsg.php?receiver_id=" + SharedPrefs.getFrndAppID() + "&sender_id=" + SharedPrefs.getMyAppID() + "&item=" + selectedItem + "&repeat_count=" + Selection.itemRepeatCount + "&volume=" + (int) Selection.itemVolume + "&message="+ActionType.PRANK+"&currenttime="+System.currentTimeMillis());
+                    Log.e("PRANK DETAILS", String.valueOf(url));
 
                     break;
                 case PRANK_FAILED:
                 case PRANK_SUCCESSFUL:
                     url = new URL(SharedPrefs.APP_SERVER_ADDR + "sendmsg.php?receiver_id=" + SharedPrefs.getFrndAppID() + "&sender_id=" + SharedPrefs.getMyAppID() + "&message="+type);
+
+                    Log.e("PRANK SUCCESS/FAILED", String.valueOf(url));
+
                     break;
+
                 case SIGN_UP:
                     //broadcastResult = new Intent("user-register-activity-broadcast");
 
@@ -104,6 +126,12 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                         url = new URL(SharedPrefs.APP_SERVER_ADDR + "index.php?model=" + URLEncoder.encode(Build.MODEL, "UTF-8") + "&gcm_id=" + SharedPrefs.getMyGcmID() +"&app_id="+ SharedPrefs.getMyAppID() +"&id=" + id + "&name=" + URLEncoder.encode(SharedPrefs.getUserName(), "UTF-8") + "&country_code=" + URLEncoder.encode(SharedPrefs.getUserCountryCode(), "UTF-8") + "&phone=" + URLEncoder.encode(SharedPrefs.getUserPhoneNumber(), "UTF-8"));
                     }
                     Log.e("SignUp Details", String.valueOf(url));
+                    break;
+                case GET_FRIEND_APP_ID:
+                    broadcastResult = new Intent("prank-dialog-activity-broadcast");
+                    url = new URL(SharedPrefs.APP_SERVER_ADDR + "index.php?app_id="+ SharedPrefs.getMyAppID() +"&id=" + numID.trim() +"&phone=" + number.trim());
+                    Log.e("GET FRIEND ID", String.valueOf(url));
+
                     break;
 
             }
@@ -122,6 +150,8 @@ public class AppServerConn extends AsyncTask<String,String,String> {
 
         try{
             conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(15000);
             conn.setRequestMethod("GET");
             conn.connect();
             result = convertStreamToString(conn.getInputStream());
@@ -144,6 +174,7 @@ public class AppServerConn extends AsyncTask<String,String,String> {
             wDiag.dismiss();
 
         try {
+
             resp = new JSONObject(result);
 
             switch (type) {
@@ -213,6 +244,15 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                     Log.e("Failure", resp.getString("failure"));
                     break;
 
+                case GET_FRIEND_APP_ID:
+                    if (resp.getString("frnd_id").equals("NA"))
+                        broadcastResult.putExtra("message", "not-prankable");
+                    else {
+                        Log.e("Friend ID", resp.getString("frnd_id"));
+                        SharedPrefs.setFrndAppID(resp.getString("frnd_id")); // Store the received myAppID in shared prefs
+                        broadcastResult.putExtra("message", "fetch-id");
+                    }
+                    break;
 
             }
         }catch (JSONException e){e.printStackTrace();}

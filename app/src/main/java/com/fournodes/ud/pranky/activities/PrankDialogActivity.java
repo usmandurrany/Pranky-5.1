@@ -52,7 +52,12 @@ public class PrankDialogActivity extends Activity{
                 CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Your friend is unavailable");
                 cToast.show();
 
-            }  else if (message.equals("network-error")) {
+            }else if (message.equals("fetch-id")){
+                frndID.setText(SharedPrefs.getFrndAppID());
+                finish();
+
+            }
+            else if (message.equals("network-error")) {
                 CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Network or server unavailable");
                 cToast.show();
             }

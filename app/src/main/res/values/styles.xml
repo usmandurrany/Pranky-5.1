@@ -10,6 +10,7 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:textColorSecondary">#fff</item>
 
 
     </style>
@@ -17,6 +18,8 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColorSecondary">#fff</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -62,6 +65,10 @@
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
         <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="@android:style/Theme.DeviceDefault.Dialog">
+
     </style>
 
 </resources>
