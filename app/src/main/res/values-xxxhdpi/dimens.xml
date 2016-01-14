@@ -59,5 +59,6 @@
     <dimen name="id_value_margin_left">85dp</dimen>
 
     <dimen name="prankit_width">200dp</dimen>
+    <dimen name="settings_linearlayout_height">65dp</dimen>
 
 </resources>

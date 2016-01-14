@@ -18,8 +18,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * Created by Usman on 8/1/2016.
@@ -110,8 +109,8 @@ public class ContactsAsync extends AsyncTask<JSONArray,String,String> {
            // Log.e("Contacts Registered",resp.toString());
             for (int i =0;i<resp.length();i++) {
                 JSONObject contactDetails =resp.getJSONObject(i);
-                List<String> numbers = new ArrayList<>();
-                List<String> numIDs = new ArrayList<>();
+                HashSet<String> numbers = new HashSet<>();
+                HashSet<String> numIDs = new HashSet<>();
                 String id = contactDetails.getString("id");
                 for (int j =1;j<contactDetails.length();j++) {
                     if (contactDetails.has("number" + j)) {

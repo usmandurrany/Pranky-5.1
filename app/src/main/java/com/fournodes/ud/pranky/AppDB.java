@@ -277,8 +277,14 @@ public class AppDB extends SQLiteOpenHelper {
             contactDetail.setNumIDs(cursor.getString(cursor.getColumnIndex(COLUMN_NUM_IDS)));
             allContactDetails.add(contactDetail);
         }
+        cursor.close();
+        db.close();
         return allContactDetails;
     }
 
-
+    public void nuke(String table){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(table, null, null);
+        db.close();
+    }
 }

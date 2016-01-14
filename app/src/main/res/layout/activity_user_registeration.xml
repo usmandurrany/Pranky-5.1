@@ -76,7 +76,7 @@
 
 
 <EditText
-    android:layout_width="60dp"
+    android:layout_width="75dp"
     android:layout_height="wrap_content"
     android:inputType="phone"
     android:id="@+id/countryCode"

@@ -87,7 +87,7 @@ public class MainActivity extends FragmentActivity {
             String message = intent.getStringExtra("message");
             switch (message) {
                 case "prank-sent":
-                    Log.e("Prank Sent","Successfully");
+                    Log.e("Prank Sent", "Successfully");
                     break;
 
                 case "custom-sound-added":
@@ -108,6 +108,15 @@ public class MainActivity extends FragmentActivity {
                 case "network-error": {
                     CustomToast cToast = new CustomToast(getApplicationContext(), "Network  or server unavailable ");
                     cToast.show();
+                    break;
+                }
+                case "not-registered": {
+                    CustomToast cToast = new CustomToast(getApplicationContext(), "You  have  been  logged  out");
+                    cToast.show();
+                    break;
+                }
+                case "registered": {
+
                     break;
                 }
             }
@@ -294,12 +303,14 @@ public class MainActivity extends FragmentActivity {
                    smClose = new Handler();
                     smClose.postDelayed(new Runnable() {
                         public void run() {
-                            anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(130), 0);
-                            open = false;
-                            sideMenu.setBackgroundResource(R.drawable.sm_show);
-                            anim.setDuration(500);
-                            anim.start();
-                            smClose.removeCallbacks(this);
+                            if (open) {
+                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(130), 0);
+                                open = false;
+                                sideMenu.setBackgroundResource(R.drawable.sm_show);
+                                anim.setDuration(500);
+                                anim.start();
+                                smClose.removeCallbacks(this);
+                            }
                         }
                     }, 3000);
 
@@ -539,6 +550,11 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (SharedPrefs.isSignUpComplete() && SharedPrefs.getMyAppID() != null && SharedPrefs.getAppServerID() != null){
+            AppServerConn appServerConn = new AppServerConn(this,ActionType.CHECK_REGISTERED);
+            appServerConn.execute();
+        }
+
         if (showcaseView != null && timerLaunch && SharedPrefs.isAppFirstLaunch()) {
 
             showcaseView.hide();
@@ -592,6 +608,8 @@ public class MainActivity extends FragmentActivity {
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("main-activity-broadcast"));
+
+
     }
 
 

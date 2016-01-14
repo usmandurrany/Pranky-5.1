@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.fournodes.ud.pranky.AppDB;
 import com.fournodes.ud.pranky.enums.ActionType;
 import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -134,6 +135,14 @@ public class AppServerConn extends AsyncTask<String,String,String> {
 
                     break;
 
+                case CHECK_REGISTERED:
+                    broadcastResult = new Intent("main-activity-broadcast");
+
+                    url = new URL(SharedPrefs.APP_SERVER_ADDR + "index.php?app_id="+ SharedPrefs.getMyAppID() +"&id=" + SharedPrefs.getAppServerID());
+                    Log.e("Registration Check", String.valueOf(url));
+
+                    break;
+
             }
         }catch (MalformedURLException e){e.printStackTrace();}
         catch (UnsupportedEncodingException e){e.printStackTrace();}
@@ -252,6 +261,20 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                         SharedPrefs.setFrndAppID(resp.getString("frnd_id")); // Store the received myAppID in shared prefs
                         broadcastResult.putExtra("message", "fetch-id");
                     }
+                    break;
+                case CHECK_REGISTERED:
+                    if (resp.getString("registered").equals("false")){
+                        SharedPrefs.setSignUpComplete(false);
+                        SharedPrefs.setUserCountry(null);
+                        SharedPrefs.setUserCountryCode(null);
+                        SharedPrefs.setUserName(null);
+                        SharedPrefs.setUserPhoneNumber(null);
+                        new AppDB(context).nuke(AppDB.TABLE_CONTACTS);
+                        broadcastResult.putExtra("message", "not-registered");
+                    }
+                    else
+                        broadcastResult.putExtra("message", "registered");
+
                     break;
 
             }

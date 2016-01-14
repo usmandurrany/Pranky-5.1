@@ -61,5 +61,6 @@
 
     <dimen name="prankit_width">180dp</dimen>
 
+    <dimen name="settings_linearlayout_height">65dp</dimen>
 
 </resources>

@@ -27,7 +27,7 @@
         <LinearLayout
             android:id="@+id/music"
             android:layout_width="wrap_content"
-            android:layout_height="65dp"
+            android:layout_height="@dimen/settings_linearlayout_height"
             android:layout_marginTop="25dp"
             android:orientation="horizontal">
 
@@ -70,7 +70,7 @@
         <LinearLayout
             android:id="@+id/myID"
             android:layout_width="wrap_content"
-            android:layout_height="65dp"
+            android:layout_height="@dimen/settings_linearlayout_height"
             android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
@@ -111,7 +111,7 @@
         <LinearLayout
             android:id="@+id/layoutRemoteID"
             android:layout_width="wrap_content"
-            android:layout_height="65dp"
+            android:layout_height="@dimen/settings_linearlayout_height"
             android:layout_marginTop="0dp"
             android:orientation="horizontal"
             android:visibility="invisible">

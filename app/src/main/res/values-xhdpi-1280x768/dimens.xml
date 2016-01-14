@@ -51,5 +51,6 @@
     <dimen name="prank_text_margin_right">10dp</dimen>
     <dimen name="prank_switch_margin_left">25dp</dimen>
 
+    <dimen name="settings_linearlayout_height">65dp</dimen>
 
 </resources>

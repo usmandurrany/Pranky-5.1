@@ -54,6 +54,9 @@ public class PrankDialogActivity extends Activity{
 
             }else if (message.equals("fetch-id")){
                 frndID.setText(SharedPrefs.getFrndAppID());
+                AppServerConn appServerConn= new AppServerConn(PrankDialogActivity.this, ActionType.PRANK);
+                appServerConn.showWaitDialog("P r a n k i n g ...");
+                appServerConn.execute();
                 finish();
 
             }

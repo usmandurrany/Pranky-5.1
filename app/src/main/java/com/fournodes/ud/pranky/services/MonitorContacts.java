@@ -32,7 +32,7 @@ public class MonitorContacts extends Service {
         Log.d("Contact Service", mContactCount + "");
 
         this.getContentResolver().registerContentObserver(
-                ContactsContract.Contacts.CONTENT_URI, true, mObserver);
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true, mObserver);
     }
 
     private int getContactCount() {

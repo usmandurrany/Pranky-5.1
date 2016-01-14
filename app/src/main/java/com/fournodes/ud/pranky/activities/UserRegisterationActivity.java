@@ -47,6 +47,8 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
     private AppServerConn appServerConn;
     private AppDB prankyDB;
 
+    private boolean validCountry;
+
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -83,9 +85,28 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
         country = (AutoCompleteTextView) findViewById(R.id.usrCountry);
         country.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         country.setOnKeyListener(this);
+        country.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!view.hasFocus() && country.getText().length()>0) {
+                    for (int i = 0; i < ccArray.length; i++) {
+                        if (ccArray[i].contains(country.getText())) {
+                            String[] temp = ccArray[i].split(",");
+                            countryCode.setText(temp[1]);
+                            country.setText(temp[0]);
+                            validCountry = true;
+                            break;
+                        } else if (countryCode.getText().length() > 0)
+                            countryCode.setText(null);
+
+                    }
+                }
+            }
+        });
         countryCode = (EditText) findViewById(R.id.countryCode);
         countryCode.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-        countryCode.setOnKeyListener(this);
+        //countryCode.setOnKeyListener(this);
+        countryCode.setEnabled(false);
         number = (EditText) findViewById(R.id.usrNumber);
         number.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         number.setOnKeyListener(this);
@@ -119,6 +140,7 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
                     if (ccArray[i].contains(country.getText())){
                         String[] temp = ccArray[i].split(",");
                         countryCode.setText(temp[1]);
+                        validCountry = true;
                         break;
                     }
                 }
