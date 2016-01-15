@@ -19,8 +19,8 @@ public class SharedPrefs {
     public static SharedPreferences prefs;
     private static Calendar defaultExpDate;
 
-    public static final String APP_SERVER_ADDR = "http://192.168.2.109/pranky/";
-    //public static final String APP_SERVER_ADDR = "http://pranky.four-nodes.com/appserver/";
+    //public static final String APP_SERVER_ADDR = "http://192.168.1.3/pranky/";
+    public static final String APP_SERVER_ADDR = "http://pranky.four-nodes.com/appserver/";
 
     public static final String SHARED_PREF_FILE = "PrankySharedPref"; // Shared Pref File Name
     public static final String SENT_GCM_ID_TO_SERVER = "sentGcmIDToServer"; // boolean
@@ -114,11 +114,14 @@ public class SharedPrefs {
 
 
 
-    Context context;
+    private static Context context;
 
+    public static void setContext(Context ctx){
+        context=ctx;
+    }
 
-    public SharedPrefs(Context context) {
-        this.context = context;
+    public SharedPrefs(Context ctx) {
+        context = ctx;
         prefs = context.getSharedPreferences(SharedPrefs.SHARED_PREF_FILE, 0);
 
     }

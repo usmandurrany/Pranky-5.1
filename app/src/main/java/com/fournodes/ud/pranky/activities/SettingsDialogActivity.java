@@ -237,6 +237,8 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
 
     @Override
     protected void onResume() {
+        if (SharedPrefs.prefs == null)
+            SharedPrefs.setContext(this);
         super.onResume();
         try {
             if (BackgroundMusic.mp != null) {

@@ -54,7 +54,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     int i = 0;
     Camera cam = null;
     Camera.Parameters params;
-    boolean isLighOn;
+    boolean isLightOn;
     Runnable flashBlinkRunnable;
     ShowcaseView showcaseView;
     private int viewPOS;
@@ -76,8 +76,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
+        activity=getActivity();
+        Bundle args = getArguments();
+        gridItems = (GridItem[]) args.getParcelableArray("items");
         View view;
 
         view = inflater.inflate(R.layout.fragment_gridview, container, false);
@@ -490,14 +491,14 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
     private void flipFlash() {
         try {
-            if (isLighOn) {
+            if (isLightOn) {
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                 cam.setParameters(params);
-                isLighOn = false;
+                isLightOn = false;
             } else {
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 cam.setParameters(params);
-                isLighOn = true;
+                isLightOn = true;
             }
         } catch (RuntimeException e) {
             Log.w("Camera Blink", e.toString());

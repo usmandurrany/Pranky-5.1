@@ -211,6 +211,8 @@ if (SharedPrefs.isTimerFirstLaunch()) {
 
     @Override
     protected void onResume() {
+        if (SharedPrefs.prefs == null)
+            SharedPrefs.setContext(this);
         super.onResume();
         try {
             if (BackgroundMusic.mp != null) {

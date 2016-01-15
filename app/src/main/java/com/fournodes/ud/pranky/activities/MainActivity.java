@@ -421,13 +421,22 @@ public class MainActivity extends FragmentActivity {
                     lastItemAdded = true;
 
                 }
-                GridItem[] gp = {};
+               /* GridItem[] gp = {};
                 GridItem[] gridPage = imLst.toArray(gp);
                 GridFragment Gfrag = new GridFragment(gridPage, MainActivity.this);
                 Gfrag.setRetainInstance(true);
                 gridGridFragments.add(Gfrag);
-                i = 1;
+                i = 1;*/
 
+                Bundle args = new Bundle();
+                GridItem[] gItem = new GridItem[imLst.size()];
+                imLst.toArray( gItem );
+                args.putParcelableArray("items", gItem);
+                GridFragment Gfrag = new GridFragment();
+                Gfrag.setArguments(args);
+                Gfrag.setRetainInstance(true);
+                gridGridFragments.add(Gfrag);
+                i = 1;
             }
         }
         c.close();
@@ -549,6 +558,9 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
+        if (SharedPrefs.prefs == null)
+            SharedPrefs.setContext(this);
+
         super.onResume();
         if (SharedPrefs.isSignUpComplete() && SharedPrefs.getMyAppID() != null && SharedPrefs.getAppServerID() != null){
             AppServerConn appServerConn = new AppServerConn(this,ActionType.CHECK_REGISTERED);

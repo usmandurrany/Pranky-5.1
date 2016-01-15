@@ -93,7 +93,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="5dp"
-            android:src="@mipmap/hh"
             android:text="HH"
             android:textAllCaps="true"
             android:textColor="#bf071a"

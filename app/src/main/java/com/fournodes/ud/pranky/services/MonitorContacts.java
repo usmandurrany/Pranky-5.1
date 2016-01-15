@@ -59,8 +59,14 @@ public class MonitorContacts extends Service {
     private ContentObserver mObserver = new ContentObserver(new Handler()) {
 
         @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange,null);
+        }
+
+        @Override
         public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange);
+
             Log.e("URI CHANGE",uri.toString());
 
             final int currentCount = getContactCount();
@@ -82,6 +88,21 @@ public class MonitorContacts extends Service {
 
             }
             mContactCount = currentCount;
+
+            getContentResolver().unregisterContentObserver(mObserver);
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    getContentResolver().registerContentObserver(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true, mObserver);
+                }
+            }, 60000);
+
+
+
         }
 
         @Override
@@ -98,7 +119,10 @@ public class MonitorContacts extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getContentResolver().unregisterContentObserver(mObserver);
+        try {
+            getContentResolver().unregisterContentObserver(mObserver);
+
+        }catch (Exception e){}
     }
 
 }

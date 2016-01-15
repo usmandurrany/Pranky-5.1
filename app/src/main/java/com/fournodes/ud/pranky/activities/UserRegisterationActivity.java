@@ -177,16 +177,6 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
                     Intent monitorContacts = new Intent(UserRegisterationActivity.this, MonitorContacts.class);
                     startService(monitorContacts);
 
-/*
-            if (SharedPrefs.isSentGcmIDToServer()) {
-                appServerConn = new AppServerConn(UserRegisterationActivity.this, ActionType.SIGN_UP);
-                appServerConn.showWaitDialog("R e g i s t r i n g ...");
-                appServerConn.execute();
-            }else{
-                GCMInitiate getGCMID = new GCMInitiate(UserRegisterationActivity.this);
-                getGCMID.run();
-            }
-*/
                     if (SharedPrefs.isSentGcmIDToServer()) {
                         appServerConn = new AppServerConn(ActionType.SIGN_UP);
                         appServerConn.execute();
@@ -217,6 +207,8 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
 
     @Override
     protected void onResume() {
+        if (SharedPrefs.prefs == null)
+            SharedPrefs.setContext(this);
         super.onResume();
         try {
             if (BackgroundMusic.mp != null) {

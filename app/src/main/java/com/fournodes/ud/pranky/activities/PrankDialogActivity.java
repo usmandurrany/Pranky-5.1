@@ -216,6 +216,8 @@ public class PrankDialogActivity extends Activity{
 
     @Override
     protected void onResume() {
+        if (SharedPrefs.prefs == null)
+            SharedPrefs.setContext(this);
         super.onResume();
         try {
             if (BackgroundMusic.mp != null) {
