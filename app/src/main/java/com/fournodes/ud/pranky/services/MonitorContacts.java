@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.ContactsContract;
@@ -58,8 +59,9 @@ public class MonitorContacts extends Service {
     private ContentObserver mObserver = new ContentObserver(new Handler()) {
 
         @Override
-        public void onChange(boolean selfChange) {
+        public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange);
+            Log.e("URI CHANGE",uri.toString());
 
             final int currentCount = getContactCount();
             if (currentCount < mContactCount) {
@@ -84,7 +86,7 @@ public class MonitorContacts extends Service {
 
         @Override
         public boolean deliverSelfNotifications() {
-            return true;
+            return false;
         }
     };
 
