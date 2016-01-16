@@ -1,0 +1,2 @@
+waterdrop,3,1
+zombie,1,1

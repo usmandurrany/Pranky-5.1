@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
+import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.dialogs.DisplayContactsDialog;
 import com.fournodes.ud.pranky.enums.ActionType;
@@ -47,6 +48,9 @@ public class PrankDialogActivity extends Activity{
             String message = intent.getStringExtra("message");
             if (message.equals("valid-id")){
                 SharedPrefs.setFrndAppID(frndID.getText().toString());
+                AppServerConn appServerConn= new AppServerConn(PrankDialogActivity.this, ActionType.PRANK);
+                appServerConn.showWaitDialog("P r a n k i n g ...");
+                appServerConn.execute();
                 finish();
             }else if (message.equals("not-prankable")){
                 CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Your friend is unavailable");
@@ -54,9 +58,14 @@ public class PrankDialogActivity extends Activity{
 
             }else if (message.equals("fetch-id")){
                 frndID.setText(SharedPrefs.getFrndAppID());
-                AppServerConn appServerConn= new AppServerConn(PrankDialogActivity.this, ActionType.PRANK);
-                appServerConn.showWaitDialog("P r a n k i n g ...");
-                appServerConn.execute();
+                if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
+                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Select  a  sound  first");
+                    cToast.show();
+                }else{
+                    AppServerConn appServerConn= new AppServerConn(PrankDialogActivity.this, ActionType.PRANK);
+                    appServerConn.showWaitDialog("P r a n k i n g ...");
+                    appServerConn.execute();
+                }
                 finish();
 
             }
@@ -121,7 +130,7 @@ public class PrankDialogActivity extends Activity{
                     diag.show();
                 }else{
                     startActivity(new Intent(PrankDialogActivity.this,UserRegisterationActivity.class));
-                    finish();
+                    overridePendingTransition(R.anim.slide_in_form_top, R.anim.fade_out);
                 }
             }
         });

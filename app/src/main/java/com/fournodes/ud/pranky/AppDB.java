@@ -26,13 +26,15 @@ import java.util.Map;
 public class AppDB extends SQLiteOpenHelper {
     private Context context;
 
-    public static final String TABLE_USER_SOUNDS = "usr_sounds";
+    public static final String TABLE_ITEMS = "items";
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_PIC_LOC = "pic_loc";
-    public static final String COLUMN_PIC_ALIAS = "pic_alias";
-    public static final String COLUMN_SOUND_LOC = "sound_loc";
+    public static final String COLUMN_ITEM_IMG_LOC = "item_img_loc";
+    public static final String COLUMN_ITEM_NAME = "item_name";
+    public static final String COLUMN_ITEM_SOUND_LOC = "item_sound_loc";
     public static final String COLUMN_REPEAT_COUNT = "repeat_count";
     public static final String COLUMN_SOUND_VOL = "sound_vol";
+    public static final String COLUMN_ITEM_CATEGORY = "item_category";
+    public String category;
 
 
     public static final String TABLE_CONTACTS = "contacts";
@@ -44,19 +46,20 @@ public class AppDB extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "pranky.db";
-    private static final int DATABASE_VERSION = 33;
+    private static final int DATABASE_VERSION = 34;
 
     // Database creation sql statement
-    private static final String CREATE_PRANK_TABLE = "create table if not exists"
-            + TABLE_USER_SOUNDS + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_PIC_LOC
-            + " integer not null, " + COLUMN_PIC_ALIAS
-            + " text not null, " + COLUMN_SOUND_LOC
+    private static final String CREATE_PRANK_TABLE = "create table if not exists "
+            + TABLE_ITEMS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_ITEM_IMG_LOC
+            + " integer not null, " + COLUMN_ITEM_NAME
+            + " text not null, " + COLUMN_ITEM_SOUND_LOC
             + " text not null, " + COLUMN_REPEAT_COUNT
             + " integer not null, " + COLUMN_SOUND_VOL
-            + " integer not null);";
+            + " integer not null, "+ COLUMN_ITEM_CATEGORY
+            + " text not null);";
 
-    private static final String CREATE_CONTACTS_TABLE = "create table if not exists"
+    private static final String CREATE_CONTACTS_TABLE = "create table if not exists "
             + TABLE_CONTACTS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_NAME
             + " text not null, " + COLUMN_NUMBER
@@ -85,12 +88,17 @@ public class AppDB extends SQLiteOpenHelper {
                 if (line!=null) {
                     Log.e("LINE", line);
                     String[] itemProp = line.split(",");
-                    values.put(COLUMN_PIC_LOC,R.mipmap.class.getField(itemProp[0]).getInt(null));
-                    values.put(COLUMN_PIC_ALIAS,itemProp[0]);
-                    values.put(COLUMN_SOUND_LOC,"raw."+itemProp[0]);
+                    if(itemProp.length == 1) {
+                        category = itemProp[0];
+                        continue;
+                    }
+                    values.put(COLUMN_ITEM_IMG_LOC,R.mipmap.class.getField(itemProp[0]).getInt(null));
+                    values.put(COLUMN_ITEM_NAME,itemProp[0]);
+                    values.put(COLUMN_ITEM_SOUND_LOC,"raw."+itemProp[0]);
                     values.put(COLUMN_REPEAT_COUNT,itemProp[1]);
                     values.put(COLUMN_SOUND_VOL,itemProp[2]);
-                    database.insert(TABLE_USER_SOUNDS,null,values);
+                    values.put(COLUMN_ITEM_CATEGORY,category);
+                    database.insert(TABLE_ITEMS,null,values);
                 }
             }
         } catch (IOException e) {
@@ -108,7 +116,7 @@ public class AppDB extends SQLiteOpenHelper {
         Log.w(AppDB.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_SOUNDS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS);
         onCreate(db);
     }
 

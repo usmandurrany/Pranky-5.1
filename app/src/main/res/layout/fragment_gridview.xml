@@ -10,8 +10,19 @@
     android:paddingRight="3dp"
     android:paddingTop="@dimen/viewpager_padding_top">
 
-
+<com.fournodes.ud.pranky.CustomTextView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="A n i m a l s "
+    android:id="@+id/lblCatTitle"
+    android:gravity="center"
+    android:textSize="@dimen/cat_title_size"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:textAllCaps="true"
+    android:layout_marginBottom="10dp"
+    android:textColor="#bf071a"/>
     <GridView
+        android:layout_below="@+id/lblCatTitle"
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

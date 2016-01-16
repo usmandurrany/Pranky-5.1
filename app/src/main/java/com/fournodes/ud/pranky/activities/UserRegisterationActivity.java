@@ -181,8 +181,9 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
                         appServerConn = new AppServerConn(ActionType.SIGN_UP);
                         appServerConn.execute();
                     }
-
-                    startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
+                    if(SharedPrefs.isAppFirstLaunch()) {
+                        startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
+                    }
                     finish();
 
 
@@ -248,5 +249,11 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
             btnDone.setEnabled(false);
         }
         return false;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_form_top);
     }
 }

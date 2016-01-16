@@ -154,17 +154,18 @@ public class AddSoundActivity extends Activity {
 
 // Create a new map of values, where column names are the keys
                     ContentValues values = new ContentValues();
-                    values.put(AppDB.COLUMN_PIC_LOC, cusIconID);
-                    values.put(AppDB.COLUMN_PIC_ALIAS, soundFile.getName());
-                    values.put(AppDB.COLUMN_SOUND_LOC, soundFile.getAbsolutePath());
+                    values.put(AppDB.COLUMN_ITEM_IMG_LOC, cusIconID);
+                    values.put(AppDB.COLUMN_ITEM_NAME, soundFile.getName());
+                    values.put(AppDB.COLUMN_ITEM_SOUND_LOC, soundFile.getAbsolutePath());
                     values.put(AppDB.COLUMN_REPEAT_COUNT, 1);
                     values.put(AppDB.COLUMN_SOUND_VOL, 1);
+                    values.put(AppDB.COLUMN_ITEM_CATEGORY, "custom");
 
 
 // Insert the new row, returning the primary key value of the new row
                     long newRowId;
                     newRowId = db.insert(
-                            AppDB.TABLE_USER_SOUNDS,
+                            AppDB.TABLE_ITEMS,
                             "null",
                             values);
                    // Toast.makeText(AddSoundActivity.this, String.valueOf(newRowId), Toast.LENGTH_SHORT).show();

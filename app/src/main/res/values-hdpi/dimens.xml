@@ -21,9 +21,10 @@
     <dimen name="circle_indicator_margin_bottom">35dp</dimen>
     <dimen name="indicator_line_margin_top">-45dp</dimen>
 
+    <dimen name="cat_title_size">25sp</dimen>
 
-    <dimen name="viewpager_margin_top">125dp</dimen>
-    <dimen name="viewpager_margin_bottom">175dp</dimen>
+    <dimen name="viewpager_margin_top">110dp</dimen>
+    <dimen name="viewpager_margin_bottom">160dp</dimen>
     <dimen name="viewpager_margin_left">55dp</dimen>
     <dimen name="viewpager_margin_right">50dp</dimen>
     <dimen name="viewpager_padding_top">10dp</dimen>
@@ -53,7 +54,7 @@
     <dimen name="music_switch_margin_left">25dp</dimen>
 
     <dimen name="prank_text_margin_right">10dp</dimen>
-    <dimen name="prank_switch_margin_left">30dp</dimen>
+    <dimen name="prank_switch_margin_left">25dp</dimen>
 
     <dimen name="id_text_margin_right">50dp</dimen>
     <dimen name="id_value_margin_left">70dp</dimen>

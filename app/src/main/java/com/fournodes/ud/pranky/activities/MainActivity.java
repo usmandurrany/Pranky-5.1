@@ -361,7 +361,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        currPage = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, mGridPager.getCurrentItem());
+        //currPage = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, mGridPager.getCurrentItem());
 
      /******************************** Contacts sync testing code **********************************/
         if (SharedPrefs.isSignUpComplete()) {
@@ -372,6 +372,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void createFragments() {
+        String[] categories = {"horns","people","animals","suspense","objects","mobile","machines","custom"};
         int id = 0;
         int i = 1;
         boolean lastItemAdded = false;
@@ -380,67 +381,97 @@ public class MainActivity extends FragmentActivity {
 
         SQLiteDatabase db = prankyDB.getReadableDatabase();
 
+        for(int j = 0; j<categories.length;j++) {
+            Cursor c = db.query(AppDB.TABLE_ITEMS,null,AppDB.COLUMN_ITEM_CATEGORY+" = ?",new String[] {categories[j]},null,null,null);
+            int count =c.getCount();
+            ArrayList<GridItem> imLst = new ArrayList<GridItem>();
+            Log.e("Category ",categories[j]);
+            Log.e("Count ",String.valueOf(count));
 
-        Cursor c = db.rawQuery("SELECT * FROM usr_sounds", null);
-        itemCount = c.getCount();
+            i=1;
+            //int k =1;
+            while(c.moveToNext() || (categories[j].equals("custom") && !lastItemAdded)) {
+                Log.e("Cursor Position", String.valueOf(c.getPosition()));
+                if (!c.isAfterLast() && i<=itemsOnPage) {
+                    id = c.getInt(c.getColumnIndex(AppDB.COLUMN_ID));
+                    Integer image = c.getInt(c.getColumnIndex(AppDB.COLUMN_ITEM_IMG_LOC));
+                    String sound = c.getString(c.getColumnIndex(AppDB.COLUMN_ITEM_SOUND_LOC));
+                    Integer soundRepeat = c.getInt(c.getColumnIndex(AppDB.COLUMN_REPEAT_COUNT));
+                    Integer soundVol = c.getInt(c.getColumnIndex(AppDB.COLUMN_SOUND_VOL));
 
-        addSoundLoc = addSoundLocation(itemCount); //Items count start from 0, func calculates form 1
-        lastPage= (int) Math.ceil(totalPages(itemCount)-1); //ViewPager page count starts from 0,  func calculates form 1
-        if (addSoundLoc==0)
-            lastPage++; //Add sound button will be first icon on new page
+                    GridItem items = new GridItem(id, image, sound, soundRepeat, soundVol);
+                    imLst.add(items);
+                    Log.e("Item no.", String.valueOf(i));
+                    i++;
 
-        Log.e("Minimum Pages",String.valueOf(totalPages(itemCount)));
-        Log.e("Actual Pages/Last Page",String.valueOf(lastPage+1));
-        Log.e("Total Items",String.valueOf(itemCount));
-        Log.e("Add Sound Loc",String.valueOf(addSoundLoc));
-
-
-
-        if (c.moveToFirst()) {
-
-            while (!c.isAfterLast() || !lastItemAdded) {
-                ArrayList<GridItem> imLst = new ArrayList<GridItem>();
-                if (!c.isAfterLast()) {
-                    for (i = 1; (i <= itemsOnPage) && (!c.isAfterLast()); i++) {
-                        id = c.getInt(c.getColumnIndex(AppDB.COLUMN_ID));
-                        Integer image = c.getInt(c.getColumnIndex(AppDB.COLUMN_PIC_LOC));
-                        String sound = c.getString(c.getColumnIndex(AppDB.COLUMN_SOUND_LOC));
-                        Integer soundRepeat = c.getInt(c.getColumnIndex(AppDB.COLUMN_REPEAT_COUNT));
-                        Integer soundVol = c.getInt(c.getColumnIndex(AppDB.COLUMN_SOUND_VOL));
-
-                        GridItem items = new GridItem(id, image, sound, soundRepeat, soundVol);
-                        imLst.add(items);
-                        c.moveToNext();
-
-                    }
-                }
-                if (c.isAfterLast() && i <= itemsOnPage) {
+                } else if (((c.getPosition()==count) || c.getPosition()==count-1 || count==0) && i <= itemsOnPage && categories[j].equals("custom")) {
 
                     GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
                     imLst.add(lstItem);
                     lastItemAdded = true;
+                    itemCount = c.getCount();
+                    addSoundLoc = addSoundLocation(itemCount); //Items count start from 0, func calculates form 1
+                    Log.e("Add Sound Loc", String.valueOf(addSoundLoc));
 
                 }
-               /* GridItem[] gp = {};
-                GridItem[] gridPage = imLst.toArray(gp);
-                GridFragment Gfrag = new GridFragment(gridPage, MainActivity.this);
-                Gfrag.setRetainInstance(true);
-                gridGridFragments.add(Gfrag);
-                i = 1;*/
-
-                Bundle args = new Bundle();
-                GridItem[] gItem = new GridItem[imLst.size()];
-                imLst.toArray( gItem );
-                args.putParcelableArray("items", gItem);
-                GridFragment Gfrag = new GridFragment();
-                Gfrag.setArguments(args);
-                Gfrag.setRetainInstance(true);
-                gridGridFragments.add(Gfrag);
-                i = 1;
+                if (i > itemsOnPage || (c.getPosition()==count || (c.getPosition()==count-1 && !categories[j].equals("custom")) || count==0) ) {
+                    Bundle args = new Bundle();
+                    GridItem[] gItem = new GridItem[imLst.size()];
+                    imLst.toArray(gItem);
+                    args.putParcelableArray("items", gItem);
+                    GridFragment Gfrag = new GridFragment();
+                    Gfrag.setArguments(args);
+                    Gfrag.setRetainInstance(true);
+                    gridGridFragments.add(Gfrag);
+                    Log.e("Page Break At", String.valueOf(i));
+                    i = 1;
+                }
             }
-        }
-        c.close();
+            c.close();
 
+
+           /* if (c.moveToFirst()) {
+               // while (!c.isAfterLast() || !lastItemAdded) {
+                    ArrayList<GridItem> imLst = new ArrayList<GridItem>();
+                    Log.e("inner for loop",String.valueOf(i));
+
+                    if (!c.isAfterLast()) {
+                        for (i = 1; (i <= itemsOnPage) && (!c.isAfterLast()); i++) {
+                            id = c.getInt(c.getColumnIndex(AppDB.COLUMN_ID));
+                            Integer image = c.getInt(c.getColumnIndex(AppDB.COLUMN_ITEM_IMG_LOC));
+                            String sound = c.getString(c.getColumnIndex(AppDB.COLUMN_ITEM_SOUND_LOC));
+                            Integer soundRepeat = c.getInt(c.getColumnIndex(AppDB.COLUMN_REPEAT_COUNT));
+                            Integer soundVol = c.getInt(c.getColumnIndex(AppDB.COLUMN_SOUND_VOL));
+
+                            GridItem items = new GridItem(id, image, sound, soundRepeat, soundVol);
+                            imLst.add(items);
+                            c.moveToNext();
+                            Log.e("inner for loop",String.valueOf(i));
+                        }
+                    }
+                    if (c.isAfterLast() && i <= itemsOnPage && categories[j].equals("custom")) {
+
+                        GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
+                        imLst.add(lstItem);
+                        lastItemAdded = true;
+                        itemCount = c.getCount();
+                        addSoundLoc = addSoundLocation(itemCount); //Items count start from 0, func calculates form 1
+                        Log.e("Add Sound Loc", String.valueOf(addSoundLoc));
+
+                    }
+                    Bundle args = new Bundle();
+                    GridItem[] gItem = new GridItem[imLst.size()];
+                    imLst.toArray(gItem);
+                    args.putParcelableArray("items", gItem);
+                    GridFragment Gfrag = new GridFragment();
+                    Gfrag.setArguments(args);
+                    Gfrag.setRetainInstance(true);
+                    gridGridFragments.add(Gfrag);
+                    i = 1;
+               // }
+            }
+            c.close();*/
+        }
 
         pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments);
         mGridPager.setAdapter(pm);

@@ -22,6 +22,7 @@
     <dimen name="circle_indicator_margin_bottom">45dp</dimen>
     <dimen name="indicator_line_margin_top">-55dp</dimen>
 
+    <dimen name="cat_title_size">35sp</dimen>
 
     <dimen name="viewpager_margin_top">190dp</dimen>
     <dimen name="viewpager_margin_bottom">231dp</dimen>

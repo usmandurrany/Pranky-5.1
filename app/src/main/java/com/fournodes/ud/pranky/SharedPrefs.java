@@ -155,7 +155,7 @@ public class SharedPrefs {
         remotePrankFirstLaunch=prefs.getBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, true);
         lastPageFirstLaunch=prefs.getBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH, true);
 
-        bgMusicPlaying=prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, true);
+        bgMusicPlaying=prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, false);
 
         cusSoundAdded=prefs.getBoolean(SharedPrefs.CUSTOM_SOUND_ADDED, false);
 

@@ -19,16 +19,16 @@
         android:layout_marginBottom="15dp"
         android:textColor="#bf071a"
         android:id="@+id/title"
+        android:layout_above="@+id/regForm"
         />
 
     <LinearLayout
-        android:layout_below="@+id/title"
         android:id="@+id/regForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
+        android:layout_centerVertical="true"
         android:gravity="center">
         <LinearLayout
             android:layout_margin="10dp"

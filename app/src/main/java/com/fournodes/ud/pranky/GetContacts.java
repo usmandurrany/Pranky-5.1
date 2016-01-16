@@ -69,8 +69,11 @@ public class GetContacts{
                        //contactNumbers.toArray(contactNumArray);
                       // allNumbers.add(contactNumArray);
                    }
-                    }catch (CursorIndexOutOfBoundsException e){e.printStackTrace();}
-                    catch (UnsupportedEncodingException e){e.printStackTrace();}
+                    }catch (CursorIndexOutOfBoundsException e){
+                        e.printStackTrace();
+                    }catch (UnsupportedEncodingException e){
+                        e.printStackTrace();
+                    }
                     ver.close();
 
                 }
@@ -111,7 +114,9 @@ public class GetContacts{
                     //Log.e("While Loop",version);
                     contactNumbers.add(version);
                 }catch (CursorIndexOutOfBoundsException e){
-                       Log.e("Contact Name",contactName);}
+                       Log.e("Contact Name",contactName);
+                        contactNumbers.add("0");
+                    }
                     ver.close();
                     //the below cursor will give you details for multiple contacts
                     Cursor pCursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
@@ -120,21 +125,8 @@ public class GetContacts{
 
                     while (pCursor.moveToNext())
                     {
-
-                        // int phoneType 		= pCursor.getInt(pCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-                        //String isStarred 		= pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.STARRED));
-                        String phoneNo 	= pCursor.getString(pCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).replace("-","").replace(")","").replace("(","").replace(" ","");
-
-                      //  Log.e("Inner Loop",phoneNo);
-
-                        //you will get all phone numbers according to it's type as below switch case.
-                        //Logs.e will print the phone number along with the name in DDMS. you can use these details where ever you want.
-
-
-                        //To prevent repetition of the same number
-
-
-                            contactNumbers.add(phoneNo);
+                        String phoneNo 	= pCursor.getString(pCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        contactNumbers.add(phoneNo.replace("-","").replace(")","").replace("(","").replace(" ",""));
                     }
                     pCursor.close();
                     String[] contactNumArray = new String[contactNumbers.size()];
@@ -145,10 +137,8 @@ public class GetContacts{
 
             }
             cursor.close();
-           // ver.close();
 
         }
-        //Log.e("ayy map: ", result.toString());
         return result;
     }
 

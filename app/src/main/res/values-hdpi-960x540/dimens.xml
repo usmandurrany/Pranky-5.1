@@ -3,6 +3,8 @@
     <dimen name="setBtnTopMar">52dp</dimen>
     <dimen name="setBtnRightMar">22dp</dimen>
 
+    <dimen name="cat_title_size">25sp</dimen>
+
     <dimen name="set_btn_margin_bottom">166dp</dimen>
 
     <dimen name="day_hh_mm_ss_margin_top">245dp</dimen>
@@ -23,8 +25,8 @@
     <dimen name="indicator_line_margin_top">-50dp</dimen>
 
 
-    <dimen name="viewpager_margin_top">170dp</dimen>
-    <dimen name="viewpager_margin_bottom">230dp</dimen>
+    <dimen name="viewpager_margin_top">140dp</dimen>
+    <dimen name="viewpager_margin_bottom">190dp</dimen>
     <dimen name="viewpager_margin_left">50dp</dimen>
     <dimen name="viewpager_margin_right">50dp</dimen>
     <dimen name="viewpager_padding_top">10dp</dimen>
