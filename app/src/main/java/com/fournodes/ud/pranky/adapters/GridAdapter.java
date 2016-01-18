@@ -11,10 +11,12 @@ import android.widget.ImageView;
 
 import com.fournodes.ud.pranky.GridItem;
 import com.fournodes.ud.pranky.R;
+import com.fournodes.ud.pranky.Tutorial;
 
 public class GridAdapter extends BaseAdapter {
 
     Context context;
+    private Tutorial mTutorial;
 
 
     public class ViewHolder {
@@ -103,6 +105,7 @@ public class GridAdapter extends BaseAdapter {
         if (img == R.mipmap.addmore) {
         viewHolder.itemImage.setBackgroundResource(R.drawable.addstates);
         //viewHolder.itemImage.setTag(R.drawable.addstates);
+
         }
        else {
 

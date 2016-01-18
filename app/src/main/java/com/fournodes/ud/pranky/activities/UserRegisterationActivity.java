@@ -126,7 +126,9 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
             @Override
             public void onClick(View view) {
                 SharedPrefs.setSignUpSkipped(true);
-                startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
+                if (SharedPrefs.isAppFirstLaunch())
+                    startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
+
                 finish();
 
             }
@@ -179,11 +181,12 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
 
                     if (SharedPrefs.isSentGcmIDToServer()) {
                         appServerConn = new AppServerConn(ActionType.SIGN_UP);
+                        appServerConn.showWaitDialog("R e g i s t e r i n g ...");
                         appServerConn.execute();
                     }
-                    if(SharedPrefs.isAppFirstLaunch()) {
+                    if(SharedPrefs.isAppFirstLaunch())
                         startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
-                    }
+
                     finish();
 
 

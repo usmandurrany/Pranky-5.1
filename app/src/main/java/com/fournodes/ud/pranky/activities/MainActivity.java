@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
@@ -28,6 +27,7 @@ import com.fournodes.ud.pranky.GridItem;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.adapters.PagerAdapter;
 import com.fournodes.ud.pranky.dialogs.InfoDialog;
 import com.fournodes.ud.pranky.enums.ActionType;
@@ -77,7 +77,8 @@ public class MainActivity extends FragmentActivity {
     private Handler smClose;
     private android.support.v4.app.Fragment currPage;
     private AppDB prankyDB;
-
+    private Tutorial mTutorial;
+    private boolean showTutorial;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -150,7 +151,6 @@ public class MainActivity extends FragmentActivity {
             gcmReg.run();
         }
         createFragments();
-        showTutorial();
 
 
         mGridPager.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
@@ -174,6 +174,10 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                if (showTutorial && state == 0)
+                    startTutorial();
+
+
                 currPage = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, mGridPager.getCurrentItem());
 
                 if (mGridPager.getCurrentItem() == pm.getCount() - 1 && state == 0) { //State 0 = page has settled
@@ -193,7 +197,7 @@ public class MainActivity extends FragmentActivity {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                     if (currPage!=null)
-                        ((IFragment) currPage).animateIcon();
+                        ((IFragment) currPage).shakeIcons();
                 } else {
                     if (timerLaunch)
                         timerLaunch=false;
@@ -213,7 +217,7 @@ public class MainActivity extends FragmentActivity {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                     if (currPage!=null)
-                        ((IFragment) currPage).animateIcon();
+                        ((IFragment) currPage).shakeIcons();
                 } else {
                     SharedPrefs.setBgMusicPlaying(true);
                     timerLaunch = true;
@@ -264,7 +268,7 @@ public class MainActivity extends FragmentActivity {
                     cToast = new CustomToast(MainActivity.this, "Select  a  sound  first");
                     cToast.show();
                     if (currPage!=null)
-                        ((IFragment) currPage).animateIcon();
+                        ((IFragment) currPage).shakeIcons();
                 } else if (Selection.itemSound == -1 && Selection.itemCustomSound != null) {
 
                     cToast = new CustomToast(MainActivity.this, "A  non-custom  sound  should  be  selected");
@@ -346,9 +350,9 @@ public class MainActivity extends FragmentActivity {
                 SharedPrefs.setSettingsFirstLaunch(true);
                 SharedPrefs.setRemotePrankFirstLaunch(true);
                 SharedPrefs.setLastPageFirstLaunch(true);
-                steps = 2;
                 mGridPager.setCurrentItem(0,true);
-                showTutorial();
+                //startTutorial();
+                showTutorial=true;
             }
         });
 
@@ -368,7 +372,19 @@ public class MainActivity extends FragmentActivity {
             Intent monitorContacts = new Intent(this, MonitorContacts.class);
             startService(monitorContacts);
         }
+        startTutorial();
+        /*new CountDownTimer(1000,1000){
 
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                startTutorial();
+            }
+        }.start();*/
     }
 
     public void createFragments() {
@@ -418,6 +434,7 @@ public class MainActivity extends FragmentActivity {
                     Bundle args = new Bundle();
                     GridItem[] gItem = new GridItem[imLst.size()];
                     imLst.toArray(gItem);
+                    args.putString("category",categories[j]);
                     args.putParcelableArray("items", gItem);
                     GridFragment Gfrag = new GridFragment();
                     Gfrag.setArguments(args);
@@ -429,48 +446,6 @@ public class MainActivity extends FragmentActivity {
             }
             c.close();
 
-
-           /* if (c.moveToFirst()) {
-               // while (!c.isAfterLast() || !lastItemAdded) {
-                    ArrayList<GridItem> imLst = new ArrayList<GridItem>();
-                    Log.e("inner for loop",String.valueOf(i));
-
-                    if (!c.isAfterLast()) {
-                        for (i = 1; (i <= itemsOnPage) && (!c.isAfterLast()); i++) {
-                            id = c.getInt(c.getColumnIndex(AppDB.COLUMN_ID));
-                            Integer image = c.getInt(c.getColumnIndex(AppDB.COLUMN_ITEM_IMG_LOC));
-                            String sound = c.getString(c.getColumnIndex(AppDB.COLUMN_ITEM_SOUND_LOC));
-                            Integer soundRepeat = c.getInt(c.getColumnIndex(AppDB.COLUMN_REPEAT_COUNT));
-                            Integer soundVol = c.getInt(c.getColumnIndex(AppDB.COLUMN_SOUND_VOL));
-
-                            GridItem items = new GridItem(id, image, sound, soundRepeat, soundVol);
-                            imLst.add(items);
-                            c.moveToNext();
-                            Log.e("inner for loop",String.valueOf(i));
-                        }
-                    }
-                    if (c.isAfterLast() && i <= itemsOnPage && categories[j].equals("custom")) {
-
-                        GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
-                        imLst.add(lstItem);
-                        lastItemAdded = true;
-                        itemCount = c.getCount();
-                        addSoundLoc = addSoundLocation(itemCount); //Items count start from 0, func calculates form 1
-                        Log.e("Add Sound Loc", String.valueOf(addSoundLoc));
-
-                    }
-                    Bundle args = new Bundle();
-                    GridItem[] gItem = new GridItem[imLst.size()];
-                    imLst.toArray(gItem);
-                    args.putParcelableArray("items", gItem);
-                    GridFragment Gfrag = new GridFragment();
-                    Gfrag.setArguments(args);
-                    Gfrag.setRetainInstance(true);
-                    gridGridFragments.add(Gfrag);
-                    i = 1;
-               // }
-            }
-            c.close();*/
         }
 
         pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments);
@@ -480,6 +455,7 @@ public class MainActivity extends FragmentActivity {
         if (SharedPrefs.prefs == null)
             new SharedPrefs(this);
         SharedPrefs.setCusSoundAdded(false);
+
     }
 
 
@@ -489,88 +465,12 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    public void showTutorial() {
-
-        if (SharedPrefs.isAppFirstLaunch()) {
-            ViewTarget target = new ViewTarget(R.id.pager, this);
-            showcaseView = new ShowcaseView.Builder(this)
-                    .withMaterialShowcase()
-                    .setTarget(target)
-                    .setContentTitle("Pick a sound")
-                    .setContentText("Tap on the image to preview sound and select it")
-                    .setStyle(R.style.CustomShowcaseTheme2)
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Log.e("Step",String.valueOf(steps));
-                            if (Selection.itemSound != -1 || Selection.itemCustomSound != null || steps > 2 ) {
-                                if (steps == 3 && !timerLaunch) { //Dont proceed untill timer dialog has been launched once
-                                    Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_bounce);
-                                    grow.setAnimationListener(new Animation.AnimationListener() {
-                                        @Override
-                                        public void onAnimationStart(Animation animation) {
-
-                                        }
-
-                                        @Override
-                                        public void onAnimationEnd(Animation animation) {
-                                            Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink);
-                                            timer.startAnimation(shrink);
-                                        }
-
-                                        @Override
-                                        public void onAnimationRepeat(Animation animation) {
-
-                                        }
-                                    });
-                                    timer.startAnimation(grow);
-                                    steps = 2;
-                                }
-                                switch (steps) {
-                                    case 2:
-                                        showcaseView.setShowcase(new ViewTarget(timer), true);
-                                        showcaseView.setContentTitle("Set playback time");
-                                        showcaseView.setContentText("Tap on the timer icon to play the sound after a specified interval");
-                                        steps++;
-                                        break;
-                                    case 3:
-                                        showcaseView.setShowcase(new ViewTarget(clock), true);
-                                        showcaseView.setContentTitle("Set playback time");
-                                        showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
-                                        steps++;
-                                        break;
-
-                                   /* case 4:
-                                        showcaseView.setShowcase(new ViewTarget(settings), true);
-                                        showcaseView.setContentTitle("App settings");
-                                        showcaseView.setContentText("Tap on the settings icon to view application settings");
-                                        steps++;
-                                        break;*/
-                                    case 4:
-                                        showcaseView.setShowcase(new ViewTarget(prankbtn), true);
-                                        showcaseView.setContentTitle("Prank a friend");
-                                        showcaseView.setContentText("Pick a sound then press 'Prank' to send it directly to your friend's phone");
-                                        showcaseView.setStyle(R.style.CustomShowcaseTheme3);
-                                        steps++;
-                                        break;
-
-                                    case 5:
-                                        showcaseView.hide();
-                                        SharedPrefs.setAppFirstLaunch(false);
-                                        break;
-                                 /*   case 6:
-                                        showcaseView.hide();
-                                        mGridPager.setCurrentItem(pm.getCount() - 1);
-                                        break;*/
-
-
-                                }
-                            }
-
-                        }
-                    })
-                    .build();
-        }
+    public void startTutorial() {
+       if (SharedPrefs.isAppFirstLaunch()) {
+           mGridPager.setCurrentItem(0, true);
+           android.support.v4.app.Fragment firstPage = pm.getItem(0);
+           ((IFragment) firstPage).pageFirst();
+       }
     }
 
     @Override
@@ -589,6 +489,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
+
         if (SharedPrefs.prefs == null)
             SharedPrefs.setContext(this);
 
@@ -598,44 +499,37 @@ public class MainActivity extends FragmentActivity {
             appServerConn.execute();
         }
 
-        if (showcaseView != null && timerLaunch && SharedPrefs.isAppFirstLaunch()) {
+        if (mTutorial != null && timerLaunch && SharedPrefs.isAppFirstLaunch()) {
 
-            showcaseView.hide();
+            mTutorial.end();
+            /*mTutorial.setVisible(false);
             new CountDownTimer(5000,1000){
 
             @Override
             public void onTick(long l) {
-                /*int i =5;
+                *//*int i =5;
                 WaitDialog waitForIt= new WaitDialog(MainActivity.this);
                 waitForIt.setWaitText(String.valueOf(i--));
                 waitForIt.show();
-                */
+                *//*
             }
 
             @Override
             public void onFinish() {
-                if (showcaseView!=null) {
-                    showcaseView.show();
-                    showcaseView.setShowcase(new ViewTarget(clock), true);
-                    showcaseView.setContentTitle("Set playback time");
-                    showcaseView.setContentText("You can also schedule the playback by tapping on the clock button");
-                    steps++;
-                }
+                mTutorial.setVisible(true);
+                mTutorial.moveToNext(new ViewTarget(clock),"Set playback time","You can also schedule the playback by tapping on the clock button");
             }
-        }.start();
+        }.start();*/
 
-        }else if (showcaseView != null && clockLaunch && !prankLaunch && SharedPrefs.isAppFirstLaunch()){
-            showcaseView.setShowcase(new ViewTarget(prankbtn), true);
-            showcaseView.setContentTitle("Prank a friend");
-            showcaseView.setContentText("Pick a sound then press 'Prank' to send it directly to your friend's phone");
-            showcaseView.setStyle(R.style.CustomShowcaseTheme3);
-            steps++;
-        } else if (showcaseView != null && prankLaunch && !clockLaunch && SharedPrefs.isAppFirstLaunch()){
-            showcaseView.hide();
-            showcaseView=null;
+        }/*else if (mTutorial != null && clockLaunch && !prankLaunch && SharedPrefs.isAppFirstLaunch()){
+            mTutorial.moveToNext(new ViewTarget(prankbtn),"Prank a friend","Pick a sound then press 'Prank' to send it directly to your friend's phone");
+
+        } else if (mTutorial != null && prankLaunch && !clockLaunch && SharedPrefs.isAppFirstLaunch()){
+            mTutorial.end();
+            mTutorial = null;
             SharedPrefs.setAppFirstLaunch(false);
 
-        }
+        }*/
 
             if (SharedPrefs.isCusSoundAdded()) {
             createFragments();
@@ -694,6 +588,29 @@ public class MainActivity extends FragmentActivity {
         double minPages = totalPages(ItemCount);
         int minItems = (int) minPages * itemsOnPage;
         return (ItemCount-minItems);
+    }
+
+    public void setTutorial(Tutorial mTutorial){
+            this.mTutorial = mTutorial;
+
+            mTutorial.moveToNext(new ViewTarget(timer),"Set playback time", "Tap on the timer icon to play the sound after a specified interval");
+
+            Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_bounce);
+            grow.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink);
+                    timer.startAnimation(shrink);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
+            grow.setStartOffset(500);
+            timer.startAnimation(grow);
     }
 }
 

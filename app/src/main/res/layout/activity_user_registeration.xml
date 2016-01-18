@@ -9,19 +9,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activities.UserRegisterationActivity"
     android:background="@drawable/app_background">
+
     <com.fournodes.ud.pranky.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="S I G N  U P  "
+        android:text="S I G N   U P "
         android:gravity="center"
         android:textSize="30sp"
         android:padding="15dp"
-        android:layout_marginBottom="15dp"
         android:textColor="#bf071a"
         android:id="@+id/title"
         android:layout_above="@+id/regForm"
         />
-
+    <ImageView
+        android:id="@+id/logo_face"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/wait_anim"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/title"
+        />
     <LinearLayout
         android:id="@+id/regForm"
         android:layout_width="match_parent"
@@ -130,7 +138,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="0dp"
-        android:textColor="#ffffff"
+        android:textColor="#bf071a"
         android:textStyle="bold"
         android:padding="5dp"
         android:gravity="end"

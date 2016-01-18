@@ -14,6 +14,8 @@ import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SetPrank;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.Tutorial;
+import com.fournodes.ud.pranky.enums.TutorialPages;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
@@ -37,6 +39,7 @@ public class TimerDialogActivity extends Activity{
     int steps=2;
     View decorView;
     SetPrank scheduler;
+    Tutorial mTutorial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +98,8 @@ public class TimerDialogActivity extends Activity{
 
                         @Override
                         public void onFinish() {
-                            if (showcaseView != null && sec.getCurrentItem() == 5) {
-                                showcaseView.setShowcase(new ViewTarget(set), true);
-                                showcaseView.setContentTitle("Time Attack");
-                                showcaseView.setContentText("Tap on the set button to set the timer and wait for your sound to play");
-                                steps++;
+                            if (mTutorial != null && sec.getCurrentItem() == 5) {
+                                mTutorial.moveToNext(new ViewTarget(set),"Time Attack","Tap on the set button to set the timer and wait for your sound to play");
                             }
                         }
                     }.start();
@@ -126,12 +126,10 @@ public class TimerDialogActivity extends Activity{
 
                 if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")) {
                     scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
-                    if (showcaseView != null){
-                        showcaseView.hide();
-                        showcaseView=null;
-                        SharedPrefs.setTimerFirstLaunch(false);
-
-                    }
+                    if (mTutorial != null){
+                        mTutorial.end();
+                        //SharedPrefs.setTimerFirstLaunch(false);
+                     }
 
                     finish();
                 } else {
@@ -146,39 +144,10 @@ public class TimerDialogActivity extends Activity{
 
 
 
-if (SharedPrefs.isTimerFirstLaunch()) {
-    ViewTarget target = new ViewTarget(sec);
-    showcaseView = new ShowcaseView.Builder(this)
-            .withMaterialShowcase()
-            .setTarget(target)
-            .setContentTitle("Time Attack")
-            .setContentText("Select the timer to 5 seconds by moving the wheel")
-            .setStyle(R.style.CustomShowcaseTheme2)
-            .setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (sec.getCurrentItem() == 5 || steps ==3) {
-
-                    switch (steps) {
-                        case 2:
-                            showcaseView.setShowcase(new ViewTarget(set), true);
-                            showcaseView.setContentTitle("Time Attack");
-                            showcaseView.setContentText("Tap on the set button to set the timer and wait for your sound to play");
-                            steps++;
-
-                            break;
-                        case 3:
-                            showcaseView.hide();
-                            SharedPrefs.setTimerFirstLaunch(false);
-                            break;
-                    }
-                }
-
-                }
-            })
-            .build();
-
-}
+    if (SharedPrefs.isTimerFirstLaunch()) {
+        mTutorial = new Tutorial(this, TutorialPages.TimerDialogActivity);
+        mTutorial.show(new ViewTarget(sec),"Time Attack","Select the timer to 5 seconds by moving the wheel");
+    }
 
 
     }

@@ -411,7 +411,7 @@ public class SharedPrefs {
     }
 
     public static void setUserName(String userName) {
-        prefs.edit().putString(SharedPrefs.USER_NAME,userName).apply();
+        prefs.edit().putString(SharedPrefs.USER_NAME,userName.trim()).apply();
         SharedPrefs.userName = userName;
     }
 
@@ -421,7 +421,7 @@ public class SharedPrefs {
     }
 
     public static void setUserCountryCode(String userCountryCode) {
-        prefs.edit().putString(SharedPrefs.USER_COUNTRY_CODE,userCountryCode).apply();
+        prefs.edit().putString(SharedPrefs.USER_COUNTRY_CODE,userCountryCode.replace("+","")).apply();
         SharedPrefs.userCountryCode = userCountryCode;
     }
 

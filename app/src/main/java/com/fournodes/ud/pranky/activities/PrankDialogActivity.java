@@ -20,8 +20,10 @@ import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.dialogs.DisplayContactsDialog;
 import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.enums.TutorialPages;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.receivers.InvalidIDTimeout;
 import com.github.amlcurran.showcaseview.ShowcaseView;
@@ -37,8 +39,7 @@ public class PrankDialogActivity extends Activity{
     private EditText frndID;
     private AppServerConn appServerConn;
     private int invIDCount=0;
-
-
+    private Tutorial mTutorial;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -48,9 +49,6 @@ public class PrankDialogActivity extends Activity{
             String message = intent.getStringExtra("message");
             if (message.equals("valid-id")){
                 SharedPrefs.setFrndAppID(frndID.getText().toString());
-                AppServerConn appServerConn= new AppServerConn(PrankDialogActivity.this, ActionType.PRANK);
-                appServerConn.showWaitDialog("P r a n k i n g ...");
-                appServerConn.execute();
                 finish();
             }else if (message.equals("not-prankable")){
                 CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Your friend is unavailable");
@@ -145,9 +143,8 @@ public class PrankDialogActivity extends Activity{
         frndID.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (frndID.getText().toString().trim().length() == 4 && showcaseView!=null){
-                    showcaseView.setShowcase(new ViewTarget(btnset),true);
-                    showcaseView.setStyle(R.style.CustomShowcaseTheme3);
+                if (frndID.getText().toString().trim().length() == 4 && mTutorial!=null){
+                    mTutorial.moveToNext(new ViewTarget(btnset),"Prank a friend","Tap the button to save the ID");
                 }
                 return false;
             }
@@ -156,10 +153,11 @@ public class PrankDialogActivity extends Activity{
             @Override
             public void onClick(View view) {
                 if (frndID.getText().toString().trim().length() > 0){
-                    if (showcaseView != null){
-                        showcaseView.hide();
-                        showcaseView=null;
-                        SharedPrefs.setTimerFirstLaunch(false);
+                    if (mTutorial != null){
+                        //showcaseView.hide();
+                        //showcaseView=null;
+                        //SharedPrefs.setTimerFirstLaunch(false);
+                        mTutorial.end();
 
                     }
                     appServerConn = new AppServerConn(PrankDialogActivity.this, ActionType.DEVICE_VALIDATE,frndID.getText().toString());
@@ -173,23 +171,8 @@ public class PrankDialogActivity extends Activity{
             }
         });
         if (SharedPrefs.isRemotePrankFirstLaunch()) {
-            ViewTarget target = new ViewTarget(frndID);
-            showcaseView = new ShowcaseView.Builder(this)
-                    .withMaterialShowcase()
-                    .setTarget(target)
-                    .setContentTitle("Prank a friend")
-                    .setContentText("Enter your 'Friend's ID' found in the settings popup of your friends phone")
-                    .setStyle(R.style.CustomShowcaseTheme3)
-                    .hideOnTouchOutside()
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            showcaseView.hide();
-                            showcaseView=null;
-                            SharedPrefs.setRemotePrankFirstLaunch(false);
-                        }
-                    })
-                    .build();
+            mTutorial = new Tutorial(this, TutorialPages.PrankDialogActivity);
+            mTutorial.show(new ViewTarget(frndID),"Prank a friend","Enter your 'Friend's ID' found in the settings popup.");
         }
 
     }

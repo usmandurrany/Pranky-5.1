@@ -64,7 +64,7 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".activities.AddSoundActivity"
+            android:name=".activities.AddSoundDialogActivity"
             android:excludeFromRecents="true"
             android:label="SoundSelectDialog"
             android:screenOrientation="portrait"

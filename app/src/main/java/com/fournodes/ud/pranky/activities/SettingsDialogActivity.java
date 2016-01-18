@@ -12,19 +12,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.utils.FontManager;
-import com.fournodes.ud.pranky.gcm.GCMInitiate;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.gcm.GCMInitiate;
+import com.fournodes.ud.pranky.network.AppServerConn;
+import com.fournodes.ud.pranky.utils.FontManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -190,17 +188,6 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
     }
 
 
-
-    public static ArrayList<Date> getNextNumberOfDays(Date originalDate, int days) {
-        ArrayList<Date> dates = new ArrayList<Date>();
-        long offset;
-        for (int i = 0; i <= days; i++) {
-            offset = 86400 * 1000L * i;
-            Date date = new Date(originalDate.getTime() + offset);
-            dates.add(date);
-        }
-        return dates;
-    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

@@ -16,6 +16,8 @@ import com.fournodes.ud.pranky.AppDB;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.Tutorial;
+import com.fournodes.ud.pranky.enums.TutorialPages;
 import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FileChooser;
 import com.fournodes.ud.pranky.utils.FontManager;
@@ -31,7 +33,7 @@ import java.io.IOException;
 /**
  * Created by Usman-Durrani on 10-Nov-15.
  */
-public class AddSoundActivity extends Activity {
+public class AddSoundDialogActivity extends Activity {
 
     private View decorView;
     private AppDB prankyDB;
@@ -48,6 +50,7 @@ public class AddSoundActivity extends Activity {
     private ImageView btndiagclose;
     private ImageView btnselsound;
     private ImageView customImage;
+    private Tutorial mTutorial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class AddSoundActivity extends Activity {
         setContentView(rootView);
         onWindowFocusChanged(true);
 
-        prankyDB = new AppDB(AddSoundActivity.this);
+        prankyDB = new AppDB(AddSoundDialogActivity.this);
         txtselsound = (EditText) findViewById(R.id.txtSelSound);
         txtselsound.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
         btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
@@ -68,39 +71,8 @@ public class AddSoundActivity extends Activity {
         btnsave.setEnabled(false);
 
         if (SharedPrefs.isAddmoreFirstLaunch()) {
-            ViewTarget target = new ViewTarget(btnselsound);
-            showcaseView = new ShowcaseView.Builder(this)
-                    .withMaterialShowcase()
-                    .setTarget(target)
-                    .setContentTitle("Select a sound")
-                    .setContentText("Tap on the icon to pick a sound from your phone")
-                    .setStyle(R.style.CustomShowcaseTheme2)
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                        steps++;
-                            switch (steps) {
-                                case 2:
-                                    showcaseView.setShowcase(new ViewTarget(customImage), true);
-                                    showcaseView.setContentTitle("Pick an icon");
-                                    showcaseView.setContentText("Choose an icon for your sound");
-                                break;
-
-                                case 3:
-                                    showcaseView.setShowcase(new ViewTarget(btnsave), true);
-                                    showcaseView.setContentTitle("Save your sound");
-                                    showcaseView.setContentText("Tap on save to add your sound to the list");
-                                break;
-                                case 4:
-                                   showcaseView.hide();
-                                    SharedPrefs.setAddmoreFirstLaunch(false);
-                                    break;
-                            }
-
-                        }
-                    })
-                    .build();
-
+            mTutorial = new Tutorial(this, TutorialPages.AddSoundDialogActivity);
+            mTutorial.show(new ViewTarget(btnselsound),"Select a sound","Tap on the icon to pick a sound from your phone");
         }
 
         btndiagclose.setOnClickListener(new View.OnClickListener() {
@@ -113,22 +85,22 @@ public class AddSoundActivity extends Activity {
         btnselsound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FileChooser filech = new FileChooser(AddSoundActivity.this);
+                FileChooser filech = new FileChooser(AddSoundDialogActivity.this);
                 filech.setFileListener(new FileChooser.FileSelectedListener() {
                                            @Override
                                            public void fileSelected(File file) {
                                                fileName = file.getName();
                                                fileExt = fileName.substring(fileName.lastIndexOf("."));
 
-                                               Toast.makeText(AddSoundActivity.this, fileExt, Toast.LENGTH_SHORT).show();
+                                               Toast.makeText(AddSoundDialogActivity.this, fileExt, Toast.LENGTH_SHORT).show();
 
-                                               if (fileExt.equals(".mp3") || fileExt.equals(".wav") || fileExt.equals(".3gp") || fileExt.equals(".ogg")) {
-
-                                                   soundFile = file;
+                                               if (fileExt.equals(".mp3") || fileExt.equals(".wav") || fileExt.equals(".3gp") || fileExt.equals(".ogg")) {                         soundFile = file;
                                                    txtselsound.setText(fileName);
+                                                   if (mTutorial!=null)
+                                                   mTutorial.moveToNext(new ViewTarget(customImage),"Pick an icon","Choose an icon for your sound");
 
                                                } else
-                                                   Toast.makeText(AddSoundActivity.this, "Invalid file! Select another", Toast.LENGTH_SHORT).show();
+                                                   Toast.makeText(AddSoundDialogActivity.this, "Invalid file! Select another", Toast.LENGTH_SHORT).show();
 
                                            }
                                        }
@@ -171,10 +143,12 @@ public class AddSoundActivity extends Activity {
                    // Toast.makeText(AddSoundActivity.this, String.valueOf(newRowId), Toast.LENGTH_SHORT).show();
 
                 } else
-                    Toast.makeText(AddSoundActivity.this, "Pick an Icon", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddSoundDialogActivity.this, "Pick an Icon", Toast.LENGTH_SHORT).show();
 
 
                 SharedPrefs.setCusSoundAdded(true);
+                if (mTutorial !=null)
+                    mTutorial.end();
                 finish();
             }
         });
@@ -204,7 +178,9 @@ public class AddSoundActivity extends Activity {
         }
         if (soundFile!=null)
         btnsave.setEnabled(true);
-
+        if(soundFile!=null && mTutorial!= null){
+            mTutorial.moveToNext(new ViewTarget(btnsave),"Save your sound","Tap on save to add your sound to the list");
+        }
     }
 
 
@@ -241,8 +217,6 @@ public class AddSoundActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         SharedPrefs.setBgMusicPlaying(false);
-
-
         Cleaner.unbindDrawables(rootView);
         rootView = null;
 

@@ -13,6 +13,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,17 +26,21 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.activities.AddSoundActivity;
-import com.fournodes.ud.pranky.adapters.GridAdapter;
 import com.fournodes.ud.pranky.GridItem;
-import com.fournodes.ud.pranky.interfaces.IFragment;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.Tutorial;
+import com.fournodes.ud.pranky.activities.AddSoundDialogActivity;
+import com.fournodes.ud.pranky.activities.MainActivity;
+import com.fournodes.ud.pranky.adapters.GridAdapter;
+import com.fournodes.ud.pranky.enums.TutorialPages;
+import com.fournodes.ud.pranky.interfaces.IFragment;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
@@ -63,7 +68,10 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     private Activity activity;
     private PreviewMediaPlayer previewSound = getInstance();
     private Handler handler = new Handler();
-
+    private TextView mCategory;
+    private Tutorial mTutorial;
+    private String category;
+    private  Bundle args;
     public GridFragment() {
     }
 
@@ -73,17 +81,23 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         this.activity = activity;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        activity=getActivity();
-        Bundle args = getArguments();
-        gridItems = (GridItem[]) args.getParcelableArray("items");
         View view;
-
         view = inflater.inflate(R.layout.fragment_gridview, container, false);
+        activity=getActivity();
+        args = getArguments();
 
+        Parcelable[] ps = args.getParcelableArray("items");
+        gridItems = new GridItem[ps.length];
+        System.arraycopy(ps,0,gridItems,0,ps.length);
+        //gridItems = (GridItem[]) args.getParcelableArray("items");
         mGridView = (GridView) view.findViewById(R.id.grid_view);
+        mCategory = (TextView) view.findViewById(R.id.lblCatTitle);
+        category= args.getString("category").replaceAll(".(?=.)", "$0 ");
+        mCategory.setText(category);
 
         return view;
     }
@@ -98,7 +112,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
             if (mGridView != null) {
                 mGridView.setAdapter(mGridAdapter);
-
                 mGridView.setOnItemClickListener(new OnItemClickListener() {
 
                     @Override
@@ -118,11 +131,18 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                         }
                     }
                 });
+
             }
+
         }
+
+
     }
 
     public void onGridItemClick(GridView g, View v, final int pos, long id) throws NoSuchFieldException, IllegalAccessException, IOException, InterruptedException {
+        if (SharedPrefs.isAppFirstLaunch() && mTutorial != null){
+            ((MainActivity) activity).setTutorial(mTutorial);
+        }
 
         try {
             if (previewSound.mp != null) {
@@ -200,7 +220,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
             // Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
             SharedPrefs.setBgMusicPlaying(true);
-            soundAct = new Intent(getActivity(), AddSoundActivity.class);
+            soundAct = new Intent(getActivity(), AddSoundDialogActivity.class);
             startActivity(soundAct);
 
         } else if (gridItems[pos].item.equals("raw.flash")) {
@@ -419,32 +439,40 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
     @Override
     public void pageLast(int addSoundLoc) {
-        if (SharedPrefs.isLastPageFirstLaunch() && showcaseView == null) {
-               ImageView gridChild = (ImageView) mGridView.getChildAt(addSoundLoc);
-                ViewTarget target = new ViewTarget(gridChild);
-                    showcaseView = new ShowcaseView.Builder(activity)
-                            .withMaterialShowcase()
-                            .setTarget(target)
-                            .setContentTitle("Add more sounds")
-                            .setContentText("Tap on the '+' to add a custom sound of your choice")
-                            .setStyle(R.style.CustomShowcaseTheme3)
-                            .setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    showcaseView.hide();
-                                    SharedPrefs.setLastPageFirstLaunch(false);
-                                }
-                            })
-                            .build();
+        if (SharedPrefs.isLastPageFirstLaunch() && mTutorial == null) {
+            ImageView gridChildLast = (ImageView) mGridView.getChildAt(addSoundLoc);
+            mTutorial = new Tutorial(activity, TutorialPages.MainActivityLastPage);
+            mTutorial.show(new ViewTarget(gridChildLast), "Add more sounds", "Tap on the '+' to add a custom sound of your choice");
+        }
+    }
+    public void pageFirst(){
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mGridView.getChildCount() == 9) {
+                    Log.e("Child Count", "9");
+                    if (mGridView != null) {
+                        ImageView gridChild = (ImageView) mGridView.getChildAt(4);
+                        mTutorial = new Tutorial(activity, TutorialPages.MainActivity);
+                        mTutorial.show(new ViewTarget(gridChild), "Select a sound", "Tap on the icon to preview the sound and select it");
 
+                    }
                 }
+                else{
+
+                    //handler.postDelayed(this,50);
+                }
+
             }
 
+        },50);
+        //Log.e("First Page",String.valueOf(mGridView));
+
+    }
 
     @Override
-    public void animateIcon() {
-        //final ImageView animImg = (ImageView) mGridView.getChildAt(4);
-        //animImg.setImageResource(R.drawable.gridselectedanim);
+    public void shakeIcons() {
         Animation animation = AnimationUtils.loadAnimation(activity,R.anim.shake);
         animation.setDuration(200);
 
@@ -454,40 +482,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             animImg.startAnimation(animation);
         }
 
-
-        //AnimationDrawable boxsel = (AnimationDrawable) animImg.getDrawable();
-        //boxsel.start();
-
-       /* animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Animation shrink = AnimationUtils.loadAnimation(activity, R.anim.shrink);
-                animImg.startAnimation(shrink);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });*/
-        //animImg.startAnimation(animation);
-
-
-       /* Handler anim = new Handler();
-        anim.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-              animImg.setImageResource(0);
-            }
-        },700);
-*/
     }
-
 
     private void flipFlash() {
         try {

@@ -55,8 +55,10 @@
             android:layout_marginTop="10dp"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp">
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:divider="@drawable/divider"
+            android:dividerHeight="1dp">
 
 
         </ListView>

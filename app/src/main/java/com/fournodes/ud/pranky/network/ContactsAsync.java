@@ -35,8 +35,9 @@ public class ContactsAsync extends AsyncTask<JSONArray,String,String> {
     @Override
     protected String doInBackground(JSONArray... jsonArrays) {
         try {
-
-            String url = SharedPrefs.APP_SERVER_ADDR+"number_func.php?country_code="+SharedPrefs.getUserCountryCode().replace("+","");
+            if (SharedPrefs.prefs == null)
+            SharedPrefs.setContext(context);
+            String url = SharedPrefs.APP_SERVER_ADDR+"number_func.php?country_code="+SharedPrefs.getUserCountryCode();
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setConnectTimeout(15000);
