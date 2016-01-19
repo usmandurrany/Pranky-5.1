@@ -78,33 +78,34 @@
             android:layout_marginLeft="@dimen/viewpager_margin_left"
             android:layout_marginRight="@dimen/viewpager_margin_right"
             android:layout_marginTop="@dimen/viewpager_margin_top" />
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/clock_btn"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/circle_indicator_margin_bottom"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:src="@drawable/pager_indicator_background"
+        android:background="@drawable/pager_indicator_background2"
+        android:layout_marginTop="9dp"/>
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/pagerIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:layout_marginTop="5dp"
+        app:ci_drawable="@mipmap/pagercircle_sel"
+        app:ci_drawable_unselected="@mipmap/pagercircle"
+        app:ci_height="5dp"
+        app:ci_width="5dp"/>
+
+</FrameLayout>
 
 
-        <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/pagerIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="10dp"
-            android:layout_above="@+id/clock_btn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/circle_indicator_margin_bottom"
 
-            android:layout_marginTop="5dp"
-            app:ci_drawable="@mipmap/pagercircle_sel"
-            app:ci_drawable_unselected="@mipmap/pagercircle"
-            app:ci_height="5dp"
-            app:ci_width="5dp"
-
-
-            />
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/pagerIndicator"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/indicator_line_margin_top"
-            android:scaleType="fitCenter"
-            android:src="@drawable/slider_line" />
 
 
         <ImageView
@@ -116,7 +117,8 @@
             android:layout_marginBottom="@dimen/clock_btn_margin_bottom"
             android:layout_marginLeft="@dimen/clock_btn_margin_left"
             android:contentDescription=""
-            android:src="@drawable/clockstates" />
+            android:src="@drawable/clockstates"
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/timer_btn"

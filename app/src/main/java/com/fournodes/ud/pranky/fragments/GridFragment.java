@@ -26,10 +26,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
+import com.fournodes.ud.pranky.CustomTextView;
 import com.fournodes.ud.pranky.GridItem;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
@@ -41,17 +41,17 @@ import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.adapters.GridAdapter;
 import com.fournodes.ud.pranky.enums.TutorialPages;
 import com.fournodes.ud.pranky.interfaces.IFragment;
-import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
 public class GridFragment extends android.support.v4.app.Fragment implements IFragment {
 
     static Ringtone r;
-    GridItem[] gridItems = {};
+    GridItem[] gridItems;
     ImageView img;
     Intent soundAct;
     int currVol;
@@ -61,14 +61,13 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     Camera.Parameters params;
     boolean isLightOn;
     Runnable flashBlinkRunnable;
-    ShowcaseView showcaseView;
     private int viewPOS;
     private GridView mGridView;
     private GridAdapter mGridAdapter;
     private Activity activity;
     private PreviewMediaPlayer previewSound = getInstance();
     private Handler handler = new Handler();
-    private TextView mCategory;
+    private CustomTextView mCategory;
     private Tutorial mTutorial;
     private String category;
     private  Bundle args;
@@ -82,25 +81,41 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view;
-        view = inflater.inflate(R.layout.fragment_gridview, container, false);
+                              ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_gridview, container, false);
         activity=getActivity();
-        args = getArguments();
-
-        Parcelable[] ps = args.getParcelableArray("items");
-        gridItems = new GridItem[ps.length];
-        System.arraycopy(ps,0,gridItems,0,ps.length);
-        //gridItems = (GridItem[]) args.getParcelableArray("items");
         mGridView = (GridView) view.findViewById(R.id.grid_view);
-        mCategory = (TextView) view.findViewById(R.id.lblCatTitle);
-        category= args.getString("category").replaceAll(".(?=.)", "$0 ");
-        mCategory.setText(category);
+        mCategory = (CustomTextView) view.findViewById(R.id.lblCatTitle);
+
+        Log.e("onCreateView",String.valueOf(savedInstanceState));
+        if (savedInstanceState != null && savedInstanceState.getParcelableArray("icons")!= null){
+            Parcelable[] ps =  savedInstanceState.getParcelableArray("icons");
+            gridItems = new GridItem[ps.length];
+            System.arraycopy(ps,0,gridItems,0,ps.length);
+            category = savedInstanceState.getString("category");
+            mCategory.setText(category);
+
+        }else {
+
+            args = getArguments();
+            ArrayList<Parcelable> ps = args.getParcelableArrayList("icons");
+            ArrayList<GridItem> GridItemList = new ArrayList<>();
+            for (Parcelable item : ps) {
+                GridItemList.add((GridItem) item);
+            }
+            gridItems = new GridItem[GridItemList.size()];
+            GridItemList.toArray(gridItems);
+
+            category = args.getString("category").replaceAll(".(?=.)", "$0 ");
+            mCategory.setText(category);
+        }
 
         return view;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -499,4 +514,14 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             Log.w("Camera Blink", e.toString());
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.v("Grid Fragment Sate", category);
+        Log.v("Grid Fragment Sate", String.valueOf(gridItems.length));
+        outState.putParcelableArray("icons",gridItems);
+        outState.putString("category",category);
+    }
+
 }

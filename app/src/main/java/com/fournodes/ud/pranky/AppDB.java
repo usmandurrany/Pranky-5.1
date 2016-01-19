@@ -46,7 +46,7 @@ public class AppDB extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "pranky.db";
-    private static final int DATABASE_VERSION = 34;
+    private static final int DATABASE_VERSION = 35;
 
     // Database creation sql statement
     private static final String CREATE_PRANK_TABLE = "create table if not exists "

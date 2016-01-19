@@ -65,7 +65,7 @@
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:background">@drawable/prankit</item>
+        <item name="android:background">@drawable/ellipse</item>
     </style>
 
     <style name="AlertDialogCustom" parent="@android:style/Theme.DeviceDefault.Dialog">

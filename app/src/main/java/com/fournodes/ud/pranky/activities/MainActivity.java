@@ -37,6 +37,7 @@ import com.fournodes.ud.pranky.interfaces.IFragment;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.services.MonitorContacts;
 import com.fournodes.ud.pranky.utils.Cleaner;
+import com.fournodes.ud.pranky.utils.FontManager;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
@@ -44,6 +45,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity {
+    String[] item;
+
 
     private View rootView;
     private View decorView;
@@ -131,6 +134,15 @@ public class MainActivity extends FragmentActivity {
         setContentView(rootView);
         onWindowFocusChanged(true);
 
+        /*********************************** SavedInstance Checks***********************************/
+
+        if(SharedPrefs.prefs == null){
+            new SharedPrefs(this).initAllPrefs();
+            if (FontManager.getTypeFace(this,SharedPrefs.DEFAULT_FONT) == null){
+                FontManager.createTypeFace(this, SharedPrefs.DEFAULT_FONT);
+
+            }
+        }
 
         /*********************************** Initializations ***************************************/
 
@@ -247,7 +259,7 @@ public class MainActivity extends FragmentActivity {
                 if (SharedPrefs.getInvalidIDCount()<3) {
                 SharedPrefs.setBgMusicPlaying(true);
                 Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
-                startActivity(prankDialog);
+                startActivityForResult(prankDialog,1);
                 }else{
                     cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
                     cToast.show();
@@ -263,7 +275,6 @@ public class MainActivity extends FragmentActivity {
                     clockLaunch = false;
                 }
                 prankLaunch =true;
-
                 if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(MainActivity.this, "Select  a  sound  first");
                     cToast.show();
@@ -277,7 +288,7 @@ public class MainActivity extends FragmentActivity {
                     if (SharedPrefs.getInvalidIDCount()<3) {
                         SharedPrefs.setBgMusicPlaying(true);
                         Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
-                        startActivity(prankDialog);
+                        startActivityForResult(prankDialog,1);
                     }else{
                         cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
                         cToast.show();
@@ -373,18 +384,13 @@ public class MainActivity extends FragmentActivity {
             startService(monitorContacts);
         }
         startTutorial();
-        /*new CountDownTimer(1000,1000){
 
-            @Override
-            public void onTick(long l) {
+    }
 
-            }
-
-            @Override
-            public void onFinish() {
-                startTutorial();
-            }
-        }.start();*/
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        animPrankButton();
     }
 
     public void createFragments() {
@@ -422,7 +428,7 @@ public class MainActivity extends FragmentActivity {
 
                 } else if (((c.getPosition()==count) || c.getPosition()==count-1 || count==0) && i <= itemsOnPage && categories[j].equals("custom")) {
 
-                    GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
+                       GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
                     imLst.add(lstItem);
                     lastItemAdded = true;
                     itemCount = c.getCount();
@@ -435,10 +441,10 @@ public class MainActivity extends FragmentActivity {
                     GridItem[] gItem = new GridItem[imLst.size()];
                     imLst.toArray(gItem);
                     args.putString("category",categories[j]);
-                    args.putParcelableArray("items", gItem);
+                    args.putParcelableArrayList("icons", imLst);
                     GridFragment Gfrag = new GridFragment();
                     Gfrag.setArguments(args);
-                    Gfrag.setRetainInstance(true);
+                    //Gfrag.setRetainInstance(true);
                     gridGridFragments.add(Gfrag);
                     Log.e("Page Break At", String.valueOf(i));
                     i = 1;
@@ -450,7 +456,6 @@ public class MainActivity extends FragmentActivity {
 
         pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments);
         mGridPager.setAdapter(pm);
-        mGridPager.setOffscreenPageLimit(2);
 
         if (SharedPrefs.prefs == null)
             new SharedPrefs(this);
@@ -611,6 +616,25 @@ public class MainActivity extends FragmentActivity {
             });
             grow.setStartOffset(500);
             timer.startAnimation(grow);
+    }
+
+    public void animPrankButton(){
+        Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_prank_btn);
+        grow.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink_prank_btn);
+                prankbtn.startAnimation(shrink);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        grow.setStartOffset(500);
+        prankbtn.startAnimation(grow);
     }
 }
 

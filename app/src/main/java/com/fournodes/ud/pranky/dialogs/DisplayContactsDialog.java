@@ -3,6 +3,7 @@ package com.fournodes.ud.pranky.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,7 +17,9 @@ import com.fournodes.ud.pranky.ContactDetails;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.interfaces.AsyncResponse;
 import com.fournodes.ud.pranky.network.AppServerConn;
+import com.fournodes.ud.pranky.network.ContactsAsync;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,15 +27,17 @@ import java.util.Arrays;
 /**
  * Created by Usman on 12/1/2016.
  */
-public class DisplayContactsDialog {
+public class DisplayContactsDialog implements AsyncResponse {
 
     ContactDetails[] contArr;
     Context context;
     ArrayList<ContactDetails> contList;
     Dialog dialog;
     int conNamePOS;
-
-
+    SwipeRefreshLayout refreshList;
+    ImageView close;
+    ListView lstContacts;
+    WaitDialog wait;
 
     public DisplayContactsDialog(Context context){
     this.context=context;
@@ -40,33 +45,47 @@ public class DisplayContactsDialog {
     }
 
     public void show() {
+
+        dialog = new Dialog(context, R.style.ClockDialog);
+        dialog.setContentView(R.layout.dialog_contact_names);
+        refreshList = (SwipeRefreshLayout) dialog.findViewById(R.id.refreshList);
+        refreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshList.setRefreshing(false);
+                 wait = new WaitDialog(context);
+                wait.setWaitText("R e f r e s h i n g ...");
+                wait.show();
+                AppDB prankyDB= new AppDB(context);
+                prankyDB.nuke(AppDB.TABLE_CONTACTS);
+                ContactsAsync syncContacts = new ContactsAsync(context);
+                syncContacts.delegate = DisplayContactsDialog.this;
+                syncContacts.execute();
+            }
+        });
+        close = (ImageView) dialog.findViewById(R.id.close);
+        lstContacts =  (ListView) dialog.findViewById(R.id.lstConNames);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+
         AppDB prankyDB = new AppDB(context);
         contList = prankyDB.getAllContacts();
         // contArr = new ContactDetails[contList.size()];
         // contList.toArray(contArr);
+
         String[] names = new String[contList.size()];
         for (int i = 0; i < contList.size(); i++) {
             names[i] = contList.get(i).getName();
         }
         if (names.length > 0) {
-
-
-
-
-
-            dialog = new Dialog(context, R.style.ClockDialog);
-            dialog.setContentView(R.layout.dialog_contact_names);
-
-            ImageView close = (ImageView) dialog.findViewById(R.id.close);
-            ListView lstContacts =  (ListView) dialog.findViewById(R.id.lstConNames);
-            close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
-
-            final ArrayAdapter<String> conAdapter = new ArrayAdapter<String>(context,
+        final ArrayAdapter<String> conAdapter = new ArrayAdapter<String>(context,
                     R.layout.contacts_row, names);
             lstContacts.setAdapter(conAdapter);
 
@@ -117,77 +136,31 @@ public class DisplayContactsDialog {
             //Clear the not focusable flag from the window
             dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-            AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom));
-            builderSingle.setTitle("Select a friend to prank");
-
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
-                    android.R.layout.simple_list_item_1, names);
-
-            builderSingle.setAdapter(
-                    arrayAdapter,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, final int pos) {
-                            // String strName = arrayAdapter.getItem(which);
-
-                            Log.e("ID:", String.valueOf(contList.get(pos).getId()));
-                            Log.e("Name:", contList.get(pos).getName());
-                            Log.e("Numbers:", Arrays.toString(contList.get(pos).getRegNumbers()));
-                            Log.e("NumIDs:", Arrays.toString(contList.get(pos).getNumIDs()));
-
-                            if (contList.get(pos).getRegNumbers().length > 1) {
-                                AlertDialog.Builder builderInner = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom)).setItems(contList.get(pos).getRegNumbers(), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int i) {
-                                        // The 'which' argument contains the index position
-                                        // of the selected item
-
-                                        Log.e("Numbers:", contList.get(pos).getRegNumbers()[i]);
-                                        AppServerConn appServerConn = new AppServerConn(context, ActionType.GET_FRIEND_APP_ID, contList.get(pos).getNumIDs()[i], contList.get(pos).getRegNumbers()[i]);
-                                        appServerConn.showWaitDialog("Fetching ID ...");
-                                        appServerConn.execute();
-
-                                    }
-                                });
-                                builderInner.setTitle("Which number?");
-                                builderInner.show();
-                            }else{
-                                AppServerConn appServerConn = new AppServerConn(context, ActionType.GET_FRIEND_APP_ID, contList.get(pos).getNumIDs()[0], contList.get(pos).getRegNumbers()[0]);
-                                appServerConn.execute();
-                            }
-                        }
-                    });
-            builderSingle.show();*/
-
         }
 
         else {
             CustomToast cToast = new CustomToast(context,"Nothing  to  show");
             cToast.show();
+        }
+    }
+
+    @Override
+    public void processFinish() {
+        //refreshList.setRefreshing(false);
+        if (wait != null)
+            wait.dismiss();
+        AppDB prankyDB = new AppDB(context);
+        contList = prankyDB.getAllContacts();
+
+        String[] names = new String[contList.size()];
+        for (int i = 0; i < contList.size(); i++) {
+            names[i] = contList.get(i).getName();
+        }
+        if (names.length > 0) {
+            final ArrayAdapter<String> conAdapter = new ArrayAdapter<>(context,
+                    R.layout.contacts_row, names);
+            lstContacts.setAdapter(conAdapter);
+            lstContacts.invalidate();
         }
     }
 }

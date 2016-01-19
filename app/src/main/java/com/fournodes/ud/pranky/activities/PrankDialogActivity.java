@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.dialogs.DisplayContactsDialog;
@@ -56,14 +55,6 @@ public class PrankDialogActivity extends Activity{
 
             }else if (message.equals("fetch-id")){
                 frndID.setText(SharedPrefs.getFrndAppID());
-                if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
-                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Select  a  sound  first");
-                    cToast.show();
-                }else{
-                    AppServerConn appServerConn= new AppServerConn(PrankDialogActivity.this, ActionType.PRANK);
-                    appServerConn.showWaitDialog("P r a n k i n g ...");
-                    appServerConn.execute();
-                }
                 finish();
 
             }
@@ -222,7 +213,7 @@ public class PrankDialogActivity extends Activity{
                 mMessageReceiver, new IntentFilter("prank-dialog-activity-broadcast"));
     }
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         SharedPrefs.setBgMusicPlaying(false);
         System.gc();

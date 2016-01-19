@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/popup_small" />
+
+    <ImageView
+        android:id="@+id/timerset"
+        android:layout_width="222dp"
+        android:layout_height="96dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/set_btn_margin_bottom"
+        android:scaleType="fitCenter"
+        android:src="@drawable/setstates" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical">
+
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/timerhour"
+            android:layout_width="40dp"
+            android:layout_height="100dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:text=":"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/timerminute"
+            android:layout_width="40dp"
+            android:layout_height="100dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:text=":"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/timersec"
+            android:layout_width="40dp"
+            android:layout_height="100dp" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/timerclose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/close_btn_margin_right"
+        android:layout_marginTop="@dimen/close_btn_margin_top"
+        android:src="@drawable/closestates" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/day_hh_mm_ss_margin_top"
+        android:gravity="center">
+
+        <com.fournodes.ud.pranky.CustomTextView
+            android:layout_width="26dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="3dp"
+            android:text="HH"
+            android:textAllCaps="true"
+            android:textColor="#bf071a"
+
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.fournodes.ud.pranky.CustomTextView
+            android:layout_width="33dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="22dp"
+            android:text="MM"
+            android:textAllCaps="true"
+            android:textColor="#bf071a"
+
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.fournodes.ud.pranky.CustomTextView
+            android:layout_width="26dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="15dp"
+            android:text="SS"
+            android:textAllCaps="true"
+            android:textColor="#bf071a"
+
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

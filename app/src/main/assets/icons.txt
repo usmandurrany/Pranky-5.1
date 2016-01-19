@@ -60,3 +60,8 @@ drill,1,1
 elecrazor,2,1
 keyboard,1,1
 tv,1,1
+chainsaw,1,1
+typewriter,1,1
+sewing_machine,1,1
+modem,1,1
+lawn_mower,1,1

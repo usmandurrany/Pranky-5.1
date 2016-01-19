@@ -421,7 +421,9 @@ public class SharedPrefs {
     }
 
     public static void setUserCountryCode(String userCountryCode) {
-        prefs.edit().putString(SharedPrefs.USER_COUNTRY_CODE,userCountryCode.replace("+","")).apply();
+        if(userCountryCode != null)
+            userCountryCode = userCountryCode.replace("+","");
+        prefs.edit().putString(SharedPrefs.USER_COUNTRY_CODE,userCountryCode).apply();
         SharedPrefs.userCountryCode = userCountryCode;
     }
 

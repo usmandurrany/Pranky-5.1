@@ -264,6 +264,8 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                     break;
                 case CHECK_REGISTERED:
                     if (resp.getString("registered").equals("false")){
+                        if (SharedPrefs.prefs == null)
+                            new SharedPrefs(context).initAllPrefs();
                         SharedPrefs.setSignUpComplete(false);
                         SharedPrefs.setUserCountry(null);
                         SharedPrefs.setUserCountryCode(null);

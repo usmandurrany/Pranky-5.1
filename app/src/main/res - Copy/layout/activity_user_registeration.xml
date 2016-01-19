@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".activities.UserRegisterationActivity"
+    android:background="@drawable/app_background">
+
+    <com.fournodes.ud.pranky.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="S I G N   U P "
+        android:gravity="center"
+        android:textSize="30sp"
+        android:padding="15dp"
+        android:textColor="#bf071a"
+        android:id="@+id/title"
+        android:layout_above="@+id/regForm"
+        />
+    <ImageView
+        android:id="@+id/logo_face"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/wait_anim"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/title"
+        />
+    <LinearLayout
+        android:id="@+id/regForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/usrName"
+                android:hint="Name"
+                android:gravity="center"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <AutoCompleteTextView
+                android:id="@+id/usrCountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Country "
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:inputType="textAutoComplete"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+<EditText
+    android:layout_width="75dp"
+    android:layout_height="wrap_content"
+    android:inputType="phone"
+    android:id="@+id/countryCode"
+    android:hint="+"
+    />
+
+
+            <EditText
+                android:hint="Number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/usrNumber"
+                android:maxLength="10"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="If you don&apos;t want to sign up at the moment, you can always skip it."
+        android:id="@+id/infoText"
+        android:textSize="14sp"
+        android:layout_below="@+id/regForm"
+        android:layout_alignLeft="@+id/regForm"
+        android:layout_alignStart="@+id/regForm"
+        android:gravity="center" />
+    <ImageView
+        android:id="@+id/signUp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/infoText"
+        android:layout_width="140dp"
+        android:layout_height="55dp"
+        android:src="@drawable/btn_done_states"
+        android:layout_centerInParent="true"/>
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="SKIP"
+        android:id="@+id/skip"
+        android:layout_toRightOf="@+id/signUp"
+        android:layout_below="@id/infoText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="0dp"
+        android:textColor="#bf071a"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:gravity="end"
+        android:textSize="15dp"/>
+
+</RelativeLayout>

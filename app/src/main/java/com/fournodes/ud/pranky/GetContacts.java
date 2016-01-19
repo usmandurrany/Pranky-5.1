@@ -19,6 +19,7 @@ import java.util.Map;
 /**
  * Created by Usman on 8/1/2016.
  */
+
 public class GetContacts{
     Context context;
 

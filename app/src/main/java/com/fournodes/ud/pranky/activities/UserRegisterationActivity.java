@@ -23,15 +23,16 @@ import android.widget.TextView;
 import com.fournodes.ud.pranky.AppDB;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CustomToast;
-import com.fournodes.ud.pranky.GetContacts;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.dialogs.WaitDialog;
 import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.interfaces.AsyncResponse;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 import com.fournodes.ud.pranky.services.MonitorContacts;
 
-public class UserRegisterationActivity extends Activity implements View.OnKeyListener {
+public class UserRegisterationActivity extends Activity implements View.OnKeyListener, AsyncResponse {
 
     private View decorView;
     private EditText name;
@@ -40,16 +41,17 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
     private EditText number;
     private ImageView btnDone;
     private TextView btnSkip;
-
     private String[] cArray;
     private String[] ccArray;
 
     private AppServerConn appServerConn;
     private AppDB prankyDB;
 
+
     private boolean validCountry;
+    WaitDialog wait;
 
-
+    ContactsAsync syncContacts;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -78,6 +80,9 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registeration);
         onWindowFocusChanged(true);
+        syncContacts = new ContactsAsync(this);
+        syncContacts.delegate=this;
+
         int color = Color.parseColor("#ffffff");
         name = (EditText) findViewById(R.id.usrName);
         name.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
@@ -114,6 +119,7 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
         btnSkip = (TextView) findViewById(R.id.skip);
         cArray = getResources().getStringArray(R.array.countries);
         ccArray = getResources().getStringArray(R.array.cc);
+
 
         //Log.e("Country Array", Arrays.toString(ccArray));
 
@@ -164,30 +170,28 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
                     SharedPrefs.setUserPhoneNumber(number.getText().toString());
 
                     /******************************** Contacts sync testing code **********************************/
-                    prankyDB = new AppDB(UserRegisterationActivity.this);
-                    new Thread(new Runnable() {
+                    //syncContacts.init("R e g i s t e r i n g ...");
+                wait  = new WaitDialog(UserRegisterationActivity.this);
+                wait.setWaitText("R e g i s t e r i n g ...");
+                wait.show();
+                    syncContacts.execute();
+
+                   /* new Thread(new Runnable() {
                         @Override
                         public void run() {
                             GetContacts getContacts = new GetContacts(UserRegisterationActivity.this);
                             ContactsAsync sync = new ContactsAsync(UserRegisterationActivity.this);
                             prankyDB.storeContacts(getContacts.ReadPhoneContacts());
-                            sync.execute(prankyDB.contactDetails());
+                            sync.execute();
                         }
-                    }).start();
+                    }).start();*/
 
                     //getContacts.ReadPhoneContacts();
                     Intent monitorContacts = new Intent(UserRegisterationActivity.this, MonitorContacts.class);
                     startService(monitorContacts);
 
-                    if (SharedPrefs.isSentGcmIDToServer()) {
-                        appServerConn = new AppServerConn(ActionType.SIGN_UP);
-                        appServerConn.showWaitDialog("R e g i s t e r i n g ...");
-                        appServerConn.execute();
-                    }
-                    if(SharedPrefs.isAppFirstLaunch())
-                        startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
 
-                    finish();
+
 
 
             }
@@ -258,5 +262,19 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
     public void finish() {
         super.finish();
         overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_form_top);
+    }
+
+
+    @Override
+    public void processFinish() {
+        if (SharedPrefs.isSentGcmIDToServer()) {
+            appServerConn = new AppServerConn(UserRegisterationActivity.this, ActionType.SIGN_UP);
+            appServerConn.showWaitDialog("R e g i s t e r i n g ...");
+            appServerConn.execute();
+        }
+        if(SharedPrefs.isAppFirstLaunch())
+            startActivity(new Intent(UserRegisterationActivity.this, MainActivity.class));
+        wait.dismiss();
+        finish();
     }
 }

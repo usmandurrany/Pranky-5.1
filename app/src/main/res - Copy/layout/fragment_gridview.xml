@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:paddingBottom="3dp"
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp"
+    android:paddingTop="@dimen/viewpager_padding_top">
+
+<com.fournodes.ud.pranky.CustomTextView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="A n i m a l s "
+    android:id="@+id/lblCatTitle"
+    android:gravity="center"
+    android:textSize="@dimen/cat_title_size"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:textAllCaps="true"
+    android:layout_marginBottom="10dp"
+    android:textColor="#bf071a"/>
+    <GridView
+        android:layout_below="@+id/lblCatTitle"
+        android:id="@+id/grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:horizontalSpacing="10dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"
+        android:gravity="center_horizontal"/>
+
+</RelativeLayout>

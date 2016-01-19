@@ -4,7 +4,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.fournodes.ud.pranky.AppDB;
+import com.fournodes.ud.pranky.GetContacts;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.dialogs.WaitDialog;
+import com.fournodes.ud.pranky.interfaces.AsyncResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,17 +27,30 @@ import java.util.HashSet;
  * Created by Usman on 8/1/2016.
  */
 public class ContactsAsync extends AsyncTask<JSONArray,String,String> {
+    public AsyncResponse delegate = null;
     URL url;
     String result;
     JSONArray resp;
     Context context;
+    WaitDialog wDiag;
     public ContactsAsync(Context context){
         this.context=context;
+    }
+    AppDB prankyDB;
+    public void init(String text){
+        wDiag = new WaitDialog(context);
+        wDiag.setWaitText(text);
+        wDiag.show();
     }
 
     @Override
     protected String doInBackground(JSONArray... jsonArrays) {
         try {
+            GetContacts getContacts = new GetContacts(context);
+            prankyDB = new AppDB(context);
+            prankyDB.storeContacts(getContacts.ReadPhoneContacts());
+
+
             if (SharedPrefs.prefs == null)
             SharedPrefs.setContext(context);
             String url = SharedPrefs.APP_SERVER_ADDR+"number_func.php?country_code="+SharedPrefs.getUserCountryCode();
@@ -48,7 +64,7 @@ public class ContactsAsync extends AsyncTask<JSONArray,String,String> {
             con.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
             con.setRequestProperty("Accept","*/*");
 
-           String urlParameters = "payload="+jsonArrays[0].toString();
+           String urlParameters = "payload="+prankyDB.contactDetails().toString();
             //String urlParameters = "payload=[[\"13745275\"],[\"03334152336\",\"03322955277\"],[\"1234567900\"]]";
 
             // Send post request
@@ -102,7 +118,8 @@ public class ContactsAsync extends AsyncTask<JSONArray,String,String> {
 
     @Override
     protected void onPostExecute(String result) {
-
+        if (wDiag!=null)
+            wDiag.dismiss();
     AppDB prankyDB = new AppDB(context);
         try {
 
@@ -127,7 +144,7 @@ public class ContactsAsync extends AsyncTask<JSONArray,String,String> {
                 prankyDB.storeRegisteredContact(id,numIDsArr,numbersArr);
 
             }
-
+            delegate.processFinish();
         }catch (JSONException e){e.printStackTrace();}
         catch (NullPointerException e){e.printStackTrace();}
         super.onPostExecute(result);

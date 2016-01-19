@@ -11,7 +11,6 @@ public class GridItem implements Parcelable {
     public int itemVolume; //Item volume fetched from database
     public int itemRepeatCount; //Item repeat value fetched from database
 
-
     public GridItem(){
         this.itemID = 0;
         this.itemResID = 0;

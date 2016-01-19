@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+                android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/popup_small" />
+
+    <ImageView
+        android:id="@+id/set"
+        android:layout_width="222dp"
+        android:layout_height="96dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/set_btn_margin_bottom"
+        android:scaleType="fitCenter"
+        android:src="@drawable/setstates" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="95dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center">
+
+            <com.fournodes.ud.pranky.CustomTextView
+                android:id="@+id/lblfrndID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Friend's ID "
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_marginLeft="50dp"
+                    android:singleLine="true"
+                    android:id="@+id/txtfrndID"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="4512"
+                    android:inputType="phone"
+                    android:textColor="#000"
+                    android:textSize="@dimen/settings_font_small"
+                    android:background="@android:drawable/edit_text"
+                    android:textStyle="bold"
+                    android:maxLength="4"/>
+                <ImageView
+                    android:id="@+id/btnShowContacts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/show_contacts"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/close_btn_margin_right"
+        android:layout_marginTop="@dimen/close_btn_margin_top"
+        android:src="@drawable/closestates" />
+
+
+</RelativeLayout>

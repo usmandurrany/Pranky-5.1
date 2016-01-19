@@ -48,20 +48,26 @@
                 android:textSize="@dimen/settings_font_small"
                 android:textStyle="bold" />
         </LinearLayout>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refreshList"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp"
+            >
         <ListView
             android:id="@+id/lstConNames"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="match_parent"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"
             android:divider="@drawable/divider"
             android:dividerHeight="1dp">
 
 
         </ListView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
 
