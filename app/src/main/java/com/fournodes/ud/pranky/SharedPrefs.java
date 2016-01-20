@@ -411,7 +411,9 @@ public class SharedPrefs {
     }
 
     public static void setUserName(String userName) {
-        prefs.edit().putString(SharedPrefs.USER_NAME,userName.trim()).apply();
+        if(userName != null)
+            userName = userName.trim();
+        prefs.edit().putString(SharedPrefs.USER_NAME,userName).apply();
         SharedPrefs.userName = userName;
     }
 

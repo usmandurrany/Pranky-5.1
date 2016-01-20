@@ -10,10 +10,11 @@ import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.GetContacts;
+import com.fournodes.ud.pranky.Contacts;
+import com.fournodes.ud.pranky.interfaces.AsyncResponse;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 
-public class MonitorContacts extends Service {
+public class MonitorContacts extends Service implements AsyncResponse {
     private int mContactCount;
 
     public MonitorContacts() {
@@ -79,8 +80,9 @@ public class MonitorContacts extends Service {
                 // CONTACT UPDATED.
                 Log.d("Contact Service", currentCount+"");
                 ContactsAsync async = new ContactsAsync(getApplicationContext());
-                GetContacts getContacts = new GetContacts(getApplicationContext());
-                async.execute(getContacts.checkConctactVer());
+                async.delegate=MonitorContacts.this;
+                Contacts contacts = new Contacts(getApplicationContext());
+                async.execute(contacts.getUpdated());
 
             } else {
                 // NEW CONTACT.
@@ -125,4 +127,8 @@ public class MonitorContacts extends Service {
         }catch (Exception e){}
     }
 
+    @Override
+    public void processFinish() {
+
+    }
 }

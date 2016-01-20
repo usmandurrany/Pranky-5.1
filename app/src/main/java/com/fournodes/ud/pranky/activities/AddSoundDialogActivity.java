@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fournodes.ud.pranky.AppDB;
+import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -36,7 +36,7 @@ import java.io.IOException;
 public class AddSoundDialogActivity extends Activity {
 
     private View decorView;
-    private AppDB prankyDB;
+    private DatabaseHelper prankyDB;
     private int cusIconID;
     private File soundFile;
     private String fileName;
@@ -60,7 +60,7 @@ public class AddSoundDialogActivity extends Activity {
         setContentView(rootView);
         onWindowFocusChanged(true);
 
-        prankyDB = new AppDB(AddSoundDialogActivity.this);
+        prankyDB = new DatabaseHelper(AddSoundDialogActivity.this);
         txtselsound = (EditText) findViewById(R.id.txtSelSound);
         txtselsound.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
         btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
@@ -126,18 +126,18 @@ public class AddSoundDialogActivity extends Activity {
 
 // Create a new map of values, where column names are the keys
                     ContentValues values = new ContentValues();
-                    values.put(AppDB.COLUMN_ITEM_IMG_LOC, cusIconID);
-                    values.put(AppDB.COLUMN_ITEM_NAME, soundFile.getName());
-                    values.put(AppDB.COLUMN_ITEM_SOUND_LOC, soundFile.getAbsolutePath());
-                    values.put(AppDB.COLUMN_REPEAT_COUNT, 1);
-                    values.put(AppDB.COLUMN_SOUND_VOL, 1);
-                    values.put(AppDB.COLUMN_ITEM_CATEGORY, "custom");
+                    values.put(DatabaseHelper.COLUMN_ITEM_IMG_LOC, cusIconID);
+                    values.put(DatabaseHelper.COLUMN_ITEM_NAME, soundFile.getName());
+                    values.put(DatabaseHelper.COLUMN_ITEM_SOUND_LOC, soundFile.getAbsolutePath());
+                    values.put(DatabaseHelper.COLUMN_REPEAT_COUNT, 1);
+                    values.put(DatabaseHelper.COLUMN_SOUND_VOL, 1);
+                    values.put(DatabaseHelper.COLUMN_ITEM_CATEGORY, "custom");
 
 
 // Insert the new row, returning the primary key value of the new row
                     long newRowId;
                     newRowId = db.insert(
-                            AppDB.TABLE_ITEMS,
+                            DatabaseHelper.TABLE_ITEMS,
                             "null",
                             values);
                    // Toast.makeText(AddSoundActivity.this, String.valueOf(newRowId), Toast.LENGTH_SHORT).show();

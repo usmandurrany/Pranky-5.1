@@ -15,8 +15,6 @@ import java.util.TimeZone;
  * Created by Usman on 11/5/2015.
  */
 public class SetPrank {
-    public int soundVol;
-    public int soundRepeat;
     Calendar schAlarm;
     private Context context;
     private int day, hr, min, sec, ampm;

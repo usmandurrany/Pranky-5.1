@@ -7,7 +7,7 @@ import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.AppDB;
+import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.enums.ActionType;
 import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -271,7 +271,7 @@ public class AppServerConn extends AsyncTask<String,String,String> {
                         SharedPrefs.setUserCountryCode(null);
                         SharedPrefs.setUserName(null);
                         SharedPrefs.setUserPhoneNumber(null);
-                        new AppDB(context).nuke(AppDB.TABLE_CONTACTS);
+                        new DatabaseHelper(context).nuke(DatabaseHelper.TABLE_CONTACTS);
                         broadcastResult.putExtra("message", "not-registered");
                     }
                     else

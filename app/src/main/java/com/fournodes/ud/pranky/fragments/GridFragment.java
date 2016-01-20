@@ -1,6 +1,5 @@
 package com.fournodes.ud.pranky.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -50,55 +49,46 @@ import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
 public class GridFragment extends android.support.v4.app.Fragment implements IFragment {
 
-    static Ringtone r;
-    GridItem[] gridItems;
-    ImageView img;
-    Intent soundAct;
-    int currVol;
-    int lastView = -1;
-    int i = 0;
-    Camera cam = null;
-    Camera.Parameters params;
-    boolean isLightOn;
-    Runnable flashBlinkRunnable;
+    private static Ringtone r;
+    private GridItem[] gridItems;
+    private ImageView img;
+    private Intent soundAct;
+    private int lastView = -1;
+    private Camera cam = null;
+    private Camera.Parameters params;
+    private boolean isLightOn;
+    private Runnable flashBlinkRunnable;
     private int viewPOS;
     private GridView mGridView;
     private GridAdapter mGridAdapter;
     private Activity activity;
     private PreviewMediaPlayer previewSound = getInstance();
-    private Handler handler = new Handler();
     private CustomTextView mCategory;
     private Tutorial mTutorial;
     private String category;
-    private  Bundle args;
+    private Bundle args;
+
     public GridFragment() {
     }
-
-    @SuppressLint("ValidFragment")
-    public GridFragment(GridItem[] gridItems, Activity activity) {
-        this.gridItems = gridItems;
-        this.activity = activity;
-    }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater,
-                              ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gridview, container, false);
-        activity=getActivity();
+        activity = getActivity();
         mGridView = (GridView) view.findViewById(R.id.grid_view);
         mCategory = (CustomTextView) view.findViewById(R.id.lblCatTitle);
 
-        Log.e("onCreateView",String.valueOf(savedInstanceState));
-        if (savedInstanceState != null && savedInstanceState.getParcelableArray("icons")!= null){
-            Parcelable[] ps =  savedInstanceState.getParcelableArray("icons");
+        Log.e("onCreateView", String.valueOf(savedInstanceState));
+        if (savedInstanceState != null && savedInstanceState.getParcelableArray("icons") != null) {
+            Parcelable[] ps = savedInstanceState.getParcelableArray("icons");
             gridItems = new GridItem[ps.length];
-            System.arraycopy(ps,0,gridItems,0,ps.length);
+            System.arraycopy(ps, 0, gridItems, 0, ps.length);
             category = savedInstanceState.getString("category");
             mCategory.setText(category);
 
-        }else {
+        } else {
 
             args = getArguments();
             ArrayList<Parcelable> ps = args.getParcelableArrayList("icons");
@@ -155,7 +145,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     }
 
     public void onGridItemClick(GridView g, View v, final int pos, long id) throws NoSuchFieldException, IllegalAccessException, IOException, InterruptedException {
-        if (SharedPrefs.isAppFirstLaunch() && mTutorial != null){
+        if (SharedPrefs.isAppFirstLaunch() && mTutorial != null) {
             ((MainActivity) activity).setTutorial(mTutorial);
         }
 
@@ -184,11 +174,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             if (r.isPlaying()) {
                 r.stop();
                 r = null;
-
-                if (r == null)
-                {
-                    Log.e("Ringtone Manager", String.valueOf(r));
-                }
             }
         } catch (Exception e) {
             Log.e("Ringtone Manager", e.toString());
@@ -226,192 +211,195 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         }
 
 
-        //Toast.makeText(activity,"Position Clicked: " + pos + " & Image is: "+ getResources().getResourceEntryName(gridItems[pos].res), Toast.LENGTH_LONG).show();
-        //Toast.makeText(activity,"Position Clicked: " + pos + " & Repeat Count is: "+ gridItems[pos].itemRepeatCount, Toast.LENGTH_LONG).show();
-        //Toast.makeText(activity,"Position Clicked: " + pos + " & Volume is: "+ gridItems[pos].itemVolume, Toast.LENGTH_LONG).show();
         Log.w("IMAGE CLICKED", gridItems[pos].item);
 
-        if (gridItems[pos].item.equals("addSound")) {
+        switch (gridItems[pos].item) {
+            case "addSound":
 
-            // Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
-            SharedPrefs.setBgMusicPlaying(true);
-            soundAct = new Intent(getActivity(), AddSoundDialogActivity.class);
-            startActivity(soundAct);
+                // Toast.makeText(activity, "Add more", Toast.LENGTH_SHORT).show();
+                SharedPrefs.setBgMusicPlaying(true);
+                soundAct = new Intent(getActivity(), AddSoundDialogActivity.class);
+                startActivity(soundAct);
 
-        } else if (gridItems[pos].item.equals("raw.flash")) {
+                break;
+            case "raw.flash":
 
-            if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+                if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
 
-                try {
-                    cam = Camera.open();
+                    try {
+                        cam = Camera.open();
 
-                } catch (RuntimeException e) {
-                    Log.w("Camera Flash", e.toString());
-                }
-                Camera.Parameters p = cam.getParameters();
-                p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                cam.setParameters(p);
-                cam.startPreview();
-
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        try {
-                            cam.stopPreview();
-                            cam.release();
-                        } catch (RuntimeException e) {
-                            Log.w("Camera Flash", e.toString());
-                        }
-
+                    } catch (RuntimeException e) {
+                        Log.w("Camera Flash", e.toString());
                     }
-                }, 2000);
-                Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
-            }
+                    Camera.Parameters p = cam.getParameters();
+                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    cam.setParameters(p);
+                    cam.startPreview();
 
-        } else if (gridItems[pos].item.equals("raw.flash_blink")) {
-
-            if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-
-
-                flashBlinkRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            cam = Camera.open();
-                        } catch (RuntimeException e) {
-                            Log.w("Camera Blink", e.toString());
-                        }
-                        params = cam.getParameters();
-                        try {
-                            cam.setPreviewTexture(new SurfaceTexture(0));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        cam.startPreview();
-
-                        for (int i = 0; i < 2; i++) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
                             try {
-                                flipFlash();
-                                Thread.sleep(100);
-                                flipFlash();
-                                Thread.sleep(100);
-                            } catch (InterruptedException e) {
+                                cam.stopPreview();
+                                cam.release();
+                            } catch (RuntimeException e) {
+                                Log.w("Camera Flash", e.toString());
+                            }
+
+                        }
+                    }, 2000);
+                    Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
+                }
+
+                break;
+            case "raw.flash_blink":
+
+                if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+
+
+                    flashBlinkRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                cam = Camera.open();
+                            } catch (RuntimeException e) {
+                                Log.w("Camera Blink", e.toString());
+                            }
+                            params = cam.getParameters();
+                            try {
+                                cam.setPreviewTexture(new SurfaceTexture(0));
+                            } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        }
-                        try {
-                            cam.stopPreview();
-                            cam.release();
-                        } catch (RuntimeException e) {
-                            Log.w("Camera Blink", e.toString());
-                        }
+                            cam.startPreview();
 
+                            for (int i = 0; i < 2; i++) {
+                                try {
+                                    flipFlash();
+                                    Thread.sleep(100);
+                                    flipFlash();
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            try {
+                                cam.stopPreview();
+                                cam.release();
+                            } catch (RuntimeException e) {
+                                Log.w("Camera Blink", e.toString());
+                            }
+
+                        }
+                    };
+
+                    new Thread(flashBlinkRunnable).start();
+                    //flashBlinkRunnable.run();
+                    Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
+                }
+
+                break;
+            case "raw.vibrate_hw":
+
+                Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
+                long[] pattern = {0, 2000, 1000, 2000};
+                ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern, -1);
+
+                Selection.setValues(activity,
+                        gridItems[pos].itemResID,
+                        gridItems[pos].item,
+                        gridItems[pos].itemRepeatCount,
+                        gridItems[pos].itemVolume);
+
+                break;
+            case "raw.message":
+                try {
+                    Selection.setValues(activity,
+                            gridItems[pos].itemResID,
+                            gridItems[pos].item,
+                            gridItems[pos].itemRepeatCount,
+                            gridItems[pos].itemVolume);
+
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    r = RingtoneManager.getRingtone(activity, notification);
+                    r.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "raw.ringtone":
+                try {
+
+                    if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
+
+
+                        Selection.setValues(activity,
+                                gridItems[pos].itemResID,
+                                gridItems[pos].item,
+                                gridItems[pos].itemRepeatCount,
+                                gridItems[pos].itemVolume);
+
+                        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                        r = RingtoneManager.getRingtone(activity, notification);
+                        r.play();
+                        lastView = -2;
+
+
+                    } else
+                        lastView = -1;
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            default:
+
+                Selection.setValues(activity,
+                        gridItems[pos].itemResID,
+                        gridItems[pos].item,
+                        gridItems[pos].itemRepeatCount,
+                        gridItems[pos].itemVolume);
+
+                if (Selection.itemSound != -1) {
+                    previewSound.mp = MediaPlayer.create(activity, Selection.itemSound);
+                } else if (Selection.itemCustomSound != null) {
+                    previewSound.mp = new MediaPlayer();
+                    try {
+                        previewSound.mp.setDataSource(gridItems[pos].item);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                };
 
-                new Thread(flashBlinkRunnable).start();
-                //flashBlinkRunnable.run();
-                Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
-            }
+                    previewSound.mp.prepareAsync();
 
-        } else if (gridItems[pos].item.equals("raw.vibrate_hw")) {
+                }
 
-            Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
-            long[] pattern = {0, 2000, 1000, 2000};
-            ((Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE)).vibrate(pattern, -1);
-            Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
-
-        } else if (gridItems[pos].item.equals("raw.message")) {
-            try {
-                Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
-
-                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                r = RingtoneManager.getRingtone(activity, notification);
-                r.play();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (gridItems[pos].item.equals("raw.ringtone")) {
-            try {
+                previewSound.mp.setVolume(100, 100);
+                Log.w("MediaPlayer Debug", "Last View " + lastView + " Current View : " + viewPOS);
 
                 if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
 
-
-                    Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
-
-                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-                    r = RingtoneManager.getRingtone(activity, notification);
-                    r.play();
-                    lastView = -2;
+                    previewSound.mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mediaPlayer) {
 
 
-                } else
-                    lastView = -1;
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Selection.setValues(activity, gridItems[pos].itemResID, gridItems[pos].item, gridItems[pos].itemRepeatCount, gridItems[pos].itemVolume);
-            if (Selection.itemSound != -1) {
-                previewSound.mp = MediaPlayer.create(activity, Selection.itemSound);
-            } else if (Selection.itemCustomSound != null) {
-                previewSound.mp = new MediaPlayer();
-                try {
-                    previewSound.mp.setDataSource(gridItems[pos].item);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                previewSound.mp.prepareAsync();
-
-            }
-//            final AudioManager audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-//            currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-//            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-//            previewSound.mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            previewSound.mp.setVolume(100, 100);
-            Log.w("MediaPlayer Debug", "Last View " + lastView + " Current View : " + viewPOS);
-
-            if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
-
-                previewSound.mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mediaPlayer) {
-
-
-                        previewSound.mp.start();
-                        lastView = -2;
-                        try {
-                            if (BackgroundMusic.mp.isPlaying()) {
-                                BackgroundMusic.pause();
+                            previewSound.mp.start();
+                            lastView = -2;
+                            try {
+                                if (BackgroundMusic.mp.isPlaying()) {
+                                    BackgroundMusic.pause();
+                                }
+                            } catch (Exception e) {
+                                Log.e("Grid Fragment", e.toString());
                             }
-                        } catch (Exception e) {
-                            Log.e("Grid Fragment", e.toString());
                         }
-                    }
-                });
+                    });
 
 
-            } else {
-                lastView = -1;
-                try {
-
-                    BackgroundMusic.play();
-
-                } catch (Exception e) {
-                    Log.e("Grid Fragment", e.toString());
-                }
-            }
-
-
-            previewSound.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    previewSound.mp.release();
-                    previewSound.mp = null;
-                    // audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
+                } else {
                     lastView = -1;
                     try {
 
@@ -420,19 +408,37 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                     } catch (Exception e) {
                         Log.e("Grid Fragment", e.toString());
                     }
-
                 }
-            });
 
 
-            previewSound.mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                    previewSound.mp.release();
-                    lastView = -1;
-                    return false;
-                }
-            });
+                previewSound.mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        previewSound.mp.release();
+                        previewSound.mp = null;
+                        // audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
+                        lastView = -1;
+                        try {
+
+                            BackgroundMusic.play();
+
+                        } catch (Exception e) {
+                            Log.e("Grid Fragment", e.toString());
+                        }
+
+                    }
+                });
+
+
+                previewSound.mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                        previewSound.mp.release();
+                        lastView = -1;
+                        return false;
+                    }
+                });
+                break;
         }
 
         AnimationDrawable boxsel = (AnimationDrawable) img.getDrawable();
@@ -460,7 +466,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             mTutorial.show(new ViewTarget(gridChildLast), "Add more sounds", "Tap on the '+' to add a custom sound of your choice");
         }
     }
-    public void pageFirst(){
+
+    public void pageFirst() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -473,22 +480,21 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                         mTutorial.show(new ViewTarget(gridChild), "Select a sound", "Tap on the icon to preview the sound and select it");
 
                     }
-                }
-                else{
+                } else {
 
                     //handler.postDelayed(this,50);
                 }
 
             }
 
-        },50);
+        }, 50);
         //Log.e("First Page",String.valueOf(mGridView));
 
     }
 
     @Override
     public void shakeIcons() {
-        Animation animation = AnimationUtils.loadAnimation(activity,R.anim.shake);
+        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.shake);
         animation.setDuration(200);
 
         final int size = mGridView.getChildCount();
@@ -520,8 +526,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         super.onSaveInstanceState(outState);
         Log.v("Grid Fragment Sate", category);
         Log.v("Grid Fragment Sate", String.valueOf(gridItems.length));
-        outState.putParcelableArray("icons",gridItems);
-        outState.putString("category",category);
+        outState.putParcelableArray("icons", gridItems);
+        outState.putString("category", category);
     }
 
 }

@@ -11,16 +11,13 @@ import android.widget.ImageView;
 
 import com.fournodes.ud.pranky.GridItem;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.Tutorial;
 
 public class GridAdapter extends BaseAdapter {
 
-    Context context;
-    private Tutorial mTutorial;
+    private Context context;
 
 
     public class ViewHolder {
-        public ImageView imageView;
         public ImageView itemImage;
     }
 
@@ -33,13 +30,6 @@ public class GridAdapter extends BaseAdapter {
         items = images;
     }
 
-    public GridItem[] getItems() {
-        return items;
-    }
-
-    public void setItems(GridItem[] items) {
-        this.items = items;
-    }
 
     @Override
     public int getCount() {
@@ -63,13 +53,6 @@ public class GridAdapter extends BaseAdapter {
             return items[pos].itemID;
         }
         return 0;
-    }
-
-    public String getImageSound(int pos) {
-        if (items != null && pos >= 0 && pos < getCount()) {
-            return items[pos].item;
-        }
-        return null;
     }
 
     @Override

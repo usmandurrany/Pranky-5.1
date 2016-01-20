@@ -20,7 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.fournodes.ud.pranky.AppDB;
+import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.GridItem;
@@ -45,8 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity {
-    String[] item;
-
 
     private View rootView;
     private View decorView;
@@ -67,19 +65,16 @@ public class MainActivity extends FragmentActivity {
 
     private int itemsOnPage = 9;
     private int itemCount=0;
-    private int lastPage=0;
     private int addSoundLoc=0;
 
 
     private int pageNo = 0;
-    private int steps = 2;
     private boolean open = false;
     private boolean timerLaunch = false;
     private boolean clockLaunch = false;
-    private boolean prankLaunch = false;
     private Handler smClose;
     private android.support.v4.app.Fragment currPage;
-    private AppDB prankyDB;
+    private DatabaseHelper prankyDB;
     private Tutorial mTutorial;
     private boolean showTutorial;
 
@@ -157,7 +152,7 @@ public class MainActivity extends FragmentActivity {
         clock = (ImageView) findViewById(R.id.clock_btn);
         settings = (ImageView) findViewById(R.id.settings);
 
-        prankyDB = new AppDB(this);
+        prankyDB = new DatabaseHelper(this);
         if(!SharedPrefs.isSentGcmIDToServer()) {
             GCMInitiate gcmReg = new GCMInitiate(this);
             gcmReg.run();
@@ -255,7 +250,6 @@ public class MainActivity extends FragmentActivity {
                     timerLaunch = false;
                     clockLaunch = false;
                 }
-                prankLaunch =true;
                 if (SharedPrefs.getInvalidIDCount()<3) {
                 SharedPrefs.setBgMusicPlaying(true);
                 Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
@@ -274,7 +268,6 @@ public class MainActivity extends FragmentActivity {
                     timerLaunch = false;
                     clockLaunch = false;
                 }
-                prankLaunch =true;
                 if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(MainActivity.this, "Select  a  sound  first");
                     cToast.show();
@@ -404,7 +397,7 @@ public class MainActivity extends FragmentActivity {
         SQLiteDatabase db = prankyDB.getReadableDatabase();
 
         for(int j = 0; j<categories.length;j++) {
-            Cursor c = db.query(AppDB.TABLE_ITEMS,null,AppDB.COLUMN_ITEM_CATEGORY+" = ?",new String[] {categories[j]},null,null,null);
+            Cursor c = db.query(DatabaseHelper.TABLE_ITEMS,null, DatabaseHelper.COLUMN_ITEM_CATEGORY+" = ?",new String[] {categories[j]},null,null,null);
             int count =c.getCount();
             ArrayList<GridItem> imLst = new ArrayList<GridItem>();
             Log.e("Category ",categories[j]);
@@ -415,11 +408,11 @@ public class MainActivity extends FragmentActivity {
             while(c.moveToNext() || (categories[j].equals("custom") && !lastItemAdded)) {
                 Log.e("Cursor Position", String.valueOf(c.getPosition()));
                 if (!c.isAfterLast() && i<=itemsOnPage) {
-                    id = c.getInt(c.getColumnIndex(AppDB.COLUMN_ID));
-                    Integer image = c.getInt(c.getColumnIndex(AppDB.COLUMN_ITEM_IMG_LOC));
-                    String sound = c.getString(c.getColumnIndex(AppDB.COLUMN_ITEM_SOUND_LOC));
-                    Integer soundRepeat = c.getInt(c.getColumnIndex(AppDB.COLUMN_REPEAT_COUNT));
-                    Integer soundVol = c.getInt(c.getColumnIndex(AppDB.COLUMN_SOUND_VOL));
+                    id = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_ID));
+                    Integer image = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_ITEM_IMG_LOC));
+                    String sound = c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_ITEM_SOUND_LOC));
+                    Integer soundRepeat = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_REPEAT_COUNT));
+                    Integer soundVol = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_SOUND_VOL));
 
                     GridItem items = new GridItem(id, image, sound, soundRepeat, soundVol);
                     imLst.add(items);
@@ -507,35 +500,9 @@ public class MainActivity extends FragmentActivity {
         if (mTutorial != null && timerLaunch && SharedPrefs.isAppFirstLaunch()) {
 
             mTutorial.end();
-            /*mTutorial.setVisible(false);
-            new CountDownTimer(5000,1000){
 
-            @Override
-            public void onTick(long l) {
-                *//*int i =5;
-                WaitDialog waitForIt= new WaitDialog(MainActivity.this);
-                waitForIt.setWaitText(String.valueOf(i--));
-                waitForIt.show();
-                *//*
-            }
 
-            @Override
-            public void onFinish() {
-                mTutorial.setVisible(true);
-                mTutorial.moveToNext(new ViewTarget(clock),"Set playback time","You can also schedule the playback by tapping on the clock button");
-            }
-        }.start();*/
-
-        }/*else if (mTutorial != null && clockLaunch && !prankLaunch && SharedPrefs.isAppFirstLaunch()){
-            mTutorial.moveToNext(new ViewTarget(prankbtn),"Prank a friend","Pick a sound then press 'Prank' to send it directly to your friend's phone");
-
-        } else if (mTutorial != null && prankLaunch && !clockLaunch && SharedPrefs.isAppFirstLaunch()){
-            mTutorial.end();
-            mTutorial = null;
-            SharedPrefs.setAppFirstLaunch(false);
-
-        }*/
-
+        }
             if (SharedPrefs.isCusSoundAdded()) {
             createFragments();
             mGridPager.setCurrentItem(pm.getCount() - 1);

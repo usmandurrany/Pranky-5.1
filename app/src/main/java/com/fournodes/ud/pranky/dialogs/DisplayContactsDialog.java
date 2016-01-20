@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.fournodes.ud.pranky.AppDB;
+import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.ContactDetails;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
@@ -38,9 +38,14 @@ public class DisplayContactsDialog implements AsyncResponse {
     ImageView close;
     ListView lstContacts;
     WaitDialog wait;
+    DatabaseHelper prankyDB;
+    int curCount;
+    int newCount;
 
     public DisplayContactsDialog(Context context){
-    this.context=context;
+        this.context=context;
+        prankyDB = new DatabaseHelper(context);
+        curCount = prankyDB.conRegCount();
 
     }
 
@@ -53,11 +58,11 @@ public class DisplayContactsDialog implements AsyncResponse {
             @Override
             public void onRefresh() {
                 refreshList.setRefreshing(false);
-                 wait = new WaitDialog(context);
+                wait = new WaitDialog(context);
                 wait.setWaitText("R e f r e s h i n g ...");
                 wait.show();
-                AppDB prankyDB= new AppDB(context);
-                prankyDB.nuke(AppDB.TABLE_CONTACTS);
+                DatabaseHelper prankyDB= new DatabaseHelper(context);
+                prankyDB.nuke(DatabaseHelper.TABLE_CONTACTS);
                 ContactsAsync syncContacts = new ContactsAsync(context);
                 syncContacts.delegate = DisplayContactsDialog.this;
                 syncContacts.execute();
@@ -75,7 +80,6 @@ public class DisplayContactsDialog implements AsyncResponse {
 
 
 
-        AppDB prankyDB = new AppDB(context);
         contList = prankyDB.getAllContacts();
         // contArr = new ContactDetails[contList.size()];
         // contList.toArray(contArr);
@@ -84,12 +88,13 @@ public class DisplayContactsDialog implements AsyncResponse {
         for (int i = 0; i < contList.size(); i++) {
             names[i] = contList.get(i).getName();
         }
-        if (names.length > 0) {
         final ArrayAdapter<String> conAdapter = new ArrayAdapter<String>(context,
                     R.layout.contacts_row, names);
-            lstContacts.setAdapter(conAdapter);
+        lstContacts.setAdapter(conAdapter);
+        lstContacts.setEmptyView(dialog.findViewById(R.id.emptyElement));
 
-            lstContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        lstContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int conNamePOS, long l) {
                     DisplayContactsDialog.this.conNamePOS = conNamePOS;
@@ -136,20 +141,29 @@ public class DisplayContactsDialog implements AsyncResponse {
             //Clear the not focusable flag from the window
             dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
-        }
 
-        else {
-            CustomToast cToast = new CustomToast(context,"Nothing  to  show");
-            cToast.show();
-        }
     }
 
     @Override
     public void processFinish() {
         //refreshList.setRefreshing(false);
+
+        newCount=prankyDB.conRegCount();
+        if(newCount-curCount > 0){
+            CustomToast cToast = new CustomToast(context, newCount-curCount+" contacts added");
+            cToast.show();
+        }else if(newCount-curCount < 0){
+            CustomToast cToast = new CustomToast(context, ((newCount-curCount)*(-1))+" contacts removed");
+            cToast.show();
+        }else{
+            CustomToast cToast = new CustomToast(context, "No change");
+            cToast.show();
+        }
+
+
         if (wait != null)
             wait.dismiss();
-        AppDB prankyDB = new AppDB(context);
+        DatabaseHelper prankyDB = new DatabaseHelper(context);
         contList = prankyDB.getAllContacts();
 
         String[] names = new String[contList.size()];

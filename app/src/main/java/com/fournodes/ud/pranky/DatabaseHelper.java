@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Created by Usman on 11/9/2015.
  */
-public class AppDB extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
     private Context context;
 
     public static final String TABLE_ITEMS = "items";
@@ -68,9 +68,11 @@ public class AppDB extends SQLiteOpenHelper {
             + " text not null, "  + COLUMN_NUM_IDS
             + " integer default null);";
 
-    public AppDB(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context=context;
+        if  (SharedPrefs.prefs == null)
+            new SharedPrefs(context).initAllPrefs();
     }
 
     @Override
@@ -113,7 +115,7 @@ public class AppDB extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(AppDB.class.getName(),
+        Log.w(DatabaseHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS);
@@ -138,7 +140,7 @@ public class AppDB extends SQLiteOpenHelper {
      * Stores all the contacts received in form of a HashMap in the database
      ***********************************************************************************************/
 
-    public JSONArray storeContacts(Map<String, String[]> contacts) {
+    public JSONArray storeContacts(HashMap<String, String[]> contacts) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         List<String[]> allNumbers = new ArrayList<>();
@@ -261,5 +263,14 @@ public class AppDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(table, null, null);
         db.close();
+    }
+
+    public int conRegCount(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =  db.query(TABLE_CONTACTS,new String[] {COLUMN_REGISTERED},COLUMN_REGISTERED+" != ?",new String[] {"0"},null,null,null);
+        if (cursor != null)
+            return cursor.getCount();
+        else
+            return -1;
     }
 }

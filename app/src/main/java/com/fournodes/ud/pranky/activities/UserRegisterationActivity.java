@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fournodes.ud.pranky.AppDB;
+import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
@@ -45,7 +45,7 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
     private String[] ccArray;
 
     private AppServerConn appServerConn;
-    private AppDB prankyDB;
+    private DatabaseHelper prankyDB;
 
 
     private boolean validCountry;
@@ -179,14 +179,14 @@ public class UserRegisterationActivity extends Activity implements View.OnKeyLis
                    /* new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            GetContacts getContacts = new GetContacts(UserRegisterationActivity.this);
+                            Contacts getContacts = new Contacts(UserRegisterationActivity.this);
                             ContactsAsync sync = new ContactsAsync(UserRegisterationActivity.this);
-                            prankyDB.storeContacts(getContacts.ReadPhoneContacts());
+                            prankyDB.storeContacts(getContacts.getPhoneBook());
                             sync.execute();
                         }
                     }).start();*/
 
-                    //getContacts.ReadPhoneContacts();
+                    //getContacts.getPhoneBook();
                     Intent monitorContacts = new Intent(UserRegisterationActivity.this, MonitorContacts.class);
                     startService(monitorContacts);
 
