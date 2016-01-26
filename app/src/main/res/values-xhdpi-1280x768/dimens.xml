@@ -52,5 +52,6 @@
     <dimen name="prank_switch_margin_left">25dp</dimen>
 
     <dimen name="settings_linearlayout_height">65dp</dimen>
+    <dimen name="reg_logo_size">90dp</dimen>
 
 </resources>

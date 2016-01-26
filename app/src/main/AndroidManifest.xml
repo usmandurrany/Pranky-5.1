@@ -108,7 +108,9 @@
             android:name=".gcm.GCMRegistrationService"
             android:exported="false" />
 
-        <activity android:name=".activities.UserRegisterationActivity" />
+        <activity android:name=".activities.UserRegistrationActivity"
+            android:screenOrientation="portrait"
+            />
 
         <service
             android:name=".services.MonitorContacts"

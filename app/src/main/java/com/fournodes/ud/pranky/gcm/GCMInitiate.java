@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.network.AppServerConn;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -20,8 +21,9 @@ import java.util.TimeZone;
  * Created by Usman on 12/30/2015.
  */
 public class GCMInitiate {
-    Context context;
-    AppServerConn appServerConn;
+
+    private Context context;
+
     public GCMInitiate(Context context) {
         this.context = context;
     }
@@ -42,19 +44,20 @@ public class GCMInitiate {
             //serverState is 1 and myAppID has expired but myGcmID is set
             if (SharedPrefs.getServerState() == 1 && exp.before(today) && SharedPrefs.getMyGcmID() != null) {
 
-                SharedPrefs.setMyAppID("");
-                appServerConn= new AppServerConn(context, ActionType.SEND_GCM_ID);
-                appServerConn.execute();
+                new AppServerConn(context, ActionType.RenewAppId).execute();
 
             }
             // serverState is 1 and myGcmId is not set
-            else if (SharedPrefs.getServerState() == 1 && SharedPrefs.getMyGcmID() == null && SharedPrefs.getMyGcmID() == null) {
+            else if (SharedPrefs.getServerState() == 1 && SharedPrefs.getMyGcmID() == null) {
                 if (checkPlayServices()) {
-                    Intent register = new Intent(context, GCMRegistrationService.class);
-                    context.startService(register);
+                    context.startService(new Intent(
+                            context,GCMRegistrationService.class)
+                            .putExtra(String.valueOf(ActionType.Callback), String.valueOf(ClassType.MainActivity)));
                 }
 
 
+            } else if (!SharedPrefs.isSentGcmIDToServer() && SharedPrefs.getMyAppID() == null){
+                new AppServerConn(ActionType.RegisterDevice).execute();
             }
 
 
@@ -64,7 +67,7 @@ public class GCMInitiate {
     }
 
 
-     private boolean checkPlayServices() {
+    private boolean checkPlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(context);
         if (resultCode != ConnectionResult.SUCCESS) {

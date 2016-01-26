@@ -10,14 +10,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.network.AppServerConn;
-import com.fournodes.ud.pranky.receivers.PlayPrank;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.activities.MainActivity;
+import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.network.AppServerConn;
+import com.fournodes.ud.pranky.receivers.PlayPrank;
 import com.google.android.gms.gcm.GcmListenerService;
 
 /**
@@ -35,7 +38,6 @@ public class GCMBroadcastReceiver extends GcmListenerService {
      */
     // [START receive_message]
     private AppServerConn appServerConn;
-    private String message;
 
 
 
@@ -45,12 +47,9 @@ public class GCMBroadcastReceiver extends GcmListenerService {
             SharedPrefs SP = new SharedPrefs(getApplicationContext());
             SP.initAllPrefs();
         }
-
-        message = data.getString("message");
-      //  SharedPrefs.setFrndAppID(data.getString("sender_id"));
-
-        switch(ActionType.valueOf(message)) {
-            case PRANK:
+        Log.e("Message received",data.getString("message"));
+        switch(ActionType.valueOf(data.getString("message"))) {
+            case PlayPrank:
 
                 if (SharedPrefs.isPrankable()) {
                     String sound = data.getString("item");
@@ -59,9 +58,15 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     String soundVol = data.getString("volume");
 
                     Intent intent = new Intent(getApplicationContext(), PlayPrank.class);
-                    if (sound.equals("raw.flash") || sound.equals("raw.flash_blink") || sound.equals("raw.vibrate_hw") || sound.equals("raw.message")|| sound.equals("raw.ringtone")){
+
+                    if (sound.equals("raw.flash")
+                            || sound.equals("raw.flash_blink")
+                            || sound.equals("raw.vibrate_hw")
+                            || sound.equals("raw.message")
+                            || sound.equals("raw.ringtone")) {
+
                         intent.putExtra("sysSound", -1);
-                        intent.putExtra("cusSound", sound.toString());
+                        intent.putExtra("cusSound", sound);
 
                     }
                     else
@@ -79,40 +84,42 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), _id,
                             intent, PendingIntent.FLAG_ONE_SHOT);
 
-                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
 
                     SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
-                    appServerConn = new AppServerConn(ActionType.PRANK_SUCCESSFUL);
+                    appServerConn = new AppServerConn(ActionType.NotifyPrankSuccessful);
                     appServerConn.execute();
 
 
                 } else {
                     SharedPrefs.setServerState(0); // Set serverState to 0
                     // Send request to app server to remove myAppID from database untill serverState becomes 1
-                    appServerConn = new AppServerConn(ActionType.UPDATE_STATE);
+                    appServerConn = new AppServerConn(ActionType.UpdateAvailability);
                     appServerConn.execute();
                      // Params (myGcmID, myAppId, serverState(fom stored prefs))
                     // Once myAppID has been removed from the db on the server, generate a response for the sender
                     SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
-                    appServerConn = new AppServerConn(ActionType.PRANK_FAILED);
+                    appServerConn = new AppServerConn(ActionType.NotifyPrankFailed);
                     appServerConn.execute();
 
                 }
                 break;
 
-            case PRANK_FAILED:
+            case NotifyPrankFailed:
                 // Broadcast the response to Main activity to display a toast
-                Intent intent = new Intent("main-activity-broadcast");
-                intent.putExtra("message", "prank-response-received");
-                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(
+                        new Intent(String.valueOf(ClassType.MainActivity))
+                                .putExtra(String.valueOf(ActionType.Broadcast),
+                                        String.valueOf(Message.PrankFailed)));
 
                 break;
-            case PRANK_SUCCESSFUL:
+            case NotifyPrankSuccessful:
                 // Broadcast the response to Main activity to display a toast
-                Intent succ = new Intent("main-activity-broadcast");
-                succ.putExtra("message", "prank-successful");
-                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(succ);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(
+                        new Intent(String.valueOf(ClassType.MainActivity))
+                                .putExtra(String.valueOf(ActionType.Broadcast),
+                                        String.valueOf(Message.PrankSuccessful)));
 
                 break;
         }

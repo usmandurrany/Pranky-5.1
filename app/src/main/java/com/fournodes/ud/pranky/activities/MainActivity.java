@@ -20,10 +20,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CustomToast;
+import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.GridItem;
+import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.Selection;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -31,14 +32,14 @@ import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.adapters.PagerAdapter;
 import com.fournodes.ud.pranky.dialogs.InfoDialog;
 import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.fragments.GridFragment;
 import com.fournodes.ud.pranky.gcm.GCMInitiate;
 import com.fournodes.ud.pranky.interfaces.IFragment;
 import com.fournodes.ud.pranky.network.AppServerConn;
-import com.fournodes.ud.pranky.services.MonitorContacts;
 import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FontManager;
-import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
@@ -54,7 +55,6 @@ public class MainActivity extends FragmentActivity {
     private ImageView timer;
     private ImageView settings;
     private ImageView prankbtn;
-    private ShowcaseView showcaseView;
     private CustomToast cToast;
     private ObjectAnimator anim;
     private RelativeLayout sideMenu;
@@ -77,45 +77,50 @@ public class MainActivity extends FragmentActivity {
     private DatabaseHelper prankyDB;
     private Tutorial mTutorial;
     private boolean showTutorial;
+    private PreviewMediaPlayer previewSound;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
-            String message = intent.getStringExtra("message");
-            switch (message) {
-                case "prank-sent":
+            switch (Message.valueOf(intent.getStringExtra(String.valueOf(ActionType.Broadcast)))) {
+                case PrankSent:
                     Log.e("Prank Sent", "Successfully");
                     break;
 
-                case "custom-sound-added":
+                case SoundAdded:
                     createFragments();
                     mGridPager.setCurrentItem(pm.getCount() - 1);
                     break;
-                case "prank-response-received": {
+                case PrankFailed: {
                     CustomToast cToast = new CustomToast(getApplicationContext(), "Your  friend  is  unavailable ");
                     cToast.show();
                     break;
                 }
-                case "prank-successful": {
+                case PrankSuccessful: {
                     CustomToast cToast = new CustomToast(getApplicationContext(), "Your  friend  has  been  pranked ");
                     cToast.show();
                     break;
                 }
 
-                case "network-error": {
+                case NetworkError: {
                     CustomToast cToast = new CustomToast(getApplicationContext(), "Network  or server unavailable ");
                     cToast.show();
                     break;
                 }
-                case "not-registered": {
+                case UserUnregistered: {
                     CustomToast cToast = new CustomToast(getApplicationContext(), "You  have  been  logged  out");
                     cToast.show();
                     break;
                 }
-                case "registered": {
+                case UserRegistered: {
 
+                    break;
+                }
+                case TokenGenerated: {
+                    AppServerConn appServerConn = new AppServerConn(ActionType.RegisterDevice);
+                    appServerConn.execute();
                     break;
                 }
             }
@@ -129,6 +134,8 @@ public class MainActivity extends FragmentActivity {
         setContentView(rootView);
         onWindowFocusChanged(true);
 
+
+
         /*********************************** SavedInstance Checks***********************************/
 
         if(SharedPrefs.prefs == null){
@@ -141,6 +148,7 @@ public class MainActivity extends FragmentActivity {
 
         /*********************************** Initializations ***************************************/
 
+        previewSound = PreviewMediaPlayer.getInstance(this);
         mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
         mGridPager = (ViewPager) findViewById(R.id.pager);
         prankbtn = (ImageView) findViewById(R.id.prankit);
@@ -153,10 +161,9 @@ public class MainActivity extends FragmentActivity {
         settings = (ImageView) findViewById(R.id.settings);
 
         prankyDB = new DatabaseHelper(this);
-        if(!SharedPrefs.isSentGcmIDToServer()) {
-            GCMInitiate gcmReg = new GCMInitiate(this);
-            gcmReg.run();
-        }
+        new GCMInitiate(this).run();
+
+
         createFragments();
 
 
@@ -168,7 +175,7 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Log.e("POSITION", String.valueOf(position));
+                //Log.e("POSITION", String.valueOf(position));
 
                 android.support.v4.app.Fragment fragment = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, pageNo);
 
@@ -264,6 +271,8 @@ public class MainActivity extends FragmentActivity {
         prankbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new GCMInitiate(MainActivity.this).run();
+
                 if (timerLaunch || clockLaunch) {
                     timerLaunch = false;
                     clockLaunch = false;
@@ -286,8 +295,8 @@ public class MainActivity extends FragmentActivity {
                         cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
                         cToast.show();
                     }
-                } else {
-                    AppServerConn appServerConn= new AppServerConn(MainActivity.this, ActionType.PRANK);
+                }else {
+                    AppServerConn appServerConn= new AppServerConn(MainActivity.this, ActionType.PlayPrank);
                     appServerConn.showWaitDialog("P r a n k i n g ...");
                     appServerConn.execute();
 
@@ -354,7 +363,10 @@ public class MainActivity extends FragmentActivity {
                 SharedPrefs.setSettingsFirstLaunch(true);
                 SharedPrefs.setRemotePrankFirstLaunch(true);
                 SharedPrefs.setLastPageFirstLaunch(true);
-                mGridPager.setCurrentItem(0,true);
+                if (mGridPager.getCurrentItem() == 0)
+                    startTutorial();
+                else
+                    mGridPager.setCurrentItem(0,true);
                 //startTutorial();
                 showTutorial=true;
             }
@@ -369,13 +381,11 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        //currPage = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, mGridPager.getCurrentItem());
-
      /******************************** Contacts sync testing code **********************************/
-        if (SharedPrefs.isSignUpComplete()) {
+        /*if (SharedPrefs.isSignUpComplete()) {
             Intent monitorContacts = new Intent(this, MonitorContacts.class);
             startService(monitorContacts);
-        }
+        }*/
         startTutorial();
 
     }
@@ -389,9 +399,9 @@ public class MainActivity extends FragmentActivity {
     public void createFragments() {
         String[] categories = {"horns","people","animals","suspense","objects","mobile","machines","custom"};
         int id = 0;
-        int i = 1;
+        int i;
         boolean lastItemAdded = false;
-        List<GridFragment> gridGridFragments = new ArrayList<GridFragment>();
+        List<GridFragment> gridGridFragments = new ArrayList<>();
 
 
         SQLiteDatabase db = prankyDB.getReadableDatabase();
@@ -399,14 +409,13 @@ public class MainActivity extends FragmentActivity {
         for(int j = 0; j<categories.length;j++) {
             Cursor c = db.query(DatabaseHelper.TABLE_ITEMS,null, DatabaseHelper.COLUMN_ITEM_CATEGORY+" = ?",new String[] {categories[j]},null,null,null);
             int count =c.getCount();
-            ArrayList<GridItem> imLst = new ArrayList<GridItem>();
-            Log.e("Category ",categories[j]);
-            Log.e("Count ",String.valueOf(count));
+            ArrayList<GridItem> imLst = new ArrayList<>();
+           // Log.e("Category ",categories[j]);
+            //Log.e("Count ",String.valueOf(count));
 
             i=1;
-            //int k =1;
             while(c.moveToNext() || (categories[j].equals("custom") && !lastItemAdded)) {
-                Log.e("Cursor Position", String.valueOf(c.getPosition()));
+               // Log.e("Cursor Position", String.valueOf(c.getPosition()));
                 if (!c.isAfterLast() && i<=itemsOnPage) {
                     id = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_ID));
                     Integer image = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_ITEM_IMG_LOC));
@@ -416,7 +425,7 @@ public class MainActivity extends FragmentActivity {
 
                     GridItem items = new GridItem(id, image, sound, soundRepeat, soundVol);
                     imLst.add(items);
-                    Log.e("Item no.", String.valueOf(i));
+                  //  Log.e("Item no.", String.valueOf(i));
                     i++;
 
                 } else if (((c.getPosition()==count) || c.getPosition()==count-1 || count==0) && i <= itemsOnPage && categories[j].equals("custom")) {
@@ -426,7 +435,7 @@ public class MainActivity extends FragmentActivity {
                     lastItemAdded = true;
                     itemCount = c.getCount();
                     addSoundLoc = addSoundLocation(itemCount); //Items count start from 0, func calculates form 1
-                    Log.e("Add Sound Loc", String.valueOf(addSoundLoc));
+                   // Log.e("Add Sound Loc", String.valueOf(addSoundLoc));
 
                 }
                 if (i > itemsOnPage || (c.getPosition()==count || (c.getPosition()==count-1 && !categories[j].equals("custom")) || count==0) ) {
@@ -437,9 +446,8 @@ public class MainActivity extends FragmentActivity {
                     args.putParcelableArrayList("icons", imLst);
                     GridFragment Gfrag = new GridFragment();
                     Gfrag.setArguments(args);
-                    //Gfrag.setRetainInstance(true);
                     gridGridFragments.add(Gfrag);
-                    Log.e("Page Break At", String.valueOf(i));
+                   // Log.e("Page Break At", String.valueOf(i));
                     i = 1;
                 }
             }
@@ -465,9 +473,12 @@ public class MainActivity extends FragmentActivity {
 
     public void startTutorial() {
        if (SharedPrefs.isAppFirstLaunch()) {
-           mGridPager.setCurrentItem(0, true);
+           if (mGridPager.getCurrentItem()!=0)
+                mGridPager.setCurrentItem(0, true);
+
            android.support.v4.app.Fragment firstPage = pm.getItem(0);
            ((IFragment) firstPage).pageFirst();
+           showTutorial=false;
        }
     }
 
@@ -493,7 +504,7 @@ public class MainActivity extends FragmentActivity {
 
         super.onResume();
         if (SharedPrefs.isSignUpComplete() && SharedPrefs.getMyAppID() != null && SharedPrefs.getAppServerID() != null){
-            AppServerConn appServerConn = new AppServerConn(this,ActionType.CHECK_REGISTERED);
+            AppServerConn appServerConn = new AppServerConn(this,ActionType.VerifyUserRegistration);
             appServerConn.execute();
         }
 
@@ -516,7 +527,7 @@ public class MainActivity extends FragmentActivity {
             Log.e("BG Music Resume", e.toString());
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("main-activity-broadcast"));
+                mMessageReceiver, new IntentFilter(String.valueOf(ClassType.MainActivity)));
 
 
     }
@@ -534,6 +545,7 @@ public class MainActivity extends FragmentActivity {
             Log.e("BG Music Pause", e.toString());
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        previewSound.release();
 
 
     }

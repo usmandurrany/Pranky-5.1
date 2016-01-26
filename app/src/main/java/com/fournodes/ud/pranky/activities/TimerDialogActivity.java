@@ -1,8 +1,6 @@
 package com.fournodes.ud.pranky.activities;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -15,8 +13,7 @@ import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SetPrank;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
-import com.fournodes.ud.pranky.enums.TutorialPages;
-import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.fournodes.ud.pranky.enums.ClassType;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import kankan.wheel.widget.OnWheelScrollListener;
@@ -28,18 +25,9 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
  */
 public class TimerDialogActivity extends Activity{
 
-
-    private Context context;
-    private Dialog dialog;
-    private int sound;
-    private String soundCus;
-    public int soundVol;
-    public int soundRepeat;
-    ShowcaseView showcaseView;
-    int steps=2;
-    View decorView;
-    SetPrank scheduler;
-    Tutorial mTutorial;
+    private View decorView;
+    private SetPrank scheduler;
+    private Tutorial mTutorial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +133,7 @@ public class TimerDialogActivity extends Activity{
 
 
     if (SharedPrefs.isTimerFirstLaunch()) {
-        mTutorial = new Tutorial(this, TutorialPages.TimerDialogActivity);
+        mTutorial = new Tutorial(this, ClassType.TimerDialogActivity);
         mTutorial.show(new ViewTarget(sec),"Time Attack","Select the timer to 5 seconds by moving the wheel");
     }
 

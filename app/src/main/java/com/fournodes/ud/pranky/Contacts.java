@@ -89,7 +89,7 @@ public class Contacts {
                             while (cPhones.moveToNext()) {
 
                                 contactNumber = cPhones.getString(cPhones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                                //Log.e("Contact Number",formatNumber(contactNumber));
+                                //Log.e("Contact Number",contactNumber);
 
 
                                 /******* Store the number of updated contact in the HashMap ********/

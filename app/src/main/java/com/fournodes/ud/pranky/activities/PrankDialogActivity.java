@@ -22,22 +22,21 @@ import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.dialogs.DisplayContactsDialog;
 import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.TutorialPages;
+import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.receivers.InvalidIDTimeout;
-import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 /**
  * Created by Usman on 11/6/2015.
  */
-public class PrankDialogActivity extends Activity{
+public class PrankDialogActivity extends Activity {
 
     private View decorView;
-    private ShowcaseView showcaseView;
     private EditText frndID;
     private AppServerConn appServerConn;
-    private int invIDCount=0;
+    private int invIDCount = 0;
     private Tutorial mTutorial;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -45,42 +44,49 @@ public class PrankDialogActivity extends Activity{
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
-            String message = intent.getStringExtra("message");
-            if (message.equals("valid-id")){
-                SharedPrefs.setFrndAppID(frndID.getText().toString());
-                finish();
-            }else if (message.equals("not-prankable")){
-                CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Your friend is unavailable");
-                cToast.show();
-
-            }else if (message.equals("fetch-id")){
-                frndID.setText(SharedPrefs.getFrndAppID());
-                finish();
-
-            }
-            else if (message.equals("network-error")) {
-                CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Network or server unavailable");
-                cToast.show();
-            }
-            else if (message.equals("invalid-id")){
-                if (invIDCount==3){
-                    SharedPrefs.setInvalidIDCount(invIDCount);
-
-                    Intent timeout = new Intent(PrankDialogActivity.this,InvalidIDTimeout.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,
-                            timeout, PendingIntent.FLAG_ONE_SHOT);
-
-                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60000, pendingIntent);
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Please wait 60 seconds before trying again");
-                    cToast.show();
+            switch (Message.valueOf(intent.getStringExtra(String.valueOf(ActionType.Broadcast)))) {
+                case ValidId: {
+                    SharedPrefs.setFrndAppID(frndID.getText().toString());
                     finish();
-                    Log.e("Invalid ID Count",String.valueOf(invIDCount));
-
+                    break;
                 }
-                CustomToast cToast = new CustomToast(getApplicationContext(), "Invalid ID");
-                cToast.show();
-                invIDCount++;
+                case UserUnavailable: {
+                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Your friend is unavailable");
+                    cToast.show();
+                    break;
+                }
+                case RetrievedFriendId: {
+                    frndID.setText(SharedPrefs.getFrndAppID());
+                    finish();
+                    break;
+                }
+                case NetworkError: {
+                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Network or server unavailable");
+                    cToast.show();
+                    break;
+                }
+                case InvalidId: {
+                    if (invIDCount == 3) {
+                        SharedPrefs.setInvalidIDCount(invIDCount);
+
+                        Intent timeout = new Intent(PrankDialogActivity.this, InvalidIDTimeout.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+                                timeout, PendingIntent.FLAG_ONE_SHOT);
+
+                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60000, pendingIntent);
+                        CustomToast cToast = new CustomToast(getApplicationContext(), "Please wait 60 seconds before trying again");
+                        cToast.show();
+                        finish();
+                        Log.e("Invalid ID Count", String.valueOf(invIDCount));
+
+                    }
+                    CustomToast cToast = new CustomToast(getApplicationContext(), "Invalid ID");
+                    cToast.show();
+                    invIDCount++;
+                    break;
+                }
+
             }
 
         }
@@ -92,7 +98,7 @@ public class PrankDialogActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog_prank);
 
-        Log.e("Prank Dialog","Created");
+        Log.e("Prank Dialog", "Created");
 
 
         decorView = getWindow().getDecorView();
@@ -117,8 +123,8 @@ public class PrankDialogActivity extends Activity{
                 if (SharedPrefs.isSignUpComplete()) {
                     DisplayContactsDialog diag = new DisplayContactsDialog(PrankDialogActivity.this);
                     diag.show();
-                }else{
-                    startActivity(new Intent(PrankDialogActivity.this,UserRegisterationActivity.class));
+                } else {
+                    startActivity(new Intent(PrankDialogActivity.this, UserRegistrationActivity.class));
                     overridePendingTransition(R.anim.slide_in_form_top, R.anim.fade_out);
                 }
             }
@@ -134,8 +140,8 @@ public class PrankDialogActivity extends Activity{
         frndID.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (frndID.getText().toString().trim().length() == 4 && mTutorial!=null){
-                    mTutorial.moveToNext(new ViewTarget(btnset),"Prank a friend","Tap the button to save the ID");
+                if (frndID.getText().toString().trim().length() == 4 && mTutorial != null) {
+                    mTutorial.moveToNext(new ViewTarget(btnset), "Prank a friend", "Tap the button to save the ID");
                 }
                 return false;
             }
@@ -143,18 +149,18 @@ public class PrankDialogActivity extends Activity{
         btnset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (frndID.getText().toString().trim().length() > 0){
-                    if (mTutorial != null){
+                if (frndID.getText().toString().trim().length() > 0) {
+                    if (mTutorial != null) {
                         //showcaseView.hide();
                         //showcaseView=null;
                         //SharedPrefs.setTimerFirstLaunch(false);
                         mTutorial.end();
 
                     }
-                    appServerConn = new AppServerConn(PrankDialogActivity.this, ActionType.DEVICE_VALIDATE,frndID.getText().toString());
+                    appServerConn = new AppServerConn(PrankDialogActivity.this, ActionType.ValidateId, frndID.getText().toString());
                     appServerConn.showWaitDialog("P a i r i n g ...");
                     appServerConn.execute();
-                }else{
+                } else {
                     CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Enter friends ID");
                     cToast.show();
                 }
@@ -162,8 +168,8 @@ public class PrankDialogActivity extends Activity{
             }
         });
         if (SharedPrefs.isRemotePrankFirstLaunch()) {
-            mTutorial = new Tutorial(this, TutorialPages.PrankDialogActivity);
-            mTutorial.show(new ViewTarget(frndID),"Prank a friend","Enter your 'Friend's ID' found in the settings popup.");
+            mTutorial = new Tutorial(this, ClassType.PrankDialogActivity);
+            mTutorial.show(new ViewTarget(frndID), "Prank a friend", "Enter your 'Friend's ID' found in the settings popup.");
         }
 
     }
@@ -210,8 +216,10 @@ public class PrankDialogActivity extends Activity{
             Log.e("BG Music Pause", e.toString());
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("prank-dialog-activity-broadcast"));
+                mMessageReceiver, new IntentFilter(String.valueOf(ClassType.PrankDialogActivity))
+        );
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -14,8 +14,9 @@ import com.fournodes.ud.pranky.R;
  * Created by Usman-Durrani on 28-Dec-15.
  */
 public class WaitDialog {
-    Context context;
-    Dialog dialog;
+
+    private Context context;
+    private Dialog dialog;
 
     public WaitDialog(Context context) {
         this.context = context;

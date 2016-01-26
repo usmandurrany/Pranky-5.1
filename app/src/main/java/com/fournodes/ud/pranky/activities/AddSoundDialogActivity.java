@@ -12,16 +12,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.BackgroundMusic;
+import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
-import com.fournodes.ud.pranky.enums.TutorialPages;
+import com.fournodes.ud.pranky.enums.ClassType;
 import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FileChooser;
 import com.fournodes.ud.pranky.utils.FontManager;
-import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import org.apache.commons.io.FileUtils;
@@ -44,8 +43,6 @@ public class AddSoundDialogActivity extends Activity {
     private ImageView btnsave;
     private ImageView custom;
     private View rootView;
-    private ShowcaseView showcaseView;
-    private int steps=1;
     private EditText txtselsound;
     private ImageView btndiagclose;
     private ImageView btnselsound;
@@ -71,7 +68,7 @@ public class AddSoundDialogActivity extends Activity {
         btnsave.setEnabled(false);
 
         if (SharedPrefs.isAddmoreFirstLaunch()) {
-            mTutorial = new Tutorial(this, TutorialPages.AddSoundDialogActivity);
+            mTutorial = new Tutorial(this, ClassType.AddSoundDialogActivity);
             mTutorial.show(new ViewTarget(btnselsound),"Select a sound","Tap on the icon to pick a sound from your phone");
         }
 

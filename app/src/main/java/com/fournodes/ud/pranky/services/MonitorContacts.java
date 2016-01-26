@@ -11,10 +11,10 @@ import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.fournodes.ud.pranky.Contacts;
-import com.fournodes.ud.pranky.interfaces.AsyncResponse;
+import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 
-public class MonitorContacts extends Service implements AsyncResponse {
+public class MonitorContacts extends Service implements OnCompleteListener {
     private int mContactCount;
 
     public MonitorContacts() {
@@ -128,7 +128,12 @@ public class MonitorContacts extends Service implements AsyncResponse {
     }
 
     @Override
-    public void processFinish() {
+    public void onComplete() {
+
+    }
+
+    @Override
+    public void conSyncComplete() {
 
     }
 }

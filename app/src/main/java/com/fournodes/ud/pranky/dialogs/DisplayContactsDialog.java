@@ -17,7 +17,7 @@ import com.fournodes.ud.pranky.ContactDetails;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.interfaces.AsyncResponse;
+import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 
@@ -27,20 +27,19 @@ import java.util.Arrays;
 /**
  * Created by Usman on 12/1/2016.
  */
-public class DisplayContactsDialog implements AsyncResponse {
+public class DisplayContactsDialog implements OnCompleteListener {
 
-    ContactDetails[] contArr;
-    Context context;
-    ArrayList<ContactDetails> contList;
-    Dialog dialog;
-    int conNamePOS;
-    SwipeRefreshLayout refreshList;
-    ImageView close;
-    ListView lstContacts;
-    WaitDialog wait;
-    DatabaseHelper prankyDB;
-    int curCount;
-    int newCount;
+    private Context context;
+    private ArrayList<ContactDetails> contList;
+    private Dialog dialog;
+    private int conNamePOS;
+    private SwipeRefreshLayout refreshList;
+    private ImageView close;
+    private ListView lstContacts;
+    private WaitDialog wait;
+    private DatabaseHelper prankyDB;
+    private int curCount;
+    private int newCount;
 
     public DisplayContactsDialog(Context context){
         this.context=context;
@@ -115,14 +114,21 @@ public class DisplayContactsDialog implements AsyncResponse {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int conNumPOS, long l) {
                                 Log.e("Numbers:", contList.get(DisplayContactsDialog.this.conNamePOS).getRegNumbers()[conNumPOS]);
-                                AppServerConn appServerConn = new AppServerConn(context, ActionType.GET_FRIEND_APP_ID, contList.get(DisplayContactsDialog.this.conNamePOS).getNumIDs()[conNumPOS], contList.get(DisplayContactsDialog.this.conNamePOS).getRegNumbers()[conNumPOS]);
+                                AppServerConn appServerConn = new AppServerConn(context,
+                                        ActionType.RetrieveFriendId,
+                                        contList.get(DisplayContactsDialog.this.conNamePOS).getNumIDs()[conNumPOS],
+                                        contList.get(DisplayContactsDialog.this.conNamePOS).getRegNumbers()[conNumPOS]);
                                 appServerConn.showWaitDialog("Fetching ID ...");
                                 appServerConn.execute();
                             }
                         });
 
                     }else{
-                        AppServerConn appServerConn = new AppServerConn(context, ActionType.GET_FRIEND_APP_ID, contList.get(conNamePOS).getNumIDs()[0], contList.get(conNamePOS).getRegNumbers()[0]);
+                        AppServerConn appServerConn = new AppServerConn(context,
+                                ActionType.RetrieveFriendId,
+                                contList.get(conNamePOS).getNumIDs()[0],
+                                contList.get(conNamePOS).getRegNumbers()[0]);
+
                         appServerConn.execute();
                     }
                 }
@@ -145,7 +151,12 @@ public class DisplayContactsDialog implements AsyncResponse {
     }
 
     @Override
-    public void processFinish() {
+    public void onComplete() {
+
+    }
+
+    @Override
+    public void conSyncComplete() {
         //refreshList.setRefreshing(false);
 
         newCount=prankyDB.conRegCount();

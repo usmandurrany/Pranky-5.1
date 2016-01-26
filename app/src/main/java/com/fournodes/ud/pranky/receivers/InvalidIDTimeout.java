@@ -16,7 +16,7 @@ public class InvalidIDTimeout extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (SharedPrefs.prefs == null) {
-            SharedPrefs sharedprefs = new SharedPrefs(context);
+            new SharedPrefs(context).initAllPrefs();
         }
 
         SharedPrefs.setInvalidIDCount(0);

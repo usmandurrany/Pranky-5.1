@@ -95,7 +95,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (SharedPrefs.isSignUpComplete()||SharedPrefs.isSignUpSkipped()){
                     mainIntent = new Intent(getApplicationContext(), MainActivity.class);
                 }else{
-                    mainIntent = new Intent(getApplicationContext(), UserRegisterationActivity.class);
+                    mainIntent = new Intent(getApplicationContext(), UserRegistrationActivity.class);
                 }
                 startActivity(mainIntent);
                 finish();

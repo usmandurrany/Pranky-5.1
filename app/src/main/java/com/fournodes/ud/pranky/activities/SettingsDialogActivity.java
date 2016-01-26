@@ -1,8 +1,6 @@
 package com.fournodes.ud.pranky.activities;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -30,10 +28,7 @@ import java.util.TimeZone;
  * Created by Usman on 11/6/2015.
  */
 public class SettingsDialogActivity extends Activity implements View.OnClickListener{
-    private Context context;
-    private Dialog dialog;
-    private BackgroundMusic player;
-    private boolean playMusic = true;
+
     private View decorView;
     private AppServerConn appServerConn;
 
@@ -141,7 +136,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
                             // Resend the stored myAppID to server
                             //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
-                            appServerConn= new AppServerConn(ActionType.UPDATE_STATE);
+                            appServerConn= new AppServerConn(ActionType.UpdateAvailability);
                             appServerConn.execute();;
                         }
                         // serverState is 0 and myAppId has expired
@@ -151,7 +146,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
                             // Request new appID from server
                             SharedPrefs.setServerState(1);
                             SharedPrefs.setMyAppID("");
-                            appServerConn= new AppServerConn(ActionType.SEND_GCM_ID);
+                            appServerConn= new AppServerConn(ActionType.RenewAppId);
                             appServerConn.execute();
 
                         }

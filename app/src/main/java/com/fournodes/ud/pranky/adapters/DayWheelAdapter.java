@@ -19,7 +19,7 @@ import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
  */
 public class DayWheelAdapter extends AbstractWheelTextAdapter {
 
-    ArrayList<Date> dates;
+    private ArrayList<Date> dates;
 
     //An object of this class must be initialized with an array of Date type
     public DayWheelAdapter(Context context, ArrayList<Date> dates) {

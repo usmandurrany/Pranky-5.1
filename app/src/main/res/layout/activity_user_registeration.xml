@@ -3,44 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.UserRegisterationActivity"
+    tools:context=".activities.UserRegistrationActivity"
     android:background="@drawable/app_background">
+
+    <ImageView
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/app_body" />
+    <ImageView
+        android:id="@+id/skip"
+        android:layout_marginTop="@dimen/setBtnTopMar"
+        android:layout_marginRight="@dimen/setBtnRightMar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:src="@drawable/skip_states"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+
 
     <com.fournodes.ud.pranky.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="S I G N   U P "
         android:gravity="center"
-        android:textSize="30sp"
-        android:padding="15dp"
+        android:textSize="@dimen/cat_title_size"
+        android:padding="5dp"
         android:textColor="#bf071a"
         android:id="@+id/title"
-        android:layout_above="@+id/regForm"
+        android:layout_below="@+id/logo_face"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="@dimen/viewpager_margin_right"
+        android:layout_marginLeft="@dimen/viewpager_margin_left"
         />
     <ImageView
         android:id="@+id/logo_face"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/reg_logo_size"
+        android:layout_height="@dimen/reg_logo_size"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/wait_anim"
+        android:src="@drawable/signup_logo"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/title"
+        android:layout_below="@id/skip"
+        android:layout_marginTop="15dp"
         />
     <LinearLayout
         android:id="@+id/regForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:gravity="center">
+        android:layout_below="@+id/title"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/viewpager_margin_right"
+        android:layout_marginLeft="@dimen/viewpager_margin_left">
         <LinearLayout
-            android:layout_margin="10dp"
+            android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -52,12 +75,12 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/usrName"
-                android:hint="Name"
-                android:gravity="center"/>
+                android:hint=" Name"
+                android:textColor="#000"/>
 
         </LinearLayout>
         <LinearLayout
-            android:layout_margin="10dp"
+            android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -70,26 +93,34 @@
                 android:hint="Country "
                 android:padding="10dp"
                 android:textSize="18sp"
-                android:gravity="center"
-                android:textAlignment="center"
-
+                android:textColor="#000"
                 android:inputType="textAutoComplete"/>
 
 
         </LinearLayout>
         <LinearLayout
-            android:layout_margin="10dp"
+            android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:textColor="#bf071a"
+                />
 <EditText
-    android:layout_width="75dp"
+    android:layout_width="60dp"
     android:layout_height="wrap_content"
     android:inputType="phone"
     android:id="@+id/countryCode"
-    android:hint="+"
+    android:hint=""
+    android:textColorHint="#bf071a"
+    android:textColor="#000"
     />
 
 
@@ -99,7 +130,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/usrNumber"
-                android:maxLength="10"/>
+                android:maxLength="10"
+                android:textColor="#000"/>
 
         </LinearLayout>
 
@@ -111,39 +143,26 @@
         android:text="If you don&apos;t want to sign up at the moment, you can always skip it."
         android:id="@+id/infoText"
         android:textSize="14sp"
+        android:gravity="center"
         android:layout_below="@+id/regForm"
-        android:layout_alignLeft="@+id/regForm"
-        android:layout_alignStart="@+id/regForm"
-        android:gravity="center" />
+        android:layout_marginTop="15dp"
+        android:textColor="#bf071a"
+        android:layout_marginRight="@dimen/viewpager_margin_right"
+        android:layout_marginLeft="@dimen/viewpager_margin_left"/>
+
+
+
     <ImageView
         android:id="@+id/signUp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/infoText"
-        android:layout_width="140dp"
-        android:layout_height="55dp"
-        android:src="@drawable/btn_done_states"
-        android:layout_centerInParent="true"/>
+        android:layout_width="@dimen/prankit_width"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/prankit_btn_margin_bottom"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_done_states" />
 
 
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="SKIP"
-        android:id="@+id/skip"
-        android:layout_toRightOf="@+id/signUp"
-        android:layout_below="@id/infoText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="0dp"
-        android:textColor="#bf071a"
-        android:textStyle="bold"
-        android:padding="5dp"
-        android:gravity="end"
-        android:textSize="15dp"/>
 
 
 

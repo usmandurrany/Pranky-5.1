@@ -13,8 +13,9 @@ import com.fournodes.ud.pranky.R;
  * Created by Usman on 12/30/2015.
  */
 public class InfoDialog {
-    Context context;
-    Dialog dialog;
+
+    private Context context;
+    private Dialog dialog;
 
     public InfoDialog(Context context) {
         this.context = context;

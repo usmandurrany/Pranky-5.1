@@ -64,6 +64,9 @@ public class SharedPrefs {
 
     public static final String CONTACTS_STORED = "contactsStored";
 
+    public static final String LOCALE = "locale";
+
+    public static final String FRIEND_DEVICE_ID = "friendDeviceId";
 
 
 
@@ -109,6 +112,9 @@ public class SharedPrefs {
     private static boolean signUpComplete;
     private static boolean contactsStored;
 
+    private static String locale;
+
+    private static String friendDeviceId;
 
 
 
@@ -132,6 +138,10 @@ public class SharedPrefs {
         prankBtnEnabled=prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, true); // Unused for now
 
         appServerID=prefs.getString(SharedPrefs.APP_SERVER_ID,null);
+
+        locale=prefs.getString(SharedPrefs.LOCALE,null);
+        friendDeviceId=prefs.getString(SharedPrefs.FRIEND_DEVICE_ID,null);
+
 
 
         networkAvailable=prefs.getBoolean(SharedPrefs.NETWORK_AVAILABLE, true);
@@ -289,6 +299,14 @@ public class SharedPrefs {
 
     public static String getAppServerID() {
         return appServerID;
+    }
+
+    public static String getLocale() {
+        return locale;
+    }
+
+    public static String getFriendDeviceId() {
+        return friendDeviceId;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -457,5 +475,15 @@ public class SharedPrefs {
     public static void setAppServerID(String appServerID) {
         prefs.edit().putString(SharedPrefs.APP_SERVER_ID,appServerID).apply();
         SharedPrefs.appServerID = appServerID;
+    }
+
+    public static void setLocale(String locale) {
+        prefs.edit().putString(SharedPrefs.LOCALE,locale).apply();
+        SharedPrefs.locale = locale;
+    }
+
+    public static void setFriendDeviceId(String friendDeviceId) {
+        prefs.edit().putString(SharedPrefs.FRIEND_DEVICE_ID,friendDeviceId).apply();
+        SharedPrefs.friendDeviceId = friendDeviceId;
     }
 }

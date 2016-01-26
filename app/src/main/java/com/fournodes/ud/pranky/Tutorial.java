@@ -1,10 +1,10 @@
 package com.fournodes.ud.pranky;
 
 import android.app.Activity;
+import android.view.MotionEvent;
 import android.view.View;
 
-import com.fournodes.ud.pranky.enums.TutorialPages;
-import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.fournodes.ud.pranky.enums.ClassType;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
@@ -12,11 +12,12 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
  * Created by Usman on 18/1/2016.
  */
 public class Tutorial implements View.OnClickListener {
-    private TutorialPages page;
+    private ClassType page;
     private Activity activity;
     private ShowcaseView showcaseView;
+    private int counter = 1;
 
-    public Tutorial(Activity activity, TutorialPages page) {
+    public Tutorial(Activity activity, ClassType page) {
         this.activity=activity;
         this.page=page;
     }
@@ -39,25 +40,26 @@ public class Tutorial implements View.OnClickListener {
             showcaseView.setShowcase(target,true);
         }
     }
+    public void skipButtonDelay(){
+        if (showcaseView !=null){
+            showcaseView.hideButton();
+            showcaseView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (showcaseView.onTouch(showcaseView,motionEvent)){
 
-    public void moveToNextAuto(boolean value){
-        showcaseView.setOnShowcaseEventListener(new OnShowcaseEventListener() {
-            @Override
-            public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                            counter++;
+                        if (counter > 2)
+                            showcaseView.showButton();
+                        return true;
+                    }else
+                        return false;
 
-            }
+                }
+            });
 
-            @Override
-            public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-            }
-
-            @Override
-            public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-            }
-        });
-        showcaseView.setHideOnTouchOutside(true);
+        }
     }
 
     public void setVisible(boolean visible){

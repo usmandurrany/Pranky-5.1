@@ -7,7 +7,7 @@ import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.Contacts;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
-import com.fournodes.ud.pranky.interfaces.AsyncResponse;
+import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +27,7 @@ import java.util.HashSet;
  * Created by Usman on 8/1/2016.
  */
 public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
-    public AsyncResponse delegate = null;
+    public OnCompleteListener delegate = null;
     private String result;
     private JSONArray resp;
     private Context context;
@@ -38,6 +38,7 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
     public ContactsAsync(Context context) {
         this.context = context;
     }
+
 
     private static String convertStreamToString(InputStream is) {
     /*
@@ -83,7 +84,7 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
 
             if (SharedPrefs.prefs == null)
                 SharedPrefs.setContext(context);
-            String url = SharedPrefs.APP_SERVER_ADDR + "number_func.php?country_code=" + SharedPrefs.getUserCountryCode();
+            String url = SharedPrefs.APP_SERVER_ADDR + "number_func.php?country_code=" + SharedPrefs.getUserCountryCode() +"&locale=" + SharedPrefs.getLocale();
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setConnectTimeout(15000);
@@ -154,7 +155,8 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
                 prankyDB.storeRegisteredContact(id, numIDsArr, numbersArr);
 
             }
-            delegate.processFinish();
+            if (delegate!=null)
+            delegate.conSyncComplete();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {

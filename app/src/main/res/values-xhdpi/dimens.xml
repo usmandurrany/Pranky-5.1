@@ -62,5 +62,7 @@
     <dimen name="prankit_width">170dp</dimen>
 
     <dimen name="settings_linearlayout_height">65dp</dimen>
+    <dimen name="reg_logo_size">90dp</dimen>
+
 
 </resources>
