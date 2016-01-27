@@ -467,6 +467,7 @@ public class MainActivity extends FragmentActivity {
 
     private int dipsToPixels(int dips) {
         final float scale = getResources().getDisplayMetrics().density;
+        //Toast.makeText(MainActivity.this, String.valueOf(scale),Toast.LENGTH_SHORT).show();
         return (int) (dips * scale + 0.5f);
     }
 

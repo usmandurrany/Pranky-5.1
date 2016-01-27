@@ -28,9 +28,24 @@
         />
 
 
-
+<LinearLayout
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@id/skip"
+    android:layout_centerHorizontal="true"
+    android:gravity="center_horizontal"
+    android:layout_marginTop="15dp">
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/logo_face"
+        android:layout_width="@dimen/reg_logo_size"
+        android:layout_height="@dimen/reg_logo_size"
+        android:src="@drawable/signup_logo"
+        />
     <com.fournodes.ud.pranky.CustomTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="S I G N   U P "
         android:gravity="center"
@@ -38,28 +53,20 @@
         android:padding="5dp"
         android:textColor="#bf071a"
         android:id="@+id/title"
-        android:layout_below="@+id/logo_face"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="@dimen/viewpager_margin_right"
-        android:layout_marginLeft="@dimen/viewpager_margin_left"
         />
-    <ImageView
-        android:id="@+id/logo_face"
-        android:layout_width="@dimen/reg_logo_size"
-        android:layout_height="@dimen/reg_logo_size"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/signup_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/skip"
-        android:layout_marginTop="15dp"
-        />
+
+
+</LinearLayout>
+
     <LinearLayout
         android:id="@+id/regForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/header"
         android:gravity="center"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/viewpager_margin_right"
         android:layout_marginLeft="@dimen/viewpager_margin_left">
         <LinearLayout
@@ -69,13 +76,13 @@
             android:orientation="horizontal">
 
 
-            <EditText
+            <com.fournodes.ud.pranky.CustomEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/usrName"
-                android:hint=" Name"
+                android:hint="Name"
                 android:textColor="#000"/>
 
         </LinearLayout>
@@ -91,7 +98,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Country "
-                android:padding="10dp"
                 android:textSize="18sp"
                 android:textColor="#000"
                 android:inputType="textAutoComplete"/>
@@ -114,7 +120,7 @@
                 android:textColor="#bf071a"
                 />
 <EditText
-    android:layout_width="60dp"
+    android:layout_width="55dp"
     android:layout_height="wrap_content"
     android:inputType="phone"
     android:id="@+id/countryCode"
@@ -124,7 +130,7 @@
     />
 
 
-            <EditText
+            <com.fournodes.ud.pranky.CustomEditText
                 android:hint="Number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

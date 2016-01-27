@@ -1,9 +1,9 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <dimen name="set_btn_margin_bottom">164dp</dimen>
+    <dimen name="set_btn_margin_bottom">166dp</dimen>
 
-    <dimen name="day_hh_mm_ss_margin_top">230dp</dimen>
+    <dimen name="day_hh_mm_ss_margin_top">245dp</dimen>
 
     <dimen name="close_btn_margin_top">194dp</dimen>
     <dimen name="close_btn_margin_right">22dp</dimen>
@@ -24,16 +24,18 @@
     <dimen name="cat_title_size">30sp</dimen>
 
 
-    <dimen name="viewpager_margin_top">150dp</dimen>
-    <dimen name="viewpager_margin_bottom">170dp</dimen>
-    <dimen name="viewpager_margin_left">55dp</dimen>
+    <dimen name="viewpager_margin_top">140dp</dimen>
+    <dimen name="viewpager_margin_bottom">180dp</dimen>
+    <dimen name="viewpager_margin_left">50dp</dimen>
     <dimen name="viewpager_margin_right">55dp</dimen>
     <dimen name="viewpager_padding_top">10dp</dimen>
 
 
-    <dimen name="save_btn_margin_bottom">140dp</dimen>
-    <dimen name="close_btn_margin_right_long">18dp</dimen>
-    <dimen name="close_btn_margin_top_long">165dp</dimen>
+    <dimen name="save_btn_margin_bottom">143dp</dimen>
+
+    <dimen name="close_btn_margin_right_long">23dp</dimen>
+    <dimen name="close_btn_margin_top_long">170dp</dimen>
+
     <dimen name="sel_sound_margin_top">265dp</dimen>
 
     <dimen name="sel_sound_icon_width">50dp</dimen>
@@ -54,10 +56,10 @@
     <dimen name="music_switch_margin_left">42dp</dimen>
 
     <dimen name="prank_text_margin_right">10dp</dimen>
-    <dimen name="prank_switch_margin_left">15dp</dimen>
+    <dimen name="prank_switch_margin_left">30dp</dimen>
 
     <dimen name="id_text_margin_right">60dp</dimen>
-    <dimen name="id_value_margin_left">80dp</dimen>
+    <dimen name="id_value_margin_left">70dp</dimen>
 
     <dimen name="prankit_width">170dp</dimen>
 

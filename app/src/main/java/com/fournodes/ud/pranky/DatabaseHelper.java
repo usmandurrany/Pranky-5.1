@@ -46,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "pranky.db";
-    private static final int DATABASE_VERSION = 35;
+    private static final int DATABASE_VERSION = 36;
 
     // Database creation sql statement
     private static final String CREATE_PRANK_TABLE = "create table if not exists "

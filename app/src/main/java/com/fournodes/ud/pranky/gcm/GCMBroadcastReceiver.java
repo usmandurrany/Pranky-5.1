@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,6 +49,8 @@ public class GCMBroadcastReceiver extends GcmListenerService {
             SP.initAllPrefs();
         }
         Log.e("Message received",data.getString("message"));
+        Log.e("Sender Name",data.getString("sender_name"));
+
         switch(ActionType.valueOf(data.getString("message"))) {
             case PlayPrank:
 
@@ -90,6 +93,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
                     appServerConn = new AppServerConn(ActionType.NotifyPrankSuccessful);
                     appServerConn.execute();
+                    sendNotification(data.getString("sender_name"));
 
 
                 } else {
@@ -143,9 +147,15 @@ public class GCMBroadcastReceiver extends GcmListenerService {
     /**
      * Create and show a simple notification containing the received GCM message.
      *
-     * @param message GCM message received.
+     * @param name GCM message received.
      */
-    private void sendNotification(String message) {
+    private void sendNotification(String name) {
+        String message;
+        if  (!name.equals("null")) {
+             message = "You have been pranked by " + name;
+        }else {
+            message = "You have been pranked";
+        }
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -153,11 +163,11 @@ public class GCMBroadcastReceiver extends GcmListenerService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.facelogo_1)
-                .setContentTitle("GCM Message")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(((BitmapDrawable)getApplicationContext().getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap())
+                .setContentTitle("Pranked!")
                 .setContentText(message)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =

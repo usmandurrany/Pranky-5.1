@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.Country;
+import com.fournodes.ud.pranky.CustomEditText;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -37,13 +38,13 @@ import com.fournodes.ud.pranky.services.MonitorContacts;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class UserRegistrationActivity extends Activity implements View.OnKeyListener, OnCompleteListener {
+public class UserRegistrationActivity extends Activity implements View.OnKeyListener, OnCompleteListener{
 
     private View decorView;
-    private EditText name;
+    private CustomEditText name;
     private AutoCompleteTextView country;
     private EditText countryCode;
-    private EditText number;
+    private CustomEditText number;
     private ImageView btnDone;
     private ImageView btnSkip;
 
@@ -90,6 +91,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registeration);
         onWindowFocusChanged(true);
+
         syncContacts = new ContactsAsync(this);
         syncContacts.delegate=this;
 
@@ -103,8 +105,8 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
             if (userCountryShortCode ==null || ("").equals(userCountryShortCode)){
                 userCountryShortCode = teleMgr.getNetworkCountryIso();
             }
-            //Log.e("Country Code SIM", teleMgr.getSimCountryIso());
-            //Log.e("Country Code NWK", teleMgr.getNetworkCountryIso());
+             Log.e("Country Code SIM", teleMgr.getSimCountryIso());
+            Log.e("Country Code NWK", teleMgr.getNetworkCountryIso());
         }
 
 
@@ -124,7 +126,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
 
         final CountryAdapter cAdapter = new CountryAdapter(this,R.layout.spinner_row,countryList);
         int color = Color.parseColor("#f27d13");
-        name = (EditText) findViewById(R.id.usrName);
+        name = (CustomEditText) findViewById(R.id.usrName);
         name.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         name.setOnKeyListener(this);
         country = (AutoCompleteTextView) findViewById(R.id.usrCountry);
@@ -133,6 +135,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         country.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
+                onWindowFocusChanged(true);
                 if (!view.hasFocus() && country.getText().length()>0 && !listItemClicked) {
                     if (cAdapter.getFilterResultSize() >1 || cAdapter.getFilterResultSize() == 0)
                         countryCode.setText(null);
@@ -149,7 +152,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         countryCode.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         //countryCode.setOnKeyListener(this);
         countryCode.setEnabled(false);
-        number = (EditText) findViewById(R.id.usrNumber);
+        number = (CustomEditText) findViewById(R.id.usrNumber);
         number.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         number.setOnKeyListener(this);
         btnDone = (ImageView) findViewById(R.id.signUp);
@@ -169,6 +172,8 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
             @Override
             public void onClick(View view) {
                 SharedPrefs.setSignUpSkipped(true);
+                if(SharedPrefs.isAppFirstLaunch())
+                {startActivity(new Intent(UserRegistrationActivity.this, MainActivity.class));}
                 finish();
 
             }
@@ -221,6 +226,8 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        //Log.e("focus","changed");
+
         decorView = getWindow().getDecorView();
 
         decorView.setSystemUiVisibility(
@@ -283,8 +290,6 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
 
     @Override
     public void finish() {
-        if(SharedPrefs.isAppFirstLaunch())
-        {startActivity(new Intent(UserRegistrationActivity.this, MainActivity.class));}
         overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_form_top);
         super.finish();
     }
@@ -293,6 +298,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
     @Override
     public void onComplete() {
         if (SharedPrefs.isAppFirstLaunch()){
+            startActivity(new Intent(UserRegistrationActivity.this, MainActivity.class));
             ContactsAsync conSync = new ContactsAsync(UserRegistrationActivity.this);
             conSync.execute();
             finish();
@@ -319,6 +325,5 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         appServerConn.showWaitDialog("R e g i s t e r i n g ...");
         appServerConn.execute();
     }
-
 
 }
