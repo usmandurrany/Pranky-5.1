@@ -125,12 +125,21 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     break;
 
                 case RenewAppId:
-                    
-                    url = URLBuilder("index",
-                            "id=" + SharedPrefs.getAppServerID(),
-                            "app=");
-                    
-                    Log.e("RENEW APP ID", String.valueOf(url));
+                    if (SharedPrefs.getAppServerID() == null){
+                        url = URLBuilder("index",
+                                "model=" + Build.MODEL ,
+                                "gcm_id=" + SharedPrefs.getMyGcmID() ,
+                                "state=" + SharedPrefs.getServerState());
+                        Log.e("SEND GCM ID", String.valueOf(url));
+
+                        type=ActionType.RegisterDevice; //important hack
+
+                    }else {
+                        url = URLBuilder("index",
+                                "id=" + SharedPrefs.getAppServerID(),
+                                "app=");
+                        Log.e("RENEW APP ID", String.valueOf(url));
+                    }
 
                     break;
 
@@ -190,7 +199,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                                 "country_code=" + SharedPrefs.getUserCountryCode(),
                                 "phone=" + SharedPrefs.getUserPhoneNumber());
                         
-                    } else {
+                    } else { //From prank dialog
                         
                         url = URLBuilder("index",
                                 "model=" + Build.MODEL,
@@ -253,6 +262,8 @@ public class AppServerConn extends AsyncTask<String, String, String> {
             e.printStackTrace();
             if (broadcastResult == null)
                 broadcastResult = new Intent(String.valueOf(ClassType.MainActivity));
+            if (wDiag != null)
+                wDiag.dismiss();
 
             broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.NetworkError));
         }
@@ -318,19 +329,23 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     }
                     break;
                 case RegisterUser:
-                    Calendar exp = Calendar.getInstance(TimeZone.getDefault());
-                    exp.set(Calendar.HOUR, (exp.get(Calendar.HOUR) + 24));
-                    Log.e("ExpiryDate", exp.getTime().toString());
-                    Log.e(TAG, resp.getString("app_id"));
-                    Log.e(TAG, resp.getString("id"));
-                    Log.e(TAG, resp.getString("locale"));
-                    SharedPrefs.setLocale(resp.getString("locale")); // Store the received myAppID in shared prefs
-                    SharedPrefs.setMyAppID(resp.getString("app_id")); // Store the received myAppID in shared prefs
-                    SharedPrefs.setAppServerID(resp.getString("id"));
-                    SharedPrefs.setSentGcmIDToServer(true);// GCM ID has been sent successfully
-                    SharedPrefs.setExpDate(exp.getTime().toString());// Expiry date for myAppId is saved
+                    if (resp.getString("result").equals("failed")){
+                        delegate.onCompleteFailed();
+                    }else {
+                        Calendar exp = Calendar.getInstance(TimeZone.getDefault());
+                        exp.set(Calendar.HOUR, (exp.get(Calendar.HOUR) + 24));
+                        Log.e("ExpiryDate", exp.getTime().toString());
+                        Log.e(TAG, resp.getString("app_id"));
+                        Log.e(TAG, resp.getString("id"));
+                        Log.e(TAG, resp.getString("locale"));
+                        SharedPrefs.setLocale(resp.getString("locale")); // Store the received myAppID in shared prefs
+                        SharedPrefs.setMyAppID(resp.getString("app_id")); // Store the received myAppID in shared prefs
+                        SharedPrefs.setAppServerID(resp.getString("id"));
+                        SharedPrefs.setSentGcmIDToServer(true);// GCM ID has been sent successfully
+                        SharedPrefs.setExpDate(exp.getTime().toString());// Expiry date for myAppId is saved
 
-                    delegate.onComplete();
+                        delegate.onCompleteSuccess();
+                    }
                     break;
 
                 case PlayPrank:
@@ -394,7 +409,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
+        }catch (IndexOutOfBoundsException e){e.printStackTrace();}
 
         return null;
     }

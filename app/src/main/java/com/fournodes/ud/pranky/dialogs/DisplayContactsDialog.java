@@ -151,7 +151,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
     }
 
     @Override
-    public void onComplete() {
+    public void onCompleteSuccess() {
 
     }
 
@@ -187,5 +187,10 @@ public class DisplayContactsDialog implements OnCompleteListener {
             lstContacts.setAdapter(conAdapter);
             lstContacts.invalidate();
         }
+    }
+
+    @Override
+    public void onCompleteFailed() {
+
     }
 }

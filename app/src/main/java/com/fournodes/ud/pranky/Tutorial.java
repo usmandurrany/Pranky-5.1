@@ -46,16 +46,19 @@ public class Tutorial implements View.OnClickListener {
             showcaseView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (showcaseView.onTouch(showcaseView,motionEvent)){
+                    if (showcaseView!=null) {
 
-                        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
-                            counter++;
-                        if (counter > 2)
-                            showcaseView.showButton();
-                        return true;
-                    }else
-                        return false;
+                        if (showcaseView.onTouch(showcaseView, motionEvent)) {
 
+                            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                                counter++;
+                            if (counter > 2)
+                                showcaseView.showButton();
+                            return true;
+                        } else
+                            return false;
+                    }
+                    return false;
                 }
             });
 
@@ -68,6 +71,15 @@ public class Tutorial implements View.OnClickListener {
      else if(showcaseView != null && showcaseView.isShowing())
         showcaseView.hide();
     }
+
+    public boolean isShowing(){
+        if (showcaseView != null)
+            return showcaseView.isShowing();
+        else
+            return false;
+    }
+
+
     public void end(){
         onClick(null);
         showcaseView = null;
@@ -89,6 +101,9 @@ public class Tutorial implements View.OnClickListener {
                     break;
                 case PrankDialogActivity:
                     SharedPrefs.setRemotePrankFirstLaunch(false);
+                    break;
+                case AddSoundDialogActivity:
+                    SharedPrefs.setAddmoreFirstLaunch(false);
                     break;
 
             }

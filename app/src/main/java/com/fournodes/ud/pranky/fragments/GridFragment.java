@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Camera;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CameraControls;
 import com.fournodes.ud.pranky.CustomTextView;
+import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.GridItem;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
@@ -149,6 +151,16 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     }
 
     public void onGridItemClick(GridView g, View v, final int pos, long id) throws NoSuchFieldException, IllegalAccessException, IOException, InterruptedException {
+
+        AudioManager audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
+        int currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (currVol < 7) {
+            CustomToast cToast = new CustomToast(activity,"Volume too low !");
+            cToast.show();
+            SharedPrefs.setVolumeLowNotify(false);
+        }
+
+
         if (SharedPrefs.isAppFirstLaunch() && mTutorial != null) {
             ((MainActivity) activity).setTutorial(mTutorial);
         }
@@ -192,6 +204,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 SharedPrefs.setBgMusicPlaying(true);
                 soundAct = new Intent(getActivity(), AddSoundDialogActivity.class);
                 startActivity(soundAct);
+                if (mTutorial != null)
+                    mTutorial.end();
 
                 break;
             }
@@ -333,7 +347,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
     @Override
     public void pageLast(int addSoundLoc) {
-        if (SharedPrefs.isLastPageFirstLaunch() && mTutorial == null) {
+        if (SharedPrefs.isLastPageFirstLaunch() && (mTutorial == null || !mTutorial.isShowing())) {
             ImageView gridChildLast = (ImageView) mGridView.getChildAt(addSoundLoc);
             mTutorial = new Tutorial(activity, ClassType.MainActivityLastPage);
             mTutorial.show(new ViewTarget(gridChildLast), "Add more sounds", "Tap on the '+' to add a custom sound of your choice");

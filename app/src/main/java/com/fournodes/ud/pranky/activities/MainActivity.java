@@ -64,8 +64,8 @@ public class MainActivity extends FragmentActivity {
     private me.relex.circleindicator.CircleIndicator mIndicator;
 
     private int itemsOnPage = 9;
-    private int itemCount=0;
-    private int addSoundLoc=0;
+    private int itemCount = 0;
+    private int addSoundLoc = 0;
 
 
     private int pageNo = 0;
@@ -135,12 +135,11 @@ public class MainActivity extends FragmentActivity {
         onWindowFocusChanged(true);
 
 
-
         /*********************************** SavedInstance Checks***********************************/
 
-        if(SharedPrefs.prefs == null){
+        if (SharedPrefs.prefs == null) {
             new SharedPrefs(this).initAllPrefs();
-            if (FontManager.getTypeFace(this,SharedPrefs.DEFAULT_FONT) == null){
+            if (FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT) == null) {
                 FontManager.createTypeFace(this, SharedPrefs.DEFAULT_FONT);
 
             }
@@ -210,12 +209,12 @@ public class MainActivity extends FragmentActivity {
                 if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
-                    if (currPage!=null)
+                    if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
                 } else {
                     if (timerLaunch)
-                        timerLaunch=false;
-                    clockLaunch=true;
+                        timerLaunch = false;
+                    clockLaunch = true;
                     SharedPrefs.setBgMusicPlaying(true);
 
                     Intent clockDialog = new Intent(MainActivity.this, ClockDialogActivity.class);
@@ -230,7 +229,7 @@ public class MainActivity extends FragmentActivity {
                 if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
-                    if (currPage!=null)
+                    if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
                 } else {
                     SharedPrefs.setBgMusicPlaying(true);
@@ -257,11 +256,11 @@ public class MainActivity extends FragmentActivity {
                     timerLaunch = false;
                     clockLaunch = false;
                 }
-                if (SharedPrefs.getInvalidIDCount()<3) {
-                SharedPrefs.setBgMusicPlaying(true);
-                Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
-                startActivityForResult(prankDialog,1);
-                }else{
+                if (SharedPrefs.getInvalidIDCount() < 3) {
+                    SharedPrefs.setBgMusicPlaying(true);
+                    Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
+                    startActivityForResult(prankDialog, 1);
+                } else {
                     cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
                     cToast.show();
                 }
@@ -280,23 +279,23 @@ public class MainActivity extends FragmentActivity {
                 if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
                     cToast = new CustomToast(MainActivity.this, "Select  a  sound  first");
                     cToast.show();
-                    if (currPage!=null)
+                    if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
                 } else if (Selection.itemSound == -1 && Selection.itemCustomSound != null) {
 
                     cToast = new CustomToast(MainActivity.this, "A  non-custom  sound  should  be  selected");
                     cToast.show();
                 } else if (SharedPrefs.getFrndAppID() == null) {
-                    if (SharedPrefs.getInvalidIDCount()<3) {
+                    if (SharedPrefs.getInvalidIDCount() < 3) {
                         SharedPrefs.setBgMusicPlaying(true);
                         Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
-                        startActivityForResult(prankDialog,1);
-                    }else{
+                        startActivityForResult(prankDialog, 1);
+                    } else {
                         cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
                         cToast.show();
                     }
-                }else {
-                    AppServerConn appServerConn= new AppServerConn(MainActivity.this, ActionType.PlayPrank);
+                } else {
+                    AppServerConn appServerConn = new AppServerConn(MainActivity.this, ActionType.PlayPrank);
                     appServerConn.showWaitDialog("P r a n k i n g ...");
                     appServerConn.execute();
 
@@ -317,7 +316,7 @@ public class MainActivity extends FragmentActivity {
                     anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(130));
                     open = true;
 
-                   smClose = new Handler();
+                    smClose = new Handler();
                     smClose.postDelayed(new Runnable() {
                         public void run() {
                             if (open) {
@@ -366,9 +365,9 @@ public class MainActivity extends FragmentActivity {
                 if (mGridPager.getCurrentItem() == 0)
                     startTutorial();
                 else
-                    mGridPager.setCurrentItem(0,true);
+                    mGridPager.setCurrentItem(0, true);
                 //startTutorial();
-                showTutorial=true;
+                showTutorial = true;
             }
         });
 
@@ -381,7 +380,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-     /******************************** Contacts sync testing code **********************************/
+        /******************************** Contacts sync testing code **********************************/
         /*if (SharedPrefs.isSignUpComplete()) {
             Intent monitorContacts = new Intent(this, MonitorContacts.class);
             startService(monitorContacts);
@@ -397,7 +396,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void createFragments() {
-        String[] categories = {"horns","people","animals","suspense","objects","mobile","machines","custom"};
+        String[] categories = {"horns", "people", "animals", "suspense", "objects", "mobile", "machines", "custom"};
         int id = 0;
         int i;
         boolean lastItemAdded = false;
@@ -406,17 +405,17 @@ public class MainActivity extends FragmentActivity {
 
         SQLiteDatabase db = prankyDB.getReadableDatabase();
 
-        for(int j = 0; j<categories.length;j++) {
-            Cursor c = db.query(DatabaseHelper.TABLE_ITEMS,null, DatabaseHelper.COLUMN_ITEM_CATEGORY+" = ?",new String[] {categories[j]},null,null,null);
-            int count =c.getCount();
+        for (int j = 0; j < categories.length; j++) {
+            Cursor c = db.query(DatabaseHelper.TABLE_ITEMS, null, DatabaseHelper.COLUMN_ITEM_CATEGORY + " = ?", new String[]{categories[j]}, null, null, null);
+            int count = c.getCount();
             ArrayList<GridItem> imLst = new ArrayList<>();
-           // Log.e("Category ",categories[j]);
+            // Log.e("Category ",categories[j]);
             //Log.e("Count ",String.valueOf(count));
 
-            i=1;
-            while(c.moveToNext() || (categories[j].equals("custom") && !lastItemAdded)) {
-               // Log.e("Cursor Position", String.valueOf(c.getPosition()));
-                if (!c.isAfterLast() && i<=itemsOnPage) {
+            i = 1;
+            while (c.moveToNext() || (categories[j].equals("custom") && !lastItemAdded)) {
+                // Log.e("Cursor Position", String.valueOf(c.getPosition()));
+                if (!c.isAfterLast() && i <= itemsOnPage) {
                     id = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_ID));
                     Integer image = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_ITEM_IMG_LOC));
                     String sound = c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_ITEM_SOUND_LOC));
@@ -425,29 +424,29 @@ public class MainActivity extends FragmentActivity {
 
                     GridItem items = new GridItem(id, image, sound, soundRepeat, soundVol);
                     imLst.add(items);
-                  //  Log.e("Item no.", String.valueOf(i));
+                    //  Log.e("Item no.", String.valueOf(i));
                     i++;
 
-                } else if (((c.getPosition()==count) || c.getPosition()==count-1 || count==0) && i <= itemsOnPage && categories[j].equals("custom")) {
+                } else if (((c.getPosition() == count) || c.getPosition() == count - 1 || count == 0) && i <= itemsOnPage && categories[j].equals("custom")) {
 
-                       GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
+                    GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
                     imLst.add(lstItem);
                     lastItemAdded = true;
                     itemCount = c.getCount();
                     addSoundLoc = addSoundLocation(itemCount); //Items count start from 0, func calculates form 1
-                   // Log.e("Add Sound Loc", String.valueOf(addSoundLoc));
+                    // Log.e("Add Sound Loc", String.valueOf(addSoundLoc));
 
                 }
-                if (i > itemsOnPage || (c.getPosition()==count || (c.getPosition()==count-1 && !categories[j].equals("custom")) || count==0) ) {
+                if (i > itemsOnPage || (c.getPosition() == count || (c.getPosition() == count - 1 && !categories[j].equals("custom")) || count == 0)) {
                     Bundle args = new Bundle();
                     GridItem[] gItem = new GridItem[imLst.size()];
                     imLst.toArray(gItem);
-                    args.putString("category",categories[j]);
+                    args.putString("category", categories[j]);
                     args.putParcelableArrayList("icons", imLst);
                     GridFragment Gfrag = new GridFragment();
                     Gfrag.setArguments(args);
                     gridGridFragments.add(Gfrag);
-                   // Log.e("Page Break At", String.valueOf(i));
+                    // Log.e("Page Break At", String.valueOf(i));
                     i = 1;
                 }
             }
@@ -473,14 +472,14 @@ public class MainActivity extends FragmentActivity {
 
 
     public void startTutorial() {
-       if (SharedPrefs.isAppFirstLaunch()) {
-           if (mGridPager.getCurrentItem()!=0)
+        if (SharedPrefs.isAppFirstLaunch()) {
+            if (mGridPager.getCurrentItem() != 0)
                 mGridPager.setCurrentItem(0, true);
 
-           android.support.v4.app.Fragment firstPage = pm.getItem(0);
-           ((IFragment) firstPage).pageFirst();
-           showTutorial=false;
-       }
+            android.support.v4.app.Fragment firstPage = pm.getItem(0);
+            ((IFragment) firstPage).pageFirst();
+            showTutorial = false;
+        }
     }
 
     @Override
@@ -504,8 +503,8 @@ public class MainActivity extends FragmentActivity {
             SharedPrefs.setContext(this);
 
         super.onResume();
-        if (SharedPrefs.isSignUpComplete() && SharedPrefs.getMyAppID() != null && SharedPrefs.getAppServerID() != null){
-            AppServerConn appServerConn = new AppServerConn(this,ActionType.VerifyUserRegistration);
+        if (SharedPrefs.isSignUpComplete() && SharedPrefs.getMyAppID() != null && SharedPrefs.getAppServerID() != null) {
+            AppServerConn appServerConn = new AppServerConn(this, ActionType.VerifyUserRegistration);
             appServerConn.execute();
         }
 
@@ -515,7 +514,8 @@ public class MainActivity extends FragmentActivity {
 
 
         }
-            if (SharedPrefs.isCusSoundAdded()) {
+
+        if (SharedPrefs.isCusSoundAdded()) {
             createFragments();
             mGridPager.setCurrentItem(pm.getCount() - 1);
 
@@ -566,43 +566,47 @@ public class MainActivity extends FragmentActivity {
         rootView = null;
     }
 
-    public double totalPages(int itemCount){
-        return itemCount/itemsOnPage;
+    public double totalPages(int itemCount) {
+        return itemCount / itemsOnPage;
     }
-    public int addSoundLocation(int ItemCount){
+
+    public int addSoundLocation(int ItemCount) {
         double minPages = totalPages(ItemCount);
         int minItems = (int) minPages * itemsOnPage;
-        return (ItemCount-minItems);
+        return (ItemCount - minItems);
     }
 
-    public void setTutorial(Tutorial mTutorial){
-            this.mTutorial = mTutorial;
+    public void setTutorial(Tutorial mTutorial) {
+        this.mTutorial = mTutorial;
 
-            mTutorial.moveToNext(new ViewTarget(timer),"Set playback time", "Tap on the timer icon to play the sound after a specified interval");
+        mTutorial.moveToNext(new ViewTarget(timer), "Set playback time", "Tap on the timer icon to play the sound after a specified interval");
 
-            Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_bounce);
-            grow.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {}
+        Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_bounce);
+        grow.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink);
-                    timer.startAnimation(shrink);
-                }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink);
+                timer.startAnimation(shrink);
+            }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {}
-            });
-            grow.setStartOffset(500);
-            timer.startAnimation(grow);
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        grow.setStartOffset(500);
+        timer.startAnimation(grow);
     }
 
-    public void animPrankButton(){
+    public void animPrankButton() {
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_prank_btn);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -611,7 +615,8 @@ public class MainActivity extends FragmentActivity {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
         grow.setStartOffset(500);
         prankbtn.startAnimation(grow);

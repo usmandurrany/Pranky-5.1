@@ -97,10 +97,12 @@
                 android:id="@+id/usrCountry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Country "
+                android:hint="Country"
                 android:textSize="18sp"
                 android:textColor="#000"
-                android:inputType="textAutoComplete"/>
+                android:inputType="textAutoComplete"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@+id/usrNumber"/>
 
 
         </LinearLayout>
@@ -136,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/usrNumber"
-                android:maxLength="10"
+                android:maxLength="15"
                 android:textColor="#000"/>
 
         </LinearLayout>

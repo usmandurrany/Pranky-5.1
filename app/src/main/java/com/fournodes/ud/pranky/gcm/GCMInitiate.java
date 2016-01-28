@@ -12,6 +12,7 @@ import com.fournodes.ud.pranky.network.AppServerConn;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -61,7 +62,7 @@ public class GCMInitiate {
             }
 
 
-        } catch (Exception e) {
+        } catch (ParseException e) {
             Log.e("GCM Register", e.toString());
         }
     }

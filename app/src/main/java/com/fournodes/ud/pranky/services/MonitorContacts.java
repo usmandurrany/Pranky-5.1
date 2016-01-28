@@ -128,12 +128,17 @@ public class MonitorContacts extends Service implements OnCompleteListener {
     }
 
     @Override
-    public void onComplete() {
+    public void onCompleteSuccess() {
 
     }
 
     @Override
     public void conSyncComplete() {
+
+    }
+
+    @Override
+    public void onCompleteFailed() {
 
     }
 }

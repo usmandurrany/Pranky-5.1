@@ -36,7 +36,6 @@ import com.fournodes.ud.pranky.network.ContactsAsync;
 import com.fournodes.ud.pranky.services.MonitorContacts;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class UserRegistrationActivity extends Activity implements View.OnKeyListener, OnCompleteListener{
 
@@ -105,8 +104,8 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
             if (userCountryShortCode ==null || ("").equals(userCountryShortCode)){
                 userCountryShortCode = teleMgr.getNetworkCountryIso();
             }
-             Log.e("Country Code SIM", teleMgr.getSimCountryIso());
-            Log.e("Country Code NWK", teleMgr.getNetworkCountryIso());
+             //Log.e("Country Code SIM", teleMgr.getSimCountryIso());
+             //Log.e("Country Code NWK", teleMgr.getNetworkCountryIso());
         }
 
 
@@ -114,7 +113,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         for (String value : ctyXmlArray) {
 
             String[] countryDetails = value.split(",");
-            Log.e("country", Arrays.toString(countryDetails));
+            //Log.e("country", Arrays.toString(countryDetails));
             if (countryDetails[0].equals(userCountryShortCode))
                 userCountryAtIndex=i;
             countryList.add(new Country(i,countryDetails[0],countryDetails[1],countryDetails[2]));
@@ -279,7 +278,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         if (name.getText().length() > 0
                 && country.getText().length() > 0
                 && countryCode.getText().length() > 0
-                && number.getText().length() == 10) {
+                && number.getText().length() >= 7) {
 
             btnDone.setEnabled(true);
         }else{
@@ -296,7 +295,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
 
 
     @Override
-    public void onComplete() {
+    public void onCompleteSuccess() {
         if (SharedPrefs.isAppFirstLaunch()){
             startActivity(new Intent(UserRegistrationActivity.this, MainActivity.class));
             ContactsAsync conSync = new ContactsAsync(UserRegistrationActivity.this);
@@ -317,6 +316,12 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         wait.dismiss();
         startService(new Intent(UserRegistrationActivity.this, MonitorContacts.class));
         finish();
+    }
+
+    @Override
+    public void onCompleteFailed() {
+        CustomToast cToast = new CustomToast(UserRegistrationActivity.this,"Invalid   number");
+        cToast.show();
     }
 
     public void registerUser(){

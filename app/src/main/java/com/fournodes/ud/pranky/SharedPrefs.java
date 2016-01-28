@@ -68,6 +68,8 @@ public class SharedPrefs {
 
     public static final String FRIEND_DEVICE_ID = "friendDeviceId";
 
+    public static final String VOLUME_LOW_NOTIFY = "volumeLowNotify";
+
 
 
     private static int invalidIDCount;
@@ -116,6 +118,8 @@ public class SharedPrefs {
 
     private static String friendDeviceId;
 
+    private static boolean volumeLowNotify;
+
 
 
 
@@ -141,6 +145,8 @@ public class SharedPrefs {
 
         locale=prefs.getString(SharedPrefs.LOCALE,null);
         friendDeviceId=prefs.getString(SharedPrefs.FRIEND_DEVICE_ID,null);
+
+        prefs.edit().putBoolean(SharedPrefs.VOLUME_LOW_NOTIFY,true).apply();
 
 
 
@@ -307,6 +313,10 @@ public class SharedPrefs {
 
     public static String getFriendDeviceId() {
         return friendDeviceId;
+    }
+
+    public static boolean isVolumeLowNotify() {
+        return volumeLowNotify;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -485,5 +495,10 @@ public class SharedPrefs {
     public static void setFriendDeviceId(String friendDeviceId) {
         prefs.edit().putString(SharedPrefs.FRIEND_DEVICE_ID,friendDeviceId).apply();
         SharedPrefs.friendDeviceId = friendDeviceId;
+    }
+
+    public static void setVolumeLowNotify(boolean volumeLowNotify) {
+        prefs.edit().putBoolean(SharedPrefs.VOLUME_LOW_NOTIFY,volumeLowNotify).apply();
+        SharedPrefs.volumeLowNotify = volumeLowNotify;
     }
 }
