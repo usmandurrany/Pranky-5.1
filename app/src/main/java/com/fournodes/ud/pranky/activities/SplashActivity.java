@@ -14,9 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.utils.FontManager;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.utils.FontManager;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -34,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         rootView = getLayoutInflater().inflate(R.layout.activity_splash,
                 null);
         setContentView(rootView);
+
 
         // Initialize SharedPrefs will default values
         new SharedPrefs(SplashActivity.this).initAllPrefs();

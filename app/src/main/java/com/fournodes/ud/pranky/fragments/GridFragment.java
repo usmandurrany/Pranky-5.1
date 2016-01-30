@@ -33,7 +33,7 @@ import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.GridItem;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.Selection;
+import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.activities.AddSoundDialogActivity;
@@ -154,7 +154,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
         AudioManager audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
         int currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        if (currVol < 7) {
+        if (currVol < 7 && SharedPrefs.isVolumeLowNotify()) {
             CustomToast cToast = new CustomToast(activity,"Volume too low !");
             cToast.show();
             SharedPrefs.setVolumeLowNotify(false);
@@ -218,7 +218,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                     lastView = -1;
                 }
 
-                Selection.setValues(activity,
+                ItemSelected.setValues(activity,
                         gridItems[pos].itemResID,
                         gridItems[pos].item,
                         gridItems[pos].itemRepeatCount,
@@ -235,7 +235,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                    lastView = -1;
                 }
 
-                Selection.setValues(activity,
+                ItemSelected.setValues(activity,
                         gridItems[pos].itemResID,
                         gridItems[pos].item,
                         gridItems[pos].itemRepeatCount,
@@ -248,7 +248,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 ((Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE)).
                         vibrate(new long[]{0, 2000, 1000, 2000}, -1);
 
-                Selection.setValues(activity,
+                ItemSelected.setValues(activity,
                         gridItems[pos].itemResID,
                         gridItems[pos].item,
                         gridItems[pos].itemRepeatCount,
@@ -258,7 +258,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             }
             case "raw.message": {
 
-                    Selection.setValues(activity,
+                    ItemSelected.setValues(activity,
                             gridItems[pos].itemResID,
                             gridItems[pos].item,
                             gridItems[pos].itemRepeatCount,
@@ -274,7 +274,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                     if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
 
 
-                        Selection.setValues(activity,
+                        ItemSelected.setValues(activity,
                                 gridItems[pos].itemResID,
                                 gridItems[pos].item,
                                 gridItems[pos].itemRepeatCount,
@@ -292,7 +292,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             }
             default: {
 
-                Selection.setValues(activity,
+                ItemSelected.setValues(activity,
                         gridItems[pos].itemResID,
                         gridItems[pos].item,
                         gridItems[pos].itemRepeatCount,
@@ -301,12 +301,12 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
                 if ((lastView != viewPOS)) {
 
-                    if (Selection.itemSound != -1) {
+                    if (ItemSelected.itemSound != -1) {
 
-                        previewSound.create(Selection.itemSound, this);
+                        previewSound.create(ItemSelected.itemSound, this);
                         lastView = -2;
 
-                    } else if (Selection.itemCustomSound != null) {
+                    } else if (ItemSelected.itemCustomSound != null) {
                         previewSound.create(gridItems[pos].item, this);
                         lastView = -2;
 
@@ -341,7 +341,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         }
         lastView = -1;
         viewPOS = -1;
-        Selection.clearSoundProp();
+        ItemSelected.clearSoundProp();
 
     }
 

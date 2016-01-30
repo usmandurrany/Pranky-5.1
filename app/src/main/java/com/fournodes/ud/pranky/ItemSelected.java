@@ -6,7 +6,7 @@ import android.util.Log;
 /**
  * Created by Home on 11/25/2015.
  */
-public class Selection {
+public class ItemSelected {
 
     public static int itemSound = -1;
     public static String itemCustomSound = null;
@@ -34,8 +34,8 @@ public class Selection {
                 itemCustomSound = item;
             }
         }
-        Selection.itemRepeatCount = itemRepeatCount;
-        Selection.itemVolume = (float) itemVolume;
+        ItemSelected.itemRepeatCount = itemRepeatCount;
+        ItemSelected.itemVolume = (float) itemVolume;
     }
 
     public static void clearSoundProp(){

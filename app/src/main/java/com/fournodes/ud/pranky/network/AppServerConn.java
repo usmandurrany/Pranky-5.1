@@ -7,8 +7,9 @@ import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.fournodes.ud.pranky.ContactSelected;
 import com.fournodes.ud.pranky.DatabaseHelper;
-import com.fournodes.ud.pranky.Selection;
+import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
 import com.fournodes.ud.pranky.enums.ActionType;
@@ -137,7 +138,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     }else {
                         url = URLBuilder("index",
                                 "id=" + SharedPrefs.getAppServerID(),
-                                "app=");
+                                "app_id=null");
                         Log.e("RENEW APP ID", String.valueOf(url));
                     }
 
@@ -154,10 +155,10 @@ public class AppServerConn extends AsyncTask<String, String, String> {
 
                     break;
                 case PlayPrank:
-                    if (Selection.itemSound == -2) // condition for HW functions to be treated as a special type of itemSound
-                        selectedItem = Selection.itemCustomSound;
+                    if (ItemSelected.itemSound == -2) // condition for HW functions to be treated as a special type of itemSound
+                        selectedItem = ItemSelected.itemCustomSound;
                     else
-                        selectedItem = Selection.itemName;
+                        selectedItem = ItemSelected.itemName;
 
                     broadcastResult = new Intent(String.valueOf(ClassType.MainActivity));
                     
@@ -165,8 +166,8 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                             "receiver_id=" + SharedPrefs.getFrndAppID() ,
                             "sender_id=" + SharedPrefs.getMyAppID(),
                             "item=" + selectedItem ,
-                            "repeat_count=" + Selection.itemRepeatCount ,
-                            "volume=" + (int) Selection.itemVolume ,
+                            "repeat_count=" + ItemSelected.itemRepeatCount ,
+                            "volume=" + (int) ItemSelected.itemVolume ,
                             "message=" + ActionType.PlayPrank,
                             "currenttime=" + System.currentTimeMillis());
                     
@@ -246,6 +247,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
         wDiag.setWaitText(text);
         wDiag.show();
     }
+
 
     @Override
     protected String doInBackground(String... strings) {
@@ -359,6 +361,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     if (resp.getString("frnd_id").equals("NA"))
                         broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.UserUnavailable));
                     else {
+                        ContactSelected.setApp_id(resp.getString("frnd_id"));
                         Log.e("Friend ID", resp.getString("frnd_id"));
                         Log.e("Friend Device ID", resp.getString("device_id"));
                         SharedPrefs.setFrndAppID(resp.getString("frnd_id")); // Store the received myAppID in shared prefs

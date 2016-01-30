@@ -21,16 +21,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
+import com.fournodes.ud.pranky.ContactSelected;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.GridItem;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.Selection;
+import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.adapters.PagerAdapter;
 import com.fournodes.ud.pranky.dialogs.InfoDialog;
+import com.fournodes.ud.pranky.dialogs.PrePrankDialog;
 import com.fournodes.ud.pranky.enums.ActionType;
 import com.fournodes.ud.pranky.enums.ClassType;
 import com.fournodes.ud.pranky.enums.Message;
@@ -206,7 +208,7 @@ public class MainActivity extends FragmentActivity {
         clock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
+                if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound == null) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                     if (currPage != null)
@@ -226,7 +228,7 @@ public class MainActivity extends FragmentActivity {
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
+                if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound == null) {
                     cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
                     cToast.show();
                     if (currPage != null)
@@ -272,16 +274,12 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View view) {
                 new GCMInitiate(MainActivity.this).run();
 
-                if (timerLaunch || clockLaunch) {
-                    timerLaunch = false;
-                    clockLaunch = false;
-                }
-                if (Selection.itemSound == -1 && Selection.itemCustomSound == null) {
+                if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound == null) {
                     cToast = new CustomToast(MainActivity.this, "Select  a  sound  first");
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                } else if (Selection.itemSound == -1 && Selection.itemCustomSound != null) {
+                } else if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound != null) {
 
                     cToast = new CustomToast(MainActivity.this, "A  non-custom  sound  should  be  selected");
                     cToast.show();
@@ -295,11 +293,9 @@ public class MainActivity extends FragmentActivity {
                         cToast.show();
                     }
                 } else {
-                    AppServerConn appServerConn = new AppServerConn(MainActivity.this, ActionType.PlayPrank);
-                    appServerConn.showWaitDialog("P r a n k i n g ...");
-                    appServerConn.execute();
-
-
+                    PrePrankDialog prePrankDiag = new PrePrankDialog(MainActivity.this);
+                    prePrankDiag.setFriendName(ContactSelected.getName());
+                    prePrankDiag.show();
                 }
 
 

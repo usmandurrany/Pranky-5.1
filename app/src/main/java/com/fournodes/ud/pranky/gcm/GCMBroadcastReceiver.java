@@ -15,7 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.Selection;
+import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.activities.SplashActivity;
 import com.fournodes.ud.pranky.enums.ActionType;
@@ -75,7 +75,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     }
                     else
                     {
-                        intent.putExtra("sysSound", Selection.getSoundRes(sound));
+                        intent.putExtra("sysSound", ItemSelected.getSoundRes(sound));
                         intent.putExtra("cusSound", "");
                     }
 

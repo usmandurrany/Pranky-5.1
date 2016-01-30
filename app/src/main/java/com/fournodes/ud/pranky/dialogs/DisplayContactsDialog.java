@@ -12,9 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.ContactDetails;
+import com.fournodes.ud.pranky.ContactSelected;
 import com.fournodes.ud.pranky.CustomToast;
+import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.enums.ActionType;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
@@ -97,6 +98,9 @@ public class DisplayContactsDialog implements OnCompleteListener {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int conNamePOS, long l) {
                     DisplayContactsDialog.this.conNamePOS = conNamePOS;
+
+
+
                     Log.e("ID:", String.valueOf(contList.get(conNamePOS).getId()));
                     Log.e("Name:", contList.get(conNamePOS).getName());
                     Log.e("Numbers:", Arrays.toString(contList.get(conNamePOS).getRegNumbers()));
@@ -124,6 +128,11 @@ public class DisplayContactsDialog implements OnCompleteListener {
                         });
 
                     }else{
+                        ContactSelected.detials(contList.get(conNamePOS).getId(),
+                                null, //app id is not set here it is set in AsyncTask
+                                contList.get(conNamePOS).getName(),
+                                contList.get(conNamePOS).getRegNumbers()[0]);
+
                         AppServerConn appServerConn = new AppServerConn(context,
                                 ActionType.RetrieveFriendId,
                                 contList.get(conNamePOS).getNumIDs()[0],

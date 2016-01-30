@@ -31,4 +31,6 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.google.android.gms:play-services:8.3.0'
     compile 'kankan.wheel:wheel:2.1@aar' //local lib found in app/libs/aars
+    compile 'com.google.android.gms:play-services-ads:8.3.0'
+
 }

@@ -44,7 +44,7 @@ public class GCMInitiate {
             // Perform Checks for true
             //serverState is 1 and myAppID has expired but myGcmID is set
             if (SharedPrefs.getServerState() == 1 && exp.before(today) && SharedPrefs.getMyGcmID() != null) {
-
+                SharedPrefs.setMyAppID(null);
                 new AppServerConn(context, ActionType.RenewAppId).execute();
 
             }
