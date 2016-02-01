@@ -133,7 +133,7 @@ public class MonitorContacts extends Service implements OnCompleteListener {
     }
 
     @Override
-    public void conSyncComplete() {
+    public void onCompleteContactSync() {
 
     }
 

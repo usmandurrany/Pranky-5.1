@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.text.TextPaint;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +19,8 @@ import android.widget.LinearLayout;
 
 import com.fournodes.ud.pranky.CustomTextView;
 import com.fournodes.ud.pranky.R;
+import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.enums.ActionType;
 import com.fournodes.ud.pranky.network.AppServerConn;
 
@@ -57,8 +58,7 @@ public class PrePrankDialog {
     private float textHeight;
     private float textOffset;
 
-    private  Handler viewHandler;
-    private  Runnable updateView;
+
 
 
 
@@ -141,7 +141,7 @@ public class PrePrankDialog {
         handleRadius = 10;
 
         // limit the counter to go up to maxTime ms
-        maxTime = 5000;
+        maxTime = 3000;
 
         // start and current time
         startTime = System.currentTimeMillis();
@@ -175,20 +175,7 @@ public class PrePrankDialog {
         textOffset = (textHeight / 2) - textPaint.descent();
 
 
-        // This will ensure the animation will run periodically
-        viewHandler = new Handler();
-        updateView = new Runnable(){
-            @Override
-            public void run(){
-                // update current time
-
-
-                viewHandler.postDelayed(updateView, 10);
-
-                }
-        };
-        viewHandler.post(updateView);
-        prankCountDown =  new CountDownTimer(5000,10) {
+        prankCountDown =  new CountDownTimer(3000,16) {
             @Override
             public void onTick(long l) {
                 currentTime = System.currentTimeMillis();
@@ -235,15 +222,16 @@ public class PrePrankDialog {
                 waitAnim.setImageBitmap(bitmap);
 
 
-                Log.e("Progress Value",String.valueOf(progress));
             }
 
             @Override
             public void onFinish() {
-                viewHandler.removeCallbacks(updateView);
-                dialog.dismiss();
+                SharedPrefs.setPrankCount(SharedPrefs.getPrankCount()+1);
                 AppServerConn appServerConn = new AppServerConn(context, ActionType.PlayPrank);
                 appServerConn.execute();
+                ((MainActivity)context).showAd();
+                dialog.dismiss();
+
             }
         }.start();
 

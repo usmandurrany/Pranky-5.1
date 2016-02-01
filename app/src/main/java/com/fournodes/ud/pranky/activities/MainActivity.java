@@ -25,9 +25,9 @@ import com.fournodes.ud.pranky.ContactSelected;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.GridItem;
+import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.adapters.PagerAdapter;
@@ -43,9 +43,17 @@ import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FontManager;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class MainActivity extends FragmentActivity {
 
@@ -80,6 +88,10 @@ public class MainActivity extends FragmentActivity {
     private Tutorial mTutorial;
     private boolean showTutorial;
     private PreviewMediaPlayer previewSound;
+
+
+    private InterstitialAd mInterstitialAd;
+
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -135,6 +147,19 @@ public class MainActivity extends FragmentActivity {
         rootView = getLayoutInflater().inflate(R.layout.activity_main, null);
         setContentView(rootView);
         onWindowFocusChanged(true);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                SharedPrefs.setPrankCount(0);
+            }
+        });
+
+        requestNewInterstitial();
 
 
         /*********************************** SavedInstance Checks***********************************/
@@ -494,6 +519,8 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
+        showAd();
+        pingServer();
 
         if (SharedPrefs.prefs == null)
             SharedPrefs.setContext(this);
@@ -617,6 +644,41 @@ public class MainActivity extends FragmentActivity {
         grow.setStartOffset(500);
         prankbtn.startAnimation(grow);
     }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("9EA2162DEEE83254D6CB1770786B77EE")
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+    public void showAd(){
+        if (mInterstitialAd.isLoaded() && SharedPrefs.getPrankCount() >= 3) {
+            mInterstitialAd.show();
+        }
+
+    }
+    public void pingServer(){
+        if (SharedPrefs.getPingServerDate() != null) {
+            try {
+                // Convert the expDate in shared prefs to CALENDAR type for comparison
+                Calendar pingServerDate = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                pingServerDate.setTime(sdf.parse(SharedPrefs.getPingServerDate()));
+
+                // Get current Time from device for comparison
+                Calendar today = Calendar.getInstance(TimeZone.getDefault());
+                if (pingServerDate.before(today)) {
+
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
 
 

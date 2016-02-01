@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.fournodes.ud.pranky.ContactSelected;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -51,6 +52,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
         }
         Log.e("Message received",data.getString("message"));
         Log.e("Sender Name",data.getString("sender_name"));
+        ContactSelected.setName(data.getString("sender_name"));
 
         switch(ActionType.valueOf(data.getString("message"))) {
             case PlayPrank:

@@ -5,6 +5,6 @@ package com.fournodes.ud.pranky.interfaces;
  */
 public interface OnCompleteListener {
     void onCompleteSuccess();
-    void conSyncComplete();
+    void onCompleteContactSync();
     void onCompleteFailed();
 }

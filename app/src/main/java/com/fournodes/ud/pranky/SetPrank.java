@@ -26,6 +26,7 @@ public class SetPrank {
 
         this.min = min;
         this.ampm = ampm;
+        SharedPrefs.setPrankCount(SharedPrefs.getPrankCount()+1);
     }
 
     public SetPrank(Context context, int hr, int min, int sec) {
@@ -33,6 +34,8 @@ public class SetPrank {
         this.hr = hr;
         this.min = min;
         this.sec = sec;
+        SharedPrefs.setPrankCount(SharedPrefs.getPrankCount()+1);
+
     }
 
     public void get24HrTime() {

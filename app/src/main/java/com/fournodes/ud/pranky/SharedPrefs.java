@@ -70,6 +70,10 @@ public class SharedPrefs {
 
     public static final String VOLUME_LOW_NOTIFY = "volumeLowNotify";
 
+    public static final String PRANK_COUNT = "prankCount";
+
+    public static final String PING_SERVER_DATE = "pingServerDate";
+
 
 
     private static int invalidIDCount;
@@ -118,7 +122,11 @@ public class SharedPrefs {
 
     private static String friendDeviceId;
 
+    private static int prankCount;
+
     private static boolean volumeLowNotify;
+
+    private static String pingServerDate;
 
 
 
@@ -186,6 +194,11 @@ public class SharedPrefs {
         signUpComplete=prefs.getBoolean(SharedPrefs.SIGN_UP_COMPLETE, false);
 
         contactsStored=prefs.getBoolean(SharedPrefs.CONTACTS_STORED, false);
+
+        prankCount=prefs.getInt(SharedPrefs.PRANK_COUNT,0);
+
+        pingServerDate=prefs.getString(SharedPrefs.PING_SERVER_DATE,null);
+
     }
 
     public static boolean isAppFirstLaunch() {
@@ -317,6 +330,14 @@ public class SharedPrefs {
 
     public static boolean isVolumeLowNotify() {
         return volumeLowNotify;
+    }
+
+    public static int getPrankCount() {
+        return prankCount;
+    }
+
+    public static String getPingServerDate() {
+        return pingServerDate;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -500,5 +521,16 @@ public class SharedPrefs {
     public static void setVolumeLowNotify(boolean volumeLowNotify) {
         prefs.edit().putBoolean(SharedPrefs.VOLUME_LOW_NOTIFY,volumeLowNotify).apply();
         SharedPrefs.volumeLowNotify = volumeLowNotify;
+    }
+
+    public static void setPrankCount(int prankCount) {
+        prefs.edit().putInt(SharedPrefs.PRANK_COUNT,prankCount).apply();
+        SharedPrefs.prankCount = prankCount;
+
+    }
+
+    public static void setPingServerDate(String pingServerDate) {
+        prefs.edit().putString(SharedPrefs.PING_SERVER_DATE,pingServerDate).apply();
+        SharedPrefs.pingServerDate = pingServerDate;
     }
 }

@@ -12,6 +12,7 @@ import android.util.Log;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CameraControls;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.SharedPrefs;
 
 import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
@@ -34,7 +35,7 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
     public void onReceive(Context context, Intent intent) {
         playSound = getInstance(context);
         cameraControls = CameraControls.getInstance(context);
-
+        Log.e("Prank Count",String.valueOf(SharedPrefs.getPrankCount()));
         sysSound = intent.getIntExtra("sysSound", -1);
         //     Log.e("System Sound",item);
         cusSound = intent.getStringExtra("cusSound");

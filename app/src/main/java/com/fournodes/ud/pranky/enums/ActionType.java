@@ -15,5 +15,6 @@ public enum ActionType {
     RetrieveFriendId,
     VerifyUserRegistration,
     Broadcast,
-    Callback
+    Callback,
+    PingServer
 }

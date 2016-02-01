@@ -238,6 +238,14 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     Log.e("Registration Check", String.valueOf(url));
 
                     break;
+                case PingServer:
+                    url = URLBuilder("index",
+                            "id=" + SharedPrefs.getAppServerID(),
+                            "app_id=" + SharedPrefs.getMyAppID(),
+                            "pingServer=true");
+
+                    Log.e("Ping Server", String.valueOf(url));
+                    break;
 
             }
     }
@@ -316,12 +324,17 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                 case RegisterDevice:
                     Calendar exp_date = Calendar.getInstance(TimeZone.getDefault());
                     exp_date.set(Calendar.HOUR, (exp_date.get(Calendar.HOUR) + 24));
+
+                    Calendar serverPingDate = Calendar.getInstance(TimeZone.getDefault());
+                    serverPingDate.set(Calendar.DAY_OF_MONTH, (serverPingDate.get(Calendar.DAY_OF_MONTH)+6));
+
+
                     Log.e("ExpiryDate", exp_date.getTime().toString());
                     if (resp.getString("result").equals("1")) {
                         Log.e(TAG, resp.getString("app_id"));
                         //Log.e(TAG, resp.getString("time"));
 
-
+                        SharedPrefs.setPingServerDate(serverPingDate.getTime().toString());
                         SharedPrefs.setAppServerID(resp.getString("id")); // Store the received ServerID in shared prefs
                         SharedPrefs.setMyAppID(resp.getString("app_id")); // Store the received myAppID in shared prefs
                         SharedPrefs.setSentGcmIDToServer(true);// GCM ID has been sent successfully
@@ -383,6 +396,15 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     } else
                         broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.UserRegistered));
 
+                    break;
+                case PingServer:
+                    if (resp.getString("result").equals("8")) {
+                        Calendar serverPing = Calendar.getInstance(TimeZone.getDefault());
+                        serverPing.set(Calendar.DAY_OF_MONTH, (serverPing.get(Calendar.DAY_OF_MONTH)+6));
+                        SharedPrefs.setPingServerDate(serverPing.getTime().toString());
+                        Log.e("Server Ping Date",serverPing.getTime().toString());
+
+                    }
                     break;
 
             }

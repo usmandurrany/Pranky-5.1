@@ -1,14 +1,18 @@
 package com.fournodes.ud.pranky.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.PermissionChecker;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -37,8 +41,9 @@ import com.fournodes.ud.pranky.services.MonitorContacts;
 
 import java.util.ArrayList;
 
-public class UserRegistrationActivity extends Activity implements View.OnKeyListener, OnCompleteListener{
+public class UserRegistrationActivity extends Activity implements View.OnKeyListener, OnCompleteListener {
 
+    ContactsAsync syncContacts;
     private View decorView;
     private CustomEditText name;
     private AutoCompleteTextView country;
@@ -46,18 +51,12 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
     private CustomEditText number;
     private ImageView btnDone;
     private ImageView btnSkip;
-
-
     private String[] ctyXmlArray;
-
     private AppServerConn appServerConn;
-
     private WaitDialog wait;
     private int userCountryAtIndex;
     private String userCountryShortCode;
     private boolean listItemClicked;
-
-    ContactsAsync syncContacts;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -92,20 +91,20 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         onWindowFocusChanged(true);
 
         syncContacts = new ContactsAsync(this);
-        syncContacts.delegate=this;
+        syncContacts.delegate = this;
 
         ctyXmlArray = getResources().getStringArray(R.array.countries);
 
         final ArrayList<Country> countryList = new ArrayList<>();
 
-        final TelephonyManager teleMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        if (teleMgr != null){
+        final TelephonyManager teleMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if (teleMgr != null) {
             userCountryShortCode = teleMgr.getSimCountryIso();
-            if (userCountryShortCode ==null || ("").equals(userCountryShortCode)){
+            if (userCountryShortCode == null || ("").equals(userCountryShortCode)) {
                 userCountryShortCode = teleMgr.getNetworkCountryIso();
             }
-             //Log.e("Country Code SIM", teleMgr.getSimCountryIso());
-             //Log.e("Country Code NWK", teleMgr.getNetworkCountryIso());
+            //Log.e("Country Code SIM", teleMgr.getSimCountryIso());
+            //Log.e("Country Code NWK", teleMgr.getNetworkCountryIso());
         }
 
 
@@ -115,15 +114,13 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
             String[] countryDetails = value.split(",");
             //Log.e("country", Arrays.toString(countryDetails));
             if (countryDetails[0].equals(userCountryShortCode))
-                userCountryAtIndex=i;
-            countryList.add(new Country(i,countryDetails[0],countryDetails[1],countryDetails[2]));
+                userCountryAtIndex = i;
+            countryList.add(new Country(i, countryDetails[0], countryDetails[1], countryDetails[2]));
             i++;
         }
 
 
-
-
-        final CountryAdapter cAdapter = new CountryAdapter(this,R.layout.spinner_row,countryList);
+        final CountryAdapter cAdapter = new CountryAdapter(this, R.layout.spinner_row, countryList);
         int color = Color.parseColor("#f27d13");
         name = (CustomEditText) findViewById(R.id.usrName);
         name.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
@@ -135,14 +132,14 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
             @Override
             public void onFocusChange(View view, boolean b) {
                 onWindowFocusChanged(true);
-                if (!view.hasFocus() && country.getText().length()>0 && !listItemClicked) {
-                    if (cAdapter.getFilterResultSize() >1 || cAdapter.getFilterResultSize() == 0)
+                if (!view.hasFocus() && country.getText().length() > 0 && !listItemClicked) {
+                    if (cAdapter.getFilterResultSize() > 1 || cAdapter.getFilterResultSize() == 0)
                         countryCode.setText(null);
-                    else{
+                    else {
                         countryCode.setText(cAdapter.getItem(0).getCountryCode());
                         country.setText(cAdapter.getItem(0).getCountryName());
                     }
-                }else if(!view.hasFocus() && country.getText().length()>0){
+                } else if (!view.hasFocus() && country.getText().length() > 0) {
                     listItemClicked = false;
                 }
             }
@@ -171,8 +168,9 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
             @Override
             public void onClick(View view) {
                 SharedPrefs.setSignUpSkipped(true);
-                if(SharedPrefs.isAppFirstLaunch())
-                {startActivity(new Intent(UserRegistrationActivity.this, MainActivity.class));}
+                if (SharedPrefs.isAppFirstLaunch()) {
+                    startActivity(new Intent(UserRegistrationActivity.this, MainActivity.class));
+                }
                 finish();
 
             }
@@ -185,9 +183,9 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
                 int realPosition = countryList.indexOf(data);
 
                 Log.e("Item real pos",String.valueOf(realPosition));*/
-                listItemClicked=true;
+                listItemClicked = true;
                 countryCode.setText(cAdapter.getCountryCode(pos));
-               number.requestFocus();
+                number.requestFocus();
             }
         });
 
@@ -198,24 +196,23 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
             public void onClick(View view) {
 
 
-                    SharedPrefs.setSignUpComplete(true);
-                    SharedPrefs.setUserName(name.getText().toString());
-                    SharedPrefs.setUserCountry(country.getText().toString());
-                    SharedPrefs.setUserCountryCode(countryCode.getText().toString());
-                    SharedPrefs.setUserPhoneNumber(number.getText().toString());
+                SharedPrefs.setSignUpComplete(true);
+                SharedPrefs.setUserName(name.getText().toString());
+                SharedPrefs.setUserCountry(country.getText().toString());
+                SharedPrefs.setUserCountryCode(countryCode.getText().toString());
+                SharedPrefs.setUserPhoneNumber(number.getText().toString());
 
-                    /******************************** Contacts sync testing code **********************************/
+                /******************************** Contacts sync testing code **********************************/
 
-                if(!SharedPrefs.isSentGcmIDToServer()) {
-                    wait= new WaitDialog(UserRegistrationActivity.this);
+                if (!SharedPrefs.isSentGcmIDToServer()) {
+                    wait = new WaitDialog(UserRegistrationActivity.this);
                     wait.setWaitText("P l e a s e   W a i t ...");
                     wait.show();
                     UserRegistrationActivity.this.startService(new Intent(
-                            UserRegistrationActivity.this,GCMRegistrationService.class)
+                            UserRegistrationActivity.this, GCMRegistrationService.class)
                             .putExtra(String.valueOf(ActionType.Callback), String.valueOf(ClassType.UserRegistrationActivity)));
-                }
-                else
-                 registerUser();
+                } else
+                    registerUser();
 
             }
         });
@@ -281,7 +278,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
                 && number.getText().length() >= 7) {
 
             btnDone.setEnabled(true);
-        }else{
+        } else {
             btnDone.setEnabled(false);
         }
         return false;
@@ -296,23 +293,30 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
 
     @Override
     public void onCompleteSuccess() {
-        if (SharedPrefs.isAppFirstLaunch()){
+        if (SharedPrefs.isAppFirstLaunch()) {
             startActivity(new Intent(UserRegistrationActivity.this, MainActivity.class));
-            ContactsAsync conSync = new ContactsAsync(UserRegistrationActivity.this);
-            conSync.execute();
-            finish();
-        }else {
-            wait = new WaitDialog(UserRegistrationActivity.this);
-            wait.setWaitText("S y n c i n g   C o n t a c t s ...");
-            wait.show();
-            ContactsAsync conSync = new ContactsAsync(UserRegistrationActivity.this);
-            conSync.delegate = UserRegistrationActivity.this;
-            conSync.execute();
+
+            if (isPermissionGranted()) {
+
+
+                ContactsAsync conSync = new ContactsAsync(UserRegistrationActivity.this);
+                conSync.execute();
+                finish();
+            }
+        } else {
+            if (isPermissionGranted()) {
+                wait = new WaitDialog(UserRegistrationActivity.this);
+                wait.setWaitText("S y n c i n g   C o n t a c t s ...");
+                wait.show();
+                ContactsAsync conSync = new ContactsAsync(UserRegistrationActivity.this);
+                conSync.delegate = UserRegistrationActivity.this;
+                conSync.execute();
+            }
         }
     }
 
     @Override
-    public void conSyncComplete() {
+    public void onCompleteContactSync() {
         wait.dismiss();
         startService(new Intent(UserRegistrationActivity.this, MonitorContacts.class));
         finish();
@@ -320,15 +324,33 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
 
     @Override
     public void onCompleteFailed() {
-        CustomToast cToast = new CustomToast(UserRegistrationActivity.this,"Invalid   number");
+        CustomToast cToast = new CustomToast(UserRegistrationActivity.this, "Invalid   number");
         cToast.show();
     }
 
-    public void registerUser(){
+    public void registerUser() {
         appServerConn = new AppServerConn(UserRegistrationActivity.this, ActionType.RegisterUser);
-        appServerConn.delegate=this;
+        appServerConn.delegate = this;
         appServerConn.showWaitDialog("R e g i s t e r i n g ...");
         appServerConn.execute();
+    }
+
+    public boolean isPermissionGranted() {
+
+
+Log.e("Contact Permission",String.valueOf(PermissionChecker.checkCallingOrSelfPermission(UserRegistrationActivity.this,Manifest.permission.READ_CONTACTS)));
+
+        if (ContextCompat.checkSelfPermission(UserRegistrationActivity.this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            CustomToast cToast = new CustomToast(UserRegistrationActivity.this, "App needs permission read contacts");
+            cToast.show();
+            return false;
+
+        } else
+            return true;
+
+
     }
 
 }

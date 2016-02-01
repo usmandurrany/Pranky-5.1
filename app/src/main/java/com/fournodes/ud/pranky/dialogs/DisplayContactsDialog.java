@@ -23,7 +23,6 @@ import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Usman on 12/1/2016.
@@ -42,8 +41,8 @@ public class DisplayContactsDialog implements OnCompleteListener {
     private int curCount;
     private int newCount;
 
-    public DisplayContactsDialog(Context context){
-        this.context=context;
+    public DisplayContactsDialog(Context context) {
+        this.context = context;
         prankyDB = new DatabaseHelper(context);
         curCount = prankyDB.conRegCount();
 
@@ -61,7 +60,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
                 wait = new WaitDialog(context);
                 wait.setWaitText("R e f r e s h i n g ...");
                 wait.show();
-                DatabaseHelper prankyDB= new DatabaseHelper(context);
+                DatabaseHelper prankyDB = new DatabaseHelper(context);
                 prankyDB.nuke(DatabaseHelper.TABLE_CONTACTS);
                 ContactsAsync syncContacts = new ContactsAsync(context);
                 syncContacts.delegate = DisplayContactsDialog.this;
@@ -69,15 +68,13 @@ public class DisplayContactsDialog implements OnCompleteListener {
             }
         });
         close = (ImageView) dialog.findViewById(R.id.close);
-        lstContacts =  (ListView) dialog.findViewById(R.id.lstConNames);
+        lstContacts = (ListView) dialog.findViewById(R.id.lstConNames);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
             }
         });
-
-
 
 
         contList = prankyDB.getAllContacts();
@@ -88,24 +85,25 @@ public class DisplayContactsDialog implements OnCompleteListener {
         for (int i = 0; i < contList.size(); i++) {
             names[i] = contList.get(i).getName();
         }
-        final ArrayAdapter<String> conAdapter = new ArrayAdapter<String>(context,
-                    R.layout.contacts_row, names);
+        Log.e("Names Len", String.valueOf(names.length));
+        if (names.length == 0)
+            names = new String[]{"NO FRIENDS AVAILABLE", "PULL TO REFRESH"};
+
+        final ArrayAdapter<String> conAdapter = new ArrayAdapter<>(context,
+                R.layout.contacts_row, names);
         lstContacts.setAdapter(conAdapter);
-        lstContacts.setEmptyView(dialog.findViewById(R.id.emptyElement));
-
-
         lstContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int conNamePOS, long l) {
-                    DisplayContactsDialog.this.conNamePOS = conNamePOS;
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int conNamePOS, long l) {
+                DisplayContactsDialog.this.conNamePOS = conNamePOS;
 
-
+/*
 
                     Log.e("ID:", String.valueOf(contList.get(conNamePOS).getId()));
                     Log.e("Name:", contList.get(conNamePOS).getName());
                     Log.e("Numbers:", Arrays.toString(contList.get(conNamePOS).getRegNumbers()));
-                    Log.e("NumIDs:", Arrays.toString(contList.get(conNamePOS).getNumIDs()));
-
+                    Log.e("NumIDs:", Arrays.toString(contList.get(conNamePOS).getNumIDs()));*/
+                if (contList.size() > 0) {
                     if (contList.get(conNamePOS).getRegNumbers().length > 1) {
 
                         Dialog conNumDiag = new Dialog(context, R.style.ClockDialog);
@@ -127,7 +125,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
                             }
                         });
 
-                    }else{
+                    } else {
                         ContactSelected.detials(contList.get(conNamePOS).getId(),
                                 null, //app id is not set here it is set in AsyncTask
                                 contList.get(conNamePOS).getName(),
@@ -140,21 +138,24 @@ public class DisplayContactsDialog implements OnCompleteListener {
 
                         appServerConn.execute();
                     }
+                } else {
+
                 }
-            });
+            }
+        });
 
-            //Set the dialog to not focusable (makes navigation ignore us adding the window)
-            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        //Set the dialog to not focusable (makes navigation ignore us adding the window)
+        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
-            //Show the dialog!
-            dialog.show();
+        //Show the dialog!
+        dialog.show();
 
-            //Set the dialog to immersive
-            dialog.getWindow().getDecorView().setSystemUiVisibility(
-                    ((Activity) context).getWindow().getDecorView().getSystemUiVisibility());
+        //Set the dialog to immersive
+        dialog.getWindow().getDecorView().setSystemUiVisibility(
+                ((Activity) context).getWindow().getDecorView().getSystemUiVisibility());
 
-            //Clear the not focusable flag from the window
-            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        //Clear the not focusable flag from the window
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
 
     }
@@ -165,17 +166,17 @@ public class DisplayContactsDialog implements OnCompleteListener {
     }
 
     @Override
-    public void conSyncComplete() {
+    public void onCompleteContactSync() {
         //refreshList.setRefreshing(false);
 
-        newCount=prankyDB.conRegCount();
-        if(newCount-curCount > 0){
-            CustomToast cToast = new CustomToast(context, newCount-curCount+" contacts added");
+        newCount = prankyDB.conRegCount();
+        if (newCount - curCount > 0) {
+            CustomToast cToast = new CustomToast(context, newCount - curCount + " contacts added");
             cToast.show();
-        }else if(newCount-curCount < 0){
-            CustomToast cToast = new CustomToast(context, ((newCount-curCount)*(-1))+" contacts removed");
+        } else if (newCount - curCount < 0) {
+            CustomToast cToast = new CustomToast(context, ((newCount - curCount) * (-1)) + " contacts removed");
             cToast.show();
-        }else{
+        } else {
             CustomToast cToast = new CustomToast(context, "No change");
             cToast.show();
         }

@@ -156,7 +156,7 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
 
             }
             if (delegate!=null)
-            delegate.conSyncComplete();
+            delegate.onCompleteContactSync();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
