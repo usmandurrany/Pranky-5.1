@@ -9,9 +9,9 @@ import android.util.Log;
 
 import java.io.IOException;
 
-/**
- * Created by Usman on 21/1/2016.
- */
+/*********************************
+ * Created by Usman on 21/1/2016.*
+ *********************************/
 public class CameraControls {
     private static  final String TAG = "Camera Controls";
 

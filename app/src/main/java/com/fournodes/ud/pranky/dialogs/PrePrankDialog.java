@@ -70,7 +70,7 @@ public class PrePrankDialog {
     public PrePrankDialog(Context context) {
         this.context = context;
         dialog = new Dialog(context, R.style.ClockDialog);
-        dialog.setContentView(R.layout.dialog_pranking);
+        dialog.setContentView(R.layout.dialog_pre_prank);
     }
 
 

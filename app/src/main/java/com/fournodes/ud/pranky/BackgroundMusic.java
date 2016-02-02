@@ -8,10 +8,8 @@ public class BackgroundMusic {
     static Context context;
     private static volatile BackgroundMusic instance = null;
     // Loop delay for BG Music
-    private static final int BG_MUSIC_DELAY = 2000;
 
-    private BackgroundMusic() {
-    }
+    private BackgroundMusic() {}
 
 
     public static BackgroundMusic getInstance(Context context) {

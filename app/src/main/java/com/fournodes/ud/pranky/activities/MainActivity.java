@@ -150,6 +150,7 @@ public class MainActivity extends FragmentActivity {
 
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+       // mInterstitialAd.setAdUnitId("ca-app-pub-7260426673133841/1414623255");
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -238,7 +239,11 @@ public class MainActivity extends FragmentActivity {
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                } else {
+                }else if (SharedPrefs.getPrankCount()>=3){
+                    startActivity(new Intent(MainActivity.this, PrankLimitDialog.class));
+
+                }
+                else {
                     if (timerLaunch)
                         timerLaunch = false;
                     clockLaunch = true;
@@ -258,7 +263,11 @@ public class MainActivity extends FragmentActivity {
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                } else {
+                }else if (SharedPrefs.getPrankCount()>=3){
+                    startActivity(new Intent(MainActivity.this, PrankLimitDialog.class));
+
+                }
+                else {
                     SharedPrefs.setBgMusicPlaying(true);
                     timerLaunch = true;
                     Intent timerDialog = new Intent(MainActivity.this, TimerDialogActivity.class);
@@ -317,7 +326,10 @@ public class MainActivity extends FragmentActivity {
                         cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
                         cToast.show();
                     }
-                } else {
+                } else if (SharedPrefs.getPrankCount()>=3){
+                    startActivity(new Intent(MainActivity.this, PrankLimitDialog.class));
+                }
+                else {
                     PrePrankDialog prePrankDiag = new PrePrankDialog(MainActivity.this);
                     prePrankDiag.setFriendName(ContactSelected.getName());
                     prePrankDiag.show();
@@ -334,14 +346,14 @@ public class MainActivity extends FragmentActivity {
                 if (!open) {
 
                     sideMenu.setBackgroundResource(R.drawable.sm_hide);
-                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(130));
+                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(150));
                     open = true;
 
                     smClose = new Handler();
                     smClose.postDelayed(new Runnable() {
                         public void run() {
                             if (open) {
-                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(130), 0);
+                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(150), 0);
                                 open = false;
                                 sideMenu.setBackgroundResource(R.drawable.sm_show);
                                 anim.setDuration(500);
@@ -654,8 +666,9 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void showAd(){
-        if (mInterstitialAd.isLoaded() && SharedPrefs.getPrankCount() >= 3) {
-            mInterstitialAd.show();
+        if (SharedPrefs.getPrankCount() >= 3) {
+            startActivity(new Intent(MainActivity.this, PrankLimitDialog.class));
+
         }
 
     }

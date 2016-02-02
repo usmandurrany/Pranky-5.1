@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:padding="10dp"
         android:scaleType="fitCenter"
-        android:src="@mipmap/popup_small" />
+        android:src="@mipmap/popup_long" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,13 +22,13 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:paddingTop="25dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/music"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/settings_linearlayout_height"
-            android:layout_marginTop="25dp"
             android:orientation="horizontal">
 
             <com.fournodes.ud.pranky.CustomTextView
@@ -66,12 +66,52 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/stealthmode"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/settings_linearlayout_height"
+            android:orientation="horizontal">
+
+            <com.fournodes.ud.pranky.CustomTextView
+                android:layout_marginTop="15dp"
+                android:id="@+id/txtStealth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/prank_text_margin_right"
+                android:padding="8dp"
+                android:text="Stealth Mode "
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold"
+
+                />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/btnStealthToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/prank_switch_margin_left"
+                android:paddingBottom="35dp"
+                android:textOff="OFF"
+                android:textOn="ON"
+                app:showText="false"
+                android:thumb="@drawable/toggle_states"
+                android:thumbTextPadding="20dp"
+                app:track="@drawable/toggle_body"
+
+
+
+                />
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/myID"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/settings_linearlayout_height"
-            android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
             <com.fournodes.ud.pranky.CustomTextView
@@ -112,7 +152,6 @@
             android:id="@+id/layoutRemoteID"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/settings_linearlayout_height"
-            android:layout_marginTop="0dp"
             android:orientation="horizontal"
             android:visibility="invisible">
 
@@ -154,8 +193,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="@dimen/close_btn_margin_right"
-        android:layout_marginTop="@dimen/close_btn_margin_top"
+        android:layout_marginRight="@dimen/close_btn_margin_right_long"
+        android:layout_marginTop="@dimen/close_btn_margin_top_long"
         android:src="@drawable/closestates" />
 
 

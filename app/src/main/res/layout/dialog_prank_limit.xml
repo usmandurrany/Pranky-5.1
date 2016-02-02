@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/popup_small" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="@dimen/set_btn_margin_bottom"
+        android:layout_alignParentBottom="true"
+        >
+
+        <ImageView
+            android:id="@+id/btnBuyNow"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+
+            android:scaleType="fitCenter"
+            android:src="@drawable/btn_done_states" />
+        <ImageView
+            android:id="@+id/btnShowAd"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+
+            android:scaleType="fitCenter"
+            android:src="@drawable/btn_done_states" />
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:layout_marginTop="90dp"
+    android:orientation="vertical"
+    android:gravity="center">
+    <com.fournodes.ud.pranky.CustomTextView
+        android:id="@+id/lblfrndID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="Premium  Features"
+        android:textAllCaps="true"
+        android:textColor="#bf071a"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/settings_font_small"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/logo_face"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/signup_logo"
+            android:layout_marginBottom="10dp"
+            />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center">
+
+
+            <com.fournodes.ud.pranky.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="No  Ads"
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold" />
+            <com.fournodes.ud.pranky.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="Stealth  Mode"
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold" />
+            <com.fournodes.ud.pranky.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="Unlimited  Pranks"
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/settings_font_small"
+                android:textStyle="bold" />
+            </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
+
+
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/close_btn_margin_right"
+        android:layout_marginTop="@dimen/close_btn_margin_top"
+        android:src="@drawable/closestates" />
+
+
+</RelativeLayout>

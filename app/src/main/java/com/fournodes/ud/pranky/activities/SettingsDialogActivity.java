@@ -1,6 +1,7 @@
 package com.fournodes.ud.pranky.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -50,9 +51,20 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
         // Initialize the switchs on the dialog by checking shared prefs
         SwitchCompat btnmusic = (SwitchCompat) findViewById(R.id.btnMusicToggle);
         SwitchCompat remoteprank = (SwitchCompat) findViewById(R.id.swtRemotePrank);
+        SwitchCompat stealthMode = (SwitchCompat) findViewById(R.id.btnStealthToggle);
+        stealthMode.setOnClickListener(this);
+        stealthMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked){
+                    startActivity(new Intent(SettingsDialogActivity.this, PrankLimitDialog.class));
+                    finish();
+                }
+
+            }
+        });
 
         btnmusic.setChecked(SharedPrefs.isBgMusicEnabled());
-
 
         btnmusic.setOnClickListener(this);
         btnmusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.fournodes.ud.pranky.ContactDetails;
 import com.fournodes.ud.pranky.ContactSelected;
+import com.fournodes.ud.pranky.CustomTextView;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.R;
@@ -68,7 +69,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
             }
         });
         close = (ImageView) dialog.findViewById(R.id.close);
-        lstContacts = (ListView) dialog.findViewById(R.id.lstConNames);
+        lstContacts = (ListView) dialog.findViewById(R.id.lstContacts);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +88,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
         }
         Log.e("Names Len", String.valueOf(names.length));
         if (names.length == 0)
-            names = new String[]{"NO FRIENDS AVAILABLE", "PULL TO REFRESH"};
+            names = new String[]{"No frineds available, Pull to refresh"};
 
         final ArrayAdapter<String> conAdapter = new ArrayAdapter<>(context,
                 R.layout.contacts_row, names);
@@ -107,8 +108,10 @@ public class DisplayContactsDialog implements OnCompleteListener {
                     if (contList.get(conNamePOS).getRegNumbers().length > 1) {
 
                         Dialog conNumDiag = new Dialog(context, R.style.ClockDialog);
-                        conNumDiag.setContentView(R.layout.dialog_contact_numbers);
-                        ListView lstConNumbers = (ListView) conNumDiag.findViewById(R.id.lstConNumbers);
+                        conNumDiag.setContentView(R.layout.dialog_contact_names);
+                        CustomTextView title = (CustomTextView) conNumDiag.findViewById(R.id.lblTitle);
+                        title.setText("Select  a  number");
+                        ListView lstConNumbers = (ListView) conNumDiag.findViewById(R.id.lstContacts);
                         final ArrayAdapter<String> conNumAdapter = new ArrayAdapter<String>(context,
                                 R.layout.contacts_row, contList.get(conNamePOS).getRegNumbers());
                         lstConNumbers.setAdapter(conNumAdapter);
@@ -161,9 +164,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
     }
 
     @Override
-    public void onCompleteSuccess() {
-
-    }
+    public void onCompleteSuccess() {}
 
     @Override
     public void onCompleteContactSync() {

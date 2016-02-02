@@ -16,8 +16,7 @@
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/waitAnim"
                 android:layout_width="180dp"
@@ -63,7 +62,7 @@
             android:id="@+id/btnCancelPrank"
             android:layout_width="140dp"
             android:layout_height="70dp"
-            android:src="@drawable/btn_done_states"
+            android:src="@drawable/btn_cancel_states"
             />
 
     </LinearLayout>

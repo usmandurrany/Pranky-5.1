@@ -94,6 +94,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".activities.PrankLimitDialog"
+            android:excludeFromRecents="true"
+            android:label="ClockDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityDialog" />
 
         <receiver
             android:name=".receivers.PlayPrank"

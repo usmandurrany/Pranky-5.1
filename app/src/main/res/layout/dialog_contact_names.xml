@@ -37,7 +37,7 @@
             android:gravity="center">
 
             <com.fournodes.ud.pranky.CustomTextView
-                android:id="@+id/lblfrndID"
+                android:id="@+id/lblTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
@@ -57,7 +57,7 @@
             android:layout_marginTop="10dp"
             >
         <ListView
-            android:id="@+id/lstConNames"
+            android:id="@+id/lstContacts"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:overScrollMode="never"
