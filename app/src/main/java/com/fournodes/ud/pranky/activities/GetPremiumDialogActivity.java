@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -16,7 +17,7 @@ import com.google.android.gms.ads.InterstitialAd;
 /**
  * Created by Usman on 2/2/2016.
  */
-public class PrankLimitDialog extends Activity {
+public class GetPremiumDialogActivity extends Activity {
 
     private InterstitialAd mInterstitialAd;
     private View decorView;
@@ -24,7 +25,7 @@ public class PrankLimitDialog extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_prank_limit);
+        setContentView(R.layout.activity_dialog_get_premium);
         onWindowFocusChanged(true);
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
@@ -45,7 +46,9 @@ public class PrankLimitDialog extends Activity {
         ImageView showAd = (ImageView) findViewById(R.id.btnShowAd);
         ImageView buyNow = (ImageView) findViewById(R.id.btnBuyNow);
         ImageView close = (ImageView) findViewById(R.id.close);
-
+        TextView prankCount = (TextView) findViewById(R.id.lblPrankCount);
+        int pranksLeft = (Integer.parseInt(SharedPrefs.PRANK_LIMIT) - SharedPrefs.getPrankCount());
+        prankCount.setText("Pranks  Left  "+String.valueOf(pranksLeft));
 
         showAd.setOnClickListener(new View.OnClickListener() {
             @Override

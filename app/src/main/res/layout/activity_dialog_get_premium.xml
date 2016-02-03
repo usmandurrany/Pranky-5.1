@@ -30,14 +30,14 @@
             android:layout_height="100dp"
 
             android:scaleType="fitCenter"
-            android:src="@drawable/btn_done_states" />
+            android:src="@drawable/btn_buy_now_states" />
         <ImageView
             android:id="@+id/btnShowAd"
             android:layout_width="130dp"
             android:layout_height="100dp"
 
             android:scaleType="fitCenter"
-            android:src="@drawable/btn_done_states" />
+            android:src="@drawable/btn_watch_ads_states" />
 
     </LinearLayout>
 
@@ -51,17 +51,28 @@
     android:orientation="vertical"
     android:gravity="center">
     <com.fournodes.ud.pranky.CustomTextView
-        android:id="@+id/lblfrndID"
+        android:id="@+id/lblPrankCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
-        android:text="Premium  Features"
+        android:text="Pranks  Left "
         android:textAllCaps="true"
         android:textColor="#bf071a"
         android:textIsSelectable="false"
         android:textSize="@dimen/settings_font_small"
         android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="5dp"/>
+    <com.fournodes.ud.pranky.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="Go  premium  to  get  more "
+        android:textAllCaps="true"
+        android:textColor="#bf071a"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/settings_font_small"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"/>
 
     <LinearLayout
         android:id="@+id/content"
@@ -75,8 +86,7 @@
             android:id="@+id/logo_face"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/signup_logo"
-            android:layout_marginBottom="10dp"
+            android:src="@drawable/logo_gold"
             />
 
 

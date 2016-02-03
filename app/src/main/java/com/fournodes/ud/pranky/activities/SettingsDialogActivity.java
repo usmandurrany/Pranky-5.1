@@ -57,7 +57,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
-                    startActivity(new Intent(SettingsDialogActivity.this, PrankLimitDialog.class));
+                    startActivity(new Intent(SettingsDialogActivity.this, GetPremiumDialogActivity.class));
                     finish();
                 }
 

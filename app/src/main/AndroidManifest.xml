@@ -95,7 +95,7 @@
             android:theme="@style/ActivityDialog"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".activities.PrankLimitDialog"
+            android:name=".activities.GetPremiumDialogActivity"
             android:excludeFromRecents="true"
             android:label="ClockDialog"
             android:screenOrientation="portrait"

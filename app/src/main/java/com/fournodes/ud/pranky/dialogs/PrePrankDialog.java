@@ -20,14 +20,16 @@ import android.widget.LinearLayout;
 import com.fournodes.ud.pranky.CustomTextView;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
-import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.interfaces.Messenger;
 import com.fournodes.ud.pranky.network.AppServerConn;
 
 /**
  * Created by Usman on 30/1/2016.
  */
 public class PrePrankDialog {
+    public Messenger delegate = null;
+
     private Context context;
     private Dialog dialog;
     private ImageView waitAnim;
@@ -229,7 +231,8 @@ public class PrePrankDialog {
                 SharedPrefs.setPrankCount(SharedPrefs.getPrankCount()+1);
                 AppServerConn appServerConn = new AppServerConn(context, ActionType.PlayPrank);
                 appServerConn.execute();
-                ((MainActivity)context).showAd();
+                //((MainActivity)context).showAd();
+                delegate.showPranksLeft();
                 dialog.dismiss();
 
             }

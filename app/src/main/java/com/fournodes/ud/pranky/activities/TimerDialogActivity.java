@@ -1,8 +1,10 @@
 package com.fournodes.ud.pranky.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +15,9 @@ import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SetPrank;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
+import com.fournodes.ud.pranky.enums.ActionType;
 import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Message;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import kankan.wheel.widget.OnWheelScrollListener;
@@ -24,7 +28,6 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
  * Created by Usman on 11/6/2015.
  */
 public class TimerDialogActivity extends Activity{
-
     private View decorView;
     private SetPrank scheduler;
     private Tutorial mTutorial;
@@ -75,7 +78,7 @@ public class TimerDialogActivity extends Activity{
 
             @Override
             public void onScrollingFinished(WheelView wheel) {
-                if (SharedPrefs.isAppFirstLaunch()) {
+                if (SharedPrefs.isTimerFirstLaunch()) {
                     if (sec.getCurrentItem() > 5)
                         sec.setCurrentItem(5);
                     new CountDownTimer(500, 500) {
@@ -109,20 +112,33 @@ public class TimerDialogActivity extends Activity{
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-        scheduler = new SetPrank(TimerDialogActivity.this, hour.getCurrentItem(), min.getCurrentItem(), sec.getCurrentItem());
-
-                if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")) {
-                    scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
-                    if (mTutorial != null){
-                        mTutorial.end();
-                        //SharedPrefs.setTimerFirstLaunch(false);
-                     }
-
+                if (SharedPrefs.getPrankCount()>=Integer.parseInt(SharedPrefs.PRANK_LIMIT)){
+                    startActivity(new Intent(TimerDialogActivity.this, GetPremiumDialogActivity.class));
                     finish();
-                } else {
-                    CustomToast cToast = new CustomToast(TimerDialogActivity.this, "Minimum  time  is  5  seconds");
-                    cToast.show();
+                }else {
+                    scheduler = new SetPrank(TimerDialogActivity.this,
+                            hour.getCurrentItem(),
+                            min.getCurrentItem(),
+                            sec.getCurrentItem());
+
+                    if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")
+                            && SharedPrefs.getPrankCount() <= Integer.parseInt(SharedPrefs.PRANK_LIMIT)) {
+
+                        scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
+
+                        if (mTutorial != null) {
+                            mTutorial.end();
+                            //SharedPrefs.setTimerFirstLaunch(false);
+                        }
+                        LocalBroadcastManager.getInstance(TimerDialogActivity.this)
+                                .sendBroadcast(new Intent(String.valueOf(ClassType.InterActivityBroadcast))
+                                        .putExtra(String.valueOf(ActionType.Broadcast),
+                                                String.valueOf(Message.ShowPranksLeft)));
+                        finish();
+                    } else {
+                        CustomToast cToast = new CustomToast(TimerDialogActivity.this, "Minimum  time  is  5  seconds");
+                        cToast.show();
+                    }
                 }
             }
 

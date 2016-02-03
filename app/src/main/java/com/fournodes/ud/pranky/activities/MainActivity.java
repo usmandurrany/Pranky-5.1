@@ -1,5 +1,6 @@
 package com.fournodes.ud.pranky.activities;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +17,16 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextSwitcher;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.ContactSelected;
@@ -39,6 +47,7 @@ import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.fragments.GridFragment;
 import com.fournodes.ud.pranky.gcm.GCMInitiate;
 import com.fournodes.ud.pranky.interfaces.IFragment;
+import com.fournodes.ud.pranky.interfaces.Messenger;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FontManager;
@@ -55,7 +64,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements Messenger {
 
     private View rootView;
     private View decorView;
@@ -71,6 +80,7 @@ public class MainActivity extends FragmentActivity {
     private ImageView smInfo;
     private ImageView smHelp;
     private ImageView smTerms;
+    private ImageView smBlankButton;
     private me.relex.circleindicator.CircleIndicator mIndicator;
 
     private int itemsOnPage = 9;
@@ -88,6 +98,11 @@ public class MainActivity extends FragmentActivity {
     private Tutorial mTutorial;
     private boolean showTutorial;
     private PreviewMediaPlayer previewSound;
+    private TextSwitcher prankCount;
+    private LinearLayout smButtonGroup;
+    private LinearLayout smPrankLeft;
+
+    private int pranksLeft;
 
 
     private InterstitialAd mInterstitialAd;
@@ -137,6 +152,22 @@ public class MainActivity extends FragmentActivity {
                     appServerConn.execute();
                     break;
                 }
+                case ShowPranksLeft: {
+                    showPranksLeft();
+                    break;
+                }
+            }
+        }
+    }; private BroadcastReceiver interActivityMessenger = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            // Get extra data included in the Intent
+            switch (Message.valueOf(intent.getStringExtra(String.valueOf(ActionType.Broadcast)))) {
+                case ShowPranksLeft: {
+                    showPranksLeft();
+                    break;
+                }
             }
         }
     };
@@ -162,6 +193,23 @@ public class MainActivity extends FragmentActivity {
 
         requestNewInterstitial();
 
+        prankCount = (TextSwitcher) findViewById(R.id.smPrankCountText);
+        prankCount.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView smPrankCountNew = new TextView(MainActivity.this);
+                smPrankCountNew.setTextColor(Color.WHITE);
+                smPrankCountNew.setGravity(Gravity.CENTER);
+                smPrankCountNew.setTextSize(18);
+                smPrankCountNew.setTypeface(Typeface.DEFAULT_BOLD);
+                return smPrankCountNew;
+            }
+        });
+        prankCount.setInAnimation(MainActivity.this, R.anim.grow_from_middle);
+        prankCount.setOutAnimation(MainActivity.this, R.anim.shrink_to_middle);
+        pranksLeft = (Integer.parseInt(SharedPrefs.PRANK_LIMIT) - SharedPrefs.getPrankCount());
+        prankCount.setCurrentText(String.valueOf(pranksLeft));
+
 
         /*********************************** SavedInstance Checks***********************************/
 
@@ -186,6 +234,10 @@ public class MainActivity extends FragmentActivity {
         smTerms = (ImageView) findViewById(R.id.smTerms);
         clock = (ImageView) findViewById(R.id.clock_btn);
         settings = (ImageView) findViewById(R.id.settings);
+        smButtonGroup = (LinearLayout) findViewById(R.id.smButtonGroup);
+        smPrankLeft = (LinearLayout) findViewById(R.id.smPrankLeft);
+        smBlankButton = (ImageView) findViewById(R.id.smBlankButton);
+
 
         prankyDB = new DatabaseHelper(this);
         new GCMInitiate(this).run();
@@ -239,16 +291,12 @@ public class MainActivity extends FragmentActivity {
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                }else if (SharedPrefs.getPrankCount()>=3){
-                    startActivity(new Intent(MainActivity.this, PrankLimitDialog.class));
-
                 }
                 else {
                     if (timerLaunch)
                         timerLaunch = false;
                     clockLaunch = true;
                     SharedPrefs.setBgMusicPlaying(true);
-
                     Intent clockDialog = new Intent(MainActivity.this, ClockDialogActivity.class);
                     startActivity(clockDialog);
                 }
@@ -263,9 +311,6 @@ public class MainActivity extends FragmentActivity {
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                }else if (SharedPrefs.getPrankCount()>=3){
-                    startActivity(new Intent(MainActivity.this, PrankLimitDialog.class));
-
                 }
                 else {
                     SharedPrefs.setBgMusicPlaying(true);
@@ -326,11 +371,12 @@ public class MainActivity extends FragmentActivity {
                         cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
                         cToast.show();
                     }
-                } else if (SharedPrefs.getPrankCount()>=3){
-                    startActivity(new Intent(MainActivity.this, PrankLimitDialog.class));
+                } else if (SharedPrefs.getPrankCount()>=Integer.parseInt(SharedPrefs.PRANK_LIMIT)){
+                    startActivity(new Intent(MainActivity.this, GetPremiumDialogActivity.class));
                 }
                 else {
                     PrePrankDialog prePrankDiag = new PrePrankDialog(MainActivity.this);
+                    prePrankDiag.delegate = MainActivity.this;
                     prePrankDiag.setFriendName(ContactSelected.getName());
                     prePrankDiag.show();
                 }
@@ -344,16 +390,16 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 if (!open) {
-
+                /*************************** Menu Opened **************************************/
                     sideMenu.setBackgroundResource(R.drawable.sm_hide);
-                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(150));
+                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(148));
                     open = true;
 
                     smClose = new Handler();
                     smClose.postDelayed(new Runnable() {
                         public void run() {
                             if (open) {
-                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(150), 0);
+                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(148), 0);
                                 open = false;
                                 sideMenu.setBackgroundResource(R.drawable.sm_show);
                                 anim.setDuration(500);
@@ -365,7 +411,9 @@ public class MainActivity extends FragmentActivity {
 
 
                 } else {
-                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(130), 0);
+                 /*************************** Menu Closed **************************************/
+
+                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(148), 0);
                     open = false;
                     sideMenu.setBackgroundResource(R.drawable.sm_show);
                 }
@@ -413,6 +461,13 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        smBlankButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,GetPremiumDialogActivity.class));
+            }
+        });
+
         /******************************** Contacts sync testing code **********************************/
         /*if (SharedPrefs.isSignUpComplete()) {
             Intent monitorContacts = new Intent(this, MonitorContacts.class);
@@ -425,7 +480,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        animPrankButton();
+        animate(prankbtn,500,0);
+        //animPrankButton();
     }
 
     public void createFragments() {
@@ -531,8 +587,9 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
-        showAd();
+        //showAd();
         pingServer();
+
 
         if (SharedPrefs.prefs == null)
             SharedPrefs.setContext(this);
@@ -564,6 +621,9 @@ public class MainActivity extends FragmentActivity {
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter(String.valueOf(ClassType.MainActivity)));
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                interActivityMessenger, new IntentFilter(String.valueOf(ClassType.MainActivity)));
+
 
 
     }
@@ -582,6 +642,9 @@ public class MainActivity extends FragmentActivity {
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         previewSound.release();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                interActivityMessenger, new IntentFilter(String.valueOf(ClassType.InterActivityBroadcast)));
 
 
     }
@@ -636,7 +699,7 @@ public class MainActivity extends FragmentActivity {
         timer.startAnimation(grow);
     }
 
-    public void animPrankButton() {
+    public void animate(final View view, final int duration, final int repeatCount){
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_prank_btn);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -646,15 +709,33 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink_prank_btn);
-                prankbtn.startAnimation(shrink);
+                view.startAnimation(shrink);
+                if (repeatCount > 0){
+                    shrink.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            animate(view, duration, repeatCount-1);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                }
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        grow.setStartOffset(500);
-        prankbtn.startAnimation(grow);
+        grow.setDuration(duration);
+        view.startAnimation(grow);
     }
 
     private void requestNewInterstitial() {
@@ -667,7 +748,7 @@ public class MainActivity extends FragmentActivity {
 
     public void showAd(){
         if (SharedPrefs.getPrankCount() >= 3) {
-            startActivity(new Intent(MainActivity.this, PrankLimitDialog.class));
+            startActivity(new Intent(MainActivity.this, GetPremiumDialogActivity.class));
 
         }
 
@@ -689,6 +770,91 @@ public class MainActivity extends FragmentActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void showPranksLeft(){
+
+        if (SharedPrefs.getPrankCount()>=1){
+            sideMenu.setBackgroundResource(R.drawable.sm_hide);
+            smButtonGroup.setVisibility(View.GONE);
+            smPrankLeft.setVisibility(View.VISIBLE);
+            anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(150));
+            anim.setDuration(500).start();
+            open = true;
+            anim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    Log.e("Animation","End");
+                   // prankCount.setCurrentText(String.valueOf(pranksLeft));
+                    pranksLeft = (Integer.parseInt(SharedPrefs.PRANK_LIMIT) - SharedPrefs.getPrankCount());
+                    Handler delayedSetText = new Handler();
+                    delayedSetText.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            prankCount.setText(String.valueOf(pranksLeft));
+
+                        }
+                    },1000);
+                    smClose = new Handler();
+                    smClose.postDelayed(new Runnable() {
+                        public void run() {
+                            if (open) {
+                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(150), 0);
+                                open = false;
+                                sideMenu.setBackgroundResource(R.drawable.sm_show);
+                                anim.setDuration(500);
+                                anim.start();
+                                smClose.removeCallbacks(this);
+                                anim.addListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animator) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animator) {
+                                        smPrankLeft.setVisibility(View.GONE);
+                                        smButtonGroup.setVisibility(View.VISIBLE);
+                                        // animate(prankCount,500,5);
+
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animator) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animator) {
+
+                                    }
+                                });
+
+                            }
+                        }
+                    }, 3000);
+
+
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+
         }
     }
 

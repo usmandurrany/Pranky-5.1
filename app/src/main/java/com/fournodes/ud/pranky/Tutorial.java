@@ -105,6 +105,9 @@ public class Tutorial implements View.OnClickListener {
                 case AddSoundDialogActivity:
                     SharedPrefs.setAddmoreFirstLaunch(false);
                     break;
+                case MainActivityPrankCount:
+                    SharedPrefs.setSmPrankLeftFirstLaunch(false);
+                    break;
 
             }
         }

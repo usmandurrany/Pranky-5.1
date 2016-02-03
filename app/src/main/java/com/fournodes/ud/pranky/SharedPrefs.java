@@ -12,6 +12,7 @@ import java.util.TimeZone;
 public class SharedPrefs {
 
     public static String APP_SERVER_ID="appServerID";// Name of the font used throughout the app
+    public static String PRANK_LIMIT="5";// Name of the font used throughout the app
 
 
     public static String DEFAULT_FONT="grinched-regular";// Name of the font used throughout the app
@@ -44,6 +45,7 @@ public class SharedPrefs {
     public static final String SETTINGS_FIRST_LAUNCH = "settingsFirstLaunch"; // boolean
     public static final String ADD_MORE_FIRST_LAUNCH = "addmoreFirstLaunch"; // boolean
     public static final String REMOTE_PRANK_FIRST_LAUNCH = "remotePrankFirstLaunch"; // boolean
+    public static final String SM_PRANK_LEFT_FIRST_LAUNCH = "smPrankLeftFirstLaunch"; // boolean
 
     public static final String BG_MUSIC_PLAYING = "bgMusicPlaying"; // boolean
 
@@ -102,6 +104,7 @@ public class SharedPrefs {
     private static boolean addmoreFirstLaunch;
     private static boolean remotePrankFirstLaunch;
     private static boolean lastPageFirstLaunch;
+    private static boolean smPrankLeftFirstLaunch;
 
     private static boolean bgMusicPlaying;
 
@@ -178,6 +181,7 @@ public class SharedPrefs {
         addmoreFirstLaunch=prefs.getBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH, true);
         remotePrankFirstLaunch=prefs.getBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, true);
         lastPageFirstLaunch=prefs.getBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH, true);
+        smPrankLeftFirstLaunch=prefs.getBoolean(SharedPrefs.SM_PRANK_LEFT_FIRST_LAUNCH, true);
 
         bgMusicPlaying=prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, false);
 
@@ -340,6 +344,10 @@ public class SharedPrefs {
         return pingServerDate;
     }
 
+    public static boolean isSmPrankLeftFirstLaunch() {
+        return smPrankLeftFirstLaunch;
+    }
+
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
         prefs.edit().putBoolean(SharedPrefs.APP_FIRST_LAUNCH,appFirstLaunch).apply();
         SharedPrefs.appFirstLaunch=appFirstLaunch;
@@ -442,6 +450,11 @@ public class SharedPrefs {
     public static void setRemotePrankFirstLaunch(boolean remotePrankFirstLaunch) {
         prefs.edit().putBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH,remotePrankFirstLaunch).apply();
         SharedPrefs.remotePrankFirstLaunch = remotePrankFirstLaunch;
+    }
+
+    public static void setSmPrankLeftFirstLaunch(boolean smPrankLeftFirstLaunch) {
+        prefs.edit().putBoolean(SharedPrefs.SM_PRANK_LEFT_FIRST_LAUNCH,smPrankLeftFirstLaunch).apply();
+        SharedPrefs.smPrankLeftFirstLaunch = smPrankLeftFirstLaunch;
     }
 
     public static void setBgMusicPlaying(boolean bgMusicPlaying) {
