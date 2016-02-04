@@ -64,4 +64,24 @@
     <dimen name="reg_logo_size">120dp</dimen>
 
 
+    <dimen name="dual_button_margin_bot">187dp</dimen>
+    <dimen name="dual_button_width">180dp</dimen>
+    <dimen name="dual_button_height">65dp</dimen>
+
+    <dimen name="xlarge_30">30sp</dimen>
+    <dimen name="large_20">20sp</dimen>
+    <dimen name="medium_18">18sp</dimen>
+
+    <dimen name="space_xlarge">20dp</dimen>
+    <dimen name="space_large">15dp</dimen>
+    <dimen name="space_medium">10dp</dimen>
+    <dimen name="space_small">05dp</dimen>
+
+
+
+
+
+
+
+
 </resources>

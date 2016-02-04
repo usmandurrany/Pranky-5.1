@@ -18,6 +18,7 @@ import com.fournodes.ud.pranky.ContactSelected;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.activities.SplashActivity;
 import com.fournodes.ud.pranky.enums.ActionType;
 import com.fournodes.ud.pranky.enums.ClassType;
@@ -96,7 +97,8 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
                     appServerConn = new AppServerConn(ActionType.NotifyPrankSuccessful);
                     appServerConn.execute();
-                    sendNotification(data.getString("sender_name"));
+                    if (data.getString("notify").equals("true"))
+                        sendNotification(data.getString("sender_name"));
 
 
                 } else {
@@ -164,6 +166,17 @@ public class GCMBroadcastReceiver extends GcmListenerService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+
+
+        // Sets up the Snooze and Dismiss action buttons that will appear in the
+// big view of the notification.
+        Intent dismissIntent = new Intent(this, MainActivity.class);
+        PendingIntent piPrankBack = PendingIntent.getActivity(this, 0, dismissIntent,  PendingIntent.FLAG_ONE_SHOT);
+
+
+
+
+
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.logo_16)
@@ -171,7 +184,12 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                 .setContentTitle("Pranked!")
                 .setContentText(message)
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .addAction (R.drawable.logo_16, "Prank Back", piPrankBack);
+
+
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

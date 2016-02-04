@@ -48,7 +48,7 @@ public class GetPremiumDialogActivity extends Activity {
         ImageView close = (ImageView) findViewById(R.id.close);
         TextView prankCount = (TextView) findViewById(R.id.lblPrankCount);
         int pranksLeft = (Integer.parseInt(SharedPrefs.PRANK_LIMIT) - SharedPrefs.getPrankCount());
-        prankCount.setText("Pranks  Left  "+String.valueOf(pranksLeft));
+        prankCount.setText(String.valueOf(pranksLeft));
 
         showAd.setOnClickListener(new View.OnClickListener() {
             @Override

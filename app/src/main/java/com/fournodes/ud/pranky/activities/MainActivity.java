@@ -392,14 +392,14 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 if (!open) {
                 /*************************** Menu Opened **************************************/
                     sideMenu.setBackgroundResource(R.drawable.sm_hide);
-                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(148));
+                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(146));
                     open = true;
 
                     smClose = new Handler();
                     smClose.postDelayed(new Runnable() {
                         public void run() {
                             if (open) {
-                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(148), 0);
+                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(146), 0);
                                 open = false;
                                 sideMenu.setBackgroundResource(R.drawable.sm_show);
                                 anim.setDuration(500);
@@ -413,7 +413,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 } else {
                  /*************************** Menu Closed **************************************/
 
-                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(148), 0);
+                    anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(146), 0);
                     open = false;
                     sideMenu.setBackgroundResource(R.drawable.sm_show);
                 }
@@ -779,7 +779,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
             sideMenu.setBackgroundResource(R.drawable.sm_hide);
             smButtonGroup.setVisibility(View.GONE);
             smPrankLeft.setVisibility(View.VISIBLE);
-            anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(150));
+            anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(146));
             anim.setDuration(500).start();
             open = true;
             anim.addListener(new Animator.AnimatorListener() {
@@ -805,7 +805,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     smClose.postDelayed(new Runnable() {
                         public void run() {
                             if (open) {
-                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(150), 0);
+                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(146), 0);
                                 open = false;
                                 sideMenu.setBackgroundResource(R.drawable.sm_show);
                                 anim.setDuration(500);

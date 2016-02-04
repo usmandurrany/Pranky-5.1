@@ -127,7 +127,7 @@ public class SharedPrefs {
 
     private static int prankCount;
 
-    private static boolean volumeLowNotify;
+    private static boolean volumeLowNotify = true;
 
     private static String pingServerDate;
 
@@ -158,7 +158,7 @@ public class SharedPrefs {
         friendDeviceId=prefs.getString(SharedPrefs.FRIEND_DEVICE_ID,null);
 
         prefs.edit().putBoolean(SharedPrefs.VOLUME_LOW_NOTIFY,true).apply();
-
+        volumeLowNotify =prefs.getBoolean(SharedPrefs.VOLUME_LOW_NOTIFY,true);
 
 
         networkAvailable=prefs.getBoolean(SharedPrefs.NETWORK_AVAILABLE, true);
