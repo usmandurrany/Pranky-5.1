@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.fournodes.ud.pranky.SharedPrefs;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -45,7 +45,7 @@ public class GCMInitiate {
             //serverState is 1 and myAppID has expired but myGcmID is set
             if (SharedPrefs.getServerState() == 1 && exp.before(today) && SharedPrefs.getMyGcmID() != null) {
                 SharedPrefs.setMyAppID(null);
-                new AppServerConn(context, ActionType.RenewAppId).execute();
+                new AppServerConn(context, Action.RenewAppId).execute();
 
             }
             // serverState is 1 and myGcmId is not set
@@ -53,12 +53,12 @@ public class GCMInitiate {
                 if (checkPlayServices()) {
                     context.startService(new Intent(
                             context,GCMRegistrationService.class)
-                            .putExtra(String.valueOf(ActionType.Callback), String.valueOf(ClassType.MainActivity)));
+                            .putExtra(String.valueOf(Action.Callback), String.valueOf(Type.MainActivity)));
                 }
 
 
             } else if (!SharedPrefs.isSentGcmIDToServer() && SharedPrefs.getMyAppID() == null){
-                new AppServerConn(ActionType.RegisterDevice).execute();
+                new AppServerConn(Action.RegisterDevice).execute();
             }
 
 

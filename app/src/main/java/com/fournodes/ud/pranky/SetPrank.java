@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.receivers.PlayPrank;
 
 import java.util.Calendar;
@@ -18,30 +19,25 @@ public class SetPrank {
     Calendar schAlarm;
     private Context context;
     private int day, hr, min, sec, ampm;
+    private Type type;
 
-    public SetPrank(Context context, int day, int hr, int min, int ampm) {
+    public SetPrank(Context context, int day, int hr, int min, int sec, int ampm, Type type) {
         this.context = context;
         this.day = day;
-        this.hr = (hr + 1);
-
         this.min = min;
+        this.sec=sec;
         this.ampm = ampm;
-        SharedPrefs.setPrankCount(SharedPrefs.getPrankCount()+1);
-    }
-
-    public SetPrank(Context context, int hr, int min, int sec) {
-        this.context = context;
-        this.hr = hr;
-        this.min = min;
-        this.sec = sec;
-        SharedPrefs.setPrankCount(SharedPrefs.getPrankCount()+1);
-
+        this.type=type;
+        if (type == Type.ClockDialogActivity)
+            this.hr = (hr + 1);
+        else
+            this.hr=hr;
     }
 
     public void get24HrTime() {
         if (ampm == 0) {
             if (hr == 12)
-                hr = 00;
+                hr = 0;
         } else {
             if (hr == 12)
                 hr = 12;
@@ -60,14 +56,19 @@ public class SetPrank {
 
         //schAlarm.setTimeInMillis(System.currentTimeMillis());
         schAlarm.set(Calendar.DAY_OF_MONTH, (schAlarm.get(Calendar.DAY_OF_MONTH) + day));
-
         schAlarm.set(Calendar.HOUR_OF_DAY, hr);
         schAlarm.set(Calendar.MINUTE, min);
-        schAlarm.set(Calendar.SECOND, 00);
+        schAlarm.set(Calendar.SECOND, 0);
 
         // schAlarm.set(Calendar.AM_PM, ampm);
 
-        Log.d("SCHEDULED FOR", String.valueOf(schAlarm.get(Calendar.YEAR)) + " " + String.valueOf(schAlarm.get(Calendar.MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.DAY_OF_MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.HOUR)) + " " + String.valueOf(schAlarm.get(Calendar.MINUTE)) + " " + String.valueOf(schAlarm.get(Calendar.AM_PM)));
+        Log.d("SCHEDULED FOR",
+                String.valueOf(schAlarm.get(Calendar.YEAR)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.MONTH)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.DAY_OF_MONTH)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.HOUR)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.MINUTE)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.AM_PM)));
 
 
         return schAlarm;
@@ -83,12 +84,19 @@ public class SetPrank {
         schAlarm.set(Calendar.HOUR, (schAlarm.get(Calendar.HOUR) + hr));
         schAlarm.set(Calendar.MINUTE, (schAlarm.get(Calendar.MINUTE) + min));
         schAlarm.set(Calendar.SECOND, (schAlarm.get(Calendar.SECOND) + sec));
-        Log.e("SCHEDULED FOR", String.valueOf(schAlarm.get(Calendar.YEAR)) + " " + String.valueOf(schAlarm.get(Calendar.MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.DAY_OF_MONTH)) + " " + String.valueOf(schAlarm.get(Calendar.HOUR)) + " " + String.valueOf(schAlarm.get(Calendar.MINUTE)) + " " + String.valueOf(schAlarm.get(Calendar.SECOND)));
+
+        Log.e("SCHEDULED FOR",
+                String.valueOf(schAlarm.get(Calendar.YEAR)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.MONTH)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.DAY_OF_MONTH)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.HOUR)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.MINUTE)) +
+                        " " + String.valueOf(schAlarm.get(Calendar.SECOND)));
 
         return schAlarm;
     }
 
-    public void ScheduleSoundPlayback(String type, Calendar schAlarm) {
+    public void ScheduleSoundPlayback(Calendar schAlarm) {
         Intent intent = new Intent(context, PlayPrank.class);
         if (ItemSelected.itemSound != 0)
             intent.putExtra("sysSound", ItemSelected.itemSound);
@@ -100,37 +108,32 @@ public class SetPrank {
 
 
         final int _id = (int) System.currentTimeMillis();
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, _id,
                 intent, PendingIntent.FLAG_ONE_SHOT);
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        if (type == "dialog_clock")
-            alarmManager.set(AlarmManager.RTC_WAKEUP, schAlarm.getTimeInMillis(), pendingIntent);
-        else
-            alarmManager.set(AlarmManager.RTC_WAKEUP, schAlarm.getTimeInMillis(), pendingIntent);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, schAlarm.getTimeInMillis(), pendingIntent);
+
+        SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft()-1);
 
         //Toast.makeText(context, "Alarm set", Toast.LENGTH_LONG).show();
 
     }
 
-    public boolean validateTime(Calendar cal, String type) {
-        if (type.equals("dialog_clock")) {
+    public boolean validateTime(Calendar cal) {
+        if (type == Type.ClockDialogActivity) {
             Calendar current = Calendar.getInstance(TimeZone.getDefault());
             Log.d("Current Time", current.getTime().toString());
             Log.d("SCH Time", cal.getTime().toString());
 
-            if (current.before(cal))
-                return true;
-            else
-                return false;
-        } else {
-            if (hr == 0 && min == 0 && sec < 5) {
-                return false;
-            } else
-                return true;
+            return current.before(cal);
+
+        } else if (type == Type.TimerDialogActivity) {
+            return !(hr == 0 && min == 0 && sec < 5);
         }
 
-
+        return false;
     }
 
 

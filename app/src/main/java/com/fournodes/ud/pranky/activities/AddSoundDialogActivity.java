@@ -17,7 +17,7 @@ import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FileChooser;
 import com.fournodes.ud.pranky.utils.FontManager;
@@ -68,8 +68,10 @@ public class AddSoundDialogActivity extends Activity {
         btnsave.setEnabled(false);
 
         if (SharedPrefs.isAddmoreFirstLaunch()) {
-            mTutorial = new Tutorial(this, ClassType.AddSoundDialogActivity);
-            mTutorial.show(new ViewTarget(btnselsound),"Select a sound","Tap on the icon to pick a sound from your phone");
+            mTutorial = new Tutorial(this, Type.AddSoundDialogActivity);
+            mTutorial.show(new ViewTarget(btnselsound),
+                    "Select a sound",
+                    "Tap on the icon to pick a sound from your phone");
         }
 
         btndiagclose.setOnClickListener(new View.OnClickListener() {
@@ -83,32 +85,35 @@ public class AddSoundDialogActivity extends Activity {
             @Override
             public void onClick(View view) {
                 FileChooser filech = new FileChooser(AddSoundDialogActivity.this);
-                filech.setFileListener(new FileChooser.FileSelectedListener() {
-                                           @Override
-                                           public void fileSelected(File file) {
-                                               fileName = file.getName();
-                                               fileExt = fileName.substring(fileName.lastIndexOf("."));
+                filech.setFileListener(
+                        new FileChooser.FileSelectedListener() {
+                            @Override
+                            public void fileSelected(File file) {
+                                fileName = file.getName();
+                                fileExt = fileName.substring(fileName.lastIndexOf("."));
+                                //Toast.makeText(AddSoundDialogActivity.this,
+                                //fileExt, Toast.LENGTH_SHORT).show();
 
-                                               Toast.makeText(AddSoundDialogActivity.this, fileExt, Toast.LENGTH_SHORT).show();
+                                if (fileExt.equals(".mp3") ||
+                                        fileExt.equals(".wav") ||
+                                        fileExt.equals(".3gp") ||
+                                        fileExt.equals(".ogg")) {
+                                    soundFile = file;
+                                    txtselsound.setText(fileName);
+                                    if (mTutorial != null)
+                                        mTutorial.moveToNext(new ViewTarget(customImage),
+                                                "Pick an icon",
+                                                "Choose an icon for your sound");
 
-                                               if (fileExt.equals(".mp3") || fileExt.equals(".wav") || fileExt.equals(".3gp") || fileExt.equals(".ogg")) {                         soundFile = file;
-                                                   txtselsound.setText(fileName);
-                                                   if (mTutorial!=null)
-                                                   mTutorial.moveToNext(new ViewTarget(customImage),"Pick an icon","Choose an icon for your sound");
+                                } else
+                                    Toast.makeText(AddSoundDialogActivity.this,
+                                            "Invalid file! Select another", Toast.LENGTH_SHORT).show();
 
-                                               } else
-                                                   Toast.makeText(AddSoundDialogActivity.this, "Invalid file! Select another", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
-                                           }
-                                       }
-
-                )
-                        .
-
-                                showDialog();
-
-
-            }
+                ).showDialog();
+             }
         });
 
 
@@ -117,11 +122,10 @@ public class AddSoundDialogActivity extends Activity {
             public void onClick(View view) {
 
                 if (cusIconID != 0) {
-                    copyfile(soundFile.getAbsolutePath(), soundFile.getName());
+                    copyFile(soundFile.getAbsolutePath(), soundFile.getName());
                     // Gets the data repository in write mode
                     SQLiteDatabase db = prankyDB.getWritableDatabase();
 
-// Create a new map of values, where column names are the keys
                     ContentValues values = new ContentValues();
                     values.put(DatabaseHelper.COLUMN_ITEM_IMG_LOC, cusIconID);
                     values.put(DatabaseHelper.COLUMN_ITEM_NAME, soundFile.getName());
@@ -131,27 +135,18 @@ public class AddSoundDialogActivity extends Activity {
                     values.put(DatabaseHelper.COLUMN_ITEM_CATEGORY, "custom");
 
 
-// Insert the new row, returning the primary key value of the new row
-                    long newRowId;
-                    newRowId = db.insert(
-                            DatabaseHelper.TABLE_ITEMS,
-                            "null",
-                            values);
-                   // Toast.makeText(AddSoundActivity.this, String.valueOf(newRowId), Toast.LENGTH_SHORT).show();
+                    db.insert(DatabaseHelper.TABLE_ITEMS,"null",values);
 
                 } else
                     Toast.makeText(AddSoundDialogActivity.this, "Pick an Icon", Toast.LENGTH_SHORT).show();
 
 
                 SharedPrefs.setCusSoundAdded(true);
-                if (mTutorial !=null)
+                if (mTutorial != null)
                     mTutorial.end();
                 finish();
             }
         });
-
-
-        //Set the dialog to not focusable (makes navigation ignore us adding the window)
 
 
     }
@@ -173,10 +168,11 @@ public class AddSoundDialogActivity extends Activity {
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-        if (soundFile!=null)
-        btnsave.setEnabled(true);
-        if(soundFile!=null && mTutorial!= null){
-            mTutorial.moveToNext(new ViewTarget(btnsave),"Save your sound","Tap on save to add your sound to the list");
+        if (soundFile != null)
+            btnsave.setEnabled(true);
+        if (soundFile != null && mTutorial != null) {
+            mTutorial.moveToNext(new ViewTarget(btnsave),
+                    "Save your sound", "Tap on save to add your sound to the list");
         }
     }
 
@@ -196,11 +192,14 @@ public class AddSoundDialogActivity extends Activity {
     }
 
 
-    public void copyfile(String srcPath, String fileName) {
+    public void copyFile(String srcPath, String fileName) {
         //String sourcePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TongueTwister/tt_temp.3gp";
         File source = new File(srcPath);
 
-        String destinationPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pranky/" + fileName;
+        String destinationPath = Environment
+                .getExternalStorageDirectory()
+                .getAbsolutePath() + "/Pranky/" + fileName;
+
         File destination = new File(destinationPath);
         try {
             FileUtils.copyFile(source, destination);

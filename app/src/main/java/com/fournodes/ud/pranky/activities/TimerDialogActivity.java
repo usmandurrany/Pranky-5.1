@@ -15,8 +15,8 @@ import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SetPrank;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
@@ -72,9 +72,7 @@ public class TimerDialogActivity extends Activity{
 
         sec.addScrollingListener(new OnWheelScrollListener() {
             @Override
-            public void onScrollingStarted(WheelView wheel) {
-
-            }
+            public void onScrollingStarted(WheelView wheel) {}
 
             @Override
             public void onScrollingFinished(WheelView wheel) {
@@ -90,7 +88,9 @@ public class TimerDialogActivity extends Activity{
                         @Override
                         public void onFinish() {
                             if (mTutorial != null && sec.getCurrentItem() == 5) {
-                                mTutorial.moveToNext(new ViewTarget(set),"Time Attack","Tap on the set button to set the timer and wait for your sound to play");
+                                mTutorial.moveToNext(new ViewTarget(set),
+                                        "Time Attack",
+                                        "Tap on the set button to set the timer and wait for your sound to play");
                             }
                         }
                     }.start();
@@ -112,32 +112,34 @@ public class TimerDialogActivity extends Activity{
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SharedPrefs.getPrankCount()>=Integer.parseInt(SharedPrefs.PRANK_LIMIT)){
+                if (SharedPrefs.getPranksLeft()<=0){
                     startActivity(new Intent(TimerDialogActivity.this, GetPremiumDialogActivity.class));
                     finish();
                 }else {
                     scheduler = new SetPrank(TimerDialogActivity.this,
+                            0,
                             hour.getCurrentItem(),
                             min.getCurrentItem(),
-                            sec.getCurrentItem());
+                            sec.getCurrentItem(),
+                            0,
+                            Type.TimerDialogActivity);
 
-                    if (scheduler.validateTime(scheduler.timerSchedule(), "dialog_timer")
-                            && SharedPrefs.getPrankCount() <= Integer.parseInt(SharedPrefs.PRANK_LIMIT)) {
+                    if (scheduler.validateTime(scheduler.timerSchedule())) {
 
-                        scheduler.ScheduleSoundPlayback("dialog_timer", scheduler.timerSchedule());
+                        scheduler.ScheduleSoundPlayback(scheduler.timerSchedule());
 
                         if (mTutorial != null) {
                             mTutorial.end();
-                            //SharedPrefs.setTimerFirstLaunch(false);
                         }
                         LocalBroadcastManager.getInstance(TimerDialogActivity.this)
-                                .sendBroadcast(new Intent(String.valueOf(ClassType.InterActivityBroadcast))
-                                        .putExtra(String.valueOf(ActionType.Broadcast),
+                                .sendBroadcast(new Intent(String.valueOf(Type.InterActivityBroadcast))
+                                        .putExtra(String.valueOf(Action.Broadcast),
                                                 String.valueOf(Message.ShowPranksLeft)));
                         finish();
                     } else {
-                        CustomToast cToast = new CustomToast(TimerDialogActivity.this, "Minimum  time  is  5  seconds");
-                        cToast.show();
+                        new CustomToast(TimerDialogActivity.this,
+                                "Minimum  time  is  5  seconds").show();
+
                     }
                 }
             }
@@ -149,8 +151,10 @@ public class TimerDialogActivity extends Activity{
 
 
     if (SharedPrefs.isTimerFirstLaunch()) {
-        mTutorial = new Tutorial(this, ClassType.TimerDialogActivity);
-        mTutorial.show(new ViewTarget(sec),"Time Attack","Select the timer to 5 seconds by moving the wheel");
+        mTutorial = new Tutorial(this, Type.TimerDialogActivity);
+        mTutorial.show(new ViewTarget(sec),
+                "Time Attack",
+                "Select the timer to 5 seconds by moving the wheel");
     }
 
 

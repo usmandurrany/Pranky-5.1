@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -41,17 +41,17 @@ public class GCMRegistrationService extends IntentService {
             SharedPrefs.setSentGcmIDToServer(false);
         }
 
-        switch (ClassType.valueOf(intent.getStringExtra(String.valueOf(ActionType.Callback)))) {
+        switch (Type.valueOf(intent.getStringExtra(String.valueOf(Action.Callback)))) {
             case UserRegistrationActivity:
                 LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(
-                        String.valueOf(ClassType.UserRegistrationActivity)).
-                        putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.TokenGenerated)));
+                        String.valueOf(Type.UserRegistrationActivity)).
+                        putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.TokenGenerated)));
                 break;
 
             case MainActivity:
                 LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(
-                        String.valueOf(ClassType.MainActivity)).
-                        putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.TokenGenerated)));
+                        String.valueOf(Type.MainActivity)).
+                        putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.TokenGenerated)));
                 break;
         }
 

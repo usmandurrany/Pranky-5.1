@@ -30,8 +30,8 @@ import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.adapters.CountryAdapter;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.gcm.GCMRegistrationService;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
@@ -210,7 +210,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
                     wait.show();
                     UserRegistrationActivity.this.startService(new Intent(
                             UserRegistrationActivity.this, GCMRegistrationService.class)
-                            .putExtra(String.valueOf(ActionType.Callback), String.valueOf(ClassType.UserRegistrationActivity)));
+                            .putExtra(String.valueOf(Action.Callback), String.valueOf(Type.UserRegistrationActivity)));
                 } else
                     registerUser();
 
@@ -248,7 +248,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
             Log.e("BG Music Resume", e.toString());
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter(String.valueOf(ClassType.UserRegistrationActivity)));
+                mMessageReceiver, new IntentFilter(String.valueOf(Type.UserRegistrationActivity)));
     }
 
     @Override
@@ -329,7 +329,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
     }
 
     public void registerUser() {
-        appServerConn = new AppServerConn(UserRegistrationActivity.this, ActionType.RegisterUser);
+        appServerConn = new AppServerConn(UserRegistrationActivity.this, Action.RegisterUser);
         appServerConn.delegate = this;
         appServerConn.showWaitDialog("R e g i s t e r i n g ...");
         appServerConn.execute();

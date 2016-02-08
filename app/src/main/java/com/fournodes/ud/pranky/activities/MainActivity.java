@@ -41,9 +41,9 @@ import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.adapters.PagerAdapter;
 import com.fournodes.ud.pranky.dialogs.InfoDialog;
 import com.fournodes.ud.pranky.dialogs.PrePrankDialog;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.fragments.GridFragment;
 import com.fournodes.ud.pranky.gcm.GCMInitiate;
 import com.fournodes.ud.pranky.interfaces.IFragment;
@@ -52,7 +52,6 @@ import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FontManager;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
@@ -113,7 +112,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
-            switch (Message.valueOf(intent.getStringExtra(String.valueOf(ActionType.Broadcast)))) {
+            switch (Message.valueOf(intent.getStringExtra(String.valueOf(Action.Broadcast)))) {
                 case PrankSent:
                     Log.e("Prank Sent", "Successfully");
                     break;
@@ -148,7 +147,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     break;
                 }
                 case TokenGenerated: {
-                    AppServerConn appServerConn = new AppServerConn(ActionType.RegisterDevice);
+                    AppServerConn appServerConn = new AppServerConn(Action.RegisterDevice);
                     appServerConn.execute();
                     break;
                 }
@@ -163,7 +162,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
-            switch (Message.valueOf(intent.getStringExtra(String.valueOf(ActionType.Broadcast)))) {
+            switch (Message.valueOf(intent.getStringExtra(String.valueOf(Action.Broadcast)))) {
                 case ShowPranksLeft: {
                     showPranksLeft();
                     break;
@@ -178,8 +177,19 @@ public class MainActivity extends FragmentActivity implements Messenger {
         rootView = getLayoutInflater().inflate(R.layout.activity_main, null);
         setContentView(rootView);
         onWindowFocusChanged(true);
+        /*********************************** SavedInstance Checks***********************************/
 
-        mInterstitialAd = new InterstitialAd(this);
+        if (SharedPrefs.prefs == null) {
+            new SharedPrefs(this).initAllPrefs();
+            if (FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT) == null) {
+                FontManager.createTypeFace(this, SharedPrefs.DEFAULT_FONT);
+
+            }
+        }
+
+        /*************************************** App Config **************************************/
+
+        /*mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
        // mInterstitialAd.setAdUnitId("ca-app-pub-7260426673133841/1414623255");
 
@@ -192,6 +202,9 @@ public class MainActivity extends FragmentActivity implements Messenger {
         });
 
         requestNewInterstitial();
+        */
+
+
 
         prankCount = (TextSwitcher) findViewById(R.id.smPrankCountText);
         prankCount.setFactory(new ViewSwitcher.ViewFactory() {
@@ -207,19 +220,9 @@ public class MainActivity extends FragmentActivity implements Messenger {
         });
         prankCount.setInAnimation(MainActivity.this, R.anim.grow_from_middle);
         prankCount.setOutAnimation(MainActivity.this, R.anim.shrink_to_middle);
-        pranksLeft = (Integer.parseInt(SharedPrefs.PRANK_LIMIT) - SharedPrefs.getPrankCount());
-        prankCount.setCurrentText(String.valueOf(pranksLeft));
+        prankCount.setCurrentText(String.valueOf(SharedPrefs.getPranksLeft()));
 
 
-        /*********************************** SavedInstance Checks***********************************/
-
-        if (SharedPrefs.prefs == null) {
-            new SharedPrefs(this).initAllPrefs();
-            if (FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT) == null) {
-                FontManager.createTypeFace(this, SharedPrefs.DEFAULT_FONT);
-
-            }
-        }
 
         /*********************************** Initializations ***************************************/
 
@@ -371,16 +374,19 @@ public class MainActivity extends FragmentActivity implements Messenger {
                         cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
                         cToast.show();
                     }
-                } else if (SharedPrefs.getPrankCount()>=Integer.parseInt(SharedPrefs.PRANK_LIMIT)){
+                } else if (SharedPrefs.getPranksLeft()<=0){
                     startActivity(new Intent(MainActivity.this, GetPremiumDialogActivity.class));
                 }
                 else {
                     PrePrankDialog prePrankDiag = new PrePrankDialog(MainActivity.this);
                     prePrankDiag.delegate = MainActivity.this;
-                    prePrankDiag.setFriendName(ContactSelected.getName());
+                    if (ContactSelected.getName() != null)
+                        prePrankDiag.setFriendName(ContactSelected.getName());
+                    else
+                        prePrankDiag.setFriendName(ContactSelected.getApp_id());
+
                     prePrankDiag.show();
                 }
-
 
             }
 
@@ -468,13 +474,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
             }
         });
 
-        /******************************** Contacts sync testing code **********************************/
-        /*if (SharedPrefs.isSignUpComplete()) {
-            Intent monitorContacts = new Intent(this, MonitorContacts.class);
-            startService(monitorContacts);
-        }*/
         startTutorial();
-
     }
 
     @Override
@@ -596,7 +596,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
         super.onResume();
         if (SharedPrefs.isSignUpComplete() && SharedPrefs.getMyAppID() != null && SharedPrefs.getAppServerID() != null) {
-            AppServerConn appServerConn = new AppServerConn(this, ActionType.VerifyUserRegistration);
+            AppServerConn appServerConn = new AppServerConn(this, Action.VerifyUserRegistration);
             appServerConn.execute();
         }
 
@@ -620,9 +620,9 @@ public class MainActivity extends FragmentActivity implements Messenger {
             Log.e("BG Music Resume", e.toString());
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter(String.valueOf(ClassType.MainActivity)));
+                mMessageReceiver, new IntentFilter(String.valueOf(Type.MainActivity)));
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                interActivityMessenger, new IntentFilter(String.valueOf(ClassType.MainActivity)));
+                interActivityMessenger, new IntentFilter(String.valueOf(Type.MainActivity)));
 
 
 
@@ -644,7 +644,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
         previewSound.release();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                interActivityMessenger, new IntentFilter(String.valueOf(ClassType.InterActivityBroadcast)));
+                interActivityMessenger, new IntentFilter(String.valueOf(Type.InterActivityBroadcast)));
 
 
     }
@@ -682,8 +682,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_bounce);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -692,8 +691,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
         grow.setStartOffset(500);
         timer.startAnimation(grow);
@@ -703,8 +701,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_prank_btn);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -713,9 +710,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 if (repeatCount > 0){
                     shrink.setAnimationListener(new Animation.AnimationListener() {
                         @Override
-                        public void onAnimationStart(Animation animation) {
-
-                        }
+                        public void onAnimationStart(Animation animation) {}
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
@@ -723,9 +718,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                         }
 
                         @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
+                        public void onAnimationRepeat(Animation animation) {}
                     });
                 }
             }
@@ -746,13 +739,6 @@ public class MainActivity extends FragmentActivity implements Messenger {
         mInterstitialAd.loadAd(adRequest);
     }
 
-    public void showAd(){
-        if (SharedPrefs.getPrankCount() >= 3) {
-            startActivity(new Intent(MainActivity.this, GetPremiumDialogActivity.class));
-
-        }
-
-    }
     public void pingServer(){
         if (SharedPrefs.getPingServerDate() != null) {
             try {
@@ -764,7 +750,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 // Get current Time from device for comparison
                 Calendar today = Calendar.getInstance(TimeZone.getDefault());
                 if (pingServerDate.before(today)) {
-
+                new AppServerConn(MainActivity.this,Action.PingServer).execute();
                 }
 
             } catch (ParseException e) {
@@ -775,7 +761,6 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
     public void showPranksLeft(){
 
-        if (SharedPrefs.getPrankCount()>=1){
             sideMenu.setBackgroundResource(R.drawable.sm_hide);
             smButtonGroup.setVisibility(View.GONE);
             smPrankLeft.setVisibility(View.VISIBLE);
@@ -790,17 +775,14 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
-                    Log.e("Animation","End");
-                   // prankCount.setCurrentText(String.valueOf(pranksLeft));
-                    pranksLeft = (Integer.parseInt(SharedPrefs.PRANK_LIMIT) - SharedPrefs.getPrankCount());
                     Handler delayedSetText = new Handler();
                     delayedSetText.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            prankCount.setText(String.valueOf(pranksLeft));
-
+                            prankCount.setText(String.valueOf(SharedPrefs.getPranksLeft()));
                         }
                     },1000);
+
                     smClose = new Handler();
                     smClose.postDelayed(new Runnable() {
                         public void run() {
@@ -813,28 +795,20 @@ public class MainActivity extends FragmentActivity implements Messenger {
                                 smClose.removeCallbacks(this);
                                 anim.addListener(new Animator.AnimatorListener() {
                                     @Override
-                                    public void onAnimationStart(Animator animator) {
-
-                                    }
+                                    public void onAnimationStart(Animator animator) {}
 
                                     @Override
                                     public void onAnimationEnd(Animator animator) {
                                         smPrankLeft.setVisibility(View.GONE);
                                         smButtonGroup.setVisibility(View.VISIBLE);
                                         // animate(prankCount,500,5);
-
-
                                     }
 
                                     @Override
-                                    public void onAnimationCancel(Animator animator) {
-
-                                    }
+                                    public void onAnimationCancel(Animator animator) {}
 
                                     @Override
-                                    public void onAnimationRepeat(Animator animator) {
-
-                                    }
+                                    public void onAnimationRepeat(Animator animator) {}
                                 });
 
                             }
@@ -845,17 +819,13 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 }
 
                 @Override
-                public void onAnimationCancel(Animator animator) {
-
-                }
+                public void onAnimationCancel(Animator animator) {}
 
                 @Override
-                public void onAnimationRepeat(Animator animator) {
-
-                }
+                public void onAnimationRepeat(Animator animator) {}
             });
 
-        }
+
     }
 
 }

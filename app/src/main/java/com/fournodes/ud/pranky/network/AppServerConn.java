@@ -12,8 +12,8 @@ import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
 
@@ -40,7 +40,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
 
     private String TAG = "AppServerConn";
     private Context context;
-    private ActionType type;
+    private Action type;
     private URL url;
     private HttpURLConnection conn;
     private String result;
@@ -52,12 +52,12 @@ public class AppServerConn extends AsyncTask<String, String, String> {
     private String numID;
     private String number;
 
-    public AppServerConn(ActionType type) {
+    public AppServerConn(Action type) {
         this.type = type;
         initialize();
     }
 
-    public AppServerConn(Context context, ActionType type, String numID, String number) {
+    public AppServerConn(Context context, Action type, String numID, String number) {
         this.context = context;
         this.type = type;
         this.numID = numID;
@@ -65,13 +65,13 @@ public class AppServerConn extends AsyncTask<String, String, String> {
         initialize();
     }
 
-    public AppServerConn(Context context, ActionType type) {
+    public AppServerConn(Context context, Action type) {
         this.context = context;
         this.type = type;
         initialize();
     }
 
-    public AppServerConn(Context context, ActionType type, String validate_id) {
+    public AppServerConn(Context context, Action type, String validate_id) {
         this.context = context;
         this.type = type;
         this.validate_id = validate_id;
@@ -108,7 +108,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
     private void initialize() {
             switch (type) {
                 case ValidateId:
-                    broadcastResult = new Intent(String.valueOf(ClassType.PrankDialogActivity));
+                    broadcastResult = new Intent(String.valueOf(Type.PrankDialogActivity));
                     
                     url = URLBuilder("index", "app_id="+validate_id);
                     
@@ -133,7 +133,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                                 "state=" + SharedPrefs.getServerState());
                         Log.e("SEND GCM ID", String.valueOf(url));
 
-                        type=ActionType.RegisterDevice; //important hack
+                        type= Action.RegisterDevice; //important hack
 
                     }else {
                         url = URLBuilder("index",
@@ -160,7 +160,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     else
                         selectedItem = ItemSelected.itemName;
 
-                    broadcastResult = new Intent(String.valueOf(ClassType.MainActivity));
+                    broadcastResult = new Intent(String.valueOf(Type.MainActivity));
                     
                     url = URLBuilder("sendmsg",
                             "receiver_id=" + SharedPrefs.getFrndAppID() ,
@@ -168,7 +168,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                             "item=" + selectedItem ,
                             "repeat_count=" + ItemSelected.itemRepeatCount ,
                             "volume=" + (int) ItemSelected.itemVolume ,
-                            "message=" + ActionType.PlayPrank,
+                            "message=" + Action.PlayPrank,
                             "currenttime=" + System.currentTimeMillis());
                     
                     Log.e("PRANK DETAILS", String.valueOf(url));
@@ -187,7 +187,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     break;
 
                 case RegisterUser:
-                    //broadcastResult = new Intent(String.valueOf(ClassType.UserRegistrationActivity));
+                    //broadcastResult = new Intent(String.valueOf(Type.UserRegistrationActivity));
 
                     String id = SharedPrefs.getAppServerID();
                     
@@ -217,7 +217,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     break;
                 case RetrieveFriendId:
                     
-                    broadcastResult = new Intent(String.valueOf(ClassType.PrankDialogActivity));
+                    broadcastResult = new Intent(String.valueOf(Type.PrankDialogActivity));
                     
                     url = URLBuilder("index",
                             "id=" + numID,
@@ -229,7 +229,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     break;
 
                 case VerifyUserRegistration:
-                    broadcastResult = new Intent(String.valueOf(ClassType.MainActivity));
+                    broadcastResult = new Intent(String.valueOf(Type.MainActivity));
 
                     url = URLBuilder("index",
                             "id=" + SharedPrefs.getAppServerID(),
@@ -271,11 +271,11 @@ public class AppServerConn extends AsyncTask<String, String, String> {
         } catch (IOException e) {
             e.printStackTrace();
             if (broadcastResult == null)
-                broadcastResult = new Intent(String.valueOf(ClassType.MainActivity));
+                broadcastResult = new Intent(String.valueOf(Type.MainActivity));
             if (wDiag != null)
                 wDiag.dismiss();
 
-            broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.NetworkError));
+            broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.NetworkError));
         }
 
 
@@ -296,19 +296,19 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     if (resp.getString("result").equals("1")) { // Device exists and IS prankable
 
                         Log.e(TAG, "Device exists and IS prankable");
-                        broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.ValidId));
+                        broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.ValidId));
 
 
                     } else if (resp.getString("result").equals("0")) { // Device exists and is NOT prankable
 
                         Log.e(TAG, "Device exists and is NOT prankable");
-                        broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.UserUnavailable));
+                        broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.UserUnavailable));
 
 
                     } else { // Device does not exist
 
                         Log.e(TAG, "Device does n ot exist");
-                        broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.UserUnavailable));
+                        broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.UserUnavailable));
 
 
                     }
@@ -326,7 +326,9 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     exp_date.set(Calendar.HOUR, (exp_date.get(Calendar.HOUR) + 24));
 
                     Calendar serverPingDate = Calendar.getInstance(TimeZone.getDefault());
-                    serverPingDate.set(Calendar.DAY_OF_MONTH, (serverPingDate.get(Calendar.DAY_OF_MONTH)+6));
+
+                    serverPingDate.set(Calendar.DAY_OF_MONTH,
+                            (serverPingDate.get(Calendar.DAY_OF_MONTH)+SharedPrefs.PING_SERVER_INTERVAL));
 
 
                     Log.e("ExpiryDate", exp_date.getTime().toString());
@@ -349,6 +351,13 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     }else {
                         Calendar exp = Calendar.getInstance(TimeZone.getDefault());
                         exp.set(Calendar.HOUR, (exp.get(Calendar.HOUR) + 24));
+
+
+                        Calendar serverPing = Calendar.getInstance(TimeZone.getDefault());
+
+                        serverPing.set(Calendar.DAY_OF_MONTH,
+                                (serverPing.get(Calendar.DAY_OF_MONTH)+SharedPrefs.PING_SERVER_INTERVAL));
+
                         Log.e("ExpiryDate", exp.getTime().toString());
                         Log.e(TAG, resp.getString("app_id"));
                         Log.e(TAG, resp.getString("id"));
@@ -358,28 +367,31 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                         SharedPrefs.setAppServerID(resp.getString("id"));
                         SharedPrefs.setSentGcmIDToServer(true);// GCM ID has been sent successfully
                         SharedPrefs.setExpDate(exp.getTime().toString());// Expiry date for myAppId is saved
+                        SharedPrefs.setPingServerDate(serverPing.getTime().toString());
 
                         delegate.onCompleteSuccess();
                     }
                     break;
 
                 case PlayPrank:
-                    broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.PrankSent));
-
+                    broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.PrankSent));
                     Log.e("Success", resp.getString("success"));
                     Log.e("Failure", resp.getString("failure"));
+                    if (resp.getString("success").equals("1"))
+                        SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft()-1);
+
                     break;
 
                 case RetrieveFriendId:
                     if (resp.getString("frnd_id").equals("NA"))
-                        broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.UserUnavailable));
+                        broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.UserUnavailable));
                     else {
                         ContactSelected.setApp_id(resp.getString("frnd_id"));
                         Log.e("Friend ID", resp.getString("frnd_id"));
                         Log.e("Friend Device ID", resp.getString("device_id"));
                         SharedPrefs.setFrndAppID(resp.getString("frnd_id")); // Store the received myAppID in shared prefs
                         SharedPrefs.setFriendDeviceId(resp.getString("device_id")); // Store the received myAppID in shared prefs
-                        broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.RetrievedFriendId));
+                        broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.RetrievedFriendId));
                     }
                     break;
                 case VerifyUserRegistration:
@@ -392,9 +404,9 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                         SharedPrefs.setUserName(null);
                         SharedPrefs.setUserPhoneNumber(null);
                         new DatabaseHelper(context).nuke(DatabaseHelper.TABLE_CONTACTS);
-                        broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.UserUnregistered));
+                        broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.UserUnregistered));
                     } else
-                        broadcastResult.putExtra(String.valueOf(ActionType.Broadcast), String.valueOf(Message.UserRegistered));
+                        broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.UserRegistered));
 
                     break;
                 case PingServer:

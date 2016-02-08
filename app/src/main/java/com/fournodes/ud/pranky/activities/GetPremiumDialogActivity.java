@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.enums.Action;
+import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.enums.Type;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -34,7 +38,12 @@ public class GetPremiumDialogActivity extends Activity {
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                SharedPrefs.setPrankCount(0);
+                SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft()+SharedPrefs.PRANK_INCREMENT_COUNT);
+                LocalBroadcastManager.getInstance(GetPremiumDialogActivity.this)
+                        .sendBroadcast(new Intent(String.valueOf(Type.InterActivityBroadcast))
+                                .putExtra(String.valueOf(Action.Broadcast),
+                                        String.valueOf(Message.ShowPranksLeft)));
+
             }
         });
         AdRequest adRequest = new AdRequest.Builder()
@@ -47,16 +56,16 @@ public class GetPremiumDialogActivity extends Activity {
         ImageView buyNow = (ImageView) findViewById(R.id.btnBuyNow);
         ImageView close = (ImageView) findViewById(R.id.close);
         TextView prankCount = (TextView) findViewById(R.id.lblPrankCount);
-        int pranksLeft = (Integer.parseInt(SharedPrefs.PRANK_LIMIT) - SharedPrefs.getPrankCount());
-        prankCount.setText(String.valueOf(pranksLeft));
+        prankCount.setText(String.valueOf(SharedPrefs.getPranksLeft()));
 
         showAd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
+                    finish();
                 }
-finish();            }
+            }
         });
 
         buyNow.setOnClickListener(new View.OnClickListener() {
@@ -64,11 +73,14 @@ finish();            }
             public void onClick(View view) {
                 final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+
+                } catch (android.content.ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                 }
-finish();
+                finish();
             }
         });
 
@@ -76,9 +88,10 @@ finish();
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-finish();            }
+                finish();
+            }
         });
-}
+    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

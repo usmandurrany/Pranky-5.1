@@ -39,7 +39,7 @@ import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.activities.AddSoundDialogActivity;
 import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.adapters.GridAdapter;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.interfaces.IFragment;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
@@ -349,7 +349,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     public void pageLast(int addSoundLoc) {
         if (SharedPrefs.isLastPageFirstLaunch() && (mTutorial == null || !mTutorial.isShowing())) {
             ImageView gridChildLast = (ImageView) mGridView.getChildAt(addSoundLoc);
-            mTutorial = new Tutorial(activity, ClassType.MainActivityLastPage);
+            mTutorial = new Tutorial(activity, Type.MainActivityLastPage);
             mTutorial.show(new ViewTarget(gridChildLast), "Add more sounds", "Tap on the '+' to add a custom sound of your choice");
         }
     }
@@ -362,7 +362,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 if (mGridView != null) {
                     if (mGridView.getChildCount() == 9) {
                         ImageView gridChild = (ImageView) mGridView.getChildAt(4);
-                        mTutorial = new Tutorial(activity, ClassType.MainActivity);
+                        mTutorial = new Tutorial(activity, Type.MainActivity);
                         mTutorial.show(new ViewTarget(gridChild),
                                 "Select a sound",
                                 "Tap on the icon to preview the sound and select it");

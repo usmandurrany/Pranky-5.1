@@ -21,8 +21,8 @@ import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.dialogs.DisplayContactsDialog;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.receivers.InvalidIDTimeout;
@@ -44,7 +44,7 @@ public class PrankDialogActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
-            switch (Message.valueOf(intent.getStringExtra(String.valueOf(ActionType.Broadcast)))) {
+            switch (Message.valueOf(intent.getStringExtra(String.valueOf(Action.Broadcast)))) {
                 case ValidId: {
                     SharedPrefs.setFrndAppID(frndID.getText().toString());
                     finish();
@@ -157,7 +157,7 @@ public class PrankDialogActivity extends Activity {
                         mTutorial.end();
 
                     }
-                    appServerConn = new AppServerConn(PrankDialogActivity.this, ActionType.ValidateId, frndID.getText().toString());
+                    appServerConn = new AppServerConn(PrankDialogActivity.this, Action.ValidateId, frndID.getText().toString());
                     appServerConn.showWaitDialog("P a i r i n g ...");
                     appServerConn.execute();
                 } else {
@@ -168,7 +168,7 @@ public class PrankDialogActivity extends Activity {
             }
         });
         if (SharedPrefs.isRemotePrankFirstLaunch()) {
-            mTutorial = new Tutorial(this, ClassType.PrankDialogActivity);
+            mTutorial = new Tutorial(this, Type.PrankDialogActivity);
             mTutorial.show(new ViewTarget(frndID), "Prank a friend", "Enter your 'Friend's ID' found in the settings popup.");
         }
 
@@ -216,7 +216,7 @@ public class PrankDialogActivity extends Activity {
             Log.e("BG Music Pause", e.toString());
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter(String.valueOf(ClassType.PrankDialogActivity))
+                mMessageReceiver, new IntentFilter(String.valueOf(Type.PrankDialogActivity))
         );
     }
 

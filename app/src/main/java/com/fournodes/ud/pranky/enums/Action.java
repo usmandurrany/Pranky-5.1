@@ -3,7 +3,7 @@ package com.fournodes.ud.pranky.enums;
 /**
  * Created by Usman on 1/4/2016.
  */
-public enum ActionType {
+public enum Action {
     PlayPrank,
     RegisterUser,
     RegisterDevice,

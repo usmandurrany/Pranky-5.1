@@ -18,7 +18,7 @@ import com.fournodes.ud.pranky.CustomTextView;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.network.ContactsAsync;
@@ -120,7 +120,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
                             public void onItemClick(AdapterView<?> adapterView, View view, int conNumPOS, long l) {
                                 Log.e("Numbers:", contList.get(DisplayContactsDialog.this.conNamePOS).getRegNumbers()[conNumPOS]);
                                 AppServerConn appServerConn = new AppServerConn(context,
-                                        ActionType.RetrieveFriendId,
+                                        Action.RetrieveFriendId,
                                         contList.get(DisplayContactsDialog.this.conNamePOS).getNumIDs()[conNumPOS],
                                         contList.get(DisplayContactsDialog.this.conNamePOS).getRegNumbers()[conNumPOS]);
                                 appServerConn.showWaitDialog("Fetching ID ...");
@@ -135,7 +135,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
                                 contList.get(conNamePOS).getRegNumbers()[0]);
 
                         AppServerConn appServerConn = new AppServerConn(context,
-                                ActionType.RetrieveFriendId,
+                                Action.RetrieveFriendId,
                                 contList.get(conNamePOS).getNumIDs()[0],
                                 contList.get(conNamePOS).getRegNumbers()[0]);
 

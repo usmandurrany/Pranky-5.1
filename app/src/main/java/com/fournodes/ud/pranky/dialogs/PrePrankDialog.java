@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import com.fournodes.ud.pranky.CustomTextView;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
-import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.interfaces.Messenger;
 import com.fournodes.ud.pranky.network.AppServerConn;
 
@@ -229,7 +229,7 @@ public class PrePrankDialog {
             @Override
             public void onFinish() {
                 SharedPrefs.setPrankCount(SharedPrefs.getPrankCount()+1);
-                AppServerConn appServerConn = new AppServerConn(context, ActionType.PlayPrank);
+                AppServerConn appServerConn = new AppServerConn(context, Action.PlayPrank);
                 appServerConn.execute();
                 //((MainActivity)context).showAd();
                 delegate.showPranksLeft();

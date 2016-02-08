@@ -20,8 +20,8 @@ import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.activities.SplashActivity;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.receivers.PlayPrank;
@@ -55,7 +55,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
         Log.e("Sender Name",data.getString("sender_name"));
         ContactSelected.setName(data.getString("sender_name"));
 
-        switch(ActionType.valueOf(data.getString("message"))) {
+        switch(Action.valueOf(data.getString("message"))) {
             case PlayPrank:
 
                 if (SharedPrefs.isPrankable()) {
@@ -95,7 +95,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
 
                     SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
-                    appServerConn = new AppServerConn(ActionType.NotifyPrankSuccessful);
+                    appServerConn = new AppServerConn(Action.NotifyPrankSuccessful);
                     appServerConn.execute();
                     if (data.getString("notify").equals("true"))
                         sendNotification(data.getString("sender_name"));
@@ -104,12 +104,12 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                 } else {
                     SharedPrefs.setServerState(0); // Set serverState to 0
                     // Send request to app server to remove myAppID from database untill serverState becomes 1
-                    appServerConn = new AppServerConn(ActionType.UpdateAvailability);
+                    appServerConn = new AppServerConn(Action.UpdateAvailability);
                     appServerConn.execute();
                      // Params (myGcmID, myAppId, serverState(fom stored prefs))
                     // Once myAppID has been removed from the db on the server, generate a response for the sender
                     SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
-                    appServerConn = new AppServerConn(ActionType.NotifyPrankFailed);
+                    appServerConn = new AppServerConn(Action.NotifyPrankFailed);
                     appServerConn.execute();
 
                 }
@@ -118,16 +118,16 @@ public class GCMBroadcastReceiver extends GcmListenerService {
             case NotifyPrankFailed:
                 // Broadcast the response to Main activity to display a toast
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(
-                        new Intent(String.valueOf(ClassType.MainActivity))
-                                .putExtra(String.valueOf(ActionType.Broadcast),
+                        new Intent(String.valueOf(Type.MainActivity))
+                                .putExtra(String.valueOf(Action.Broadcast),
                                         String.valueOf(Message.PrankFailed)));
 
                 break;
             case NotifyPrankSuccessful:
                 // Broadcast the response to Main activity to display a toast
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(
-                        new Intent(String.valueOf(ClassType.MainActivity))
-                                .putExtra(String.valueOf(ActionType.Broadcast),
+                        new Intent(String.valueOf(Type.MainActivity))
+                                .putExtra(String.valueOf(Action.Broadcast),
                                         String.valueOf(Message.PrankSuccessful)));
 
                 break;

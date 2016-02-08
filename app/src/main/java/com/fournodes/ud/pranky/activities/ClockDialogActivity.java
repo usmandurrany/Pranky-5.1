@@ -1,8 +1,6 @@
 package com.fournodes.ud.pranky.activities;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -16,9 +14,9 @@ import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SetPrank;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.adapters.DayWheelAdapter;
-import com.fournodes.ud.pranky.enums.ActionType;
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.enums.Type;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,9 +29,6 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
  * Created by Usman on 11/6/2015.
  */
 public class ClockDialogActivity extends Activity{
-    private Context context;
-    private Dialog dialog;
-    private int clockDay, clockHour, clockMin, clockampm; //0 for am 1 for pm
     private View decorView;
 
     @Override
@@ -86,29 +81,31 @@ public class ClockDialogActivity extends Activity{
         clockset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SharedPrefs.getPrankCount()>=Integer.parseInt(SharedPrefs.PRANK_LIMIT)){
+                if (SharedPrefs.getPranksLeft()<=0){
                     startActivity(new Intent(ClockDialogActivity.this, GetPremiumDialogActivity.class));
                     finish();
                 }else {
-                    clockDay = day.getCurrentItem();
-                    clockHour = hour.getCurrentItem();
-                    clockMin = min.getCurrentItem();
-                    clockampm = ampm.getCurrentItem();
+                    SetPrank scheduler = new SetPrank(ClockDialogActivity.this,
+                            day.getCurrentItem(),
+                            hour.getCurrentItem(),
+                            min.getCurrentItem(),
+                            0,
+                            ampm.getCurrentItem(),
+                            Type.ClockDialogActivity);
 
-                    SetPrank scheduler = new SetPrank(ClockDialogActivity.this, clockDay, clockHour, clockMin, clockampm);
-                    if (scheduler.validateTime(scheduler.clockSchedule(), "dialog_clock")
-                            && SharedPrefs.getPrankCount() <= Integer.parseInt(SharedPrefs.PRANK_LIMIT)) {
+                    if (scheduler.validateTime(scheduler.clockSchedule())) {
 
-                        scheduler.ScheduleSoundPlayback("dialog_clock", scheduler.clockSchedule());
+                        scheduler.ScheduleSoundPlayback(scheduler.clockSchedule());
 
                         LocalBroadcastManager.getInstance(ClockDialogActivity.this)
-                                .sendBroadcast(new Intent(String.valueOf(ClassType.InterActivityBroadcast))
-                                        .putExtra(String.valueOf(ActionType.Broadcast),
+                                .sendBroadcast(new Intent(String.valueOf(Type.InterActivityBroadcast))
+                                        .putExtra(String.valueOf(Action.Broadcast),
                                                 String.valueOf(Message.ShowPranksLeft)));
                         finish();
                     } else {
-                        CustomToast cToast = new CustomToast(ClockDialogActivity.this, "Selected time has passed.");
-                        cToast.show();
+                        new CustomToast(ClockDialogActivity.this,
+                                "Selected time has passed.").show();
+
                     }
                 }
             }

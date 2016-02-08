@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
-import com.fournodes.ud.pranky.enums.ActionType;
+import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.gcm.GCMInitiate;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.utils.FontManager;
@@ -148,7 +148,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
                             // Resend the stored myAppID to server
                             //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
-                            appServerConn= new AppServerConn(ActionType.UpdateAvailability);
+                            appServerConn= new AppServerConn(Action.UpdateAvailability);
                             appServerConn.execute();;
                         }
                         // serverState is 0 and myAppId has expired
@@ -158,7 +158,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
                             // Request new appID from server
                             SharedPrefs.setServerState(1);
                             SharedPrefs.setMyAppID("");
-                            appServerConn= new AppServerConn(ActionType.RenewAppId);
+                            appServerConn= new AppServerConn(Action.RenewAppId);
                             appServerConn.execute();
 
                         }

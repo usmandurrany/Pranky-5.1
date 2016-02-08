@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.fournodes.ud.pranky.enums.ClassType;
+import com.fournodes.ud.pranky.enums.Type;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
@@ -12,12 +12,12 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
  * Created by Usman on 18/1/2016.
  */
 public class Tutorial implements View.OnClickListener {
-    private ClassType page;
+    private Type page;
     private Activity activity;
     private ShowcaseView showcaseView;
     private int counter = 1;
 
-    public Tutorial(Activity activity, ClassType page) {
+    public Tutorial(Activity activity, Type page) {
         this.activity=activity;
         this.page=page;
     }

@@ -10,12 +10,15 @@ import java.util.TimeZone;
  * Created by Usman on 11/23/2015.
  */
 public class SharedPrefs {
-
-    public static String APP_SERVER_ID="appServerID";// Name of the font used throughout the app
-    public static String PRANK_LIMIT="5";// Name of the font used throughout the app
-
+    /********************************** APP CONSTANTS **************************************/
 
     public static String DEFAULT_FONT="grinched-regular";// Name of the font used throughout the app
+    public static String APP_SERVER_ID="appServerID";// Name of the font used throughout the app
+    public static int PRANK_INCREMENT_COUNT = 5;// Name of the font used throughout the app
+    public static int PRANK_START_COUNT = 5;// Name of the font used throughout the app
+    public static int PING_SERVER_INTERVAL = 6;// Name of the font used throughout the app
+
+    /********************************** APP VARIABLES **************************************/
 
     public static SharedPreferences prefs;
     private static Calendar defaultExpDate;
@@ -77,6 +80,9 @@ public class SharedPrefs {
     public static final String PING_SERVER_DATE = "pingServerDate";
 
 
+    public static final String PRANKS_LEFT = "pranksLeft";
+
+
 
     private static int invalidIDCount;
 
@@ -130,6 +136,8 @@ public class SharedPrefs {
     private static boolean volumeLowNotify = true;
 
     private static String pingServerDate;
+
+    private static int pranksLeft;
 
 
 
@@ -202,6 +210,7 @@ public class SharedPrefs {
         prankCount=prefs.getInt(SharedPrefs.PRANK_COUNT,0);
 
         pingServerDate=prefs.getString(SharedPrefs.PING_SERVER_DATE,null);
+        pranksLeft=prefs.getInt(SharedPrefs.PRANKS_LEFT,SharedPrefs.PRANK_START_COUNT);
 
     }
 
@@ -346,6 +355,10 @@ public class SharedPrefs {
 
     public static boolean isSmPrankLeftFirstLaunch() {
         return smPrankLeftFirstLaunch;
+    }
+
+    public static int getPranksLeft() {
+        return pranksLeft;
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
@@ -545,5 +558,10 @@ public class SharedPrefs {
     public static void setPingServerDate(String pingServerDate) {
         prefs.edit().putString(SharedPrefs.PING_SERVER_DATE,pingServerDate).apply();
         SharedPrefs.pingServerDate = pingServerDate;
+    }
+
+    public static void setPranksLeft(int pranksLeft) {
+        prefs.edit().putInt(SharedPrefs.PRANKS_LEFT,pranksLeft).apply();
+        SharedPrefs.pranksLeft = pranksLeft;
     }
 }
