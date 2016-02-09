@@ -35,12 +35,10 @@ public class DisplayContactsDialog implements OnCompleteListener {
     private Dialog dialog;
     private int conNamePOS;
     private SwipeRefreshLayout refreshList;
-    private ImageView close;
     private ListView lstContacts;
     private WaitDialog wait;
     private DatabaseHelper prankyDB;
     private int curCount;
-    private int newCount;
 
     public DisplayContactsDialog(Context context) {
         this.context = context;
@@ -59,7 +57,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
             public void onRefresh() {
                 refreshList.setRefreshing(false);
                 wait = new WaitDialog(context);
-                wait.setWaitText("R e f r e s h i n g ...");
+                wait.setWaitText(context.getString(R.string.refreshing_spaced));
                 wait.show();
                 DatabaseHelper prankyDB = new DatabaseHelper(context);
                 prankyDB.nuke(DatabaseHelper.TABLE_CONTACTS);
@@ -68,7 +66,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
                 syncContacts.execute();
             }
         });
-        close = (ImageView) dialog.findViewById(R.id.close);
+        ImageView close = (ImageView) dialog.findViewById(R.id.close);
         lstContacts = (ListView) dialog.findViewById(R.id.lstContacts);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +108,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
                         Dialog conNumDiag = new Dialog(context, R.style.ClockDialog);
                         conNumDiag.setContentView(R.layout.dialog_contact_names);
                         CustomTextView title = (CustomTextView) conNumDiag.findViewById(R.id.lblTitle);
-                        title.setText("Select  a  number");
+                        title.setText(R.string.select_number);
                         ListView lstConNumbers = (ListView) conNumDiag.findViewById(R.id.lstContacts);
                         final ArrayAdapter<String> conNumAdapter = new ArrayAdapter<String>(context,
                                 R.layout.contacts_row, contList.get(conNamePOS).getRegNumbers());
@@ -123,7 +121,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
                                         Action.RetrieveFriendId,
                                         contList.get(DisplayContactsDialog.this.conNamePOS).getNumIDs()[conNumPOS],
                                         contList.get(DisplayContactsDialog.this.conNamePOS).getRegNumbers()[conNumPOS]);
-                                appServerConn.showWaitDialog("Fetching ID ...");
+                                appServerConn.showWaitDialog(context.getString(R.string.fetching_id_spaced));
                                 appServerConn.execute();
                             }
                         });
@@ -141,8 +139,6 @@ public class DisplayContactsDialog implements OnCompleteListener {
 
                         appServerConn.execute();
                     }
-                } else {
-
                 }
             }
         });
@@ -170,15 +166,15 @@ public class DisplayContactsDialog implements OnCompleteListener {
     public void onCompleteContactSync() {
         //refreshList.setRefreshing(false);
 
-        newCount = prankyDB.conRegCount();
+        int newCount = prankyDB.conRegCount();
         if (newCount - curCount > 0) {
-            CustomToast cToast = new CustomToast(context, newCount - curCount + " contacts added");
+            CustomToast cToast = new CustomToast(context, newCount - curCount + context.getString(R.string.toast_contact_added));
             cToast.show();
         } else if (newCount - curCount < 0) {
-            CustomToast cToast = new CustomToast(context, ((newCount - curCount) * (-1)) + " contacts removed");
+            CustomToast cToast = new CustomToast(context, ((newCount - curCount) * (-1)) + context.getString(R.string.toast_contact_removed));
             cToast.show();
         } else {
-            CustomToast cToast = new CustomToast(context, "No change");
+            CustomToast cToast = new CustomToast(context, context.getString(R.string.toast_no_change));
             cToast.show();
         }
 

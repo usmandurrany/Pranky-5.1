@@ -44,19 +44,16 @@ import java.util.ArrayList;
 public class UserRegistrationActivity extends Activity implements View.OnKeyListener, OnCompleteListener {
 
     ContactsAsync syncContacts;
-    private View decorView;
     private CustomEditText name;
     private AutoCompleteTextView country;
     private EditText countryCode;
     private CustomEditText number;
     private ImageView btnDone;
-    private ImageView btnSkip;
-    private String[] ctyXmlArray;
-    private AppServerConn appServerConn;
     private WaitDialog wait;
     private int userCountryAtIndex;
     private String userCountryShortCode;
     private boolean listItemClicked;
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -71,7 +68,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
 
 
                 case NetworkError: {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Network  or server unavailable ");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_network_unavailable));
                     cToast.show();
                     break;
                 }
@@ -93,7 +90,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         syncContacts = new ContactsAsync(this);
         syncContacts.delegate = this;
 
-        ctyXmlArray = getResources().getStringArray(R.array.countries);
+        String[] ctyXmlArray = getResources().getStringArray(R.array.countries);
 
         final ArrayList<Country> countryList = new ArrayList<>();
 
@@ -152,7 +149,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         number.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         number.setOnKeyListener(this);
         btnDone = (ImageView) findViewById(R.id.signUp);
-        btnSkip = (ImageView) findViewById(R.id.skip);
+        ImageView btnSkip = (ImageView) findViewById(R.id.skip);
 
 
         //Log.e("Country Array", Arrays.toString(ccArray));
@@ -206,7 +203,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
 
                 if (!SharedPrefs.isSentGcmIDToServer()) {
                     wait = new WaitDialog(UserRegistrationActivity.this);
-                    wait.setWaitText("P l e a s e   W a i t ...");
+                    wait.setWaitText(getString(R.string.please_wait_spaced));
                     wait.show();
                     UserRegistrationActivity.this.startService(new Intent(
                             UserRegistrationActivity.this, GCMRegistrationService.class)
@@ -222,10 +219,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        //Log.e("focus","changed");
-
-        decorView = getWindow().getDecorView();
-
+        View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -306,7 +300,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
         } else {
             if (isPermissionGranted()) {
                 wait = new WaitDialog(UserRegistrationActivity.this);
-                wait.setWaitText("S y n c i n g   C o n t a c t s ...");
+                wait.setWaitText(getString(R.string.syncing_contacts_spaced));
                 wait.show();
                 ContactsAsync conSync = new ContactsAsync(UserRegistrationActivity.this);
                 conSync.delegate = UserRegistrationActivity.this;
@@ -324,12 +318,12 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
 
     @Override
     public void onCompleteFailed() {
-        CustomToast cToast = new CustomToast(UserRegistrationActivity.this, "Invalid   number");
+        CustomToast cToast = new CustomToast(UserRegistrationActivity.this, getString(R.string.toast_invalid_number));
         cToast.show();
     }
 
     public void registerUser() {
-        appServerConn = new AppServerConn(UserRegistrationActivity.this, Action.RegisterUser);
+        AppServerConn appServerConn = new AppServerConn(UserRegistrationActivity.this, Action.RegisterUser);
         appServerConn.delegate = this;
         appServerConn.showWaitDialog("R e g i s t e r i n g ...");
         appServerConn.execute();

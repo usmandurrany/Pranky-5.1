@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.dialogs.WaitDialog;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.enums.Type;
@@ -24,13 +25,14 @@ import com.google.android.gms.ads.InterstitialAd;
 public class GetPremiumDialogActivity extends Activity {
 
     private InterstitialAd mInterstitialAd;
+    private WaitDialog waitAdLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog_get_premium);
         onWindowFocusChanged(true);
-        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd = new InterstitialAd(GetPremiumDialogActivity.this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         // mInterstitialAd.setAdUnitId("ca-app-pub-7260426673133841/1414623255");
 
@@ -44,12 +46,21 @@ public class GetPremiumDialogActivity extends Activity {
                                         String.valueOf(Message.ShowPranksLeft)));
 
             }
-        });
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("9EA2162DEEE83254D6CB1770786B77EE")
-                .build();
 
-        mInterstitialAd.loadAd(adRequest);
+            @Override
+            public void onAdLoaded() {
+                waitAdLoad.dismiss();
+                mInterstitialAd.show();
+
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdOpened() {
+                finish();
+                super.onAdOpened();
+            }
+        });
 
         ImageView showAd = (ImageView) findViewById(R.id.btnShowAd);
         ImageView buyNow = (ImageView) findViewById(R.id.btnBuyNow);
@@ -60,10 +71,16 @@ public class GetPremiumDialogActivity extends Activity {
         showAd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                    finish();
-                }
+                waitAdLoad = new WaitDialog(GetPremiumDialogActivity.this);
+                waitAdLoad.setWaitText(getString(R.string.loading_ad_spaced));
+                waitAdLoad.show();
+
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice("9EA2162DEEE83254D6CB1770786B77EE")
+                        .build();
+
+                mInterstitialAd.loadAd(adRequest);
+
             }
         });
 

@@ -29,10 +29,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.objects.ContactSelected;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.DatabaseHelper;
-import com.fournodes.ud.pranky.objects.GridItem;
 import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
@@ -49,11 +47,11 @@ import com.fournodes.ud.pranky.gcm.GCMInitiate;
 import com.fournodes.ud.pranky.interfaces.IFragment;
 import com.fournodes.ud.pranky.interfaces.Messenger;
 import com.fournodes.ud.pranky.network.AppServerConn;
+import com.fournodes.ud.pranky.objects.ContactSelected;
+import com.fournodes.ud.pranky.objects.GridItem;
 import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FontManager;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,26 +64,15 @@ import java.util.TimeZone;
 public class MainActivity extends FragmentActivity implements Messenger {
 
     private View rootView;
-    private View decorView;
     private ViewPager mGridPager;
     private PagerAdapter pm;
-    private ImageView clock;
     private ImageView timer;
-    private ImageView settings;
     private ImageView prankbtn;
     private CustomToast cToast;
     private ObjectAnimator anim;
     private RelativeLayout sideMenu;
-    private ImageView smInfo;
-    private ImageView smHelp;
-    private ImageView smTerms;
-    private ImageView smBlankButton;
-    private me.relex.circleindicator.CircleIndicator mIndicator;
-
     private int itemsOnPage = 9;
     private int addSoundLoc = 0;
-
-
     private int pageNo = 0;
     private boolean open = false;
     private boolean timerLaunch = false;
@@ -99,10 +86,6 @@ public class MainActivity extends FragmentActivity implements Messenger {
     private TextSwitcher prankCount;
     private LinearLayout smButtonGroup;
     private LinearLayout smPrankLeft;
-
-
-    private InterstitialAd mInterstitialAd;
-
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -119,23 +102,23 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     mGridPager.setCurrentItem(pm.getCount() - 1);
                     break;
                 case PrankFailed: {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Your  friend  is  unavailable ");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_friend_unavailable));
                     cToast.show();
                     break;
                 }
                 case PrankSuccessful: {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Your  friend  has  been  pranked ");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_prank_success));
                     cToast.show();
                     break;
                 }
 
                 case NetworkError: {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Network  or server unavailable ");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_network_unavailable));
                     cToast.show();
                     break;
                 }
                 case UserUnregistered: {
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "You  have  been  logged  out");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.notification_logged_out));
                     cToast.show();
                     break;
                 }
@@ -186,23 +169,6 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
         /*************************************** App Config **************************************/
 
-        /*mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-       // mInterstitialAd.setAdUnitId("ca-app-pub-7260426673133841/1414623255");
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-                SharedPrefs.setPrankCount(0);
-            }
-        });
-
-        requestNewInterstitial();
-        */
-
-
-
         prankCount = (TextSwitcher) findViewById(R.id.smPrankCountText);
         prankCount.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
@@ -220,23 +186,22 @@ public class MainActivity extends FragmentActivity implements Messenger {
         prankCount.setCurrentText(String.valueOf(SharedPrefs.getPranksLeft()));
 
 
-
         /*********************************** Initializations ***************************************/
 
         previewSound = PreviewMediaPlayer.getInstance(this);
-        mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
+        me.relex.circleindicator.CircleIndicator mIndicator = (me.relex.circleindicator.CircleIndicator) findViewById(R.id.pagerIndicator);
         mGridPager = (ViewPager) findViewById(R.id.pager);
         prankbtn = (ImageView) findViewById(R.id.prankit);
         timer = (ImageView) findViewById(R.id.timer_btn);
         sideMenu = (RelativeLayout) findViewById(R.id.sideMenu);
-        smInfo = (ImageView) findViewById(R.id.smInfo);
-        smHelp = (ImageView) findViewById(R.id.smHelp);
-        smTerms = (ImageView) findViewById(R.id.smTerms);
-        clock = (ImageView) findViewById(R.id.clock_btn);
-        settings = (ImageView) findViewById(R.id.settings);
+        ImageView smInfo = (ImageView) findViewById(R.id.smInfo);
+        ImageView smHelp = (ImageView) findViewById(R.id.smHelp);
+        ImageView smTerms = (ImageView) findViewById(R.id.smTerms);
+        ImageView clock = (ImageView) findViewById(R.id.clock_btn);
+        ImageView settings = (ImageView) findViewById(R.id.settings);
         smButtonGroup = (LinearLayout) findViewById(R.id.smButtonGroup);
         smPrankLeft = (LinearLayout) findViewById(R.id.smPrankLeft);
-        smBlankButton = (ImageView) findViewById(R.id.smBlankButton);
+        ImageView smBlankButton = (ImageView) findViewById(R.id.smBlankButton);
 
 
         prankyDB = new DatabaseHelper(this);
@@ -287,7 +252,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
             @Override
             public void onClick(View view) {
                 if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound == null) {
-                    cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
+                    cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_select_sound));
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
@@ -307,7 +272,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
             @Override
             public void onClick(View view) {
                 if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound == null) {
-                    cToast = new CustomToast(getApplicationContext(), "Select  a  sound  first");
+                    cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_select_sound));
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
@@ -342,7 +307,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
                     startActivityForResult(prankDialog, 1);
                 } else {
-                    cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
+                    cToast = new CustomToast(MainActivity.this, getString(R.string.toast_friend_id_timeout));
                     cToast.show();
                 }
                 return false;
@@ -354,13 +319,13 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 new GCMInitiate(MainActivity.this).run();
 
                 if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound == null) {
-                    cToast = new CustomToast(MainActivity.this, "Select  a  sound  first");
+                    cToast = new CustomToast(MainActivity.this, getString(R.string.toast_select_sound));
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
                 } else if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound != null) {
 
-                    cToast = new CustomToast(MainActivity.this, "A  non-custom  sound  should  be  selected");
+                    cToast = new CustomToast(MainActivity.this, getString(R.string.toast_select_non_custom_sound));
                     cToast.show();
                 } else if (SharedPrefs.getFrndAppID() == null) {
                     if (SharedPrefs.getInvalidIDCount() < 3) {
@@ -368,7 +333,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                         Intent prankDialog = new Intent(MainActivity.this, PrankDialogActivity.class);
                         startActivityForResult(prankDialog, 1);
                     } else {
-                        cToast = new CustomToast(MainActivity.this, "Please wait 60 seconds before trying again");
+                        cToast = new CustomToast(MainActivity.this, getString(R.string.toast_friend_id_timeout));
                         cToast.show();
                     }
                 } else if (SharedPrefs.getPranksLeft()<=0){
@@ -584,7 +549,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        decorView = getWindow().getDecorView();
+        View decorView = getWindow().getDecorView();
 
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -687,7 +652,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
     public void setTutorial(Tutorial mTutorial) {
         this.mTutorial = mTutorial;
 
-        mTutorial.moveToNext(new ViewTarget(timer), "Set playback time", "Tap on the timer icon to play the sound after a specified interval");
+        mTutorial.moveToNext(new ViewTarget(timer), getString(R.string.tut_set_playback_time_title), getString(R.string.tut_set_playback_time_desc));
 
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_to_1_3);
         grow.setAnimationListener(new Animation.AnimationListener() {
@@ -739,14 +704,6 @@ public class MainActivity extends FragmentActivity implements Messenger {
         });
         grow.setDuration(duration);
         view.startAnimation(grow);
-    }
-
-    private void requestNewInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("9EA2162DEEE83254D6CB1770786B77EE")
-                .build();
-
-        mInterstitialAd.loadAd(adRequest);
     }
 
     public void pingServer(){

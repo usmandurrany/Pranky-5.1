@@ -29,7 +29,6 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
  * Created by Usman on 11/6/2015.
  */
 public class ClockDialogActivity extends Activity{
-    private View decorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +103,7 @@ public class ClockDialogActivity extends Activity{
                         finish();
                     } else {
                         new CustomToast(ClockDialogActivity.this,
-                                "Selected time has passed.").show();
+                                getString(R.string.toast_time_passed)).show();
 
                     }
                 }
@@ -127,7 +126,7 @@ public class ClockDialogActivity extends Activity{
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        decorView = getWindow().getDecorView();
+        View decorView = getWindow().getDecorView();
 
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE

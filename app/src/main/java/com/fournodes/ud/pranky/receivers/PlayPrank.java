@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
@@ -20,7 +19,6 @@ import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CameraControls;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.activities.SplashActivity;
 
@@ -29,15 +27,11 @@ import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnCompletionListener {
 
     private int counter = 1;
-    private int sysSound;
-    private String cusSound;
     private int repeatCount;
-    private int volume;
     private String notify;
     private String sender;
     private PreviewMediaPlayer playSound;
     private boolean bgMusicPlay;
-    private CameraControls cameraControls;
     private AudioManager audioManager;
     private int currVol;
     private Context context;
@@ -48,16 +42,11 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         playSound = getInstance(context);
-        cameraControls = CameraControls.getInstance(context);
-        Log.e("Prank Count", String.valueOf(SharedPrefs.getPrankCount()));
-        sysSound = intent.getIntExtra("sysSound", -1);
-        //     Log.e("System Sound",item);
-        cusSound = intent.getStringExtra("cusSound");
-        Log.e("Custom Sound", String.valueOf(cusSound));
+        CameraControls cameraControls = CameraControls.getInstance(context);
+        int sysSound = intent.getIntExtra("sysSound", -1);
+        String cusSound = intent.getStringExtra("cusSound");
         repeatCount = intent.getIntExtra("repeatCount", 1);
-        Log.e("Repeat Count", String.valueOf(repeatCount));
-        volume = intent.getIntExtra("volume", 1);
-        Log.e("Sound Volume", String.valueOf(volume));
+        int volume = intent.getIntExtra("volume", 1);
         notify = intent.getStringExtra("notify");
         sender = intent.getStringExtra("sender");
 
@@ -137,9 +126,9 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
     private void sendNotification(String name) {
         String message;
         if (!name.equals("null")) {
-            message = "You have been pranked by " + name;
+            message = context.getString(R.string.notification_pranked_by) + name;
         } else {
-            message = "You have been pranked";
+            message = context.getString(R.string.notification_pranked);
         }
         Intent intent = new Intent(context, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -153,17 +142,17 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
         PendingIntent piPrankBack = PendingIntent.getActivity(context, 0, dismissIntent, PendingIntent.FLAG_ONE_SHOT);
 
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.logo_16)
                 .setLargeIcon(((BitmapDrawable) context.getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap()).setColor(Color.parseColor("#fff2c305"))
-                .setContentTitle("Pranked!")
+                .setContentTitle(context.getString(R.string.notification_pranked_title))
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(message))
-                .addAction(R.drawable.logo_16, "Prank Back", piPrankBack);
+                .addAction(0, context.getString(R.string.notification_prank_back), piPrankBack);
 
 
         NotificationManager notificationManager =

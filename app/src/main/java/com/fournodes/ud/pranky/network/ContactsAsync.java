@@ -29,11 +29,8 @@ import java.util.HashSet;
 public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
     public OnCompleteListener delegate = null;
     private String result;
-    private JSONArray resp;
     private Context context;
     private WaitDialog wDiag;
-    private DatabaseHelper prankyDB;
-    private String urlParameters;
 
     public ContactsAsync(Context context) {
         this.context = context;
@@ -77,7 +74,7 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
     protected String doInBackground(JSONArray... jsonArrays) {
         try {
             Contacts contacts = new Contacts(context);
-            prankyDB = new DatabaseHelper(context);
+            DatabaseHelper prankyDB = new DatabaseHelper(context);
             if (jsonArrays.length <= 0) {
                 prankyDB.storeContacts(contacts.getAll());
             }
@@ -95,6 +92,7 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
             con.setRequestProperty("User-Agent", "Mozilla/5.0 ( compatible ) ");
             con.setRequestProperty("Accept", "*/*");
 
+            String urlParameters;
             if (jsonArrays.length>0) {
                 urlParameters = "payload=" + jsonArrays[0].toString();
             } else {
@@ -135,7 +133,7 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
         DatabaseHelper prankyDB = new DatabaseHelper(context);
         try {
 
-            resp = new JSONArray(result);
+            JSONArray resp = new JSONArray(result);
             for (int i = 0; i < resp.length(); i++) {
                 JSONObject contactDetails = resp.getJSONObject(i);
                 HashSet<String> numbers = new HashSet<>();

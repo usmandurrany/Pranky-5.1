@@ -1,24 +1,15 @@
 package com.fournodes.ud.pranky.gcm;
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.fournodes.ud.pranky.ItemSelected;
-import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
-import com.fournodes.ud.pranky.activities.MainActivity;
-import com.fournodes.ud.pranky.activities.SplashActivity;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.enums.Type;
@@ -32,17 +23,6 @@ import com.google.android.gms.gcm.GcmListenerService;
  */
 public class GCMBroadcastReceiver extends GcmListenerService {
     private static final String TAG = "GCMBroadcastReceiver";
-
-    /**
-     * Called when message is received.
-     *
-     * @param from SenderID of the sender.
-     * @param data Data bundle containing message data as key/value pairs.
-     *             For Set of keys use data.keySet().
-     */
-    // [START receive_message]
-    private AppServerConn appServerConn;
-
 
 
     @Override
@@ -58,6 +38,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
         switch(Action.valueOf(data.getString("message"))) {
             case PlayPrank:
 
+                AppServerConn appServerConn;
                 if (SharedPrefs.isPrankable()) {
                     String sound = data.getString("item");
 
@@ -131,68 +112,8 @@ public class GCMBroadcastReceiver extends GcmListenerService {
 
                 break;
         }
-        // [START_EXCLUDE]
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
 
-        /**
-         * In some cases it may be useful to show a notification indicating to the user
-         * that a message was received.
-         */
-       // sendNotification(message);
-        // [END_EXCLUDE]
     }
-    // [END receive_message]
-
-    /**
-     * Create and show a simple notification containing the received GCM message.
-     *
-     * @param name GCM message received.
-     */
-    private void sendNotification(String name) {
-        String message;
-        if  (!name.equals("null")) {
-             message = "You have been pranked by " + name;
-        }else {
-            message = "You have been pranked";
-        }
-        Intent intent = new Intent(this, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
 
 
-
-        // Sets up the Snooze and Dismiss action buttons that will appear in the
-// big view of the notification.
-        Intent dismissIntent = new Intent(this, MainActivity.class);
-        PendingIntent piPrankBack = PendingIntent.getActivity(this, 0, dismissIntent,  PendingIntent.FLAG_ONE_SHOT);
-
-
-
-
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.logo_16)
-                .setLargeIcon(((BitmapDrawable)getApplicationContext().getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap())  .setColor(Color.parseColor("#fff2c305"))
-                .setContentTitle("Pranked!")
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(message))
-                .addAction (R.drawable.logo_16, "Prank Back", piPrankBack);
-
-
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify((int)System.currentTimeMillis(), notificationBuilder.build());
-    }
 }

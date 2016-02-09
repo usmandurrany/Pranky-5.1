@@ -89,8 +89,8 @@ public class TimerDialogActivity extends Activity{
                         public void onFinish() {
                             if (mTutorial != null && sec.getCurrentItem() == 5) {
                                 mTutorial.moveToNext(new ViewTarget(set),
-                                        "Time Attack",
-                                        "Tap on the set button to set the timer and wait for your sound to play");
+                                        getString(R.string.tut_time_attack_title),
+                                        getString(R.string.tut_time_attack_desc));
                             }
                         }
                     }.start();
@@ -138,7 +138,7 @@ public class TimerDialogActivity extends Activity{
                         finish();
                     } else {
                         new CustomToast(TimerDialogActivity.this,
-                                "Minimum  time  is  5  seconds").show();
+                                getString(R.string.toast_min_time_limit)).show();
 
                     }
                 }
@@ -153,8 +153,8 @@ public class TimerDialogActivity extends Activity{
     if (SharedPrefs.isTimerFirstLaunch()) {
         mTutorial = new Tutorial(this, Type.TimerDialogActivity);
         mTutorial.show(new ViewTarget(sec),
-                "Time Attack",
-                "Select the timer to 5 seconds by moving the wheel");
+                getString(R.string.tut_time_attack_title),
+                getString(R.string.tut_time_attack_desc2));
     }
 
 

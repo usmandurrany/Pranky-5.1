@@ -141,7 +141,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         AudioManager audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
         int currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         if (currVol < 7 && SharedPrefs.isVolumeLowNotify()) {
-            CustomToast cToast = new CustomToast(activity,"Volume too low !");
+            CustomToast cToast = new CustomToast(activity,activity.getString(R.string.toast_volume_low));
             cToast.show();
             SharedPrefs.setVolumeLowNotify(false);
         }
@@ -336,12 +336,13 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             ImageView gridChildLast = (ImageView) mGridView.getChildAt(addSoundLoc);
             mTutorial = new Tutorial(activity, Type.MainActivityLastPage);
             mTutorial.show(new ViewTarget(gridChildLast),
-                    "Add more sounds",
-                    "Tap on the '+' to add a custom sound of your choice");
+                    activity.getString(R.string.tut_add_sound_title),
+                    activity.getString(R.string.tut_add_sound_desc));
         }
     }
 
     public void pageFirst() {
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -351,8 +352,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                         ImageView gridChild = (ImageView) mGridView.getChildAt(4);
                         mTutorial = new Tutorial(activity, Type.MainActivity);
                         mTutorial.show(new ViewTarget(gridChild),
-                                "Select a sound",
-                                "Tap on the icon to preview the sound and select it");
+                                activity.getString(R.string.tut_select_sound_title),
+                                activity.getString(R.string.tut_select_sound_desc2));
                         mTutorial.skipButtonDelay();
 
                     } else

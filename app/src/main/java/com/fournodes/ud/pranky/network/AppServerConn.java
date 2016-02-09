@@ -42,13 +42,10 @@ public class AppServerConn extends AsyncTask<String, String, String> {
     private Context context;
     private Action type;
     private URL url;
-    private HttpURLConnection conn;
     private String result;
     private String validate_id;
     private Intent broadcastResult;
-    private JSONObject resp;
     private WaitDialog wDiag;
-    private String selectedItem;
     private String numID;
     private String number;
 
@@ -155,6 +152,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
 
                     break;
                 case PlayPrank:
+                    String selectedItem;
                     if (ItemSelected.itemSound == -2) // condition for HW functions to be treated as a special type of itemSound
                         selectedItem = ItemSelected.itemCustomSound;
                     else
@@ -165,7 +163,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     url = URLBuilder("sendmsg",
                             "receiver_id=" + SharedPrefs.getFrndAppID() ,
                             "sender_id=" + SharedPrefs.getMyAppID(),
-                            "item=" + selectedItem ,
+                            "item=" + selectedItem,
                             "repeat_count=" + ItemSelected.itemRepeatCount ,
                             "volume=" + (int) ItemSelected.itemVolume ,
                             "message=" + Action.PlayPrank,
@@ -261,7 +259,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
     protected String doInBackground(String... strings) {
 
         try {
-            conn = (HttpURLConnection) url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(15000);
             conn.setReadTimeout(15000);
             conn.setRequestMethod("GET");
@@ -289,7 +287,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
 
         try {
 
-            resp = new JSONObject(result);
+            JSONObject resp = new JSONObject(result);
 
             switch (type) {
                 case ValidateId:

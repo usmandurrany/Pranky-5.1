@@ -40,7 +40,6 @@ public class PrePrankDialog {
     private CountDownTimer prankCountDown;
     private Paint backgroundPaint;
     private Paint progressPaint;
-    private Paint textPaint;
 
     private long startTime;
     private long currentTime;
@@ -52,8 +51,6 @@ public class PrePrankDialog {
     private RectF circleBounds;
     private float radius;
     private float handleRadius;
-    private float textHeight;
-    private float textOffset;
 
 
     public PrePrankDialog(Context context) {
@@ -154,14 +151,14 @@ public class PrePrankDialog {
         progressPaint.setColor(Color.parseColor("#bf071a"));
 
         // the style for the text in the middle
-        textPaint = new TextPaint();
+        Paint textPaint = new TextPaint();
         textPaint.setTextSize(radius / 2);
         textPaint.setColor(Color.BLACK);
         textPaint.setTextAlign(Paint.Align.CENTER);
 
         // text attributes
-        textHeight = textPaint.descent() - textPaint.ascent();
-        textOffset = (textHeight / 2) - textPaint.descent();
+        float textHeight = textPaint.descent() - textPaint.ascent();
+        float textOffset = (textHeight / 2) - textPaint.descent();
 
 
         prankCountDown =  new CountDownTimer(3000,16) {

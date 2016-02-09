@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
+import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -63,8 +64,8 @@ public class AddSoundDialogActivity extends Activity {
         if (SharedPrefs.isAddmoreFirstLaunch()) {
             mTutorial = new Tutorial(this, Type.AddSoundDialogActivity);
             mTutorial.show(new ViewTarget(buttonBrowse),
-                    "Select a sound",
-                    "Tap on the icon to pick a sound from your phone");
+                    getString(R.string.tut_select_sound_title),
+                    getString(R.string.tut_select_sound_desc));
         }
 
         buttonClose.setOnClickListener(new View.OnClickListener() {
@@ -95,12 +96,12 @@ public class AddSoundDialogActivity extends Activity {
                                     eTextFileName.setText(fileName);
                                     if (mTutorial != null)
                                         mTutorial.moveToNext(new ViewTarget(iconCustom),
-                                                "Pick an icon",
-                                                "Choose an icon for your sound");
+                                                getString(R.string.tut_pick_icon_title),
+                                                getString(R.string.tut_pick_icon_desc));
 
                                 } else
                                     Toast.makeText(AddSoundDialogActivity.this,
-                                            "Invalid file! Select another", Toast.LENGTH_SHORT).show();
+                                            R.string.toast_invalid_file, Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -131,7 +132,7 @@ public class AddSoundDialogActivity extends Activity {
                     db.insert(DatabaseHelper.TABLE_ITEMS,"null",values);
 
                 } else
-                    Toast.makeText(AddSoundDialogActivity.this, "Pick an Icon", Toast.LENGTH_SHORT).show();
+                    new CustomToast(AddSoundDialogActivity.this,getString(R.string.tut_pick_icon_title)).show();
 
 
                 SharedPrefs.setCusSoundAdded(true);
@@ -165,7 +166,7 @@ public class AddSoundDialogActivity extends Activity {
             buttonSave.setEnabled(true);
         if (fileSelected != null && mTutorial != null) {
             mTutorial.moveToNext(new ViewTarget(buttonSave),
-                    "Save your sound", "Tap on save to add your sound to the list");
+                    getString(R.string.tut_save_sound_title), getString(R.string.tut_save_sound_desc));
         }
     }
 

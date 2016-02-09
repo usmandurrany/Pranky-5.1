@@ -51,7 +51,7 @@ public class PrankDialogActivity extends Activity {
                     break;
                 }
                 case UserUnavailable: {
-                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Your friend is unavailable");
+                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, getString(R.string.toast_friend_unavailable));
                     cToast.show();
                     break;
                 }
@@ -61,7 +61,7 @@ public class PrankDialogActivity extends Activity {
                     break;
                 }
                 case NetworkError: {
-                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Network or server unavailable");
+                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, getString(R.string.toast_network_unavailable));
                     cToast.show();
                     break;
                 }
@@ -75,13 +75,13 @@ public class PrankDialogActivity extends Activity {
 
                         AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
                         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60000, pendingIntent);
-                        CustomToast cToast = new CustomToast(getApplicationContext(), "Please wait 60 seconds before trying again");
+                        CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_friend_id_timeout));
                         cToast.show();
                         finish();
                         Log.e("Invalid ID Count", String.valueOf(invIDCount));
 
                     }
-                    CustomToast cToast = new CustomToast(getApplicationContext(), "Invalid ID");
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_invalid_id));
                     cToast.show();
                     invIDCount++;
                     break;
@@ -141,7 +141,7 @@ public class PrankDialogActivity extends Activity {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if (frndID.getText().toString().trim().length() == 4 && mTutorial != null) {
-                    mTutorial.moveToNext(new ViewTarget(btnset), "Prank a friend", "Tap the button to save the ID");
+                    mTutorial.moveToNext(new ViewTarget(btnset), getString(R.string.tut_prank_friend_title), getString(R.string.tut_prank_friend_desc));
                 }
                 return false;
             }
@@ -151,17 +151,14 @@ public class PrankDialogActivity extends Activity {
             public void onClick(View view) {
                 if (frndID.getText().toString().trim().length() > 0) {
                     if (mTutorial != null) {
-                        //showcaseView.hide();
-                        //showcaseView=null;
-                        //SharedPrefs.setTimerFirstLaunch(false);
                         mTutorial.end();
 
                     }
                     appServerConn = new AppServerConn(PrankDialogActivity.this, Action.ValidateId, frndID.getText().toString());
-                    appServerConn.showWaitDialog("P a i r i n g ...");
+                    appServerConn.showWaitDialog(getString(R.string.paring_spaced));
                     appServerConn.execute();
                 } else {
-                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, "Enter friends ID");
+                    CustomToast cToast = new CustomToast(PrankDialogActivity.this, getString(R.string.toast_enter_friend_id));
                     cToast.show();
                 }
 
@@ -169,7 +166,7 @@ public class PrankDialogActivity extends Activity {
         });
         if (SharedPrefs.isRemotePrankFirstLaunch()) {
             mTutorial = new Tutorial(this, Type.PrankDialogActivity);
-            mTutorial.show(new ViewTarget(frndID), "Prank a friend", "Enter your 'Friend's ID' found in the settings popup.");
+            mTutorial.show(new ViewTarget(frndID), getString(R.string.tut_prank_friend_title), getString(R.string.tut_prank_friend_desc2));
         }
 
     }

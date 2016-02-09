@@ -56,7 +56,6 @@
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textColor="#fff"
-            android:text="@string/friend_name_spaced"
             />
         <ImageView
             android:id="@+id/btnCancelPrank"
