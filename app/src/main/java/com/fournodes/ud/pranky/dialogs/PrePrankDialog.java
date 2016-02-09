@@ -38,11 +38,6 @@ public class PrePrankDialog {
     private int height;
     private int width;
     private CountDownTimer prankCountDown;
-
-
-
-
-
     private Paint backgroundPaint;
     private Paint progressPaint;
     private Paint textPaint;
@@ -59,14 +54,6 @@ public class PrePrankDialog {
     private float handleRadius;
     private float textHeight;
     private float textOffset;
-
-
-
-
-
-
-
-
 
 
     public PrePrankDialog(Context context) {

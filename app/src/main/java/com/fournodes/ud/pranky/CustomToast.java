@@ -14,7 +14,6 @@ public class CustomToast {
     Context context;
     String ToastText;
 
-    LayoutInflater inflater;
     View customToast;
     TextView toastText;
     Toast toast;

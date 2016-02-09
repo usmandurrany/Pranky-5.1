@@ -18,7 +18,6 @@ import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.enums.Type;
-import com.fournodes.ud.pranky.utils.Cleaner;
 import com.fournodes.ud.pranky.utils.FileChooser;
 import com.fournodes.ud.pranky.utils.FontManager;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
@@ -34,58 +33,52 @@ import java.io.IOException;
  */
 public class AddSoundDialogActivity extends Activity {
 
-    private View decorView;
-    private DatabaseHelper prankyDB;
+    private DatabaseHelper db;
     private int cusIconID;
-    private File soundFile;
+    private File fileSelected;
     private String fileName;
     private String fileExt;
-    private ImageView btnsave;
-    private ImageView custom;
-    private View rootView;
-    private EditText txtselsound;
-    private ImageView btndiagclose;
-    private ImageView btnselsound;
-    private ImageView customImage;
+    private ImageView buttonSave;
+    private ImageView iconSelected;
+    private EditText eTextFileName;
+    private ImageView iconCustom;
     private Tutorial mTutorial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        rootView = getLayoutInflater().inflate(R.layout.activity_dialog_addsound,
-                null);
-        setContentView(rootView);
+        setContentView(R.layout.activity_dialog_addsound);
         onWindowFocusChanged(true);
 
-        prankyDB = new DatabaseHelper(AddSoundDialogActivity.this);
-        txtselsound = (EditText) findViewById(R.id.txtSelSound);
-        txtselsound.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
-        btnselsound = (ImageView) findViewById(R.id.btnMusicToggle);
-        btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
-        customImage = (ImageView) findViewById(R.id.custom2);
-        btnsave = (ImageView) findViewById(R.id.btnSave);
+        db = new DatabaseHelper(AddSoundDialogActivity.this);
+        eTextFileName = (EditText) findViewById(R.id.txtSelSound);
+        eTextFileName.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
+        ImageView buttonBrowse = (ImageView) findViewById(R.id.btnMusicToggle);
+        ImageView buttonClose = (ImageView) findViewById(R.id.btnDiagClose);
+        iconCustom = (ImageView) findViewById(R.id.custom2);
+        buttonSave = (ImageView) findViewById(R.id.btnSave);
 
-        btnsave.setEnabled(false);
+        buttonSave.setEnabled(false);
 
         if (SharedPrefs.isAddmoreFirstLaunch()) {
             mTutorial = new Tutorial(this, Type.AddSoundDialogActivity);
-            mTutorial.show(new ViewTarget(btnselsound),
+            mTutorial.show(new ViewTarget(buttonBrowse),
                     "Select a sound",
                     "Tap on the icon to pick a sound from your phone");
         }
 
-        btndiagclose.setOnClickListener(new View.OnClickListener() {
+        buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
 
-        btnselsound.setOnClickListener(new View.OnClickListener() {
+        buttonBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FileChooser filech = new FileChooser(AddSoundDialogActivity.this);
-                filech.setFileListener(
+                FileChooser mFileChooser = new FileChooser(AddSoundDialogActivity.this);
+                mFileChooser.setFileListener(
                         new FileChooser.FileSelectedListener() {
                             @Override
                             public void fileSelected(File file) {
@@ -98,10 +91,10 @@ public class AddSoundDialogActivity extends Activity {
                                         fileExt.equals(".wav") ||
                                         fileExt.equals(".3gp") ||
                                         fileExt.equals(".ogg")) {
-                                    soundFile = file;
-                                    txtselsound.setText(fileName);
+                                    fileSelected = file;
+                                    eTextFileName.setText(fileName);
                                     if (mTutorial != null)
-                                        mTutorial.moveToNext(new ViewTarget(customImage),
+                                        mTutorial.moveToNext(new ViewTarget(iconCustom),
                                                 "Pick an icon",
                                                 "Choose an icon for your sound");
 
@@ -117,19 +110,19 @@ public class AddSoundDialogActivity extends Activity {
         });
 
 
-        btnsave.setOnClickListener(new View.OnClickListener() {
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (cusIconID != 0) {
-                    copyFile(soundFile.getAbsolutePath(), soundFile.getName());
+                    copyFile(fileSelected.getAbsolutePath(), fileSelected.getName());
                     // Gets the data repository in write mode
-                    SQLiteDatabase db = prankyDB.getWritableDatabase();
+                    SQLiteDatabase db = AddSoundDialogActivity.this.db.getWritableDatabase();
 
                     ContentValues values = new ContentValues();
                     values.put(DatabaseHelper.COLUMN_ITEM_IMG_LOC, cusIconID);
-                    values.put(DatabaseHelper.COLUMN_ITEM_NAME, soundFile.getName());
-                    values.put(DatabaseHelper.COLUMN_ITEM_SOUND_LOC, soundFile.getAbsolutePath());
+                    values.put(DatabaseHelper.COLUMN_ITEM_NAME, fileSelected.getName());
+                    values.put(DatabaseHelper.COLUMN_ITEM_SOUND_LOC, fileSelected.getAbsolutePath());
                     values.put(DatabaseHelper.COLUMN_REPEAT_COUNT, 1);
                     values.put(DatabaseHelper.COLUMN_SOUND_VOL, 1);
                     values.put(DatabaseHelper.COLUMN_ITEM_CATEGORY, "custom");
@@ -152,26 +145,26 @@ public class AddSoundDialogActivity extends Activity {
     }
 
     public void iconClick(View v) {
-        if (custom != null)
-            custom.setImageResource(0);
-        custom = (ImageView) findViewById(v.getId());
+        if (iconSelected != null)
+            iconSelected.setImageResource(0);
+        iconSelected = (ImageView) findViewById(v.getId());
         String imgName = getResources().getResourceEntryName(v.getId());
         try {
             cusIconID = R.mipmap.class.getField(imgName).getInt(null);
             int custom_hover = R.mipmap.class.getField(imgName + "_hover").getInt(null);
-            custom.setBackgroundResource(custom_hover);
-            custom.setImageResource(R.drawable.gridselectedanim);
-            AnimationDrawable boxsel = (AnimationDrawable) custom.getDrawable();
+            iconSelected.setBackgroundResource(custom_hover);
+            iconSelected.setImageResource(R.drawable.item_selected_animation);
+            AnimationDrawable boxsel = (AnimationDrawable) iconSelected.getDrawable();
             boxsel.start();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-        if (soundFile != null)
-            btnsave.setEnabled(true);
-        if (soundFile != null && mTutorial != null) {
-            mTutorial.moveToNext(new ViewTarget(btnsave),
+        if (fileSelected != null)
+            buttonSave.setEnabled(true);
+        if (fileSelected != null && mTutorial != null) {
+            mTutorial.moveToNext(new ViewTarget(buttonSave),
                     "Save your sound", "Tap on save to add your sound to the list");
         }
     }
@@ -180,7 +173,7 @@ public class AddSoundDialogActivity extends Activity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        decorView = getWindow().getDecorView();
+        View decorView = getWindow().getDecorView();
 
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -213,9 +206,6 @@ public class AddSoundDialogActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         SharedPrefs.setBgMusicPlaying(false);
-        Cleaner.unbindDrawables(rootView);
-        rootView = null;
-
     }
 
     @Override

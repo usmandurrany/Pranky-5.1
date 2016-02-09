@@ -14,16 +14,16 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.ContactSelected;
-import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.ItemSelected;
+import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.activities.SplashActivity;
 import com.fournodes.ud.pranky.enums.Action;
-import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.network.AppServerConn;
+import com.fournodes.ud.pranky.objects.ContactSelected;
 import com.fournodes.ud.pranky.receivers.PlayPrank;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -85,6 +85,8 @@ public class GCMBroadcastReceiver extends GcmListenerService {
 
                     intent.putExtra("repeatCount", Integer.valueOf(soundRep));
                     intent.putExtra("volume", Integer.valueOf(soundVol));
+                    intent.putExtra("notify",data.getString("notify"));
+                    intent.putExtra("sender",data.getString("sender_name"));
 
 
                     final int _id = (int) System.currentTimeMillis();
@@ -97,9 +99,6 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
                     appServerConn = new AppServerConn(Action.NotifyPrankSuccessful);
                     appServerConn.execute();
-                    if (data.getString("notify").equals("true"))
-                        sendNotification(data.getString("sender_name"));
-
 
                 } else {
                     SharedPrefs.setServerState(0); // Set serverState to 0

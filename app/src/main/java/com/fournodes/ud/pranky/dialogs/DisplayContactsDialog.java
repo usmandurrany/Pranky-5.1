@@ -12,8 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.fournodes.ud.pranky.ContactDetails;
-import com.fournodes.ud.pranky.ContactSelected;
+import com.fournodes.ud.pranky.objects.ContactDetails;
+import com.fournodes.ud.pranky.objects.ContactSelected;
 import com.fournodes.ud.pranky.CustomTextView;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.DatabaseHelper;
@@ -88,7 +88,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
         }
         Log.e("Names Len", String.valueOf(names.length));
         if (names.length == 0)
-            names = new String[]{"No frineds available, Pull to refresh"};
+            names = new String[]{"No friends available, Pull to refresh"};
 
         final ArrayAdapter<String> conAdapter = new ArrayAdapter<>(context,
                 R.layout.contacts_row, names);

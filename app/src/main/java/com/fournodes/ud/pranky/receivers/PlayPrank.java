@@ -1,18 +1,28 @@
 package com.fournodes.ud.pranky.receivers;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CameraControls;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.activities.MainActivity;
+import com.fournodes.ud.pranky.activities.SplashActivity;
 
 import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
@@ -23,19 +33,23 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
     private String cusSound;
     private int repeatCount;
     private int volume;
+    private String notify;
+    private String sender;
     private PreviewMediaPlayer playSound;
     private boolean bgMusicPlay;
     private CameraControls cameraControls;
     private AudioManager audioManager;
     private int currVol;
+    private Context context;
 
     public PlayPrank() {}
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.context = context;
         playSound = getInstance(context);
         cameraControls = CameraControls.getInstance(context);
-        Log.e("Prank Count",String.valueOf(SharedPrefs.getPrankCount()));
+        Log.e("Prank Count", String.valueOf(SharedPrefs.getPrankCount()));
         sysSound = intent.getIntExtra("sysSound", -1);
         //     Log.e("System Sound",item);
         cusSound = intent.getStringExtra("cusSound");
@@ -44,6 +58,8 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
         Log.e("Repeat Count", String.valueOf(repeatCount));
         volume = intent.getIntExtra("volume", 1);
         Log.e("Sound Volume", String.valueOf(volume));
+        notify = intent.getStringExtra("notify");
+        sender = intent.getStringExtra("sender");
 
         playSound.release();
         cameraControls.releaseCamera();
@@ -92,6 +108,19 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
         if (counter == repeatCount) {
             playSound.release();
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currVol, 0);
+            if (notify != null && notify.equals("true")) {
+                new CountDownTimer(5000, 5000) {
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        sendNotification(sender);
+                    }
+                }.start();
+            }
             try {
                 if (bgMusicPlay == true) {
                     BackgroundMusic.play();
@@ -103,5 +132,43 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
         } else
             playSound.mp.start();
         counter++;
+    }
+
+    private void sendNotification(String name) {
+        String message;
+        if (!name.equals("null")) {
+            message = "You have been pranked by " + name;
+        } else {
+            message = "You have been pranked";
+        }
+        Intent intent = new Intent(context, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+
+        // Sets up the Snooze and Dismiss action buttons that will appear in the
+// big view of the notification.
+        Intent dismissIntent = new Intent(context, MainActivity.class);
+        PendingIntent piPrankBack = PendingIntent.getActivity(context, 0, dismissIntent, PendingIntent.FLAG_ONE_SHOT);
+
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.logo_16)
+                .setLargeIcon(((BitmapDrawable) context.getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap()).setColor(Color.parseColor("#fff2c305"))
+                .setContentTitle("Pranked!")
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .addAction(R.drawable.logo_16, "Prank Back", piPrankBack);
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify((int) System.currentTimeMillis(), notificationBuilder.build());
     }
 }

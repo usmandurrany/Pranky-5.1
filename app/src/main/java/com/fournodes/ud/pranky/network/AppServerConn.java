@@ -7,7 +7,7 @@ import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.ContactSelected;
+import com.fournodes.ud.pranky.objects.ContactSelected;
 import com.fournodes.ud.pranky.DatabaseHelper;
 import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -377,7 +377,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     broadcastResult.putExtra(String.valueOf(Action.Broadcast), String.valueOf(Message.PrankSent));
                     Log.e("Success", resp.getString("success"));
                     Log.e("Failure", resp.getString("failure"));
-                    if (resp.getString("success").equals("1"))
+                    //if (resp.getString("success").equals("1"))
                         SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft()-1);
 
                     break;

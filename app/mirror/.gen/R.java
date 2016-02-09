@@ -2942,7 +2942,7 @@ containing a value of this type.
            <tr><td><code>{@link #ActionBar_contentInsetStart com.fournodes.ud.pranky:contentInsetStart}</code></td><td></td></tr>
            <tr><td><code>{@link #ActionBar_customNavigationLayout com.fournodes.ud.pranky:customNavigationLayout}</code></td><td></td></tr>
            <tr><td><code>{@link #ActionBar_displayOptions com.fournodes.ud.pranky:displayOptions}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_divider com.fournodes.ud.pranky:divider}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_divider com.fournodes.ud.pranky:display_contacts_divider}</code></td><td></td></tr>
            <tr><td><code>{@link #ActionBar_elevation com.fournodes.ud.pranky:elevation}</code></td><td></td></tr>
            <tr><td><code>{@link #ActionBar_height com.fournodes.ud.pranky:height}</code></td><td></td></tr>
            <tr><td><code>{@link #ActionBar_hideOnContentScroll com.fournodes.ud.pranky:hideOnContentScroll}</code></td><td></td></tr>
@@ -3135,7 +3135,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.fournodes.ud.pranky:divider
+          @attr name com.fournodes.ud.pranky:display_contacts_divider
         */
         public static final int ActionBar_divider = 9;
         /**
@@ -4496,7 +4496,7 @@ containing a value of this type.
            <tr><td><code>{@link #LinearLayoutCompat_android_gravity android:gravity}</code></td><td></td></tr>
            <tr><td><code>{@link #LinearLayoutCompat_android_orientation android:orientation}</code></td><td></td></tr>
            <tr><td><code>{@link #LinearLayoutCompat_android_weightSum android:weightSum}</code></td><td></td></tr>
-           <tr><td><code>{@link #LinearLayoutCompat_divider com.fournodes.ud.pranky:divider}</code></td><td></td></tr>
+           <tr><td><code>{@link #LinearLayoutCompat_divider com.fournodes.ud.pranky:display_contacts_divider}</code></td><td></td></tr>
            <tr><td><code>{@link #LinearLayoutCompat_dividerPadding com.fournodes.ud.pranky:dividerPadding}</code></td><td></td></tr>
            <tr><td><code>{@link #LinearLayoutCompat_measureWithLargestChild com.fournodes.ud.pranky:measureWithLargestChild}</code></td><td></td></tr>
            <tr><td><code>{@link #LinearLayoutCompat_showDividers com.fournodes.ud.pranky:showDividers}</code></td><td></td></tr>
@@ -4553,7 +4553,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.fournodes.ud.pranky:divider
+          @attr name com.fournodes.ud.pranky:display_contacts_divider
         */
         public static final int LinearLayoutCompat_divider = 5;
         /**

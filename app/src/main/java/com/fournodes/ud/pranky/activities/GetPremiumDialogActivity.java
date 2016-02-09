@@ -24,7 +24,6 @@ import com.google.android.gms.ads.InterstitialAd;
 public class GetPremiumDialogActivity extends Activity {
 
     private InterstitialAd mInterstitialAd;
-    private View decorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class GetPremiumDialogActivity extends Activity {
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft()+SharedPrefs.PRANK_INCREMENT_COUNT);
+                SharedPrefs.setPranksLeft(SharedPrefs.PRANK_START_COUNT);
                 LocalBroadcastManager.getInstance(GetPremiumDialogActivity.this)
                         .sendBroadcast(new Intent(String.valueOf(Type.InterActivityBroadcast))
                                 .putExtra(String.valueOf(Action.Broadcast),
@@ -96,7 +95,7 @@ public class GetPremiumDialogActivity extends Activity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        decorView = getWindow().getDecorView();
+        View decorView = getWindow().getDecorView();
 
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE

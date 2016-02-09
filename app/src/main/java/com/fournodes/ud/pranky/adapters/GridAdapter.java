@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.GridItem;
+import com.fournodes.ud.pranky.objects.GridItem;
 import com.fournodes.ud.pranky.R;
 
 public class GridAdapter extends BaseAdapter {
@@ -86,8 +86,8 @@ public class GridAdapter extends BaseAdapter {
 
     private void setCatImage(int pos, ViewHolder viewHolder, Integer img) {
         if (img == R.mipmap.addmore) {
-        viewHolder.itemImage.setBackgroundResource(R.drawable.addstates);
-        //viewHolder.itemImage.setTag(R.drawable.addstates);
+        viewHolder.itemImage.setBackgroundResource(R.drawable.btn_addsound_states);
+        //viewHolder.itemImage.setTag(R.drawable.btn_addsound_states);
 
         }
        else {

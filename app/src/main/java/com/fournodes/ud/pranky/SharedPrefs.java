@@ -561,7 +561,7 @@ public class SharedPrefs {
     }
 
     public static void setPranksLeft(int pranksLeft) {
-        prefs.edit().putInt(SharedPrefs.PRANKS_LEFT,pranksLeft).apply();
+        prefs.edit().putInt(SharedPrefs.PRANKS_LEFT,pranksLeft).commit();
         SharedPrefs.pranksLeft = pranksLeft;
     }
 }

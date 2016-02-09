@@ -72,7 +72,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/close_btn_margin_right"
         android:layout_marginTop="@dimen/close_btn_margin_top"
-        android:src="@drawable/closestates" />
+        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>

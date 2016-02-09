@@ -1,4 +1,4 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.objects;
 
 /**
  * Created by Usman on 30/1/2016.

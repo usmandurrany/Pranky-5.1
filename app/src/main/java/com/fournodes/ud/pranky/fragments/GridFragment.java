@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,10 +28,10 @@ import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CameraControls;
 import com.fournodes.ud.pranky.CustomTextView;
 import com.fournodes.ud.pranky.CustomToast;
-import com.fournodes.ud.pranky.GridItem;
+import com.fournodes.ud.pranky.objects.GridItem;
+import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.activities.AddSoundDialogActivity;
@@ -50,30 +48,18 @@ import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
 public class GridFragment extends android.support.v4.app.Fragment implements IFragment, MediaPlayer.OnCompletionListener {
 
-    private static Ringtone ringtone;
     private GridItem[] gridItems;
     private ImageView img;
-    private Intent soundAct;
     private int lastView = -1;
-    private Camera cam = null;
-    private Camera.Parameters params;
-    private boolean isLightOn;
-    private Runnable flashBlinkRunnable;
     private int viewPOS;
     private GridView mGridView;
-    private GridAdapter mGridAdapter;
     private Activity activity;
     private PreviewMediaPlayer previewSound;
     private CameraControls cControls;
-    private CustomTextView mCategory;
     private Tutorial mTutorial;
     private String category;
-    private Bundle args;
 
-    //private CameraControls cControl;
-
-    public GridFragment() {
-    }
+    public GridFragment() {}
 
 
     @Override
@@ -84,7 +70,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         previewSound = getInstance(activity);
         cControls = CameraControls.getInstance(activity);
         mGridView = (GridView) view.findViewById(R.id.grid_view);
-        mCategory = (CustomTextView) view.findViewById(R.id.lblCatTitle);
+        CustomTextView mCategory = (CustomTextView) view.findViewById(R.id.lblCatTitle);
 
         Log.e("onCreateView", String.valueOf(savedInstanceState));
         if (savedInstanceState != null && savedInstanceState.getParcelableArray("icons") != null) {
@@ -96,7 +82,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
         } else {
 
-            args = getArguments();
+            Bundle args = getArguments();
             ArrayList<Parcelable> ps = args.getParcelableArrayList("icons");
             ArrayList<GridItem> GridItemList = new ArrayList<>();
             for (Parcelable item : ps) {
@@ -119,7 +105,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
         if (activity != null) {
 
-            mGridAdapter = new GridAdapter(activity, gridItems);
+            GridAdapter mGridAdapter = new GridAdapter(activity, gridItems);
 
             if (mGridView != null) {
                 mGridView.setAdapter(mGridAdapter);
@@ -179,7 +165,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                 lastView = viewPOS;
 
             img.setSelected(true);
-            img.setImageResource(R.drawable.gridselectedanim);
+            img.setImageResource(R.drawable.item_selected_animation);
 
 
         } else {
@@ -191,7 +177,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             viewPOS = pos;
 
             img.setSelected(true);
-            img.setImageResource(R.drawable.gridselectedanim);
+            img.setImageResource(R.drawable.item_selected_animation);
 
 
         }
@@ -202,8 +188,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             case "addSound": {
 
                 SharedPrefs.setBgMusicPlaying(true);
-                soundAct = new Intent(getActivity(), AddSoundDialogActivity.class);
-                startActivity(soundAct);
+                startActivity(new Intent(getActivity(), AddSoundDialogActivity.class));
                 if (mTutorial != null)
                     mTutorial.end();
 
@@ -328,8 +313,8 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             }
         }
 
-        AnimationDrawable boxsel = (AnimationDrawable) img.getDrawable();
-        boxsel.start();
+        AnimationDrawable selected = (AnimationDrawable) img.getDrawable();
+        selected.start();
     }
 
     @Override
@@ -350,7 +335,9 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         if (SharedPrefs.isLastPageFirstLaunch() && (mTutorial == null || !mTutorial.isShowing())) {
             ImageView gridChildLast = (ImageView) mGridView.getChildAt(addSoundLoc);
             mTutorial = new Tutorial(activity, Type.MainActivityLastPage);
-            mTutorial.show(new ViewTarget(gridChildLast), "Add more sounds", "Tap on the '+' to add a custom sound of your choice");
+            mTutorial.show(new ViewTarget(gridChildLast),
+                    "Add more sounds",
+                    "Tap on the '+' to add a custom sound of your choice");
         }
     }
 
@@ -382,7 +369,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
 
     @Override
     public void shakeIcons() {
-        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.shake);
+        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.icons_shake);
         animation.setDuration(200);
 
         final int size = mGridView.getChildCount();
@@ -397,8 +384,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.v("Grid Fragment Sate", category);
-        Log.v("Grid Fragment Sate", String.valueOf(gridItems.length));
         outState.putParcelableArray("icons", gridItems);
         outState.putString("category", category);
     }

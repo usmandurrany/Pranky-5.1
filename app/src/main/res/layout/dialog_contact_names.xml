@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:text= "Select a friend "
+                android:text= "@string/select_a_friend"
                 android:textAllCaps="true"
                 android:textColor="#bf071a"
                 android:textIsSelectable="false"
@@ -62,7 +62,7 @@
             android:layout_height="match_parent"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:divider="@drawable/divider"
+            android:divider="@drawable/display_contacts_divider"
             android:dividerHeight="1dp">
 
 
@@ -82,7 +82,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/close_btn_margin_right_long"
         android:layout_marginTop="@dimen/close_btn_margin_top_long"
-        android:src="@drawable/closestates" />
+        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>

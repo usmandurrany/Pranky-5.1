@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/set_btn_margin_bottom"
         android:scaleType="fitCenter"
-        android:src="@drawable/setstates" />
+        android:src="@drawable/btn_set_states" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="Friend's ID "
+                android:text="@string/friends_id"
                 android:textAllCaps="true"
                 android:textColor="#bf071a"
                 android:textIsSelectable="false"
@@ -68,7 +68,7 @@
 
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="4512"
+                    android:text=""
                     android:inputType="phone"
                     android:textColor="#000"
                     android:textSize="@dimen/settings_font_small"
@@ -100,7 +100,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/close_btn_margin_right"
         android:layout_marginTop="@dimen/close_btn_margin_top"
-        android:src="@drawable/closestates" />
+        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>

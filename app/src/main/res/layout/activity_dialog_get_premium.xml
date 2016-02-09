@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="@dimen/space_medium">
-        <com.fournodes.ud.pranky.CustomTextView
+        <TextView
             android:id="@+id/lblPrankCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,26 +65,26 @@
             android:textIsSelectable="false"
             android:textSize="@dimen/xlarge_30"
             android:textStyle="bold"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="2dp"/>
         <com.fournodes.ud.pranky.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="Pranks  Left"
+            android:text="@string/pranks_left"
             android:textAllCaps="true"
             android:textColor="#bf071a"
             android:textIsSelectable="false"
             android:textSize="@dimen/large_20"
             android:textStyle="bold"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="2dp"/>
     </LinearLayout>
 
     <com.fournodes.ud.pranky.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
-        android:text="Go  premium  to  get  more "
+        android:text="@string/go_premium_to_get_more"
         android:textAllCaps="true"
         android:textColor="#bf071a"
         android:textIsSelectable="false"
@@ -123,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:text=" - No  Ads"
+                android:text="@string/no_ads_premium"
                 android:textAllCaps="true"
                 android:textColor="#e69e4c"
                 android:textIsSelectable="false"
@@ -133,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:text=" - Stealth  Mode"
+                android:text="@string/stealth_mode_premium"
                 android:textAllCaps="true"
                 android:textColor="#e69e4c"
                 android:textIsSelectable="false"
@@ -143,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:text=" - Unlimited  Pranks"
+                android:text="@string/unlimited_pranks_premium"
                 android:textAllCaps="true"
                 android:textColor="#e69e4c"
                 android:textIsSelectable="false"
@@ -165,7 +165,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/close_btn_margin_right_long"
         android:layout_marginTop="@dimen/close_btn_margin_top_long"
-        android:src="@drawable/closestates" />
+        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>

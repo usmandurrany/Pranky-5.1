@@ -56,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
         // Logo text "PRANKY"
         ImageView logo = (ImageView) findViewById(R.id.logo);
         // Apply the bounch animation
-        Animation bounceAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_bounce);
+        Animation bounceAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_text_bounce);
         logo.startAnimation(bounceAnim);
 
         // Logo icon "Joker Face"

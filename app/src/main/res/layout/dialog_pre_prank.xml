@@ -31,7 +31,7 @@
                 android:layout_marginLeft="42dp"
                 android:layout_marginRight="18dp"
                 android:layout_marginTop="00dp"
-                android:src="@drawable/wait_anim"
+                android:src="@drawable/dialog_wait_logo_animation"
                 />
 
 
@@ -42,7 +42,7 @@
             android:id="@+id/waitText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="P r a n k i n g "
+            android:text="@string/pranking_spaced"
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textColor="#fff"
@@ -56,7 +56,7 @@
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textColor="#fff"
-            android:text="F R I E N D  N A M E"
+            android:text="@string/friend_name_spaced"
             />
         <ImageView
             android:id="@+id/btnCancelPrank"

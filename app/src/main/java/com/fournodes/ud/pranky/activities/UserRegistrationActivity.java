@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.Country;
+import com.fournodes.ud.pranky.objects.Country;
 import com.fournodes.ud.pranky.CustomEditText;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.R;

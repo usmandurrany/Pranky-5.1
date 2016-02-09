@@ -32,7 +32,7 @@
             android:background="@android:drawable/edit_text"
             android:enabled="true"
             android:gravity="center"
-            android:hint="SELECT A SOUND"
+            android:hint="@string/select_a_sound"
             android:textColor="#000"
             android:textColorHint="#000"
             android:textSize="@dimen/sel_sound_txt_box"
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Pick  an  icon "
+            android:text="@string/pick_an_icon"
 
             android:textAllCaps="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -145,7 +145,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/close_btn_margin_right_long"
         android:layout_marginTop="@dimen/close_btn_margin_top_long"
-        android:src="@drawable/closestates" />
+        android:src="@drawable/btn_close_states" />
 
 
     <ImageView
@@ -157,7 +157,7 @@
         android:layout_marginBottom="@dimen/save_btn_margin_bottom"
         android:paddingRight="1dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/save_states" />
+        android:src="@drawable/btn_save_states" />
 
 
     <com.fournodes.ud.pranky.CustomTextView
@@ -168,7 +168,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-10dp"
         android:padding="2dp"
-        android:text="Add  Custom  Sound "
+        android:text="@string/add_custom_sound"
         android:textAllCaps="true"
         android:textColor="#bf071a"
         android:textSize="@dimen/sel_sound_h1"

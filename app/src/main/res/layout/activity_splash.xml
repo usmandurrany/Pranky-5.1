@@ -24,7 +24,7 @@
             android:layout_height="120dp"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/wait_anim" />
+            android:src="@drawable/dialog_wait_logo_animation" />
 
         <ImageView
             android:id="@+id/logo"

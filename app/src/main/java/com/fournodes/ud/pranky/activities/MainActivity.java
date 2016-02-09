@@ -29,10 +29,10 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.ContactSelected;
+import com.fournodes.ud.pranky.objects.ContactSelected;
 import com.fournodes.ud.pranky.CustomToast;
 import com.fournodes.ud.pranky.DatabaseHelper;
-import com.fournodes.ud.pranky.GridItem;
+import com.fournodes.ud.pranky.objects.GridItem;
 import com.fournodes.ud.pranky.ItemSelected;
 import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
@@ -83,7 +83,6 @@ public class MainActivity extends FragmentActivity implements Messenger {
     private me.relex.circleindicator.CircleIndicator mIndicator;
 
     private int itemsOnPage = 9;
-    private int itemCount = 0;
     private int addSoundLoc = 0;
 
 
@@ -100,8 +99,6 @@ public class MainActivity extends FragmentActivity implements Messenger {
     private TextSwitcher prankCount;
     private LinearLayout smButtonGroup;
     private LinearLayout smPrankLeft;
-
-    private int pranksLeft;
 
 
     private InterstitialAd mInterstitialAd;
@@ -218,8 +215,8 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 return smPrankCountNew;
             }
         });
-        prankCount.setInAnimation(MainActivity.this, R.anim.grow_from_middle);
-        prankCount.setOutAnimation(MainActivity.this, R.anim.shrink_to_middle);
+        prankCount.setInAnimation(MainActivity.this, R.anim.text_flip_in);
+        prankCount.setOutAnimation(MainActivity.this, R.anim.text_flip_out);
         prankCount.setCurrentText(String.valueOf(SharedPrefs.getPranksLeft()));
 
 
@@ -485,25 +482,34 @@ public class MainActivity extends FragmentActivity implements Messenger {
     }
 
     public void createFragments() {
+        SQLiteDatabase db = prankyDB.getReadableDatabase();
         String[] categories = {"horns", "people", "animals", "suspense", "objects", "mobile", "machines", "custom"};
         int id = 0;
         int i;
         boolean lastItemAdded = false;
-        List<GridFragment> gridGridFragments = new ArrayList<>();
 
+        /* List of all fragments */
+        List<GridFragment> pageList = new ArrayList<>();
 
-        SQLiteDatabase db = prankyDB.getReadableDatabase();
 
         for (int j = 0; j < categories.length; j++) {
-            Cursor c = db.query(DatabaseHelper.TABLE_ITEMS, null, DatabaseHelper.COLUMN_ITEM_CATEGORY + " = ?", new String[]{categories[j]}, null, null, null);
-            int count = c.getCount();
-            ArrayList<GridItem> imLst = new ArrayList<>();
-            // Log.e("Category ",categories[j]);
-            //Log.e("Count ",String.valueOf(count));
 
+            /* Query the database, Select * WHERE category = categories[i] */
+            Cursor c = db.query(DatabaseHelper.TABLE_ITEMS,
+                    null,DatabaseHelper.COLUMN_ITEM_CATEGORY + " = ?",
+                    new String[]{categories[j]},
+                    null, null, null);
+
+
+            int count = c.getCount();
+
+            /* List of individual item in the grid */
+            ArrayList<GridItem> itemsList = new ArrayList<>();
+
+
+            /* Move cursor to 0 (initially at -1) */
             i = 1;
             while (c.moveToNext() || (categories[j].equals("custom") && !lastItemAdded)) {
-                // Log.e("Cursor Position", String.valueOf(c.getPosition()));
                 if (!c.isAfterLast() && i <= itemsOnPage) {
                     id = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_ID));
                     Integer image = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_ITEM_IMG_LOC));
@@ -511,30 +517,34 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     Integer soundRepeat = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_REPEAT_COUNT));
                     Integer soundVol = c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_SOUND_VOL));
 
+                    /* Create a new object for the current item the add to the list */
                     GridItem items = new GridItem(id, image, sound, soundRepeat, soundVol);
-                    imLst.add(items);
-                    //  Log.e("Item no.", String.valueOf(i));
+                    itemsList.add(items);
                     i++;
 
-                } else if (((c.getPosition() == count) || c.getPosition() == count - 1 || count == 0) && i <= itemsOnPage && categories[j].equals("custom")) {
+                } else if (((c.getPosition() == count) || c.getPosition() == count - 1 || count == 0)
+                        && i <= itemsOnPage && categories[j].equals("custom")) {
 
                     GridItem lstItem = new GridItem(id, R.mipmap.addmore, "addSound");
-                    imLst.add(lstItem);
+                    itemsList.add(lstItem);
                     lastItemAdded = true;
-                    itemCount = c.getCount();
-                    addSoundLoc = addSoundLocation(itemCount); //Items count start from 0, func calculates form 1
-                    // Log.e("Add Sound Loc", String.valueOf(addSoundLoc));
+                    //int itemCount = c.getCount();
+                    addSoundLoc = addSoundLocation(count);
 
                 }
-                if (i > itemsOnPage || (c.getPosition() == count || (c.getPosition() == count - 1 && !categories[j].equals("custom")) || count == 0)) {
+
+                /* Create new fragment, bundle objects list and pass, add fragment to fragment list */
+                if (i > itemsOnPage || (c.getPosition() == count || (c.getPosition() == count - 1
+                        && !categories[j].equals("custom")) || count == 0)) {
+
                     Bundle args = new Bundle();
-                    GridItem[] gItem = new GridItem[imLst.size()];
-                    imLst.toArray(gItem);
+                   /* GridItem[] itemsArray = new GridItem[itemsList.size()];
+                    itemsList.toArray(itemsArray);*/
                     args.putString("category", categories[j]);
-                    args.putParcelableArrayList("icons", imLst);
-                    GridFragment Gfrag = new GridFragment();
-                    Gfrag.setArguments(args);
-                    gridGridFragments.add(Gfrag);
+                    args.putParcelableArrayList("icons", itemsList);
+                    GridFragment page = new GridFragment();
+                    page.setArguments(args);
+                    pageList.add(page);
                     // Log.e("Page Break At", String.valueOf(i));
                     i = 1;
                 }
@@ -543,7 +553,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
         }
 
-        pm = new PagerAdapter(getSupportFragmentManager(), gridGridFragments);
+        pm = new PagerAdapter(getSupportFragmentManager(), pageList);
         mGridPager.setAdapter(pm);
 
         if (SharedPrefs.prefs == null)
@@ -679,14 +689,14 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
         mTutorial.moveToNext(new ViewTarget(timer), "Set playback time", "Tap on the timer icon to play the sound after a specified interval");
 
-        Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_bounce);
+        Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_to_1_3);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink);
+                Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shring_form_1_3);
                 timer.startAnimation(shrink);
             }
 
@@ -698,14 +708,14 @@ public class MainActivity extends FragmentActivity implements Messenger {
     }
 
     public void animate(final View view, final int duration, final int repeatCount){
-        Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_prank_btn);
+        Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_to_1_1);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink_prank_btn);
+                Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink_form_1_1);
                 view.startAnimation(shrink);
                 if (repeatCount > 0){
                     shrink.setAnimationListener(new Animation.AnimationListener() {

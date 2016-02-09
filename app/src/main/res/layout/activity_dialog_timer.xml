@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/set_btn_margin_bottom"
         android:scaleType="fitCenter"
-        android:src="@drawable/setstates" />
+        android:src="@drawable/btn_set_states" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -76,7 +76,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/close_btn_margin_right"
         android:layout_marginTop="@dimen/close_btn_margin_top"
-        android:src="@drawable/closestates" />
+        android:src="@drawable/btn_close_states" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="3dp"
-            android:text="HH"
+            android:text="@string/hh"
             android:textAllCaps="true"
             android:textColor="#bf071a"
 
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="22dp"
             android:layout_marginRight="22dp"
-            android:text="MM"
+            android:text="@string/mm"
             android:textAllCaps="true"
             android:textColor="#bf071a"
 
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="15dp"
-            android:text="SS"
+            android:text="@string/ss"
             android:textAllCaps="true"
             android:textColor="#bf071a"
 

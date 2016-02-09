@@ -10,7 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.fournodes.ud.pranky.Country;
+import com.fournodes.ud.pranky.objects.Country;
 import com.fournodes.ud.pranky.R;
 
 import java.util.ArrayList;

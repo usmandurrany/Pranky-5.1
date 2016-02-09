@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:lines="1"
     android:padding="3dp"
-    android:text="TEST"
+    android:text=""
     android:textColor="#f4ead1"
     android:textSize="18sp"
     android:textStyle="normal" />

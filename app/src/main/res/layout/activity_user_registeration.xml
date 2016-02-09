@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
-        android:src="@drawable/skip_states"
+        android:src="@drawable/btn_skip_states"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -47,7 +47,7 @@
     <com.fournodes.ud.pranky.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="S I G N   U P "
+        android:text="@string/sign_up_spaced"
         android:gravity="center"
         android:textSize="@dimen/cat_title_size"
         android:padding="5dp"
@@ -82,7 +82,7 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/usrName"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:textColor="#000"/>
 
         </LinearLayout>
@@ -97,7 +97,7 @@
                 android:id="@+id/usrCountry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Country"
+                android:hint="@string/country"
                 android:textSize="18sp"
                 android:textColor="#000"
                 android:inputType="textAutoComplete"
@@ -133,7 +133,7 @@
 
 
             <com.fournodes.ud.pranky.CustomEditText
-                android:hint="Number"
+                android:hint="@string/number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
@@ -148,7 +148,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="If you don&apos;t want to sign up at the moment, you can always skip it."
+        android:text="@string/sign_up_notice"
         android:id="@+id/infoText"
         android:textSize="14sp"
         android:gravity="center"

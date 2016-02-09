@@ -22,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/set_btn_margin_bottom"
         android:scaleType="fitCenter"
-        android:src="@drawable/setstates" />
+        android:src="@drawable/btn_set_states" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="18dp"
-            android:text="DAY"
+            android:text="@string/day"
             android:textAllCaps="true"
             android:textColor="#bf071a"
 
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="5dp"
-            android:text="HH"
+            android:text="@string/hh"
             android:textAllCaps="true"
             android:textColor="#bf071a"
             android:textSize="18sp"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="70dp"
-            android:text="MM"
+            android:text="@string/mm"
             android:textAllCaps="true"
             android:textColor="#bf071a"
 
@@ -124,7 +124,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/close_btn_margin_right"
         android:layout_marginTop="@dimen/close_btn_margin_top"
-        android:src="@drawable/closestates" />
+        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>
