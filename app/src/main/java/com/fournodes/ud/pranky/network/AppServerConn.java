@@ -321,12 +321,13 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                 case UpdateAvailability:
                 case RegisterDevice:
                     Calendar exp_date = Calendar.getInstance(TimeZone.getDefault());
-                    exp_date.set(Calendar.HOUR, (exp_date.get(Calendar.HOUR) + 24));
+                    exp_date.set(Calendar.HOUR, (exp_date.get(Calendar.HOUR) + 1));
 
                     Calendar serverPingDate = Calendar.getInstance(TimeZone.getDefault());
 
                     serverPingDate.set(Calendar.DAY_OF_MONTH,
                             (serverPingDate.get(Calendar.DAY_OF_MONTH)+SharedPrefs.PING_SERVER_INTERVAL));
+
 
 
                     Log.e("ExpiryDate", exp_date.getTime().toString());
@@ -396,7 +397,10 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     if (resp.getString("registered").equals("false")) {
                         if (SharedPrefs.prefs == null)
                             new SharedPrefs(context).initAllPrefs();
+                        SharedPrefs.setMyAppID(null);
+                        SharedPrefs.setSentGcmIDToServer(false);
                         SharedPrefs.setSignUpComplete(false);
+                        SharedPrefs.setSignUpSkipped(true);
                         SharedPrefs.setUserCountry(null);
                         SharedPrefs.setUserCountryCode(null);
                         SharedPrefs.setUserName(null);

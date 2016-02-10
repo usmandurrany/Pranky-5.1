@@ -746,6 +746,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     delayedSetText.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            if (prankCount!=null)
                             prankCount.setText(String.valueOf(SharedPrefs.getPranksLeft()));
                         }
                     },1000);
