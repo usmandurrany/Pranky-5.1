@@ -212,7 +212,6 @@ public class PrePrankDialog {
 
             @Override
             public void onFinish() {
-                SharedPrefs.setPrankCount(SharedPrefs.getPrankCount()+1);
                 AppServerConn appServerConn = new AppServerConn(context, Action.PlayPrank);
                 appServerConn.execute();
                 //((MainActivity)context).showAd();

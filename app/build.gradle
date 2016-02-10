@@ -8,8 +8,8 @@ android {
         applicationId "com.fournodes.ud.pranky"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 24
-        versionName '1.2.2'
+        versionCode 123
+        versionName '1.2.3'
     }
     buildTypes {
         release {
@@ -18,11 +18,34 @@ android {
         }
     }
     productFlavors {
+        hdpi {
+            minSdkVersion 15
+            targetSdkVersion 22
+            versionCode 240123
+            versionName '1.2.3'
+        }
+        xhdpi {
+            minSdkVersion 15
+            targetSdkVersion 22
+            versionCode 320123
+            versionName '1.2.3'
+        }
+        xxhdpi {
+            minSdkVersion 15
+            targetSdkVersion 22
+            versionCode 480123
+            versionName '1.2.3'
+        }
+        xxxhdpi {
+            minSdkVersion 15
+            targetSdkVersion 22
+            versionCode 640123
+            versionName '1.2.3'
+        }
     }
 }
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.github.amlcurran.showcaseview:library:5.4.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:22.2.1'
@@ -30,7 +53,7 @@ dependencies {
     compile 'me.relex:circleindicator:1.1.5@aar'
     compile 'commons-io:commons-io:2.4'
     compile 'com.google.android.gms:play-services:8.3.0'
-    compile 'kankan.wheel:wheel:2.1@aar' //local lib found in app/libs/aars
+    compile 'kankan.wheel:wheel:2.1@aar'
+    //local lib found in app/libs/aars
     compile 'com.google.android.gms:play-services-ads:8.3.0'
-
 }

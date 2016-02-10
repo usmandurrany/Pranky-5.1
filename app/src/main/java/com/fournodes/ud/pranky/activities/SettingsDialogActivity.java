@@ -131,6 +131,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
 
                 if (isChecked) {
                     try {
+                        Log.e("Toggle","TRUE");
                         // Convert the expDate in shared prefs to CALENDAR type for comparision
                         Calendar exp = Calendar.getInstance(TimeZone.getDefault());
                         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);

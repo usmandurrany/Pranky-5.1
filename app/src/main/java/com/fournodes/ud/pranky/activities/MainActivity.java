@@ -161,10 +161,11 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
         if (SharedPrefs.prefs == null) {
             new SharedPrefs(this).initAllPrefs();
-            if (FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT) == null) {
-                FontManager.createTypeFace(this, SharedPrefs.DEFAULT_FONT);
 
-            }
+        }
+        if (FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT) == null) {
+            FontManager.createTypeFace(this, SharedPrefs.DEFAULT_FONT);
+
         }
 
         /*************************************** App Config **************************************/

@@ -316,13 +316,19 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     Log.e(TAG, resp.getString("app_id"));
                     Log.e(TAG, resp.getString("id"));
                     SharedPrefs.setMyAppID(resp.getString("app_id")); // Store the received myAppID in shared prefs
+
+                    Calendar date = Calendar.getInstance(TimeZone.getDefault());
+                    date.set(Calendar.HOUR, (date.get(Calendar.HOUR) + 24));
+                   //date.set(Calendar.MINUTE, (date.get(Calendar.MINUTE) + 5));
+                    SharedPrefs.setExpDate(date.getTime().toString());// Expiry date for myAppId is saved
+
                     break;
 
                 case UpdateAvailability:
                 case RegisterDevice:
                     Calendar exp_date = Calendar.getInstance(TimeZone.getDefault());
-                    exp_date.set(Calendar.HOUR, (exp_date.get(Calendar.HOUR) + 1));
-
+                    exp_date.set(Calendar.HOUR, (exp_date.get(Calendar.HOUR) + 24));
+                    //exp_date.set(Calendar.MINUTE, (exp_date.get(Calendar.MINUTE) + 5));
                     Calendar serverPingDate = Calendar.getInstance(TimeZone.getDefault());
 
                     serverPingDate.set(Calendar.DAY_OF_MONTH,
