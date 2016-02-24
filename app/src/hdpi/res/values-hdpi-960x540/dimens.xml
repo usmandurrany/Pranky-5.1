@@ -66,7 +66,7 @@
     <dimen name="settings_linearlayout_height">65dp</dimen>
     <dimen name="reg_logo_size">70dp</dimen>
 
-    <dimen name="dual_button_margin_bot">122dp</dimen>
+    <dimen name="dual_button_margin_bot">160dp</dimen>
     <dimen name="dual_button_width">140dp</dimen>
     <dimen name="dual_button_height">65dp</dimen>
 
@@ -80,5 +80,8 @@
     <dimen name="space_large">4dp</dimen>
     <dimen name="space_medium">3dp</dimen>
     <dimen name="space_small">2dp</dimen>
+
+        <dimen name="stroke_size">2dp</dimen>    
+    <dimen name="whl_duration_margin_bottom">-15dp</dimen>    
 
 </resources>

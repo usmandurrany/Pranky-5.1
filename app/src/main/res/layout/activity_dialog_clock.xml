@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true">
 
@@ -12,109 +13,170 @@
         android:layout_centerVertical="true"
         android:padding="10dp"
         android:scaleType="fitCenter"
-        android:src="@mipmap/popup_small" />
+        android:src="@mipmap/popup_long" />
 
     <ImageView
         android:id="@+id/set"
         android:layout_width="222dp"
-        android:layout_height="96dp"
+        android:layout_height="90dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/set_btn_margin_bottom"
+        android:layout_marginBottom="@dimen/save_btn_margin_bottom"
         android:scaleType="fitCenter"
         android:src="@drawable/btn_set_states" />
-
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/lytWheels"
         android:layout_width="wrap_content"
+        android:layout_above="@+id/lytDuration"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="95dp"
-        android:orientation="horizontal">
+        android:layout_gravity="center_horizontal"
+        android:layout_centerVertical="true">
 
-        <kankan.wheel.widget.WheelView
-            android:id="@+id/day"
-            android:layout_width="85dp"
-            android:layout_height="100dp"
-            android:layout_marginRight="5dp"
-            android:background="@color/colorPrimary" />
-
-        <kankan.wheel.widget.WheelView
-            android:id="@+id/hour"
-            android:layout_width="40dp"
-            android:layout_height="100dp" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="5dp"
-            android:text=":"
-            android:textColor="#000"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
 
-        <kankan.wheel.widget.WheelView
-            android:id="@+id/minute"
-            android:layout_width="40dp"
-            android:layout_height="100dp" />
+            <com.fournodes.ud.pranky.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/day"
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <kankan.wheel.widget.WheelView
-            android:id="@+id/ampm"
-            android:layout_width="50dp"
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/day"
+                android:layout_width="90dp"
+                android:layout_height="100dp"
+                android:background="@drawable/wheel_d1"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <com.fournodes.ud.pranky.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hh"
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/hour"
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:background="@drawable/wheel_d2"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <com.fournodes.ud.pranky.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mm"
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/minute"
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:background="@drawable/wheel_d3"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:layout_marginTop="21dp"
+                android:id="@+id/ampm"
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:background="@drawable/wheel_d4"
+                 />
+        </LinearLayout>
+        <!--<ImageView
+            android:layout_width="1dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="5dp" />
+            android:src="@drawable/vertical_divider"
+            android:layout_margin="10dp"
+            android:id="@+id/imgDivider" />-->
+
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lytDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_above="@+id/set"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/day_hh_mm_ss_margin_top"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/whl_duration_margin_bottom"
+        android:layout_marginTop="5dp"
+        >
+
+
+
 
         <com.fournodes.ud.pranky.CustomTextView
-            android:layout_width="36dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="18dp"
-            android:text="@string/day"
+            android:text="Duration  "
             android:textAllCaps="true"
             android:textColor="#bf071a"
-
-
-            android:textSize="18sp"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
             android:textStyle="bold" />
+        <FrameLayout
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:background="@drawable/wheel_4"
+            android:foregroundGravity="center"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp">
 
-        <com.fournodes.ud.pranky.CustomTextView
-            android:layout_width="26dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="5dp"
-            android:text="@string/hh"
-            android:textAllCaps="true"
-            android:textColor="#bf071a"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <com.fournodes.ud.pranky.CustomTextView
-            android:layout_width="33dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="70dp"
-            android:text="@string/mm"
-            android:textAllCaps="true"
-            android:textColor="#bf071a"
-
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <antistatic.spinnerwheel.WheelHorizontalView
+                android:id="@+id/whlDuration"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="3dp"/>
+        </FrameLayout>
 
 
     </LinearLayout>
-
-
     <ImageView
         android:id="@+id/close"
         android:layout_width="wrap_content"
@@ -122,8 +184,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="@dimen/close_btn_margin_right"
-        android:layout_marginTop="@dimen/close_btn_margin_top"
+        android:layout_marginRight="@dimen/close_btn_margin_right_long"
+        android:layout_marginTop="@dimen/close_btn_margin_top_long"
         android:src="@drawable/btn_close_states" />
 
 

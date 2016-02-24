@@ -1,0 +1,318 @@
+<resources>
+    <string name="app_name">Pranky</string>
+    <string name="version">Version - 1.2.2</string>
+    <string name="title_activity_main">Main</string>
+
+    <string name="copyright">Copyrights
+        <a href="http://www.four-nodes.com">Four Nodes</a>\n
+        All rights
+    </string>
+    <string name="sounds_info">Royalty Free Sounds from
+        <a href="http://www.soundbible.com">SoundBible</a>
+    </string>
+    <string name="icons_info"><a href="http://www.flaticon.com/">Freepik</a>\n
+        Licensed under
+        <a href="http://www.creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>
+    </string>
+    <string name="music_info">Royalty Free Music from
+        <a href="http://www.bensound.com/">Bensound</a>
+    </string>
+
+    <string name="add_custom_sound">Add Custom Sound</string>
+    <string name="pick_an_icon">Pick an icon</string>
+    <string name="select_a_sound">SELECT A SOUND</string>
+    <string name="day">DAY</string>
+    <string name="hh">HH</string>
+    <string name="mm">MM</string>
+    <string name="pranks_left">Pranks Left</string>
+    <string name="go_premium_to_get_more">Go premium to get more</string>
+    <string name="no_ads_premium">- No Ads</string>
+    <string name="stealth_mode_premium">- Stealth Mode</string>
+    <string name="unlimited_pranks_premium">- Unlimited Pranks</string>
+    <string name="friends_id">Friend\'s ID</string>
+    <string name="music">Music</string>
+    <string name="stealth_mode">Stealth Mode</string>
+    <string name="remote_prank">Remote Prank</string>
+    <string name="ss">SS</string>
+    <string name="sign_up_spaced">S I G N U P</string>
+    <string name="sign_up_notice">If you don\'t want to sign up at the moment, you can always skip it.</string>
+    <string name="name">Name</string>
+    <string name="country">Country</string>
+    <string name="number">Number</string>
+    <string name="select_a_friend">Select a friend</string>
+    <string name="app_name_spaced">P r a n k y</string>
+    <string name="sounds_spaced">S o u n d s</string>
+    <string name="background_music_spaced">B a c k g r o u n d M u s i c</string>
+    <string name="icon_set_spaced">I c o n S e t</string>
+    <string name="keep_pranking_spaced">K e e p P r a n k i n g !</string>
+    <string name="thank_you_spaced">T h a n k Y o u</string>
+    <string name="pranking_spaced">P r a n k i n g</string>
+    <string name="pranking_dots_spaced">P r a n k i n g ...</string>
+    <string name="my_id">My ID</string>
+    <string name="toast_friend_unavailable">"Your  friend  is  unavailable "</string>
+    <string name="toast_prank_success">"Your  friend  has  been  pranked "</string>
+    <string name="toast_network_unavailable">"Network  or server unavailable "</string>
+    <string name="notification_logged_out">You  have  been  logged  out</string>
+    <string name="toast_select_sound">Select  a  sound  first</string>
+    <string name="toast_friend_id_timeout">Please wait 60 seconds before trying again</string>
+    <string name="toast_select_non_custom_sound">A  non-custom  sound  should  be  selected</string>
+    <string name="tut_set_playback_time_title">Set playback time</string>
+    <string name="tut_set_playback_time_desc">Tap on the timer icon to play the sound after a specified interval</string>
+    <string name="loading_ad_spaced">L o a d i n g   A d ...</string>
+    <string name="toast_time_passed">Selected time has passed.</string>
+    <string name="tut_select_sound_title">Select a sound</string>
+    <string name="tut_select_sound_desc">Tap on the icon to pick a sound from your phone</string>
+    <string name="tut_pick_icon_title">Pick an icon</string>
+    <string name="tut_pick_icon_desc">Choose an icon for your sound</string>
+    <string name="toast_invalid_file">Invalid file! Select another</string>
+    <string name="tut_save_sound_title">Save your sound</string>
+    <string name="tut_save_sound_desc">Tap on save to add your sound to the list</string>
+    <string name="toast_invalid_id">Invalid ID</string>
+    <string name="tut_prank_friend_title">Prank a friend</string>
+    <string name="tut_prank_friend_desc">Tap the button to save the ID</string>
+    <string name="paring_spaced">P a i r i n g ...</string>
+    <string name="toast_enter_friend_id">Enter friends ID</string>
+    <string name="tut_prank_friend_desc2">Enter your \'Friend\'s ID\' found in the settings popup.</string>
+    <string name="tut_time_attack_title">Time Attack</string>
+    <string name="tut_time_attack_desc">Tap on the set button to set the timer and wait for your sound to play</string>
+    <string name="toast_min_time_limit">Minimum  time  is  5  seconds</string>
+    <string name="tut_time_attack_desc2">Select the timer to 5 seconds by moving the wheel</string>
+    <string name="please_wait_spaced">P l e a s e   W a i t ...</string>
+    <string name="syncing_contacts_spaced">S y n c i n g   C o n t a c t s ...</string>
+    <string name="toast_invalid_number">Invalid  number</string>
+    <string name="refreshing_spaced">R e f r e s h i n g ...</string>
+    <string name="fetching_id_spaced">F e t c h i n g   I D ...</string>
+    <string name="toast_contact_added">" contacts added"</string>
+    <string name="toast_contact_removed">" contacts removed"</string>
+    <string name="toast_no_change">No change</string>
+    <string name="select_number">Select  a  number</string>
+    <string name="toast_volume_low">Volume too low !</string>
+    <string name="tut_add_sound_title">Add more sounds</string>
+    <string name="tut_add_sound_desc">Tap on the \'+\' to add a custom sound of your choice</string>
+    <string name="tut_select_sound">Select a sound</string>
+    <string name="tut_select_sound_desc2">Tap on the icon to preview the sound and select it</string>
+    <string name="notification_pranked_by">"You have been pranked by "</string>
+    <string name="notification_pranked">You have been pranked</string>
+    <string name="notification_pranked_title">Pranked!</string>
+    <string name="notification_prank_back">Prank Back</string>
+
+    <string-array name="countries" >
+        <item>af,93,Afghanistan</item>
+        <item>al,355,Albania</item>
+        <item>dz,213,Algeria</item>
+        <item>ad,376,Andorra</item>
+        <item>ao,244,Angola</item>
+        <item>aq,672,Antarctica</item>
+        <item>ar,54,Argentina</item>
+        <item>am,374,Armenia</item>
+        <item>aw,297,Aruba</item>
+        <item>au,61,Australia</item>
+        <item>at,43,Austria</item>
+        <item>az,994,Azerbaijan</item>
+        <item>bh,973,Bahrain</item>
+        <item>bd,880,Bangladesh</item>
+        <item>by,375,Belarus</item>
+        <item>be,32,Belgium</item>
+        <item>bz,501,Belize</item>
+        <item>bj,229,Benin</item>
+        <item>bt,975,Bhutan</item>
+        <item>bo,591,Bolivia, Plurinational State Of</item>
+        <item>ba,387,Bosnia And Herzegovina</item>
+        <item>bw,267,Botswana</item>
+        <item>br,55,Brazil</item>
+        <item>bn,673,Brunei Darussalam</item>
+        <item>bg,359,Bulgaria</item>
+        <item>bf,226,Burkina Faso</item>
+        <item>mm,95,Myanmar</item>
+        <item>bi,257,Burundi</item>
+        <item>kh,855,Cambodia</item>
+        <item>cm,237,Cameroon</item>
+        <item>ca,1,Canada</item>
+        <item>cv,238,Cape Verde</item>
+        <item>cf,236,Central African Republic</item>
+        <item>td,235,Chad</item>
+        <item>cl,56,Chile</item>
+        <item>cn,86,China</item>
+        <item>cx,61,Christmas Island</item>
+        <item>cc,61,Cocos (keeling) Islands</item>
+        <item>co,57,Colombia</item>
+        <item>km,269,Comoros</item>
+        <item>cg,242,Congo</item>
+        <item>cd,243,Congo, The Democratic Republic Of The</item>
+        <item>ck,682,Cook Islands</item>
+        <item>cr,506,Costa Rica</item>
+        <item>hr,385,Croatia</item>
+        <item>cu,53,Cuba</item>
+        <item>cy,357,Cyprus</item>
+        <item>cz,420,Czech Republic</item>
+        <item>dk,45,Denmark</item>
+        <item>dj,253,Djibouti</item>
+        <item>tl,670,Timor-leste</item>
+        <item>ec,593,Ecuador</item>
+        <item>eg,20,Egypt</item>
+        <item>sv,503,El Salvador</item>
+        <item>gq,240,Equatorial Guinea</item>
+        <item>er,291,Eritrea</item>
+        <item>ee,372,Estonia</item>
+        <item>et,251,Ethiopia</item>
+        <item>fk,500,Falkland Islands (malvinas)</item>
+        <item>fo,298,Faroe Islands</item>
+        <item>fj,679,Fiji</item>
+        <item>fi,358,Finland</item>
+        <item>fr,33,France</item>
+        <item>pf,689,French Polynesia</item>
+        <item>ga,241,Gabon</item>
+        <item>gm,220,Gambia</item>
+        <item>ge,995,Georgia</item>
+        <item>de,49,Germany</item>
+        <item>gh,233,Ghana</item>
+        <item>gi,350,Gibraltar</item>
+        <item>gr,30,Greece</item>
+        <item>gl,299,Greenland</item>
+        <item>gt,502,Guatemala</item>
+        <item>gn,224,Guinea</item>
+        <item>gw,245,Guinea-bissau</item>
+        <item>gy,592,Guyana</item>
+        <item>ht,509,Haiti</item>
+        <item>hn,504,Honduras</item>
+        <item>hk,852,Hong Kong</item>
+        <item>hu,36,Hungary</item>
+        <item>in,91,India</item>
+        <item>id,62,Indonesia</item>
+        <item>ir,98,Iran, Islamic Republic Of</item>
+        <item>iq,964,Iraq</item>
+        <item>ie,353,Ireland</item>
+        <item>im,44,Isle Of Man</item>
+        <item>il,972,Israel</item>
+        <item>it,39,Italy</item>
+        <item>ci,225,Côte D\'ivoire</item>
+        <item>jp,81,Japan</item>
+        <item>jo,962,Jordan</item>
+        <item>kz,7,Kazakhstan</item>
+        <item>ke,254,Kenya</item>
+        <item>ki,686,Kiribati</item>
+        <item>kw,965,Kuwait</item>
+        <item>kg,996,Kyrgyzstan</item>
+        <item>la,856,Lao People\'s Democratic Republic</item>
+        <item>lv,371,Latvia</item>
+        <item>lb,961,Lebanon</item>
+        <item>ls,266,Lesotho</item>
+        <item>lr,231,Liberia</item>
+        <item>ly,218,Libya</item>
+        <item>li,423,Liechtenstein</item>
+        <item>lt,370,Lithuania</item>
+        <item>lu,352,Luxembourg</item>
+        <item>mo,853,Macao</item>
+        <item>mk,389,Macedonia, The Former Yugoslav Republic Of</item>
+        <item>mg,261,Madagascar</item>
+        <item>mw,265,Malawi</item>
+        <item>my,60,Malaysia</item>
+        <item>mv,960,Maldives</item>
+        <item>ml,223,Mali</item>
+        <item>mt,356,Malta</item>
+        <item>mh,692,Marshall Islands</item>
+        <item>mr,222,Mauritania</item>
+        <item>mu,230,Mauritius</item>
+        <item>yt,262,Mayotte</item>
+        <item>mx,52,Mexico</item>
+        <item>fm,691,Micronesia, Federated States Of</item>
+        <item>md,373,Moldova, Republic Of</item>
+        <item>mc,377,Monaco</item>
+        <item>mn,976,Mongolia</item>
+        <item>me,382,Montenegro</item>
+        <item>ma,212,Morocco</item>
+        <item>mz,258,Mozambique</item>
+        <item>na,264,Namibia</item>
+        <item>nr,674,Nauru</item>
+        <item>np,977,Nepal</item>
+        <item>nl,31,Netherlands</item>
+        <item>nc,687,New Caledonia</item>
+        <item>nz,64,New Zealand</item>
+        <item>ni,505,Nicaragua</item>
+        <item>ne,227,Niger</item>
+        <item>ng,234,Nigeria</item>
+        <item>nu,683,Niue</item>
+        <item>kp,850,Korea, Democratic People\'s Republic Of</item>
+        <item>no,47,Norway</item>
+        <item>om,968,Oman</item>
+        <item>pk,92,Pakistan</item>
+        <item>pw,680,Palau</item>
+        <item>pa,507,Panama</item>
+        <item>pg,675,Papua New Guinea</item>
+        <item>py,595,Paraguay</item>
+        <item>pe,51,Peru</item>
+        <item>ph,63,Philippines</item>
+        <item>pn,870,Pitcairn</item>
+        <item>pl,48,Poland</item>
+        <item>pt,351,Portugal</item>
+        <item>pr,1,Puerto Rico</item>
+        <item>qa,974,Qatar</item>
+        <item>ro,40,Romania</item>
+        <item>ru,7,Russian Federation</item>
+        <item>rw,250,Rwanda</item>
+        <item>bl,590,Saint Barthélemy</item>
+        <item>ws,685,Samoa</item>
+        <item>sm,378,San Marino</item>
+        <item>st,239,Sao Tome And Principe</item>
+        <item>sa,966,Saudi Arabia</item>
+        <item>sn,221,Senegal</item>
+        <item>rs,381,Serbia</item>
+        <item>sc,248,Seychelles</item>
+        <item>sl,232,Sierra Leone</item>
+        <item>sg,65,Singapore</item>
+        <item>sk,421,Slovakia</item>
+        <item>si,386,Slovenia</item>
+        <item>sb,677,Solomon Islands</item>
+        <item>so,252,Somalia</item>
+        <item>za,27,South Africa</item>
+        <item>kr,82,Korea, Republic Of</item>
+        <item>es,34,Spain</item>
+        <item>lk,94,Sri Lanka</item>
+        <item>sh,290,Saint Helena, Ascension And Tristan Da Cunha</item>
+        <item>pm,508,Saint Pierre And Miquelon</item>
+        <item>sd,249,Sudan</item>
+        <item>sr,597,Suriname</item>
+        <item>sz,268,Swaziland</item>
+        <item>se,46,Sweden</item>
+        <item>ch,41,Switzerland</item>
+        <item>sy,963,Syrian Arab Republic</item>
+        <item>tw,886,Taiwan, Province Of China</item>
+        <item>tj,992,Tajikistan</item>
+        <item>tz,255,Tanzania, United Republic Of</item>
+        <item>th,66,Thailand</item>
+        <item>tg,228,Togo</item>
+        <item>tk,690,Tokelau</item>
+        <item>to,676,Tonga</item>
+        <item>tn,216,Tunisia</item>
+        <item>tr,90,Turkey</item>
+        <item>tm,993,Turkmenistan</item>
+        <item>tv,688,Tuvalu</item>
+        <item>ae,971,United Arab Emirates</item>
+        <item>ug,256,Uganda</item>
+        <item>gb,44,United Kingdom</item>
+        <item>ua,380,Ukraine</item>
+        <item>uy,598,Uruguay</item>
+        <item>us,1,United States</item>
+        <item>uz,998,Uzbekistan</item>
+        <item>vu,678,Vanuatu</item>
+        <item>va,39,Holy See (vatican City State)</item>
+        <item>ve,58,Venezuela, Bolivarian Republic Of</item>
+        <item>vn,84,Viet Nam</item>
+        <item>wf,681,Wallis And Futuna</item>
+        <item>ye,967,Yemen</item>
+        <item>zm,260,Zambia</item>
+        <item>zw,263,Zimbabwe</item>
+    </string-array>
+
+     <string-array name="categories">
+     <item>horns</item>
+     <item>people</item>
+     <item>animal</item>
+     <item>suspense</item>
+     <item>objects</item>
+     <item>mobile</item>
+     <item>machines</item>
+     <item>custom</item>
+    </string-array>
+
+</resources>
