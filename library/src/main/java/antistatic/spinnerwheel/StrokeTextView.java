@@ -46,8 +46,7 @@ public class StrokeTextView extends TextView {
     @Override
     protected void onDraw(Canvas canvas) {
         mStrokeWidth = (int) (getResources().getDimension(R.dimen.stroke_size) / getResources().getDisplayMetrics().density);
-        /*Log.e("Stroke TextView", "Density: "+String.valueOf(getResources().getDisplayMetrics().density));
-        Log.e("Stroke TextView", "Stroke Size: "+String.valueOf(mStrokeWidth));*/
+
         // lazy load
         if (mStrokePaint == null) {
             mStrokePaint = new TextPaint();

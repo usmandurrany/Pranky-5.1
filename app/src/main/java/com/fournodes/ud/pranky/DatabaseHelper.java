@@ -90,7 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while((line=reader.readLine()) != null){
                 if (line!=null) {
-                    Log.e("LINE", line);
+                    //Log.e("LINE", line);
                     String[] itemProp = line.split(",");
                     if(itemProp.length == 1) {
                         category = itemProp[0];

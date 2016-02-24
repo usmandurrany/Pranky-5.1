@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import com.fournodes.ud.pranky.BackgroundMusic;
 import com.fournodes.ud.pranky.CustomToast;
+import com.fournodes.ud.pranky.ItemSelected;
+import com.fournodes.ud.pranky.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SetPrank;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -20,6 +22,7 @@ import com.fournodes.ud.pranky.enums.Type;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.WheelHorizontalView;
@@ -31,21 +34,41 @@ import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
  */
 public class ClockDialogActivity extends Activity{
     private WheelHorizontalView duration;
-
+    private PreviewMediaPlayer previewMediaPlayer;
+    private int durInMillis= 5000;
+    private String[] values;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog_clock);
         onWindowFocusChanged(true);
+        previewMediaPlayer = PreviewMediaPlayer.getInstance(this);
 
+        if (ItemSelected.itemSound != -1 || ItemSelected.itemCustomSound != null){
+            if (ItemSelected.itemSound!=-1)
+                durInMillis = previewMediaPlayer.getDurInMills(ItemSelected.itemSound);
+            else
+                durInMillis = previewMediaPlayer.getDurInMills(ItemSelected.itemCustomSound);
+            int i;
+            int durInSec = durInMillis/1000;
+            int firstVal = ((int) Math.ceil((double)durInSec/5))*5;
+            values = new String[((60-firstVal)/5)+1];
+            values[0]=String.format(Locale.US,"%02d",firstVal);
+            for ( i = 1;i<values.length;i++){
+                values[i]=String.format(Locale.US,"%02d",Integer.parseInt(values[i-1])+5);
+            }
+
+        }
+        else
+            values = new String[] {"05", "10", "15","20","25","30","35","40","45","50","55","60"};
         //Array for the am/pm marker column
         String[] ampmArray = {"AM", "PM"};
         //With a custom method I get the next following 10 days from now
         ArrayList<Date> days = getNextNumberOfDays(new Date(), 10);
         duration = (WheelHorizontalView) findViewById(R.id.whlDuration);
-        ArrayWheelAdapter<String> durationAdapter =
-                new ArrayWheelAdapter<>(this, new String[] {"05", "10", "15","20","25","30","35","40","45","50","55","60"});
+        final ArrayWheelAdapter<String> durationAdapter =
+                new ArrayWheelAdapter<>(this, values);
         //NumericWheelAdapter durationAdapter = new NumericWheelAdapter(ClockDialogActivity.this, 0, 60,"%02d");
         durationAdapter.setItemResource(R.layout.wheel_item_duration);
         durationAdapter.setItemTextResource(R.id.wheel_item);
@@ -99,7 +122,8 @@ public class ClockDialogActivity extends Activity{
                             min.getCurrentItem(),
                             0,
                             ampm.getCurrentItem(),
-                            Type.ClockDialogActivity,calcDuration());
+                            Type.ClockDialogActivity,
+                            Integer.parseInt(String.valueOf(durationAdapter.getItemText(duration.getCurrentItem()))));
 
                     if (scheduler.validateTime(scheduler.clockSchedule())) {
 
@@ -177,11 +201,5 @@ public class ClockDialogActivity extends Activity{
         SharedPrefs.setBgMusicPlaying(false);
     }
 
-    public int calcDuration(){
-        if(duration.getCurrentItem() == 0){
-            return 5;
-        }else
-            return (duration.getCurrentItem()*5);
-    }
 
 }

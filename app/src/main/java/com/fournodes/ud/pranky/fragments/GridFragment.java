@@ -72,7 +72,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         mGridView = (GridView) view.findViewById(R.id.grid_view);
         CustomTextView mCategory = (CustomTextView) view.findViewById(R.id.lblCatTitle);
 
-        Log.e("onCreateView", String.valueOf(savedInstanceState));
+        //Log.e("onCreateView", String.valueOf(savedInstanceState));
         if (savedInstanceState != null && savedInstanceState.getParcelableArray("icons") != null) {
             Parcelable[] ps = savedInstanceState.getParcelableArray("icons");
             gridItems = new GridItem[ps.length];

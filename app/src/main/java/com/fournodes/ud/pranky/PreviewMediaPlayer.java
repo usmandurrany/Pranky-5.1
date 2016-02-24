@@ -70,6 +70,32 @@ public class PreviewMediaPlayer {
         }
     }
 
+    public int getDurInMills(int item){
+        if (mp == null){
+                mp = new MediaPlayer();
+                mp = MediaPlayer.create(context,item);
+                return mp.getDuration();
+        }else{
+            if (release())
+                getDurInMills(item);
+        }
+        return -1; //Error
+    }
+
+    public int getDurInMills(String item){
+        if (mp == null){
+            try{
+                mp = new MediaPlayer();
+                mp.setDataSource(item);
+               return mp.getDuration();
+            }catch (IOException e){e.printStackTrace();}
+        }else{
+            if (release())
+                getDurInMills(item);
+        }
+        return -1; //Error
+    }
+
 
     public boolean release(){
         if (mp != null){

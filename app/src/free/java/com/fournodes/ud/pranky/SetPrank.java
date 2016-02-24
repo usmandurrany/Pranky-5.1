@@ -34,6 +34,7 @@ public class SetPrank {
             this.hr = (hr + 1);
         else
             this.hr=hr;
+        Log.e("Set Prank",String.valueOf(duration));
     }
 
     public void get24HrTime() {

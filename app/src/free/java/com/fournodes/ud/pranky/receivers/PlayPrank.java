@@ -26,7 +26,7 @@ import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
 
 public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnCompletionListener {
 
-    private int counter = 1;
+    private int counter = 0;
     private int repeatCount;
     private String notify;
     private String sender;
@@ -78,11 +78,11 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
         } else {
             if (sysSound != -1){
                 playSound.create(sysSound, this);
-                repeatCount =calcRepeatCount(duration);
+                repeatCount =calcRepeatCount(duration)-1;
             }
             else {
                 playSound.create(cusSound, this);
-                repeatCount =calcRepeatCount(duration);
+                repeatCount =calcRepeatCount(duration)-1;
 
 
             }
@@ -170,6 +170,9 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
     public int calcRepeatCount(int duration){
         int durInMillis = playSound.mp.getDuration();
         float durInSec = (durInMillis / 1000);
-        return (int)Math.ceil((double)(duration/durInSec));
+        int rCount = (int)Math.ceil((double)(duration/durInSec));
+        Log.e("Play Prank","Repeat Count "+String.valueOf(rCount));
+        return rCount;
+
     }
 }
