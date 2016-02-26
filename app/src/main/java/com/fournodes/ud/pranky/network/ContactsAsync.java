@@ -3,11 +3,11 @@ package com.fournodes.ud.pranky.network;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.fournodes.ud.pranky.utils.DatabaseHelper;
-import com.fournodes.ud.pranky.models.Contacts;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
+import com.fournodes.ud.pranky.models.Contacts;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,7 +81,7 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
 
             if (SharedPrefs.prefs == null)
                 SharedPrefs.setContext(context);
-            String url = SharedPrefs.APP_SERVER_ADDR + "number_func.php?country_code=" + SharedPrefs.getUserCountryCode() +"&locale=" + SharedPrefs.getLocale();
+            String url = SharedPrefs.APP_SERVER_ADDR + "number_func.php?country_code=" + SharedPrefs.getUserCountryCode() + "&locale=" + SharedPrefs.getLocale();
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setConnectTimeout(15000);
@@ -93,7 +93,7 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
             con.setRequestProperty("Accept", "*/*");
 
             String urlParameters;
-            if (jsonArrays.length>0) {
+            if (jsonArrays.length > 0) {
                 urlParameters = "payload=" + jsonArrays[0].toString();
             } else {
                 urlParameters = "payload=" + prankyDB.contactDetails().toString();
@@ -153,8 +153,8 @@ public class ContactsAsync extends AsyncTask<JSONArray, String, String> {
                 prankyDB.storeRegisteredContact(id, numIDsArr, numbersArr);
 
             }
-            if (delegate!=null)
-            delegate.onCompleteContactSync();
+            if (delegate != null)
+                delegate.onCompleteContactSync();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {

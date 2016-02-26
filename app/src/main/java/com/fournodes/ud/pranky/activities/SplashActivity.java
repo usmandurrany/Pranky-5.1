@@ -13,9 +13,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
 import com.fournodes.ud.pranky.utils.FontManager;
 
 public class SplashActivity extends AppCompatActivity {
@@ -77,8 +77,8 @@ public class SplashActivity extends AppCompatActivity {
 
                 AnimationDrawable boxsel = (AnimationDrawable) logo_face.getDrawable();
                 boxsel.start();
-              //  Animation rotateAnim = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_rotate);
-               // logo_face.startAnimation(rotateAnim);
+                //  Animation rotateAnim = AnimationUtils.loadAnimation(getApplication(), R.anim.logo_rotate);
+                // logo_face.startAnimation(rotateAnim);
             }
 
             @Override
@@ -93,9 +93,9 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if (SharedPrefs.isSignUpComplete()||SharedPrefs.isSignUpSkipped()){
+                if (SharedPrefs.isSignUpComplete() || SharedPrefs.isSignUpSkipped()) {
                     mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                }else{
+                } else {
                     mainIntent = new Intent(getApplicationContext(), UserRegistrationActivity.class);
                 }
                 startActivity(mainIntent);
@@ -157,7 +157,6 @@ public class SplashActivity extends AppCompatActivity {
         }
 
     }
-
 
 
 }

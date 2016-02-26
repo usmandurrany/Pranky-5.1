@@ -10,15 +10,19 @@ import java.util.TimeZone;
  * Created by Usman on 11/23/2015.
  */
 public class SharedPrefs {
-    /********************************** APP CONSTANTS **************************************/
+    /**********************************
+     * APP CONSTANTS
+     **************************************/
 
-    public static String DEFAULT_FONT="grinched-regular";// Name of the font used throughout the app
-    public static String APP_SERVER_ID="appServerID";// Name of the font used throughout the app
+    public static String DEFAULT_FONT = "grinched-regular";// Name of the font used throughout the app
+    public static String APP_SERVER_ID = "appServerID";// Name of the font used throughout the app
     public static int PRANK_INCREMENT_COUNT = 5;// Name of the font used throughout the app
     public static int PRANK_START_COUNT = 5;// Name of the font used throughout the app
     public static int PING_SERVER_INTERVAL = 6;// Name of the font used throughout the app
 
-    /********************************** APP VARIABLES **************************************/
+    /**********************************
+     * APP VARIABLES
+     **************************************/
 
     public static SharedPreferences prefs;
     private static Calendar defaultExpDate;
@@ -57,7 +61,6 @@ public class SharedPrefs {
     public static final String INVALID_ID_COUNT = "invalidIDCount";
 
 
-
     public static final String USER_NAME = "userName";
     public static final String USER_COUNTRY = "userCountry";
     public static final String USER_COUNTRY_CODE = "userCountryCode";
@@ -81,7 +84,6 @@ public class SharedPrefs {
 
 
     public static final String PRANKS_LEFT = "pranksLeft";
-
 
 
     private static int invalidIDCount;
@@ -140,13 +142,10 @@ public class SharedPrefs {
     private static int pranksLeft;
 
 
-
-
-
     private static Context context;
 
-    public static void setContext(Context ctx){
-        context=ctx;
+    public static void setContext(Context ctx) {
+        context = ctx;
     }
 
     public SharedPrefs(Context ctx) {
@@ -158,59 +157,59 @@ public class SharedPrefs {
     // Must be called every time an object of this class is created  to initialize the attributes;
     public void initAllPrefs() {
         defaultExpDate = Calendar.getInstance(TimeZone.getDefault());
-        prankBtnEnabled=prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, true); // Unused for now
+        prankBtnEnabled = prefs.getBoolean(SharedPrefs.PRANK_BTN_ENABLED, true); // Unused for now
 
-        appServerID=prefs.getString(SharedPrefs.APP_SERVER_ID,null);
+        appServerID = prefs.getString(SharedPrefs.APP_SERVER_ID, null);
 
-        locale=prefs.getString(SharedPrefs.LOCALE,null);
-        friendDeviceId=prefs.getString(SharedPrefs.FRIEND_DEVICE_ID,null);
+        locale = prefs.getString(SharedPrefs.LOCALE, null);
+        friendDeviceId = prefs.getString(SharedPrefs.FRIEND_DEVICE_ID, null);
 
-        prefs.edit().putBoolean(SharedPrefs.VOLUME_LOW_NOTIFY,true).apply();
-        volumeLowNotify =prefs.getBoolean(SharedPrefs.VOLUME_LOW_NOTIFY,true);
+        prefs.edit().putBoolean(SharedPrefs.VOLUME_LOW_NOTIFY, true).apply();
+        volumeLowNotify = prefs.getBoolean(SharedPrefs.VOLUME_LOW_NOTIFY, true);
 
 
-        networkAvailable=prefs.getBoolean(SharedPrefs.NETWORK_AVAILABLE, true);
-        bgMusicEnabled=prefs.getBoolean(SharedPrefs.BG_MUSIC_ENABLED, true);
-        sentGcmIDToServer=prefs.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
-        registrationComplete=prefs.getBoolean(SharedPrefs.REGISTRATION_COMPLETE, false);
-        myGcmID=prefs.getString(SharedPrefs.MY_GCM_ID,null);
-        myAppID=prefs.getString(SharedPrefs.MY_APP_ID,null);
-        expDate=prefs.getString(SharedPrefs.EXP_DATE,defaultExpDate.getTime().toString());
-        frndAppID=prefs.getString(SharedPrefs.FRND_APP_ID, null);
-        prankable=prefs.getBoolean(SharedPrefs.PRANKABLE, true);
-        prankableResp=prefs.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
-        serverState=prefs.getInt(SharedPrefs.SERVER_STATE, 1);
-        appFont=prefs.getString(SharedPrefs.APP_FONT,DEFAULT_FONT);
+        networkAvailable = prefs.getBoolean(SharedPrefs.NETWORK_AVAILABLE, true);
+        bgMusicEnabled = prefs.getBoolean(SharedPrefs.BG_MUSIC_ENABLED, true);
+        sentGcmIDToServer = prefs.getBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, false);
+        registrationComplete = prefs.getBoolean(SharedPrefs.REGISTRATION_COMPLETE, false);
+        myGcmID = prefs.getString(SharedPrefs.MY_GCM_ID, null);
+        myAppID = prefs.getString(SharedPrefs.MY_APP_ID, null);
+        expDate = prefs.getString(SharedPrefs.EXP_DATE, defaultExpDate.getTime().toString());
+        frndAppID = prefs.getString(SharedPrefs.FRND_APP_ID, null);
+        prankable = prefs.getBoolean(SharedPrefs.PRANKABLE, true);
+        prankableResp = prefs.getString(SharedPrefs.PRANKABLE_RESP, "enabled");
+        serverState = prefs.getInt(SharedPrefs.SERVER_STATE, 1);
+        appFont = prefs.getString(SharedPrefs.APP_FONT, DEFAULT_FONT);
 
-        appFirstLaunch=prefs.getBoolean(SharedPrefs.APP_FIRST_LAUNCH, true);
-        timerFirstLaunch=prefs.getBoolean(SharedPrefs.TIMER_FIRST_LAUNCH, true);
-        clockFirstLaunch=prefs.getBoolean(SharedPrefs.CLOCK_FIRST_LAUNCH, true);
-        settingsFirstLaunch=prefs.getBoolean(SharedPrefs.SETTINGS_FIRST_LAUNCH, true);
-        addmoreFirstLaunch=prefs.getBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH, true);
-        remotePrankFirstLaunch=prefs.getBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, true);
-        lastPageFirstLaunch=prefs.getBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH, true);
-        smPrankLeftFirstLaunch=prefs.getBoolean(SharedPrefs.SM_PRANK_LEFT_FIRST_LAUNCH, true);
+        appFirstLaunch = prefs.getBoolean(SharedPrefs.APP_FIRST_LAUNCH, true);
+        timerFirstLaunch = prefs.getBoolean(SharedPrefs.TIMER_FIRST_LAUNCH, true);
+        clockFirstLaunch = prefs.getBoolean(SharedPrefs.CLOCK_FIRST_LAUNCH, true);
+        settingsFirstLaunch = prefs.getBoolean(SharedPrefs.SETTINGS_FIRST_LAUNCH, true);
+        addmoreFirstLaunch = prefs.getBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH, true);
+        remotePrankFirstLaunch = prefs.getBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, true);
+        lastPageFirstLaunch = prefs.getBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH, true);
+        smPrankLeftFirstLaunch = prefs.getBoolean(SharedPrefs.SM_PRANK_LEFT_FIRST_LAUNCH, true);
 
-        bgMusicPlaying=prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, false);
+        bgMusicPlaying = prefs.getBoolean(SharedPrefs.BG_MUSIC_PLAYING, false);
 
-        cusSoundAdded=prefs.getBoolean(SharedPrefs.CUSTOM_SOUND_ADDED, false);
+        cusSoundAdded = prefs.getBoolean(SharedPrefs.CUSTOM_SOUND_ADDED, false);
 
-        userName=prefs.getString(SharedPrefs.USER_NAME, "null");
-        userCountry=prefs.getString(SharedPrefs.USER_COUNTRY, "null");
-        userCountryCode=prefs.getString(SharedPrefs.USER_COUNTRY_CODE, "null");
-        userPhoneNumber=prefs.getString(SharedPrefs.USER_PHONE_NUMBER, "null");
+        userName = prefs.getString(SharedPrefs.USER_NAME, "null");
+        userCountry = prefs.getString(SharedPrefs.USER_COUNTRY, "null");
+        userCountryCode = prefs.getString(SharedPrefs.USER_COUNTRY_CODE, "null");
+        userPhoneNumber = prefs.getString(SharedPrefs.USER_PHONE_NUMBER, "null");
 
-        invalidIDCount=prefs.getInt(SharedPrefs.INVALID_ID_COUNT,0);
+        invalidIDCount = prefs.getInt(SharedPrefs.INVALID_ID_COUNT, 0);
 
-        signUpSkipped=prefs.getBoolean(SharedPrefs.SIGN_UP_SKIPPED, false);
-        signUpComplete=prefs.getBoolean(SharedPrefs.SIGN_UP_COMPLETE, false);
+        signUpSkipped = prefs.getBoolean(SharedPrefs.SIGN_UP_SKIPPED, false);
+        signUpComplete = prefs.getBoolean(SharedPrefs.SIGN_UP_COMPLETE, false);
 
-        contactsStored=prefs.getBoolean(SharedPrefs.CONTACTS_STORED, false);
+        contactsStored = prefs.getBoolean(SharedPrefs.CONTACTS_STORED, false);
 
-        prankCount=prefs.getInt(SharedPrefs.PRANK_COUNT,0);
+        prankCount = prefs.getInt(SharedPrefs.PRANK_COUNT, 0);
 
-        pingServerDate=prefs.getString(SharedPrefs.PING_SERVER_DATE,null);
-        pranksLeft=prefs.getInt(SharedPrefs.PRANKS_LEFT,SharedPrefs.PRANK_START_COUNT);
+        pingServerDate = prefs.getString(SharedPrefs.PING_SERVER_DATE, null);
+        pranksLeft = prefs.getInt(SharedPrefs.PRANKS_LEFT, SharedPrefs.PRANK_START_COUNT);
 
     }
 
@@ -234,7 +233,9 @@ public class SharedPrefs {
         return prankBtnEnabled;
     }
 
-    public static boolean isRegistrationComplete() { return registrationComplete;}
+    public static boolean isRegistrationComplete() {
+        return registrationComplete;
+    }
 
     public static boolean isNetworkAvailable() {
         return networkAvailable;
@@ -252,9 +253,13 @@ public class SharedPrefs {
         return expDate;
     }
 
-    public static String getFrndAppID() { return frndAppID; }
+    public static String getFrndAppID() {
+        return frndAppID;
+    }
 
-    public static String getPrankableResp() { return prankableResp; }
+    public static String getPrankableResp() {
+        return prankableResp;
+    }
 
     public static int getServerState() {
         return serverState;
@@ -362,206 +367,207 @@ public class SharedPrefs {
     }
 
     public static void setAppFirstLaunch(boolean appFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.APP_FIRST_LAUNCH,appFirstLaunch).apply();
-        SharedPrefs.appFirstLaunch=appFirstLaunch;
+        prefs.edit().putBoolean(SharedPrefs.APP_FIRST_LAUNCH, appFirstLaunch).apply();
+        SharedPrefs.appFirstLaunch = appFirstLaunch;
     }
 
     public static void setBgMusicEnabled(boolean bgMusicEnabled) {
-        prefs.edit().putBoolean(SharedPrefs.BG_MUSIC_ENABLED,bgMusicEnabled).apply();
-        SharedPrefs.bgMusicEnabled=bgMusicEnabled;
+        prefs.edit().putBoolean(SharedPrefs.BG_MUSIC_ENABLED, bgMusicEnabled).apply();
+        SharedPrefs.bgMusicEnabled = bgMusicEnabled;
     }
 
     public static void setMyGcmID(String myGcmID) {
         prefs.edit().putString(SharedPrefs.MY_GCM_ID, myGcmID).apply();
-        SharedPrefs.myGcmID=myGcmID;
+        SharedPrefs.myGcmID = myGcmID;
 
     }
 
     public static void setMyAppID(String myAppID) {
-        prefs.edit().putString(SharedPrefs.MY_APP_ID,myAppID).apply();
-        SharedPrefs.myAppID=myAppID;
+        prefs.edit().putString(SharedPrefs.MY_APP_ID, myAppID).apply();
+        SharedPrefs.myAppID = myAppID;
 
     }
 
     public static void setExpDate(String expDate) {
-        prefs.edit().putString(SharedPrefs.EXP_DATE,expDate).apply();
-        SharedPrefs.expDate=expDate;
+        prefs.edit().putString(SharedPrefs.EXP_DATE, expDate).apply();
+        SharedPrefs.expDate = expDate;
 
     }
 
     public static void setFrndAppID(String frndAppID) {
-        prefs.edit().putString(SharedPrefs.FRND_APP_ID,frndAppID).apply();
-        SharedPrefs.frndAppID=frndAppID;
+        prefs.edit().putString(SharedPrefs.FRND_APP_ID, frndAppID).apply();
+        SharedPrefs.frndAppID = frndAppID;
 
     }
 
-    public static  void setPrankable(boolean prankable) {
+    public static void setPrankable(boolean prankable) {
         prefs.edit().putBoolean(SharedPrefs.PRANKABLE, prankable).apply();
-        SharedPrefs.prankable=prankable;
+        SharedPrefs.prankable = prankable;
 
     }
 
     public static void setPrankableResp(String prankableResp) {
         prefs.edit().putString(SharedPrefs.PRANKABLE_RESP, prankableResp).apply();
-        SharedPrefs.prankableResp=prankableResp;
+        SharedPrefs.prankableResp = prankableResp;
 
     }
+
     public static void setServerState(int serverState) {
         prefs.edit().putInt(SharedPrefs.SERVER_STATE, serverState).apply();
-        SharedPrefs.serverState=serverState;
+        SharedPrefs.serverState = serverState;
 
     }
 
     public static void setSentGcmIDToServer(boolean sentGcmIDToServer) {
         prefs.edit().putBoolean(SharedPrefs.SENT_GCM_ID_TO_SERVER, sentGcmIDToServer).apply();
-        SharedPrefs.sentGcmIDToServer=sentGcmIDToServer;
+        SharedPrefs.sentGcmIDToServer = sentGcmIDToServer;
 
     }
 
     public static void setRegistrationComplete(boolean registrationComplete) {
-        prefs.edit().putBoolean(SharedPrefs.REGISTRATION_COMPLETE,registrationComplete).apply();
-        SharedPrefs.registrationComplete=registrationComplete;
+        prefs.edit().putBoolean(SharedPrefs.REGISTRATION_COMPLETE, registrationComplete).apply();
+        SharedPrefs.registrationComplete = registrationComplete;
 
     }
 
     public static void setPrankBtnEnabled(boolean prankBtnEnabled) {
-        prefs.edit().putBoolean(SharedPrefs.PRANK_BTN_ENABLED,prankBtnEnabled).apply();
+        prefs.edit().putBoolean(SharedPrefs.PRANK_BTN_ENABLED, prankBtnEnabled).apply();
         SharedPrefs.prankBtnEnabled = prankBtnEnabled;
     }
 
     public static void setAppFont(String appFont) {
-        prefs.edit().putString(SharedPrefs.APP_FONT,appFont).apply();
+        prefs.edit().putString(SharedPrefs.APP_FONT, appFont).apply();
         SharedPrefs.appFont = appFont;
     }
 
     public static void setNetworkAvailable(boolean networkAvailable) {
-        prefs.edit().putBoolean(SharedPrefs.NETWORK_AVAILABLE,networkAvailable).apply();
+        prefs.edit().putBoolean(SharedPrefs.NETWORK_AVAILABLE, networkAvailable).apply();
         SharedPrefs.networkAvailable = networkAvailable;
     }
 
 
     public static void setTimerFirstLaunch(boolean timerFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.TIMER_FIRST_LAUNCH,timerFirstLaunch).apply();
+        prefs.edit().putBoolean(SharedPrefs.TIMER_FIRST_LAUNCH, timerFirstLaunch).apply();
         SharedPrefs.timerFirstLaunch = timerFirstLaunch;
     }
 
     public static void setClockFirstLaunch(boolean clockFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.CLOCK_FIRST_LAUNCH,clockFirstLaunch).apply();
+        prefs.edit().putBoolean(SharedPrefs.CLOCK_FIRST_LAUNCH, clockFirstLaunch).apply();
         SharedPrefs.clockFirstLaunch = clockFirstLaunch;
     }
 
     public static void setSettingsFirstLaunch(boolean settingsFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.SETTINGS_FIRST_LAUNCH,settingsFirstLaunch).apply();
+        prefs.edit().putBoolean(SharedPrefs.SETTINGS_FIRST_LAUNCH, settingsFirstLaunch).apply();
         SharedPrefs.settingsFirstLaunch = settingsFirstLaunch;
     }
 
     public static void setAddmoreFirstLaunch(boolean addmoreFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH,addmoreFirstLaunch).apply();
+        prefs.edit().putBoolean(SharedPrefs.ADD_MORE_FIRST_LAUNCH, addmoreFirstLaunch).apply();
         SharedPrefs.addmoreFirstLaunch = addmoreFirstLaunch;
     }
 
     public static void setRemotePrankFirstLaunch(boolean remotePrankFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH,remotePrankFirstLaunch).apply();
+        prefs.edit().putBoolean(SharedPrefs.REMOTE_PRANK_FIRST_LAUNCH, remotePrankFirstLaunch).apply();
         SharedPrefs.remotePrankFirstLaunch = remotePrankFirstLaunch;
     }
 
     public static void setSmPrankLeftFirstLaunch(boolean smPrankLeftFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.SM_PRANK_LEFT_FIRST_LAUNCH,smPrankLeftFirstLaunch).apply();
+        prefs.edit().putBoolean(SharedPrefs.SM_PRANK_LEFT_FIRST_LAUNCH, smPrankLeftFirstLaunch).apply();
         SharedPrefs.smPrankLeftFirstLaunch = smPrankLeftFirstLaunch;
     }
 
     public static void setBgMusicPlaying(boolean bgMusicPlaying) {
-        prefs.edit().putBoolean(SharedPrefs.BG_MUSIC_PLAYING,bgMusicPlaying).apply();
+        prefs.edit().putBoolean(SharedPrefs.BG_MUSIC_PLAYING, bgMusicPlaying).apply();
         SharedPrefs.bgMusicPlaying = bgMusicPlaying;
     }
 
     public static void setCusSoundAdded(boolean cusSoundAdded) {
-        prefs.edit().putBoolean(SharedPrefs.CUSTOM_SOUND_ADDED,cusSoundAdded).commit();
+        prefs.edit().putBoolean(SharedPrefs.CUSTOM_SOUND_ADDED, cusSoundAdded).commit();
         SharedPrefs.cusSoundAdded = cusSoundAdded;
     }
 
     public static void setLastPageFirstLaunch(boolean lastPageFirstLaunch) {
-        prefs.edit().putBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH,lastPageFirstLaunch).apply();
+        prefs.edit().putBoolean(SharedPrefs.LAST_PAGE_FIRST_LAUNCH, lastPageFirstLaunch).apply();
         SharedPrefs.lastPageFirstLaunch = lastPageFirstLaunch;
     }
 
     public static void setUserName(String userName) {
-        if(userName != null)
+        if (userName != null)
             userName = userName.trim();
-        prefs.edit().putString(SharedPrefs.USER_NAME,userName).apply();
+        prefs.edit().putString(SharedPrefs.USER_NAME, userName).apply();
         SharedPrefs.userName = userName;
     }
 
     public static void setUserCountry(String userCountry) {
-        prefs.edit().putString(SharedPrefs.USER_COUNTRY,userCountry).apply();
+        prefs.edit().putString(SharedPrefs.USER_COUNTRY, userCountry).apply();
         SharedPrefs.userCountry = userCountry;
     }
 
     public static void setUserCountryCode(String userCountryCode) {
-        if(userCountryCode != null)
-            userCountryCode = userCountryCode.replace("+","");
-        prefs.edit().putString(SharedPrefs.USER_COUNTRY_CODE,userCountryCode).apply();
+        if (userCountryCode != null)
+            userCountryCode = userCountryCode.replace("+", "");
+        prefs.edit().putString(SharedPrefs.USER_COUNTRY_CODE, userCountryCode).apply();
         SharedPrefs.userCountryCode = userCountryCode;
     }
 
     public static void setUserPhoneNumber(String userPhoneNumber) {
-        prefs.edit().putString(SharedPrefs.USER_PHONE_NUMBER,userPhoneNumber).apply();
+        prefs.edit().putString(SharedPrefs.USER_PHONE_NUMBER, userPhoneNumber).apply();
         SharedPrefs.userPhoneNumber = userPhoneNumber;
     }
 
     public static void setInvalidIDCount(int invalidIDCount) {
-        prefs.edit().putInt(SharedPrefs.INVALID_ID_COUNT,invalidIDCount).apply();
+        prefs.edit().putInt(SharedPrefs.INVALID_ID_COUNT, invalidIDCount).apply();
         SharedPrefs.invalidIDCount = invalidIDCount;
     }
 
     public static void setSignUpSkipped(boolean signUpSkipped) {
-        prefs.edit().putBoolean(SharedPrefs.SIGN_UP_SKIPPED,signUpSkipped).apply();
+        prefs.edit().putBoolean(SharedPrefs.SIGN_UP_SKIPPED, signUpSkipped).apply();
         SharedPrefs.signUpSkipped = signUpSkipped;
     }
 
     public static void setSignUpComplete(boolean signUpComplete) {
-        prefs.edit().putBoolean(SharedPrefs.SIGN_UP_COMPLETE,signUpComplete).apply();
+        prefs.edit().putBoolean(SharedPrefs.SIGN_UP_COMPLETE, signUpComplete).apply();
         SharedPrefs.signUpComplete = signUpComplete;
     }
 
     public static void setContactsStored(boolean contactsStored) {
-        prefs.edit().putBoolean(SharedPrefs.CONTACTS_STORED,contactsStored).apply();
+        prefs.edit().putBoolean(SharedPrefs.CONTACTS_STORED, contactsStored).apply();
         SharedPrefs.contactsStored = contactsStored;
     }
 
     public static void setAppServerID(String appServerID) {
-        prefs.edit().putString(SharedPrefs.APP_SERVER_ID,appServerID).apply();
+        prefs.edit().putString(SharedPrefs.APP_SERVER_ID, appServerID).apply();
         SharedPrefs.appServerID = appServerID;
     }
 
     public static void setLocale(String locale) {
-        prefs.edit().putString(SharedPrefs.LOCALE,locale).apply();
+        prefs.edit().putString(SharedPrefs.LOCALE, locale).apply();
         SharedPrefs.locale = locale;
     }
 
     public static void setFriendDeviceId(String friendDeviceId) {
-        prefs.edit().putString(SharedPrefs.FRIEND_DEVICE_ID,friendDeviceId).apply();
+        prefs.edit().putString(SharedPrefs.FRIEND_DEVICE_ID, friendDeviceId).apply();
         SharedPrefs.friendDeviceId = friendDeviceId;
     }
 
     public static void setVolumeLowNotify(boolean volumeLowNotify) {
-        prefs.edit().putBoolean(SharedPrefs.VOLUME_LOW_NOTIFY,volumeLowNotify).apply();
+        prefs.edit().putBoolean(SharedPrefs.VOLUME_LOW_NOTIFY, volumeLowNotify).apply();
         SharedPrefs.volumeLowNotify = volumeLowNotify;
     }
 
     public static void setPrankCount(int prankCount) {
-        prefs.edit().putInt(SharedPrefs.PRANK_COUNT,prankCount).apply();
+        prefs.edit().putInt(SharedPrefs.PRANK_COUNT, prankCount).apply();
         SharedPrefs.prankCount = prankCount;
 
     }
 
     public static void setPingServerDate(String pingServerDate) {
-        prefs.edit().putString(SharedPrefs.PING_SERVER_DATE,pingServerDate).apply();
+        prefs.edit().putString(SharedPrefs.PING_SERVER_DATE, pingServerDate).apply();
         SharedPrefs.pingServerDate = pingServerDate;
     }
 
     public static void setPranksLeft(int pranksLeft) {
-        prefs.edit().putInt(SharedPrefs.PRANKS_LEFT,pranksLeft).commit();
+        prefs.edit().putInt(SharedPrefs.PRANKS_LEFT, pranksLeft).commit();
         SharedPrefs.pranksLeft = pranksLeft;
     }
 }

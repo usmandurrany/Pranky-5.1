@@ -15,6 +15,7 @@ public class ItemSelected {
     public static String itemName = null;
     public static int itemRepeatCount = -1;
     public static float itemVolume = 0f;
+    public static int itemDuration = -1;
 
     //<summary>
     // Takes Image ID as 1st parameter to convert into image/item name
@@ -22,7 +23,7 @@ public class ItemSelected {
     // The rest are Repeat count and Volume, respectively
     //</summary>
     public static void setValues(Context context, int imgResource, String item, int itemRepeatCount, int itemVolume) {
-        if (item.equals("raw.flash") || item.equals("raw.flash_blink") || item.equals("raw.vibrate_hw") || item.equals("raw.message") || item.equals("raw.ringtone")){
+        if (item.equals("raw.flash") || item.equals("raw.flash_blink") || item.equals("raw.vibrate_hw") || item.equals("raw.message") || item.equals("raw.ringtone")) {
             itemSound = -2; //Special condition to treat HW functions as a special type of  itemSound for network
             itemCustomSound = item;
         } else {
@@ -40,12 +41,17 @@ public class ItemSelected {
         ItemSelected.itemVolume = (float) itemVolume;
     }
 
-    public static void clearSoundProp(){
+    public static void setItemDuration(int itemDuration) {
+        ItemSelected.itemDuration = itemDuration;
+    }
+
+    public static void clearSoundProp() {
         itemCustomSound = null;
         itemName = null;
         itemSound = -1;
         itemRepeatCount = -1;
         itemVolume = 0f;
+        itemDuration = -1;
     }
 
     public static int getSoundRes(String soundName) {

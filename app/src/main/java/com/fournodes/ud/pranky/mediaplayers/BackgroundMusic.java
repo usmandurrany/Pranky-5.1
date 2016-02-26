@@ -11,7 +11,8 @@ public class BackgroundMusic {
     private static volatile BackgroundMusic instance = null;
     // Loop delay for BG Music
 
-    private BackgroundMusic() {}
+    private BackgroundMusic() {
+    }
 
 
     public static BackgroundMusic getInstance(Context context) {
@@ -36,17 +37,18 @@ public class BackgroundMusic {
 
     }
 
-    public static void play(){
+    public static void play() {
         mp.start();
     }
-    public static void pause(){
+
+    public static void pause() {
         mp.pause();
     }
-    public static void stop(){
+
+    public static void stop() {
         mp.stop();
         mp.release();
     }
-
 
 
 }

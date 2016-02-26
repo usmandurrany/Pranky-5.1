@@ -28,7 +28,7 @@ public class InfoDialog {
         dialog = new Dialog(context, R.style.ClockDialog);
         dialog.setContentView(R.layout.dialog_info);
 
-        ImageView close = (ImageView) dialog.findViewById(R.id.close);
+        ImageView close = (ImageView) dialog.findViewById(R.id.btnClose);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

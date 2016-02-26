@@ -8,8 +8,8 @@ import android.util.Log;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.enums.Action;
-import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.enums.Type;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 

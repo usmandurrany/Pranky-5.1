@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/popup_long" />
+    <include layout="@layout/layout_popup_long" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -61,11 +54,11 @@
                 app:track="@drawable/toggle_body"
 
 
-
                 />
 
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/stealthmode"
             android:layout_width="wrap_content"
@@ -100,7 +93,6 @@
                 android:thumb="@drawable/tgl_stealth"
                 android:thumbTextPadding="20dp"
                 app:track="@drawable/toggle_body"
-
 
 
                 />
@@ -142,8 +134,7 @@
                 app:showText="false"
                 app:track="@drawable/toggle_body"
                 android:thumb="@drawable/tgl_remote_prank"
-                android:thumbTextPadding="20dp"
-                 />
+                android:thumbTextPadding="20dp" />
 
 
         </LinearLayout>
@@ -185,17 +176,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/btnDiagClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="@dimen/close_btn_margin_right_long"
-        android:layout_marginTop="@dimen/close_btn_margin_top_long"
-        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>

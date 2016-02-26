@@ -36,7 +36,8 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
     private int currVol;
     private Context context;
 
-    public PlayPrank() {}
+    public PlayPrank() {
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {

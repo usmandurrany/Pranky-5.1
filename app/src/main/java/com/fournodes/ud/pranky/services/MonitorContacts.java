@@ -4,27 +4,18 @@ import android.app.Service;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.models.Contacts;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
+import com.fournodes.ud.pranky.models.Contacts;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 
 public class MonitorContacts extends Service implements OnCompleteListener {
     private int mContactCount;
-
-    public MonitorContacts() {
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     @Override
     public void onCreate() {
@@ -61,14 +52,7 @@ public class MonitorContacts extends Service implements OnCompleteListener {
 
         @Override
         public void onChange(boolean selfChange) {
-            super.onChange(selfChange,null);
-        }
-
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            super.onChange(selfChange);
-
-            Log.e("URI CHANGE",uri.toString());
+            //  Log.e("URI CHANGE",uri.toString());
 
             final int currentCount = getContactCount();
             if (currentCount < mContactCount) {
@@ -78,9 +62,9 @@ public class MonitorContacts extends Service implements OnCompleteListener {
 
             } else if (currentCount == mContactCount) {
                 // CONTACT UPDATED.
-                Log.d("Contact Service", currentCount+"");
+                Log.d("Contact Service", currentCount + "");
                 ContactsAsync async = new ContactsAsync(getApplicationContext());
-                async.delegate=MonitorContacts.this;
+                async.delegate = MonitorContacts.this;
                 Contacts contacts = new Contacts(getApplicationContext());
                 async.execute(contacts.getUpdated());
 
@@ -104,9 +88,17 @@ public class MonitorContacts extends Service implements OnCompleteListener {
             }, 60000);
 
 
-
+            // super.onChange(selfChange,null);
         }
 
+        /*@Override
+        public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange);
+
+
+
+        }
+*/
         @Override
         public boolean deliverSelfNotifications() {
             return false;
@@ -124,7 +116,15 @@ public class MonitorContacts extends Service implements OnCompleteListener {
         try {
             getContentResolver().unregisterContentObserver(mObserver);
 
-        }catch (Exception e){}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override

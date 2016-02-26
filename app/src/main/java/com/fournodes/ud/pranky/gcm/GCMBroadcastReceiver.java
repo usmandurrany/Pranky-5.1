@@ -8,13 +8,13 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.models.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.enums.Message;
 import com.fournodes.ud.pranky.enums.Type;
+import com.fournodes.ud.pranky.models.ContactSelected;
+import com.fournodes.ud.pranky.models.ItemSelected;
 import com.fournodes.ud.pranky.network.AppServerConn;
-import com.fournodes.ud.pranky.objects.ContactSelected;
 import com.fournodes.ud.pranky.receivers.PlayPrank;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -31,11 +31,11 @@ public class GCMBroadcastReceiver extends GcmListenerService {
             SharedPrefs SP = new SharedPrefs(getApplicationContext());
             SP.initAllPrefs();
         }
-        Log.e("Message received",data.getString("message"));
-        Log.e("Sender Name",data.getString("sender_name"));
+        Log.e("Message received", data.getString("message"));
+        Log.e("Sender Name", data.getString("sender_name"));
         ContactSelected.setName(data.getString("sender_name"));
 
-        switch(Action.valueOf(data.getString("message"))) {
+        switch (Action.valueOf(data.getString("message"))) {
             case PlayPrank:
 
                 AppServerConn appServerConn;
@@ -56,9 +56,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                         intent.putExtra("sysSound", -1);
                         intent.putExtra("cusSound", sound);
 
-                    }
-                    else
-                    {
+                    } else {
                         intent.putExtra("sysSound", ItemSelected.getSoundRes(sound));
                         intent.putExtra("cusSound", "");
                     }
@@ -66,8 +64,8 @@ public class GCMBroadcastReceiver extends GcmListenerService {
 
                     intent.putExtra("repeatCount", Integer.valueOf(soundRep));
                     intent.putExtra("volume", Integer.valueOf(soundVol));
-                    intent.putExtra("notify",data.getString("notify"));
-                    intent.putExtra("sender",data.getString("sender_name"));
+                    intent.putExtra("notify", data.getString("notify"));
+                    intent.putExtra("sender", data.getString("sender_name"));
 
 
                     final int _id = (int) System.currentTimeMillis();
@@ -86,7 +84,7 @@ public class GCMBroadcastReceiver extends GcmListenerService {
                     // Send request to app server to remove myAppID from database untill serverState becomes 1
                     appServerConn = new AppServerConn(Action.UpdateAvailability);
                     appServerConn.execute();
-                     // Params (myGcmID, myAppId, serverState(fom stored prefs))
+                    // Params (myGcmID, myAppId, serverState(fom stored prefs))
                     // Once myAppID has been removed from the db on the server, generate a response for the sender
                     SharedPrefs.setFrndAppID(data.getString("sender_id")); // Temporarily save the senders ID as frndsAppID
                     appServerConn = new AppServerConn(Action.NotifyPrankFailed);

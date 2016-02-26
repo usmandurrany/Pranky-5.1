@@ -10,8 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.fournodes.ud.pranky.objects.Country;
 import com.fournodes.ud.pranky.R;
+import com.fournodes.ud.pranky.models.Country;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ import java.util.Iterator;
 /**
  * Created by Usman on 25/1/2016.
  */
-public class CountryAdapter extends ArrayAdapter<Country> implements Filterable{
+public class CountryAdapter extends ArrayAdapter<Country> implements Filterable {
 
     private Context context;
     private int layoutResource;
@@ -28,11 +28,10 @@ public class CountryAdapter extends ArrayAdapter<Country> implements Filterable{
     private int charLen;
 
 
-
     public CountryAdapter(Context context, int layoutResource, ArrayList<Country> countryList) {
         super(context, layoutResource, countryList);
-        this.context=context;
-        this.layoutResource=layoutResource;
+        this.context = context;
+        this.layoutResource = layoutResource;
         this.countryList = countryList;
         cNameFilter = new ArrayList<>(countryList);
         charLen = 9; //Could be any value greater than the filter threshold value
@@ -42,9 +41,8 @@ public class CountryAdapter extends ArrayAdapter<Country> implements Filterable{
 
     @Override
     public Country getItem(int pos) {
-            return cNameFilter.get(pos);
+        return cNameFilter.get(pos);
     }
-
 
 
     @Override
@@ -68,15 +66,15 @@ public class CountryAdapter extends ArrayAdapter<Country> implements Filterable{
         View view = convertView;
         CountryHolder countryHolder;
 
-        if (view == null){
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+        if (view == null) {
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 //            view = inflater.inflate(R.layout.spinner_row,null);
-            view = inflater.inflate(layoutResource,null);
+            view = inflater.inflate(layoutResource, null);
             countryHolder = new CountryHolder();
             countryHolder.countryName = (TextView) view.findViewById(R.id.country);
             view.setTag(countryHolder);
-        }else{
-            countryHolder=(CountryHolder) view.getTag();
+        } else {
+            countryHolder = (CountryHolder) view.getTag();
 
         }
         countryHolder.countryName.setText(cNameFilter.get(position).getCountryName());
@@ -98,11 +96,11 @@ public class CountryAdapter extends ArrayAdapter<Country> implements Filterable{
 
             //Log.e("Country List", String.valueOf(countryList.size()));
             //Log.e("Country List Filter", String.valueOf(cNameFilter.size()));
-            if (charSequence != null && charSequence.length()>0) {
-               // Log.e("If",charSequence.toString());
+            if (charSequence != null && charSequence.length() > 0) {
+                // Log.e("If",charSequence.toString());
                 //cNameFilter.clear();
                 Iterator<Country> iterator = cNameFilter.iterator();
-                while(iterator.hasNext()) {
+                while (iterator.hasNext()) {
                     Country country = iterator.next();
                     if (country.getCountryName().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                         //Log.e("Country",country.getCountryName());
@@ -115,12 +113,12 @@ public class CountryAdapter extends ArrayAdapter<Country> implements Filterable{
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = cNameFilter;
                 filterResults.count = cNameFilter.size();
-                charLen=charSequence.length();
+                charLen = charSequence.length();
                 return filterResults;
             } else {
                 FilterResults filterResults = new FilterResults();
-                filterResults.values=cNameFilter;
-                filterResults.count=cNameFilter.size();
+                filterResults.values = cNameFilter;
+                filterResults.count = cNameFilter.size();
                 return filterResults;
             }
         }
@@ -136,15 +134,25 @@ public class CountryAdapter extends ArrayAdapter<Country> implements Filterable{
         }
     };
 
-    static class CountryHolder
-    {
+    static class CountryHolder {
         //ImageView imgIcon;
         TextView countryName;
     }
 
 
-    public String getCountryCode(int pos){return cNameFilter.get(pos).getCountryCode();}
-    public String getShortCode(int pos){return cNameFilter.get(pos).getCountryShortCode();}
-    public String getCountryName(int pos){return cNameFilter.get(pos).getCountryName();}
-    public int getFilterResultSize(){return cNameFilter.size();}
+    public String getCountryCode(int pos) {
+        return cNameFilter.get(pos).getCountryCode();
+    }
+
+    public String getShortCode(int pos) {
+        return cNameFilter.get(pos).getCountryShortCode();
+    }
+
+    public String getCountryName(int pos) {
+        return cNameFilter.get(pos).getCountryName();
+    }
+
+    public int getFilterResultSize() {
+        return cNameFilter.size();
+    }
 }

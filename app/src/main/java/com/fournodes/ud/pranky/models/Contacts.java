@@ -144,10 +144,10 @@ public class Contacts {
             if (contactNumber != null)
                 return URLEncoder.encode(
                         contactNumber
-                        .replace("-", "")
-                        .replace(")", "")
-                        .replace("(", "")
-                        .replace(" ", ""),
+                                .replace("-", "")
+                                .replace(")", "")
+                                .replace("(", "")
+                                .replace(" ", ""),
                         "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

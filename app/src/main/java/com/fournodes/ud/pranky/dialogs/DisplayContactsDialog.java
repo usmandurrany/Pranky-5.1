@@ -12,16 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.fournodes.ud.pranky.objects.ContactDetails;
-import com.fournodes.ud.pranky.objects.ContactSelected;
+import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.custom.CustomTextView;
 import com.fournodes.ud.pranky.custom.CustomToast;
-import com.fournodes.ud.pranky.utils.DatabaseHelper;
-import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
+import com.fournodes.ud.pranky.models.ContactDetails;
+import com.fournodes.ud.pranky.models.ContactSelected;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.network.ContactsAsync;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
 
 import java.util.ArrayList;
 
@@ -66,7 +66,7 @@ public class DisplayContactsDialog implements OnCompleteListener {
                 syncContacts.execute();
             }
         });
-        ImageView close = (ImageView) dialog.findViewById(R.id.close);
+        ImageView close = (ImageView) dialog.findViewById(R.id.btnClose);
         lstContacts = (ListView) dialog.findViewById(R.id.lstContacts);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +160,8 @@ public class DisplayContactsDialog implements OnCompleteListener {
     }
 
     @Override
-    public void onCompleteSuccess() {}
+    public void onCompleteSuccess() {
+    }
 
     @Override
     public void onCompleteContactSync() {

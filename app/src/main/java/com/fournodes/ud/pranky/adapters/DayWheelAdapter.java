@@ -10,9 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import antistatic.spinnerwheel.adapters.AbstractWheelTextAdapter;
 import antistatic.spinnerwheel.StrokeTextView;
-
+import antistatic.spinnerwheel.adapters.AbstractWheelTextAdapter;
 
 
 /**
@@ -37,8 +36,8 @@ public class DayWheelAdapter extends AbstractWheelTextAdapter {
         //Format the date (Name of the day / number of the day)
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd");
         //Assign the text
-       // weekday.setStrokeColor(0xFF1B640D);
-      //  weekday.setStrokeWidth(5);
+        // weekday.setStrokeColor(0xFF1B640D);
+        //  weekday.setStrokeWidth(5);
         weekday.setText(dateFormat.format(dates.get(index)));
 
         if (index == 0) {

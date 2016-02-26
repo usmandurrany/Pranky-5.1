@@ -9,14 +9,17 @@ import com.fournodes.ud.pranky.R;
  */
 public class ItemCategory {
     private static String[] categories;
-    public static String getCategory(Context context, int i){
+
+    public static String getCategory(Context context, int i) {
         categories = context.getResources().getStringArray(R.array.categories);
         return categories[i];
     }
-    public static int getCount(){
+
+    public static int getCount() {
         return categories.length;
     }
-    public static String[] getCategories(Context context){
+
+    public static String[] getCategories(Context context) {
         if (categories == null)
             categories = context.getResources().getStringArray(R.array.categories);
         return categories;

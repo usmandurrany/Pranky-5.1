@@ -29,7 +29,7 @@ public class CustomEditText extends EditText {
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            ((Activity)getContext()).onWindowFocusChanged(true);
+            ((Activity) getContext()).onWindowFocusChanged(true);
             //Log.e("edittext","key down");
             //dispatchKeyEvent(event);
             return false;

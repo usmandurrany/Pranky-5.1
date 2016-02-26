@@ -6,15 +6,7 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/popup_long" />
-
+    <include layout="@layout/layout_popup_long" />
 
 
     <LinearLayout
@@ -41,12 +33,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:text= "@string/app_name_spaced"
+                android:text="@string/app_name_spaced"
                 android:textAllCaps="true"
                 android:textColor="#bf071a"
                 android:textIsSelectable="false"
                 android:textSize="@dimen/settings_font_small"
                 android:textStyle="bold" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,6 +53,7 @@
 
 
         </LinearLayout>
+
         <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="200dp"
@@ -85,7 +79,7 @@
                     android:textStyle="bold"
                     android:gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
-                    android:textColorLink="#000"/>
+                    android:textColorLink="#000" />
 
                 <com.fournodes.ud.pranky.custom.CustomTextView
                     android:layout_width="wrap_content"
@@ -98,7 +92,8 @@
                     android:textIsSelectable="false"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,7 +106,8 @@
                     android:textStyle="bold"
                     android:gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
-                    android:textColorLink="#000"/>
+                    android:textColorLink="#000" />
+
                 <com.fournodes.ud.pranky.custom.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,7 +119,8 @@
                     android:textIsSelectable="false"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -136,7 +133,8 @@
                     android:textStyle="bold"
                     android:gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
-                    android:textColorLink="#000"/>
+                    android:textColorLink="#000" />
+
                 <com.fournodes.ud.pranky.custom.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -148,7 +146,8 @@
                     android:textIsSelectable="false"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -161,7 +160,8 @@
                     android:textStyle="bold"
                     android:gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
-                    android:textColorLink="#000"/>
+                    android:textColorLink="#000" />
+
                 <com.fournodes.ud.pranky.custom.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -173,7 +173,8 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal" />
+
                 <com.fournodes.ud.pranky.custom.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -185,25 +186,11 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal" />
             </LinearLayout>
 
         </ScrollView>
     </LinearLayout>
-
-
-
-
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="@dimen/close_btn_margin_right_long"
-        android:layout_marginTop="@dimen/close_btn_margin_top_long"
-        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>

@@ -13,13 +13,12 @@ import java.io.IOException;
  * Created by Usman on 21/1/2016.*
  *********************************/
 public class CameraControls {
-    private static  final String TAG = "Camera Controls";
+    private static final String TAG = "Camera Controls";
 
     private Context context;
     private Camera camera;
     private boolean flashOn;
     private Thread blinkFlashThread;
-
 
 
     private static volatile CameraControls instance = null;
@@ -42,8 +41,6 @@ public class CameraControls {
     }
 
 
-
-
     public boolean isFlashOn() {
         return flashOn;
     }
@@ -52,33 +49,34 @@ public class CameraControls {
         this.flashOn = flashOn;
     }
 
-    public Camera prepareCamera(){
-        if (camera == null){
+    public Camera prepareCamera() {
+        if (camera == null) {
             try {
                 camera = Camera.open();
                 Camera.Parameters params = camera.getParameters();
                 camera.setPreviewTexture(new SurfaceTexture(0));
                 return camera;
-            }catch (IOException e){e.printStackTrace();}
-        }else if (releaseCamera()){
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (releaseCamera()) {
             return prepareCamera();
         }
         return null;
     }
 
-    public boolean releaseCamera(){
-        if (camera != null){
+    public boolean releaseCamera() {
+        if (camera != null) {
             camera.stopPreview();
             camera.release();
             camera = null;
             return true;
-        }else
+        } else
             return false;
     }
 
 
-
-    public boolean turnFlashOn(int duration){
+    public boolean turnFlashOn(int duration) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
             try {
                 if (prepareCamera() != null) {
@@ -87,9 +85,10 @@ public class CameraControls {
                     camera.setParameters(params);
                     camera.startPreview();
                 }
-            }catch (RuntimeException e){e.printStackTrace();
-            if (releaseCamera())
-                turnFlashOn(duration);
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                if (releaseCamera())
+                    turnFlashOn(duration);
             }
 
             Handler turnFlashOff = new Handler();
@@ -97,9 +96,9 @@ public class CameraControls {
                 public void run() {
                     releaseCamera();
                 }
-            }, duration*1000);
+            }, duration * 1000);
             return true;
-        }else
+        } else
             return false;
     }
 
@@ -129,26 +128,27 @@ public class CameraControls {
                 });
                 blinkFlashThread.start();
             }
-        }catch (RuntimeException e){e.printStackTrace();
-        if (releaseCamera())
-            blinkFlash(count);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            if (releaseCamera())
+                blinkFlash(count);
         }
     }
 
-    private void toggleFlash(Camera camera){
+    private void toggleFlash(Camera camera) {
         try {
-            if (camera != null){
+            if (camera != null) {
                 Camera.Parameters params = camera.getParameters();
-            if (isFlashOn()) {
-                params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                camera.setParameters(params);
-                setFlashOn(false);
-            } else if (!isFlashOn()) {
-                params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                camera.setParameters(params);
-                setFlashOn(true);
+                if (isFlashOn()) {
+                    params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                    camera.setParameters(params);
+                    setFlashOn(false);
+                } else if (!isFlashOn()) {
+                    params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    camera.setParameters(params);
+                    setFlashOn(true);
+                }
             }
-        }
         } catch (RuntimeException e) {
             Log.w(TAG, e.toString());
         }

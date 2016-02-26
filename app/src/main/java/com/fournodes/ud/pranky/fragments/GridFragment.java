@@ -24,21 +24,21 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
-import com.fournodes.ud.pranky.utils.CameraControls;
-import com.fournodes.ud.pranky.custom.CustomTextView;
-import com.fournodes.ud.pranky.custom.CustomToast;
-import com.fournodes.ud.pranky.objects.GridItem;
-import com.fournodes.ud.pranky.models.ItemSelected;
-import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.activities.AddSoundDialogActivity;
 import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.adapters.GridAdapter;
+import com.fournodes.ud.pranky.custom.CustomTextView;
+import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.interfaces.IFragment;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.models.GridItem;
+import com.fournodes.ud.pranky.models.ItemSelected;
+import com.fournodes.ud.pranky.utils.CameraControls;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.io.IOException;
@@ -58,8 +58,10 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
     private CameraControls cControls;
     private Tutorial mTutorial;
     private String category;
+    private int duration = -1;
 
-    public GridFragment() {}
+    public GridFragment() {
+    }
 
 
     @Override
@@ -141,7 +143,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
         AudioManager audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
         int currVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         if (currVol < 7 && SharedPrefs.isVolumeLowNotify()) {
-            CustomToast cToast = new CustomToast(activity,activity.getString(R.string.toast_volume_low));
+            CustomToast cToast = new CustomToast(activity, activity.getString(R.string.toast_volume_low));
             cToast.show();
             SharedPrefs.setVolumeLowNotify(false);
         }
@@ -217,7 +219,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                     lastView = -2;
 
                 } else {
-                   lastView = -1;
+                    lastView = -1;
                 }
 
                 ItemSelected.setValues(activity,
@@ -243,40 +245,6 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             }
             case "raw.message": {
 
-                    ItemSelected.setValues(activity,
-                            gridItems[pos].itemResID,
-                            gridItems[pos].item,
-                            gridItems[pos].itemRepeatCount,
-                            gridItems[pos].itemVolume);
-
-
-                    previewSound.create(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-                break;
-            }
-            case "raw.ringtone": {
-                    //Since ringtone manager does not have onCompleteListner
-                    if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
-
-
-                        ItemSelected.setValues(activity,
-                                gridItems[pos].itemResID,
-                                gridItems[pos].item,
-                                gridItems[pos].itemRepeatCount,
-                                gridItems[pos].itemVolume);
-
-                        previewSound.create(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
-                        lastView = -2;
-
-                    } else
-                        lastView = -1;
-
-
-
-                break;
-            }
-            default: {
-
                 ItemSelected.setValues(activity,
                         gridItems[pos].itemResID,
                         gridItems[pos].item,
@@ -284,15 +252,51 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                         gridItems[pos].itemVolume);
 
 
+                previewSound.create(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+
+                break;
+            }
+            case "raw.ringtone": {
+                //Since ringtone manager does not have onCompleteListner
+                if ((lastView != viewPOS) || (lastView != viewPOS && lastView == -1)) {
+
+
+                    ItemSelected.setValues(activity,
+                            gridItems[pos].itemResID,
+                            gridItems[pos].item,
+                            gridItems[pos].itemRepeatCount,
+                            gridItems[pos].itemVolume);
+
+                    previewSound.create(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+                    lastView = -2;
+
+                } else
+                    lastView = -1;
+
+
+                break;
+            }
+            default: {
+                ItemSelected.setValues(activity,
+                        gridItems[pos].itemResID,
+                        gridItems[pos].item,
+                        gridItems[pos].itemRepeatCount,
+                        gridItems[pos].itemVolume);
+
                 if ((lastView != viewPOS)) {
 
                     if (ItemSelected.itemSound != -1) {
-
                         previewSound.create(ItemSelected.itemSound, this);
+                        duration = previewSound.mp.getDuration();
+                        ItemSelected.setItemDuration(duration);
+                        Log.e("Duration", String.valueOf(duration));
                         lastView = -2;
 
-                    } else if (ItemSelected.itemCustomSound != null) {
+                    } else if (gridItems[pos].item != null) {
                         previewSound.create(gridItems[pos].item, this);
+                        duration = previewSound.mp.getDuration();
+                        ItemSelected.setItemDuration(duration);
+                        Log.e("Duration", String.valueOf(duration));
                         lastView = -2;
 
                     }
@@ -308,6 +312,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
                         Log.e("Grid Fragment", e.toString());
                     }
                 }
+
 
                 break;
             }

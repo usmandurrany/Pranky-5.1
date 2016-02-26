@@ -12,8 +12,8 @@ import java.io.IOException;
  * Created by Usman on 11/14/2015.
  */
 public class PreviewMediaPlayer {
-    public  MediaPlayer mp;
-    public  Ringtone ringtone;
+    public MediaPlayer mp;
+    public Ringtone ringtone;
     private static volatile PreviewMediaPlayer instance = null;
     private Context context;
 
@@ -32,66 +32,60 @@ public class PreviewMediaPlayer {
 
         return instance;
     }
-    public void create(Uri tone){
-        if (ringtone == null ){
-        ringtone = RingtoneManager.getRingtone(context, tone);
-        ringtone.play();
-        }else{
+
+    public void create(Uri tone) {
+        if (ringtone == null) {
+            ringtone = RingtoneManager.getRingtone(context, tone);
+            ringtone.play();
+        } else {
             if (release())
                 create(tone);
         }
     }
 
-    public void create(int itemSound, MediaPlayer.OnCompletionListener onComplete){
-        if (mp == null){
-            mp = MediaPlayer.create(context,itemSound);
+    public void create(int itemSound, MediaPlayer.OnCompletionListener onComplete) {
+        if (mp == null) {
+            mp = MediaPlayer.create(context, itemSound);
             mp.setVolume(100, 100);
             mp.setOnCompletionListener(onComplete);
             mp.start();
-        }else{
+        } else {
             if (release())
-                create(itemSound,onComplete);
+                create(itemSound, onComplete);
         }
     }
 
-    public void create(String item, MediaPlayer.OnCompletionListener onComplete){
-        if (mp == null){
-            try{
+    public void create(String item, MediaPlayer.OnCompletionListener onComplete) {
+        if (mp == null) {
+            try {
                 mp = new MediaPlayer();
                 mp.setDataSource(item);
                 mp.setVolume(100, 100);
                 mp.prepare();
                 mp.setOnCompletionListener(onComplete);
                 mp.start();
-            }catch (IOException e){e.printStackTrace();}
-        }else{
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
             if (release())
-                create(item,onComplete);
+                create(item, onComplete);
         }
     }
 
-    public int getDurInMills(int item){
-        if (mp == null){
-                mp = new MediaPlayer();
-                mp = MediaPlayer.create(context,item);
-                return mp.getDuration();
-        }else{
-            if (release())
-                getDurInMills(item);
-        }
-        return -1; //Error
-    }
 
-    public void getDurInMills(String item, MediaPlayer.OnPreparedListener onPreparedListener){
-        if (mp == null){
-            try{
+    public void getDurInMills(String item, MediaPlayer.OnPreparedListener onPreparedListener) {
+        if (mp == null) {
+            try {
                 mp = new MediaPlayer();
                 mp.setDataSource(item);
                 mp.setOnPreparedListener(onPreparedListener);
                 mp.prepare();
 
-            }catch (IOException e){e.printStackTrace();}
-        }else{
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
             if (release())
                 getDurInMills(item, onPreparedListener);
         }
@@ -99,17 +93,17 @@ public class PreviewMediaPlayer {
     }
 
 
-    public boolean release(){
-        if (mp != null){
+    public boolean release() {
+        if (mp != null) {
             mp.stop();
             mp.release();
-            mp=null;
+            mp = null;
             return true;
-        }else if(ringtone != null){
+        } else if (ringtone != null) {
             ringtone.stop();
             ringtone = null;
             return true;
-        }else
+        } else
             return false;
     }
 

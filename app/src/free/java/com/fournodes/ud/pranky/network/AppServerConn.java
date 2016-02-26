@@ -7,15 +7,15 @@ import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.objects.ContactSelected;
-import com.fournodes.ud.pranky.utils.DatabaseHelper;
-import com.fournodes.ud.pranky.models.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
 import com.fournodes.ud.pranky.enums.Action;
-import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
+import com.fournodes.ud.pranky.models.ContactSelected;
+import com.fournodes.ud.pranky.models.ItemSelected;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,149 +103,149 @@ public class AppServerConn extends AsyncTask<String, String, String> {
     }
 
     private void initialize() {
-            switch (type) {
-                case ValidateId:
-                    broadcastResult = new Intent(String.valueOf(Type.PrankDialogActivity));
-                    
-                    url = URLBuilder("index", "app_id="+validate_id);
-                    
-                    Log.e("VALIDATE DEVICE", String.valueOf(url));
+        switch (type) {
+            case ValidateId:
+                broadcastResult = new Intent(String.valueOf(Type.PrankDialogActivity));
 
-                    break;
-                case UpdateAvailability:
-                    
+                url = URLBuilder("index", "app_id=" + validate_id);
+
+                Log.e("VALIDATE DEVICE", String.valueOf(url));
+
+                break;
+            case UpdateAvailability:
+
+                url = URLBuilder("index",
+                        "id=" + SharedPrefs.getAppServerID(),
+                        "state=" + SharedPrefs.getServerState());
+
+                Log.e("UPDATE STATE", String.valueOf(url));
+
+                break;
+
+            case RenewAppId:
+                if (SharedPrefs.getAppServerID() == null) {
                     url = URLBuilder("index",
-                            "id=" + SharedPrefs.getAppServerID(),
+                            "model=" + Build.MODEL,
+                            "gcm_id=" + SharedPrefs.getMyGcmID(),
                             "state=" + SharedPrefs.getServerState());
-                    
-                    Log.e("UPDATE STATE", String.valueOf(url));
-
-                    break;
-
-                case RenewAppId:
-                    if (SharedPrefs.getAppServerID() == null){
-                        url = URLBuilder("index",
-                                "model=" + Build.MODEL ,
-                                "gcm_id=" + SharedPrefs.getMyGcmID() ,
-                                "state=" + SharedPrefs.getServerState());
-                        Log.e("SEND GCM ID", String.valueOf(url));
-
-                        type= Action.RegisterDevice; //important hack
-
-                    }else {
-                        url = URLBuilder("index",
-                                "id=" + SharedPrefs.getAppServerID(),
-                                "app_id=null");
-                        Log.e("RENEW APP ID", String.valueOf(url));
-                    }
-
-                    break;
-
-                case RegisterDevice: //Returns app id
-                    
-                    url = URLBuilder("index",
-                            "model=" + Build.MODEL ,
-                            "gcm_id=" + SharedPrefs.getMyGcmID() ,
-                            "state=" + SharedPrefs.getServerState());
-                    
                     Log.e("SEND GCM ID", String.valueOf(url));
 
-                    break;
-                case PlayPrank:
-                    String selectedItem;
-                    if (ItemSelected.itemSound == -2) // condition for HW functions to be treated as a special type of itemSound
-                        selectedItem = ItemSelected.itemCustomSound;
-                    else
-                        selectedItem = ItemSelected.itemName;
+                    type = Action.RegisterDevice; //important hack
 
-                    broadcastResult = new Intent(String.valueOf(Type.MainActivity));
-                    
-                    url = URLBuilder("sendmsg",
-                            "receiver_id=" + SharedPrefs.getFrndAppID() ,
-                            "sender_id=" + SharedPrefs.getMyAppID(),
-                            "item=" + selectedItem,
-                            "repeat_count=" + ItemSelected.itemRepeatCount ,
-                            "volume=" + (int) ItemSelected.itemVolume ,
-                            "message=" + Action.PlayPrank,
-                            "currenttime=" + System.currentTimeMillis());
-                    
-                    Log.e("PRANK DETAILS", String.valueOf(url));
-
-                    break;
-                case NotifyPrankFailed:
-                case NotifyPrankSuccessful:
-                    
-                    url = URLBuilder("sendmsg",
-                            "receiver_id=" + SharedPrefs.getFrndAppID(),
-                            "sender_id=" + SharedPrefs.getMyAppID(),
-                            "message=" + type);
-
-                    Log.e("PRANK SUCCESS/FAILED", String.valueOf(url));
-
-                    break;
-
-                case RegisterUser:
-                    //broadcastResult = new Intent(String.valueOf(Type.UserRegistrationActivity));
-
-                    String id = SharedPrefs.getAppServerID();
-                    
-                    if (id == null) {
-                        url = URLBuilder("index",
-                                "model=" + Build.MODEL ,
-                                "gcm_id=" + SharedPrefs.getMyGcmID(),
-                                "state=" + SharedPrefs.getServerState(),
-                                "name=" + SharedPrefs.getUserName(),
-                                "country_code=" + SharedPrefs.getUserCountryCode(),
-                                "phone=" + SharedPrefs.getUserPhoneNumber());
-                        
-                    } else { //From prank dialog
-                        
-                        url = URLBuilder("index",
-                                "model=" + Build.MODEL,
-                                "gcm_id=" + SharedPrefs.getMyGcmID(),
-                                "app_id=" + SharedPrefs.getMyAppID(),
-                                "id=" + SharedPrefs.getAppServerID(),
-                                "name=" + SharedPrefs.getUserName(),
-                                "country_code=" + SharedPrefs.getUserCountryCode(),
-                                "phone=" + SharedPrefs.getUserPhoneNumber());
-                        
-                    }
-                    
-                    Log.e("SignUp Details", String.valueOf(url));
-                    break;
-                case RetrieveFriendId:
-                    
-                    broadcastResult = new Intent(String.valueOf(Type.PrankDialogActivity));
-                    
-                    url = URLBuilder("index",
-                            "id=" + numID,
-                            "app_id=" + SharedPrefs.getMyAppID(),
-                            "phone=" + number.trim());
-                    
-                    Log.e("GET FRIEND ID", String.valueOf(url));
-
-                    break;
-
-                case VerifyUserRegistration:
-                    broadcastResult = new Intent(String.valueOf(Type.MainActivity));
-
+                } else {
                     url = URLBuilder("index",
                             "id=" + SharedPrefs.getAppServerID(),
-                            "app_id=" + SharedPrefs.getMyAppID());
-                    
-                    Log.e("Registration Check", String.valueOf(url));
+                            "app_id=null");
+                    Log.e("RENEW APP ID", String.valueOf(url));
+                }
 
-                    break;
-                case PingServer:
+                break;
+
+            case RegisterDevice: //Returns app id
+
+                url = URLBuilder("index",
+                        "model=" + Build.MODEL,
+                        "gcm_id=" + SharedPrefs.getMyGcmID(),
+                        "state=" + SharedPrefs.getServerState());
+
+                Log.e("SEND GCM ID", String.valueOf(url));
+
+                break;
+            case PlayPrank:
+                String selectedItem;
+                if (ItemSelected.itemSound == -2) // condition for HW functions to be treated as a special type of itemSound
+                    selectedItem = ItemSelected.itemCustomSound;
+                else
+                    selectedItem = ItemSelected.itemName;
+
+                broadcastResult = new Intent(String.valueOf(Type.MainActivity));
+
+                url = URLBuilder("sendmsg",
+                        "receiver_id=" + SharedPrefs.getFrndAppID(),
+                        "sender_id=" + SharedPrefs.getMyAppID(),
+                        "item=" + selectedItem,
+                        "repeat_count=" + ItemSelected.itemRepeatCount,
+                        "volume=" + (int) ItemSelected.itemVolume,
+                        "message=" + Action.PlayPrank,
+                        "currenttime=" + System.currentTimeMillis());
+
+                Log.e("PRANK DETAILS", String.valueOf(url));
+
+                break;
+            case NotifyPrankFailed:
+            case NotifyPrankSuccessful:
+
+                url = URLBuilder("sendmsg",
+                        "receiver_id=" + SharedPrefs.getFrndAppID(),
+                        "sender_id=" + SharedPrefs.getMyAppID(),
+                        "message=" + type);
+
+                Log.e("PRANK SUCCESS/FAILED", String.valueOf(url));
+
+                break;
+
+            case RegisterUser:
+                //broadcastResult = new Intent(String.valueOf(Type.UserRegistrationActivity));
+
+                String id = SharedPrefs.getAppServerID();
+
+                if (id == null) {
                     url = URLBuilder("index",
-                            "id=" + SharedPrefs.getAppServerID(),
+                            "model=" + Build.MODEL,
+                            "gcm_id=" + SharedPrefs.getMyGcmID(),
+                            "state=" + SharedPrefs.getServerState(),
+                            "name=" + SharedPrefs.getUserName(),
+                            "country_code=" + SharedPrefs.getUserCountryCode(),
+                            "phone=" + SharedPrefs.getUserPhoneNumber());
+
+                } else { //From prank dialog
+
+                    url = URLBuilder("index",
+                            "model=" + Build.MODEL,
+                            "gcm_id=" + SharedPrefs.getMyGcmID(),
                             "app_id=" + SharedPrefs.getMyAppID(),
-                            "pingServer=true");
+                            "id=" + SharedPrefs.getAppServerID(),
+                            "name=" + SharedPrefs.getUserName(),
+                            "country_code=" + SharedPrefs.getUserCountryCode(),
+                            "phone=" + SharedPrefs.getUserPhoneNumber());
 
-                    Log.e("Ping Server", String.valueOf(url));
-                    break;
+                }
 
-            }
+                Log.e("SignUp Details", String.valueOf(url));
+                break;
+            case RetrieveFriendId:
+
+                broadcastResult = new Intent(String.valueOf(Type.PrankDialogActivity));
+
+                url = URLBuilder("index",
+                        "id=" + numID,
+                        "app_id=" + SharedPrefs.getMyAppID(),
+                        "phone=" + number.trim());
+
+                Log.e("GET FRIEND ID", String.valueOf(url));
+
+                break;
+
+            case VerifyUserRegistration:
+                broadcastResult = new Intent(String.valueOf(Type.MainActivity));
+
+                url = URLBuilder("index",
+                        "id=" + SharedPrefs.getAppServerID(),
+                        "app_id=" + SharedPrefs.getMyAppID());
+
+                Log.e("Registration Check", String.valueOf(url));
+
+                break;
+            case PingServer:
+                url = URLBuilder("index",
+                        "id=" + SharedPrefs.getAppServerID(),
+                        "app_id=" + SharedPrefs.getMyAppID(),
+                        "pingServer=true");
+
+                Log.e("Ping Server", String.valueOf(url));
+                break;
+
+        }
     }
 
     public void showWaitDialog(String text) {
@@ -319,7 +319,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
 
                     Calendar date = Calendar.getInstance(TimeZone.getDefault());
                     date.set(Calendar.HOUR, (date.get(Calendar.HOUR) + 24));
-                   //date.set(Calendar.MINUTE, (date.get(Calendar.MINUTE) + 5));
+                    //date.set(Calendar.MINUTE, (date.get(Calendar.MINUTE) + 5));
                     SharedPrefs.setExpDate(date.getTime().toString());// Expiry date for myAppId is saved
 
                     break;
@@ -332,8 +332,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     Calendar serverPingDate = Calendar.getInstance(TimeZone.getDefault());
 
                     serverPingDate.set(Calendar.DAY_OF_MONTH,
-                            (serverPingDate.get(Calendar.DAY_OF_MONTH)+SharedPrefs.PING_SERVER_INTERVAL));
-
+                            (serverPingDate.get(Calendar.DAY_OF_MONTH) + SharedPrefs.PING_SERVER_INTERVAL));
 
 
                     Log.e("ExpiryDate", exp_date.getTime().toString());
@@ -351,9 +350,9 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     }
                     break;
                 case RegisterUser:
-                    if (resp.getString("result").equals("failed")){
+                    if (resp.getString("result").equals("failed")) {
                         delegate.onCompleteFailed();
-                    }else {
+                    } else {
                         Calendar exp = Calendar.getInstance(TimeZone.getDefault());
                         exp.set(Calendar.HOUR, (exp.get(Calendar.HOUR) + 24));
 
@@ -361,7 +360,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                         Calendar serverPing = Calendar.getInstance(TimeZone.getDefault());
 
                         serverPing.set(Calendar.DAY_OF_MONTH,
-                                (serverPing.get(Calendar.DAY_OF_MONTH)+SharedPrefs.PING_SERVER_INTERVAL));
+                                (serverPing.get(Calendar.DAY_OF_MONTH) + SharedPrefs.PING_SERVER_INTERVAL));
 
                         Log.e("ExpiryDate", exp.getTime().toString());
                         Log.e(TAG, resp.getString("app_id"));
@@ -383,7 +382,7 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                     Log.e("Success", resp.getString("success"));
                     Log.e("Failure", resp.getString("failure"));
                     //if (resp.getString("success").equals("1"))
-                        SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft()-1);
+                    SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft() - 1);
 
                     break;
 
@@ -420,9 +419,9 @@ public class AppServerConn extends AsyncTask<String, String, String> {
                 case PingServer:
                     if (resp.getString("result").equals("8")) {
                         Calendar serverPing = Calendar.getInstance(TimeZone.getDefault());
-                        serverPing.set(Calendar.DAY_OF_MONTH, (serverPing.get(Calendar.DAY_OF_MONTH)+6));
+                        serverPing.set(Calendar.DAY_OF_MONTH, (serverPing.get(Calendar.DAY_OF_MONTH) + 6));
                         SharedPrefs.setPingServerDate(serverPing.getTime().toString());
-                        Log.e("Server Ping Date",serverPing.getTime().toString());
+                        Log.e("Server Ping Date", serverPing.getTime().toString());
 
                     }
                     break;
@@ -446,15 +445,17 @@ public class AppServerConn extends AsyncTask<String, String, String> {
             String url = SharedPrefs.APP_SERVER_ADDR + page + ".php?";
 
             for (String value : params) {
-                String[] param =value.split("=");
-                url +=  param[0]+"="+URLEncoder.encode(param[1], "UTF-8") + "&";
+                String[] param = value.split("=");
+                url += param[0] + "=" + URLEncoder.encode(param[1], "UTF-8") + "&";
             }
             return new URL(url);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }catch (IndexOutOfBoundsException e){e.printStackTrace();}
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }

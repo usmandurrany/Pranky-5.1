@@ -12,103 +12,107 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<RelativeLayout
-    android:id="@+id/sideMenu"
-    android:layout_width="210dp"
-    android:layout_height="42dp"
-    android:layout_marginTop="5dp"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:background="@drawable/sm_show"
-    android:layout_marginLeft="-165dp"
-    android:scaleType="fitEnd"
 
-    >
-    <FrameLayout
-        android:id="@+id/smPrankCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="122dp">
+        <RelativeLayout
+            android:id="@+id/sideMenu"
+            android:layout_width="210dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/sm_show"
+            android:layout_marginLeft="-165dp"
+            android:scaleType="fitEnd"
 
+            >
 
-        <ImageView
-            android:id="@+id/smBlankButton"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:src="@mipmap/prank_count"
-           />
-        <TextSwitcher
-            android:id="@+id/smPrankCountText"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#fff"
-            android:padding="5dp"
-
-            />
-    </FrameLayout>
-<LinearLayout
-    android:id="@+id/smButtonGroup"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginTop="4dp"
-    android:layout_alignParentLeft="true"
-    android:layout_marginLeft="22dp"
-    android:visibility="visible">
-
-    <ImageView
-        android:id="@+id/smInfo"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@mipmap/info"
-        android:layout_marginLeft="0dp"
-
-        />
-    <ImageView
-        android:id="@+id/smHelp"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@mipmap/help"
-        android:layout_marginLeft="00dp"
-        />
-    <ImageView
-        android:id="@+id/smTerms"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@mipmap/terms"
-        android:layout_marginLeft="0dp"
-
-        />
-</LinearLayout>
-    <LinearLayout
-        android:id="@+id/smPrankLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="4dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
-        android:visibility="gone"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/smPrankLeftText"
-            android:padding="8dp"
-            android:textSize="15sp"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:text="Pranks Left"
-            android:textColor="#bf071a"/>
-    </LinearLayout>
+            <FrameLayout
+                android:id="@+id/smPrankCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="122dp">
 
 
-</RelativeLayout>
+                <ImageView
+                    android:id="@+id/smBlankButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:src="@mipmap/prank_count" />
+
+                <TextSwitcher
+                    android:id="@+id/smPrankCountText"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#fff"
+                    android:padding="5dp"
+
+                    />
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/smButtonGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="22dp"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/smInfo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@mipmap/info"
+                    android:layout_marginLeft="0dp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/smHelp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@mipmap/help"
+                    android:layout_marginLeft="00dp" />
+
+                <ImageView
+                    android:id="@+id/smTerms"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@mipmap/terms"
+                    android:layout_marginLeft="0dp"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/smPrankLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="15dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/smPrankLeftText"
+                    android:padding="8dp"
+                    android:textSize="15sp"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:text="Pranks Left"
+                    android:textColor="#bf071a" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
 
 
         <ImageView
@@ -121,10 +125,6 @@
             android:src="@mipmap/app_body" />
 
 
-
-
-
-
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
@@ -134,34 +134,33 @@
             android:layout_marginLeft="@dimen/viewpager_margin_left"
             android:layout_marginRight="@dimen/viewpager_margin_right"
             android:layout_marginTop="@dimen/viewpager_margin_top" />
-<FrameLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_above="@+id/clock_btn"
-    android:layout_centerHorizontal="true"
-    android:layout_marginBottom="@dimen/circle_indicator_margin_bottom"
-    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="3px"
-        android:src="@drawable/pager_indicator_vertical_bg"
-        android:background="@drawable/pager_indicator_horizontal_bg"
-        android:layout_marginTop="9dp"/>
-    <me.relex.circleindicator.CircleIndicator
-        android:id="@+id/pagerIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="10dp"
-        android:layout_marginTop="5dp"
-        app:ci_drawable="@mipmap/pagercircle_sel"
-        app:ci_drawable_unselected="@mipmap/pagercircle"
-        app:ci_height="5dp"
-        app:ci_width="5dp"/>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/clock_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/circle_indicator_margin_bottom"
+            android:orientation="vertical">
 
-</FrameLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="3px"
+                android:src="@drawable/pager_indicator_vertical_bg"
+                android:background="@drawable/pager_indicator_horizontal_bg"
+                android:layout_marginTop="9dp" />
 
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/pagerIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:layout_marginTop="5dp"
+                app:ci_drawable="@mipmap/pagercircle_sel"
+                app:ci_drawable_unselected="@mipmap/pagercircle"
+                app:ci_height="5dp"
+                app:ci_width="5dp" />
 
-
+        </FrameLayout>
 
 
         <ImageView
@@ -174,7 +173,7 @@
             android:layout_marginLeft="@dimen/clock_btn_margin_left"
             android:contentDescription=""
             android:src="@drawable/btn_clock_states"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY" />
 
         <ImageView
             android:id="@+id/timer_btn"
@@ -206,8 +205,7 @@
             android:src="@drawable/btn_settings_states"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            />
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

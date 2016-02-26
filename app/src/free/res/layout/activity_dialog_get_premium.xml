@@ -6,14 +6,8 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/popup_long" />
+    <include layout="@layout/layout_popup_long" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,8 +15,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="@dimen/dual_button_margin_bot"
-        android:layout_alignParentBottom="true"
-        >
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:id="@+id/btnBuyNow"
@@ -31,6 +24,7 @@
 
             android:scaleType="fitCenter"
             android:src="@drawable/btn_buy_now_states" />
+
         <ImageView
             android:id="@+id/btnShowAd"
             android:layout_width="@dimen/dual_button_width"
@@ -41,131 +35,122 @@
 
     </LinearLayout>
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_gravity="center_vertical|center_horizontal"
-    android:orientation="vertical"
-    android:layout_below="@id/close"
-    android:gravity="center">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/space_medium">
-        <TextView
-            android:id="@+id/lblPrankCount"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:layout_below="@id/btnClose"
+        android:gravity="center">
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="0"
-            android:textAllCaps="true"
-            android:textColor="#bf071a"
-            android:textIsSelectable="false"
-            android:textSize="@dimen/xlarge_30"
-            android:textStyle="bold"
-            android:layout_marginBottom="2dp"/>
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/space_medium">
+
+            <TextView
+                android:id="@+id/lblPrankCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="0"
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/xlarge_30"
+                android:textStyle="bold"
+                android:layout_marginBottom="2dp" />
+
+            <com.fournodes.ud.pranky.custom.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/pranks_left"
+                android:textAllCaps="true"
+                android:textColor="#bf071a"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/large_20"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="2dp" />
+        </LinearLayout>
+
         <com.fournodes.ud.pranky.custom.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="@string/pranks_left"
+            android:text="@string/go_premium_to_get_more"
             android:textAllCaps="true"
             android:textColor="#bf071a"
             android:textIsSelectable="false"
             android:textSize="@dimen/large_20"
             android:textStyle="bold"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="2dp"/>
-    </LinearLayout>
-
-    <com.fournodes.ud.pranky.custom.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:text="@string/go_premium_to_get_more"
-        android:textAllCaps="true"
-        android:textColor="#bf071a"
-        android:textIsSelectable="false"
-        android:textSize="@dimen/large_20"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/space_xlarge"/>
-
-    <LinearLayout
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="10dp">
-        <ImageView
-            android:layout_marginLeft="10dp"
-            android:id="@+id/logo_face"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/logo_gold"
-            />
-
+            android:layout_marginBottom="@dimen/space_xlarge" />
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:orientation="vertical"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:gravity="left">
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/logo_face"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@drawable/logo_gold" />
 
 
-            <com.fournodes.ud.pranky.custom.CustomTextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/no_ads_premium"
-                android:textAllCaps="true"
-                android:textColor="#e69e4c"
-                android:textIsSelectable="false"
-                android:textSize="@dimen/medium_18"
-                android:textStyle="bold" />
-            <com.fournodes.ud.pranky.custom.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/stealth_mode_premium"
-                android:textAllCaps="true"
-                android:textColor="#e69e4c"
-                android:textIsSelectable="false"
-                android:textSize="@dimen/medium_18"
-                android:textStyle="bold" />
-            <com.fournodes.ud.pranky.custom.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/unlimited_pranks_premium"
-                android:textAllCaps="true"
-                android:textColor="#e69e4c"
-                android:textIsSelectable="false"
-                android:textSize="@dimen/medium_18"
-                android:textStyle="bold" />
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:gravity="left">
+
+
+                <com.fournodes.ud.pranky.custom.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="@string/no_ads_premium"
+                    android:textAllCaps="true"
+                    android:textColor="#e69e4c"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/medium_18"
+                    android:textStyle="bold" />
+
+                <com.fournodes.ud.pranky.custom.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="@string/stealth_mode_premium"
+                    android:textAllCaps="true"
+                    android:textColor="#e69e4c"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/medium_18"
+                    android:textStyle="bold" />
+
+                <com.fournodes.ud.pranky.custom.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="@string/unlimited_pranks_premium"
+                    android:textAllCaps="true"
+                    android:textColor="#e69e4c"
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/medium_18"
+                    android:textStyle="bold" />
             </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
-
-
-
-
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="@dimen/close_btn_margin_right_long"
-        android:layout_marginTop="@dimen/close_btn_margin_top_long"
-        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>

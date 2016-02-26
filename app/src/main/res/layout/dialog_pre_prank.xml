@@ -5,6 +5,7 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:background="#aa000000">
+
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="wrap_content"
@@ -17,12 +18,14 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/waitAnim"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_marginBottom="20dp"
-                android:src="@drawable/facelogo_1" />
+                android:src="@drawable/transparent" />
+
             <ImageView
                 android:id="@+id/imgWait"
                 android:layout_width="120dp"
@@ -31,9 +34,7 @@
                 android:layout_marginLeft="42dp"
                 android:layout_marginRight="18dp"
                 android:layout_marginTop="00dp"
-                android:src="@drawable/dialog_wait_logo_animation"
-                />
-
+                android:src="@drawable/dialog_wait_logo_animation" />
 
 
         </FrameLayout>
@@ -49,23 +50,22 @@
             android:layout_marginBottom="15dp"
 
             />
+
         <com.fournodes.ud.pranky.custom.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtFriendName"
             android:textAllCaps="true"
             android:textSize="18sp"
-            android:textColor="#fff"
-            />
+            android:textColor="#fff" />
+
         <ImageView
             android:id="@+id/btnCancelPrank"
             android:layout_width="140dp"
             android:layout_height="70dp"
-            android:src="@drawable/btn_cancel_states"
-            />
+            android:src="@drawable/btn_cancel_states" />
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

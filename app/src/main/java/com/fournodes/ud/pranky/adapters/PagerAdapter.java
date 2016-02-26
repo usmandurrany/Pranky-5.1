@@ -21,16 +21,15 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
-
     @Override
     public android.support.v4.app.Fragment getItem(int pos) {
-           return this.fragments.get(pos);
+        return this.fragments.get(pos);
 
     }
 
     @Override
     public int getCount() {
-           return this.fragments.size();
+        return this.fragments.size();
 
     }
 

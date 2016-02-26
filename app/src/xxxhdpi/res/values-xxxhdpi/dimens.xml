@@ -78,11 +78,10 @@
     <dimen name="space_small">05dp</dimen>
 
 
-    <dimen name="stroke_size">7dp</dimen>    
+    <dimen name="stroke_size">7dp</dimen>
 
 
-    <dimen name="whl_duration_margin_bottom">0dp</dimen>    
-
+    <dimen name="whl_duration_margin_bottom">0dp</dimen>
 
 
 </resources>

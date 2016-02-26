@@ -17,8 +17,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.fournodes.ud.pranky.custom.CustomTextView;
 import com.fournodes.ud.pranky.R;
+import com.fournodes.ud.pranky.custom.CustomTextView;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.interfaces.Messenger;
 import com.fournodes.ud.pranky.network.AppServerConn;
@@ -77,13 +77,13 @@ public class PrePrankDialog {
                 prankCountDown.cancel();
             }
         });
-        waitAnim=(ImageView) dialog.findViewById(R.id.waitAnim);
+        waitAnim = (ImageView) dialog.findViewById(R.id.waitAnim);
         waitAnim.post(new Runnable() {
             @Override
             public void run() {
                 height = waitAnim.getDrawable().getBounds().height();
                 width = waitAnim.getDrawable().getBounds().width();
-                Log.e("Logo","Width "+ String.valueOf(width)+" Height "+String.valueOf(height));
+                Log.e("Logo", "Width " + String.valueOf(width) + " Height " + String.valueOf(height));
                 drawCircle();
 
 
@@ -106,16 +106,15 @@ public class PrePrankDialog {
         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
 
-
     }
 
-    public void setFriendName(String s){
+    public void setFriendName(String s) {
         CustomTextView friendName = (CustomTextView) dialog.findViewById(R.id.txtFriendName);
         friendName.setText(s);
     }
 
 
-    public void drawCircle(){
+    public void drawCircle() {
 
 
         // used to fit the circle into
@@ -160,7 +159,7 @@ public class PrePrankDialog {
         float textOffset = (textHeight / 2) - textPaint.descent();
 
 
-        prankCountDown =  new CountDownTimer(3000,16) {
+        prankCountDown = new CountDownTimer(3000, 16) {
             @Override
             public void onTick(long l) {
                 currentTime = System.currentTimeMillis();
@@ -189,7 +188,7 @@ public class PrePrankDialog {
                 canvas.drawCircle(centerWidth, centerHeight, radius, backgroundPaint);
 
                 // we want to start at -90°, 0° is pointing to the right
-                canvas.drawArc(circleBounds, -90, (float)(progress*360), false, progressPaint);
+                canvas.drawArc(circleBounds, -90, (float) (progress * 360), false, progressPaint);
 
                 // display text inside the circle
                /* canvas.drawText((double)(progressMillisecond/100)/10 + "s",
@@ -198,8 +197,8 @@ public class PrePrankDialog {
                         textPaint);*/
 
                 // draw handle or the circle
-                canvas.drawCircle((float)(centerWidth  + (Math.sin(progress * 2 * Math.PI) * radius)),
-                        (float)(centerHeight - (Math.cos(progress * 2 * Math.PI) * radius)),
+                canvas.drawCircle((float) (centerWidth + (Math.sin(progress * 2 * Math.PI) * radius)),
+                        (float) (centerHeight - (Math.cos(progress * 2 * Math.PI) * radius)),
                         handleRadius,
                         progressPaint);
 
@@ -228,7 +227,6 @@ public class PrePrankDialog {
         //Toast.makeText(MainActivity.this, String.valueOf(scale),Toast.LENGTH_SHORT).show();
         return (int) (dips * scale + 0.5f);
     }
-
 
 
 }

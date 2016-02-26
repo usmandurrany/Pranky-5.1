@@ -18,11 +18,11 @@ public class Tutorial implements View.OnClickListener {
     private int counter = 1;
 
     public Tutorial(Activity activity, Type page) {
-        this.activity=activity;
-        this.page=page;
+        this.activity = activity;
+        this.page = page;
     }
 
-    public void show(ViewTarget target, String title, String description){
+    public void show(ViewTarget target, String title, String description) {
         showcaseView = new ShowcaseView.Builder(activity)
                 .withMaterialShowcase()
                 .setTarget(target)
@@ -33,20 +33,21 @@ public class Tutorial implements View.OnClickListener {
                 .build();
     }
 
-    public void moveToNext(ViewTarget target, String title, String description){
-        if (showcaseView != null){
+    public void moveToNext(ViewTarget target, String title, String description) {
+        if (showcaseView != null) {
             showcaseView.setContentTitle(title);
             showcaseView.setContentText(description);
-            showcaseView.setShowcase(target,true);
+            showcaseView.setShowcase(target, true);
         }
     }
-    public void skipButtonDelay(){
-        if (showcaseView !=null){
+
+    public void skipButtonDelay() {
+        if (showcaseView != null) {
             showcaseView.hideButton();
             showcaseView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (showcaseView!=null) {
+                    if (showcaseView != null) {
 
                         if (showcaseView.onTouch(showcaseView, motionEvent)) {
 
@@ -65,14 +66,14 @@ public class Tutorial implements View.OnClickListener {
         }
     }
 
-    public void setVisible(boolean visible){
-     if (visible && showcaseView != null && !showcaseView.isShowing())
-         showcaseView.show();
-     else if(showcaseView != null && showcaseView.isShowing())
-        showcaseView.hide();
+    public void setVisible(boolean visible) {
+        if (visible && showcaseView != null && !showcaseView.isShowing())
+            showcaseView.show();
+        else if (showcaseView != null && showcaseView.isShowing())
+            showcaseView.hide();
     }
 
-    public boolean isShowing(){
+    public boolean isShowing() {
         if (showcaseView != null)
             return showcaseView.isShowing();
         else
@@ -80,16 +81,16 @@ public class Tutorial implements View.OnClickListener {
     }
 
 
-    public void end(){
+    public void end() {
         onClick(null);
         showcaseView = null;
     }
 
     @Override
     public void onClick(View view) {
-       if(showcaseView!= null){
+        if (showcaseView != null) {
             showcaseView.hide();
-            switch (page){
+            switch (page) {
                 case MainActivity:
                     SharedPrefs.setAppFirstLaunch(false);
                     break;

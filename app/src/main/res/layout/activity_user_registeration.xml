@@ -14,6 +14,7 @@
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
         android:src="@mipmap/app_body" />
+
     <ImageView
         android:id="@+id/skip"
         android:layout_marginTop="@dimen/setBtnTopMar"
@@ -24,40 +25,39 @@
         android:src="@drawable/btn_skip_states"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        />
+        android:layout_alignParentEnd="true" />
 
 
-<LinearLayout
-    android:id="@+id/header"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_below="@id/skip"
-    android:layout_centerHorizontal="true"
-    android:gravity="center_horizontal"
-    android:layout_marginTop="15dp">
-    <ImageView
-        android:layout_marginLeft="10dp"
-        android:id="@+id/logo_face"
-        android:layout_width="@dimen/reg_logo_size"
-        android:layout_height="@dimen/reg_logo_size"
-        android:src="@drawable/signup_logo"
-        />
-    <com.fournodes.ud.pranky.custom.CustomTextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up_spaced"
-        android:gravity="center"
-        android:textSize="@dimen/cat_title_size"
-        android:padding="5dp"
-        android:textColor="#bf071a"
-        android:id="@+id/title"
-        android:layout_marginTop="10dp"
-        />
+        android:orientation="vertical"
+        android:layout_below="@id/skip"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/logo_face"
+            android:layout_width="@dimen/reg_logo_size"
+            android:layout_height="@dimen/reg_logo_size"
+            android:src="@drawable/signup_logo" />
+
+        <com.fournodes.ud.pranky.custom.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up_spaced"
+            android:gravity="center"
+            android:textSize="@dimen/cat_title_size"
+            android:padding="5dp"
+            android:textColor="#bf071a"
+            android:id="@+id/title"
+            android:layout_marginTop="10dp" />
 
 
-</LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/regForm"
@@ -69,6 +69,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/viewpager_margin_right"
         android:layout_marginLeft="@dimen/viewpager_margin_left">
+
         <LinearLayout
             android:layout_margin="0dp"
             android:layout_width="match_parent"
@@ -83,9 +84,10 @@
                 android:ems="10"
                 android:id="@+id/usrName"
                 android:hint="@string/name"
-                android:textColor="#000"/>
+                android:textColor="#000" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_margin="0dp"
             android:layout_width="match_parent"
@@ -102,10 +104,11 @@
                 android:textColor="#000"
                 android:inputType="textAutoComplete"
                 android:imeOptions="actionNext"
-                android:nextFocusForward="@+id/usrNumber"/>
+                android:nextFocusForward="@+id/usrNumber" />
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_margin="0dp"
             android:layout_width="match_parent"
@@ -119,17 +122,16 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:padding="5dp"
-                android:textColor="#bf071a"
-                />
-<EditText
-    android:layout_width="55dp"
-    android:layout_height="wrap_content"
-    android:inputType="phone"
-    android:id="@+id/countryCode"
-    android:hint=""
-    android:textColorHint="#bf071a"
-    android:textColor="#000"
-    />
+                android:textColor="#bf071a" />
+
+            <EditText
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:id="@+id/countryCode"
+                android:hint=""
+                android:textColorHint="#bf071a"
+                android:textColor="#000" />
 
 
             <com.fournodes.ud.pranky.custom.CustomEditText
@@ -139,11 +141,12 @@
                 android:inputType="number"
                 android:id="@+id/usrNumber"
                 android:maxLength="15"
-                android:textColor="#000"/>
+                android:textColor="#000" />
 
         </LinearLayout>
 
     </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -156,8 +159,7 @@
         android:layout_marginTop="15dp"
         android:textColor="#bf071a"
         android:layout_marginRight="@dimen/viewpager_margin_right"
-        android:layout_marginLeft="@dimen/viewpager_margin_left"/>
-
+        android:layout_marginLeft="@dimen/viewpager_margin_left" />
 
 
     <ImageView
@@ -169,9 +171,6 @@
         android:layout_marginBottom="@dimen/prankit_btn_margin_bottom"
         android:scaleType="fitCenter"
         android:src="@drawable/btn_done_states" />
-
-
-
 
 
 </RelativeLayout>

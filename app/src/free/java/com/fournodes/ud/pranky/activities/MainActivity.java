@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,17 +28,11 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.fournodes.ud.pranky.utils.Analytics;
-import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
-import com.fournodes.ud.pranky.custom.CustomToast;
-import com.fournodes.ud.pranky.utils.DatabaseHelper;
-import com.fournodes.ud.pranky.models.ItemCategory;
-import com.fournodes.ud.pranky.models.ItemSelected;
-import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
 import com.fournodes.ud.pranky.adapters.PagerAdapter;
+import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.dialogs.InfoDialog;
 import com.fournodes.ud.pranky.dialogs.PrePrankDialog;
 import com.fournodes.ud.pranky.enums.Action;
@@ -49,10 +42,16 @@ import com.fournodes.ud.pranky.fragments.GridFragment;
 import com.fournodes.ud.pranky.gcm.GCMInitiate;
 import com.fournodes.ud.pranky.interfaces.IFragment;
 import com.fournodes.ud.pranky.interfaces.Messenger;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.models.ContactSelected;
+import com.fournodes.ud.pranky.models.GridItem;
+import com.fournodes.ud.pranky.models.ItemCategory;
+import com.fournodes.ud.pranky.models.ItemSelected;
 import com.fournodes.ud.pranky.network.AppServerConn;
-import com.fournodes.ud.pranky.objects.ContactSelected;
-import com.fournodes.ud.pranky.objects.GridItem;
+import com.fournodes.ud.pranky.utils.Analytics;
 import com.fournodes.ud.pranky.utils.Cleaner;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
 import com.fournodes.ud.pranky.utils.FontManager;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.analytics.HitBuilders;
@@ -143,7 +142,8 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 }
             }
         }
-    }; private BroadcastReceiver interActivityMessenger = new BroadcastReceiver() {
+    };
+    private BroadcastReceiver interActivityMessenger = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
@@ -231,8 +231,8 @@ public class MainActivity extends FragmentActivity implements Messenger {
             @Override
             public void onPageSelected(int position) {
 //Log.e("POSITION", String.valueOf(position));
-                Log.i(ItemCategory.getCategory(MainActivity.this,(position)), "Setting screen name");
-                mTracker.setScreenName("Screen-" + ItemCategory.getCategory(MainActivity.this,(position)));
+                Log.i(ItemCategory.getCategory(MainActivity.this, (position)), "Setting screen name");
+                mTracker.setScreenName("Screen-" + ItemCategory.getCategory(MainActivity.this, (position)));
                 mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
                 android.support.v4.app.Fragment fragment = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, pageNo);
@@ -271,22 +271,9 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                }
-                else if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound != null){
-                    /*********************** Calculate Sound Duration Beforehand ***************/
-                    customSoundIntent( new Intent(MainActivity.this, ClockDialogActivity.class));
-                    SharedPrefs.setBgMusicPlaying(true);
-                    clockLaunch = true;
+                } else
+                    startActivity(new Intent(MainActivity.this, ClockDialogActivity.class));
 
-                }
-                else if (ItemSelected.itemSound != -1 && ItemSelected.itemCustomSound == null){
-                    /*********************** Calculate Sound Duration Beforehand ***************/
-                    sysSoundIntent(new Intent(MainActivity.this, ClockDialogActivity.class));
-                    SharedPrefs.setBgMusicPlaying(true);
-                    clockLaunch = true;
-                }else if (ItemSelected.itemSound == -2){
-                    startActivity(new Intent(MainActivity.this, ClockDialogActivity.class).putExtra("ItemType","HardwareFunc"));
-                }
             }
         });
 
@@ -298,22 +285,9 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                }
-                else if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound != null){
-                    /*********************** Calculate Sound Duration Beforehand ***************/
-                    customSoundIntent( new Intent(MainActivity.this, TimerDialogActivity.class));
-                    SharedPrefs.setBgMusicPlaying(true);
-                    timerLaunch = true;
+                } else
+                    startActivity(new Intent(MainActivity.this, TimerDialogActivity.class));
 
-                }
-                else if (ItemSelected.itemSound != -1 && ItemSelected.itemCustomSound == null){
-                    /*********************** Calculate Sound Duration Beforehand ***************/
-                    sysSoundIntent(new Intent(MainActivity.this, TimerDialogActivity.class));
-                    SharedPrefs.setBgMusicPlaying(true);
-                    timerLaunch = true;
-                }else if (ItemSelected.itemSound == -2){
-                    startActivity(new Intent(MainActivity.this, TimerDialogActivity.class).putExtra("ItemType","HardwareFunc"));
-                }
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
@@ -367,10 +341,9 @@ public class MainActivity extends FragmentActivity implements Messenger {
                         cToast = new CustomToast(MainActivity.this, getString(R.string.toast_friend_id_timeout));
                         cToast.show();
                     }
-                } else if (SharedPrefs.getPranksLeft()<=0){
+                } else if (SharedPrefs.getPranksLeft() <= 0) {
                     startActivity(new Intent(MainActivity.this, GetPremiumDialogActivity.class));
-                }
-                else {
+                } else {
                     PrePrankDialog prePrankDiag = new PrePrankDialog(MainActivity.this);
                     prePrankDiag.delegate = MainActivity.this;
                     if (ContactSelected.getName() != null)
@@ -389,7 +362,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
             @Override
             public void onClick(View view) {
                 if (!open) {
-                /*************************** Menu Opened **************************************/
+                    /*************************** Menu Opened **************************************/
                     sideMenu.setBackgroundResource(R.drawable.sm_hide);
                     anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(146));
                     open = true;
@@ -410,7 +383,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
 
                 } else {
-                 /*************************** Menu Closed **************************************/
+                    /*************************** Menu Closed **************************************/
 
                     anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(146), 0);
                     open = false;
@@ -463,7 +436,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
         smBlankButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,GetPremiumDialogActivity.class));
+                startActivity(new Intent(MainActivity.this, GetPremiumDialogActivity.class));
             }
         });
 
@@ -473,7 +446,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        animate(prankbtn,500,0);
+        animate(prankbtn, 500, 0);
         //animPrankButton();
     }
 
@@ -492,8 +465,8 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
             /* Query the database, Select * WHERE category = categories[i] */
             Cursor c = db.query(DatabaseHelper.TABLE_ITEMS,
-                    null,DatabaseHelper.COLUMN_ITEM_CATEGORY + " = ?",
-                    new String[]{String.valueOf(j+1)},
+                    null, DatabaseHelper.COLUMN_ITEM_CATEGORY + " = ?",
+                    new String[]{String.valueOf(j + 1)},
                     null, null, null);
 
 
@@ -536,7 +509,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     Bundle args = new Bundle();
                    /* GridItem[] itemsArray = new GridItem[itemsList.size()];
                     itemsList.toArray(itemsArray);*/
-                    args.putString("category",  categories[j]);
+                    args.putString("category", categories[j]);
                     args.putParcelableArrayList("icons", itemsList);
                     GridFragment page = new GridFragment();
                     page.setArguments(args);
@@ -594,7 +567,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("Main Activity","Resumed");
+        Log.e("Main Activity", "Resumed");
 
         pingServer();
 
@@ -631,7 +604,6 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 mMessageReceiver, new IntentFilter(String.valueOf(Type.MainActivity)));
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 interActivityMessenger, new IntentFilter(String.valueOf(Type.MainActivity)));
-
 
 
     }
@@ -690,7 +662,8 @@ public class MainActivity extends FragmentActivity implements Messenger {
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_to_1_3);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -699,34 +672,38 @@ public class MainActivity extends FragmentActivity implements Messenger {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
         grow.setStartOffset(500);
         timer.startAnimation(grow);
     }
 
-    public void animate(final View view, final int duration, final int repeatCount){
+    public void animate(final View view, final int duration, final int repeatCount) {
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_to_1_1);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink_form_1_1);
                 view.startAnimation(shrink);
-                if (repeatCount > 0){
+                if (repeatCount > 0) {
                     shrink.setAnimationListener(new Animation.AnimationListener() {
                         @Override
-                        public void onAnimationStart(Animation animation) {}
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            animate(view, duration, repeatCount-1);
+                        public void onAnimationStart(Animation animation) {
                         }
 
                         @Override
-                        public void onAnimationRepeat(Animation animation) {}
+                        public void onAnimationEnd(Animation animation) {
+                            animate(view, duration, repeatCount - 1);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
                     });
                 }
             }
@@ -739,7 +716,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
         view.startAnimation(grow);
     }
 
-    public void pingServer(){
+    public void pingServer() {
         if (SharedPrefs.getPingServerDate() != null) {
             try {
                 // Convert the expDate in shared prefs to CALENDAR type for comparison
@@ -750,7 +727,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
                 // Get current Time from device for comparison
                 Calendar today = Calendar.getInstance(TimeZone.getDefault());
                 if (pingServerDate.before(today)) {
-                new AppServerConn(MainActivity.this,Action.PingServer).execute();
+                    new AppServerConn(MainActivity.this, Action.PingServer).execute();
                 }
 
             } catch (ParseException e) {
@@ -759,101 +736,81 @@ public class MainActivity extends FragmentActivity implements Messenger {
         }
     }
 
-    public void showPranksLeft(){
+    public void showPranksLeft() {
 
-            sideMenu.setBackgroundResource(R.drawable.sm_hide);
-            smButtonGroup.setVisibility(View.GONE);
-            smPrankLeft.setVisibility(View.VISIBLE);
-            anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(146));
-            anim.setDuration(500).start();
-            open = true;
-            anim.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
+        sideMenu.setBackgroundResource(R.drawable.sm_hide);
+        smButtonGroup.setVisibility(View.GONE);
+        smPrankLeft.setVisibility(View.VISIBLE);
+        anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(146));
+        anim.setDuration(500).start();
+        open = true;
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
 
-                }
+            }
 
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    Handler delayedSetText = new Handler();
-                    delayedSetText.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (prankCount!=null)
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                Handler delayedSetText = new Handler();
+                delayedSetText.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (prankCount != null)
                             prankCount.setText(String.valueOf(SharedPrefs.getPranksLeft()));
+                    }
+                }, 1000);
+
+                smClose = new Handler();
+                smClose.postDelayed(new Runnable() {
+                    public void run() {
+                        if (open) {
+                            anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(146), 0);
+                            open = false;
+                            sideMenu.setBackgroundResource(R.drawable.sm_show);
+                            anim.setDuration(500);
+                            anim.start();
+                            smClose.removeCallbacks(this);
+                            anim.addListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animator) {
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animator) {
+                                    smPrankLeft.setVisibility(View.GONE);
+                                    smButtonGroup.setVisibility(View.VISIBLE);
+                                    // animate(prankCount,500,5);
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animator) {
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animator) {
+                                }
+                            });
+
                         }
-                    },1000);
+                    }
+                }, 3000);
 
-                    smClose = new Handler();
-                    smClose.postDelayed(new Runnable() {
-                        public void run() {
-                            if (open) {
-                                anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(146), 0);
-                                open = false;
-                                sideMenu.setBackgroundResource(R.drawable.sm_show);
-                                anim.setDuration(500);
-                                anim.start();
-                                smClose.removeCallbacks(this);
-                                anim.addListener(new Animator.AnimatorListener() {
-                                    @Override
-                                    public void onAnimationStart(Animator animator) {}
-
-                                    @Override
-                                    public void onAnimationEnd(Animator animator) {
-                                        smPrankLeft.setVisibility(View.GONE);
-                                        smButtonGroup.setVisibility(View.VISIBLE);
-                                        // animate(prankCount,500,5);
-                                    }
-
-                                    @Override
-                                    public void onAnimationCancel(Animator animator) {}
-
-                                    @Override
-                                    public void onAnimationRepeat(Animator animator) {}
-                                });
-
-                            }
-                        }
-                    }, 3000);
-
-
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animator) {}
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {}
-            });
-
-
-    }
-    public void customSoundIntent(final Intent intent){
-        PreviewMediaPlayer previewMediaPlayer = PreviewMediaPlayer.getInstance(MainActivity.this);
-        previewMediaPlayer.getDurInMills(ItemSelected.itemCustomSound, new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                int durInMillis = mp.getDuration();
-                intent.putExtra("ItemType","CustomSound");
-                intent.putExtra("Duration",durInMillis);
-                startActivity(intent);
 
             }
-        });
-    }
-    public void sysSoundIntent(final Intent intent){
-        PreviewMediaPlayer previewMediaPlayer = PreviewMediaPlayer.getInstance(MainActivity.this);
-        previewMediaPlayer.getDurInMills(ItemSelected.itemCustomSound, new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                int durInMillis = mp.getDuration();
-                intent.putExtra("ItemType","CustomSound");
-                intent.putExtra("Duration",durInMillis);
-                startActivity(intent);
 
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
             }
         });
+
+
     }
+
 }
 
 

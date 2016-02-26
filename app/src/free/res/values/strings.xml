@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Pranky</string>
-    <string name="version">Version - 1.2.2</string>
+    <string name="version">Version - 1.3.0</string>
     <string name="title_activity_main">Main</string>
 
     <string name="copyright">Copyrights
@@ -97,7 +97,7 @@
     <string name="notification_pranked_title">Pranked!</string>
     <string name="notification_prank_back">Prank Back</string>
 
-    <string-array name="countries" >
+    <string-array name="countries">
         <item>af,93,Afghanistan</item>
         <item>al,355,Albania</item>
         <item>dz,213,Algeria</item>
@@ -305,15 +305,15 @@
         <item>zw,263,Zimbabwe</item>
     </string-array>
 
-     <string-array name="categories">
-     <item>horns</item>
-     <item>people</item>
-     <item>animal</item>
-     <item>suspense</item>
-     <item>objects</item>
-     <item>mobile</item>
-     <item>machines</item>
-     <item>custom</item>
+    <string-array name="categories">
+        <item>horns</item>
+        <item>people</item>
+        <item>animal</item>
+        <item>suspense</item>
+        <item>objects</item>
+        <item>mobile</item>
+        <item>machines</item>
+        <item>custom</item>
     </string-array>
 
 </resources>

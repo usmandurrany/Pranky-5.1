@@ -15,15 +15,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
-import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
+import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.dialogs.DisplayContactsDialog;
 import com.fournodes.ud.pranky.enums.Action;
-import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.enums.Type;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.receivers.InvalidIDTimeout;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
@@ -111,8 +111,8 @@ public class PrankDialogActivity extends Activity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-        ImageView btndiagclose = (ImageView) findViewById(R.id.close);
-        final ImageView btnset = (ImageView) findViewById(R.id.set);
+        ImageView btndiagclose = (ImageView) findViewById(R.id.btnClose);
+        final ImageView btnset = (ImageView) findViewById(R.id.btnSet);
         frndID = (EditText) findViewById(R.id.txtfrndID);
         ImageView btnShowContacts = (ImageView) findViewById(R.id.btnShowContacts);
         btnShowContacts.setOnClickListener(new View.OnClickListener() {

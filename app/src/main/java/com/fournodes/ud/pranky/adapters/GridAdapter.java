@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.objects.GridItem;
 import com.fournodes.ud.pranky.R;
+import com.fournodes.ud.pranky.models.GridItem;
 
 public class GridAdapter extends BaseAdapter {
 
@@ -61,7 +61,7 @@ public class GridAdapter extends BaseAdapter {
         View view = convertView;
         ViewHolder viewHolder;
 
-         if (view == null) {
+        if (view == null) {
 
             view = mInflater.inflate(R.layout.fragment_gridview_item, parent, false);
             viewHolder = new ViewHolder();
@@ -71,9 +71,9 @@ public class GridAdapter extends BaseAdapter {
             //Log.e("Grid Adapter View","Null");
 
         } else {
-         //   Log.e("Grid Adapter View","Not Null");
+            //   Log.e("Grid Adapter View","Not Null");
 
-           viewHolder = (ViewHolder) view.getTag();
+            viewHolder = (ViewHolder) view.getTag();
 
         }
 
@@ -86,11 +86,10 @@ public class GridAdapter extends BaseAdapter {
 
     private void setCatImage(int pos, ViewHolder viewHolder, Integer img) {
         if (img == R.mipmap.addmore) {
-        viewHolder.itemImage.setBackgroundResource(R.drawable.btn_addsound_states);
-        //viewHolder.itemImage.setTag(R.drawable.btn_addsound_states);
+            viewHolder.itemImage.setBackgroundResource(R.drawable.btn_addsound_states);
+            //viewHolder.itemImage.setTag(R.drawable.btn_addsound_states);
 
-        }
-       else {
+        } else {
 
             try {
                 String name = context.getResources().getResourceEntryName(img) + "_hover";

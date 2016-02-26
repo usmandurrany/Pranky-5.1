@@ -32,14 +32,16 @@ public class CustomToast {
         toastText = (TextView) customToast.findViewById(R.id.toastText);
         toastText.setText(ToastText);
         toast = new Toast(context);
-        toast.setGravity(Gravity.BOTTOM,0,dipsToPixels(75));
+        toast.setGravity(Gravity.BOTTOM, 0, dipsToPixels(75));
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(customToast);
     }
+
     private int dipsToPixels(int dips) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dips * scale + 0.5f);
     }
+
     public void show() {
         init();
         toast.show();

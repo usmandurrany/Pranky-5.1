@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pranky  Premium</string>
+    <string name="app_name">Pranky Premium</string>
     <string name="version">Version - 1.2.2</string>
     <string name="title_activity_main">Main</string>
 
@@ -35,7 +35,9 @@
     <string name="remote_prank">Remote Prank</string>
     <string name="ss">SS</string>
     <string name="sign_up_spaced">S I G N U P</string>
-    <string name="sign_up_notice">If you don\'t want to sign up at the moment, you can always skip it.</string>
+    <string name="sign_up_notice">If you don\'t want to sign up at the moment, you can always skip
+        it.
+    </string>
     <string name="name">Name</string>
     <string name="country">Country</string>
     <string name="number">Number</string>
@@ -49,16 +51,18 @@
     <string name="pranking_spaced">P r a n k i n g</string>
     <string name="pranking_dots_spaced">P r a n k i n g ...</string>
     <string name="my_id">My ID</string>
-    <string name="toast_friend_unavailable">"Your  friend  is  unavailable "</string>
-    <string name="toast_prank_success">"Your  friend  has  been  pranked "</string>
-    <string name="toast_network_unavailable">"Network  or server unavailable "</string>
-    <string name="notification_logged_out">You  have  been  logged  out</string>
-    <string name="toast_select_sound">Select  a  sound  first</string>
+    <string name="toast_friend_unavailable">"Your friend is unavailable "</string>
+    <string name="toast_prank_success">"Your friend has been pranked "</string>
+    <string name="toast_network_unavailable">"Network or server unavailable "</string>
+    <string name="notification_logged_out">You have been logged out</string>
+    <string name="toast_select_sound">Select a sound first</string>
     <string name="toast_friend_id_timeout">Please wait 60 seconds before trying again</string>
-    <string name="toast_select_non_custom_sound">A  non-custom  sound  should  be  selected</string>
+    <string name="toast_select_non_custom_sound">A non-custom sound should be selected</string>
     <string name="tut_set_playback_time_title">Set playback time</string>
-    <string name="tut_set_playback_time_desc">Tap on the timer icon to play the sound after a specified interval</string>
-    <string name="loading_ad_spaced">L o a d i n g   A d ...</string>
+    <string name="tut_set_playback_time_desc">Tap on the timer icon to play the sound after a
+        specified interval
+    </string>
+    <string name="loading_ad_spaced">L o a d i n g A d ...</string>
     <string name="toast_time_passed">Selected time has passed.</string>
     <string name="tut_select_sound_title">Select a sound</string>
     <string name="tut_select_sound_desc">Tap on the icon to pick a sound from your phone</string>
@@ -72,31 +76,35 @@
     <string name="tut_prank_friend_desc">Tap the button to save the ID</string>
     <string name="paring_spaced">P a i r i n g ...</string>
     <string name="toast_enter_friend_id">Enter friends ID</string>
-    <string name="tut_prank_friend_desc2">Enter your \'Friend\'s ID\' found in the settings popup.</string>
+    <string name="tut_prank_friend_desc2">Enter your \'Friend\'s ID\' found in the settings popup.
+    </string>
     <string name="tut_time_attack_title">Time Attack</string>
-    <string name="tut_time_attack_desc">Tap on the set button to set the timer and wait for your sound to play</string>
-    <string name="toast_min_time_limit">Minimum  time  is  5  seconds</string>
+    <string name="tut_time_attack_desc">Tap on the set button to set the timer and wait for your
+        sound to play
+    </string>
+    <string name="toast_min_time_limit">Minimum time is 5 seconds</string>
     <string name="tut_time_attack_desc2">Select the timer to 5 seconds by moving the wheel</string>
-    <string name="please_wait_spaced">P l e a s e    W a i t ...</string>
-    <string name="syncing_contacts_spaced">S y n c i n g   C o n t a c t s ...</string>
-    <string name="toast_invalid_number">Invalid  number</string>
+    <string name="please_wait_spaced">P l e a s e W a i t ...</string>
+    <string name="syncing_contacts_spaced">S y n c i n g C o n t a c t s ...</string>
+    <string name="toast_invalid_number">Invalid number</string>
     <string name="refreshing_spaced">R e f r e s h i n g ...</string>
-    <string name="fetching_id_spaced">F e t c h i n g   I D ...</string>
+    <string name="fetching_id_spaced">F e t c h i n g I D ...</string>
     <string name="toast_contact_added">" contacts added"</string>
     <string name="toast_contact_removed">" contacts removed"</string>
     <string name="toast_no_change">No change</string>
-    <string name="select_number">Select  a  number</string>
+    <string name="select_number">Select a number</string>
     <string name="toast_volume_low">Volume too low !</string>
     <string name="tut_add_sound_title">Add more sounds</string>
     <string name="tut_add_sound_desc">Tap on the \'+\' to add a custom sound of your choice</string>
     <string name="tut_select_sound">Select a sound</string>
-    <string name="tut_select_sound_desc2">Tap on the icon to preview the sound and select it</string>
+    <string name="tut_select_sound_desc2">Tap on the icon to preview the sound and select it
+    </string>
     <string name="notification_pranked_by">"You have been pranked by "</string>
     <string name="notification_pranked">You have been pranked</string>
     <string name="notification_pranked_title">Pranked!</string>
     <string name="notification_prank_back">Prank Back</string>
 
-    <string-array name="countries" >
+    <string-array name="countries">
         <item>af,93,Afghanistan</item>
         <item>al,355,Albania</item>
         <item>dz,213,Algeria</item>
@@ -304,15 +312,15 @@
         <item>zw,263,Zimbabwe</item>
     </string-array>
 
-     <string-array name="categories">
-     <item>horns</item>
-     <item>people</item>
-     <item>animal</item>
-     <item>suspense</item>
-     <item>objects</item>
-     <item>mobile</item>
-     <item>machines</item>
-     <item>custom</item>
+    <string-array name="categories">
+        <item>horns</item>
+        <item>people</item>
+        <item>animal</item>
+        <item>suspense</item>
+        <item>objects</item>
+        <item>mobile</item>
+        <item>machines</item>
+        <item>custom</item>
     </string-array>
 
 </resources>

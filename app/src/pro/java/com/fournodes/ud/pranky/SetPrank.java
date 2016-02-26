@@ -25,13 +25,13 @@ public class SetPrank {
         this.context = context;
         this.day = day;
         this.min = min;
-        this.sec=sec;
+        this.sec = sec;
         this.ampm = ampm;
-        this.type=type;
+        this.type = type;
         if (type == Type.ClockDialogActivity)
             this.hr = (hr + 1);
         else
-            this.hr=hr;
+            this.hr = hr;
     }
 
     public void get24HrTime() {
@@ -104,7 +104,7 @@ public class SetPrank {
         intent.putExtra("repeatCount", ItemSelected.itemRepeatCount);
         intent.putExtra("volume", (int) ItemSelected.itemVolume);
 
-       // Toast.makeText(context, String.valueOf(Sound.itemRepeatCount), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context, String.valueOf(Sound.itemRepeatCount), Toast.LENGTH_SHORT).show();
 
 
         final int _id = (int) System.currentTimeMillis();
@@ -115,7 +115,7 @@ public class SetPrank {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, schAlarm.getTimeInMillis(), pendingIntent);
 
-        SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft()-1);
+        SharedPrefs.setPranksLeft(SharedPrefs.getPranksLeft() - 1);
 
         //Toast.makeText(context, "Alarm set", Toast.LENGTH_LONG).show();
 

@@ -71,7 +71,6 @@
     <dimen name="dual_button_height">65dp</dimen>
 
 
-
     <dimen name="xlarge_30">20sp</dimen>
     <dimen name="large_20">16sp</dimen>
     <dimen name="medium_18">12sp</dimen>
@@ -81,7 +80,7 @@
     <dimen name="space_medium">3dp</dimen>
     <dimen name="space_small">2dp</dimen>
 
-        <dimen name="stroke_size">2dp</dimen>    
-    <dimen name="whl_duration_margin_bottom">-15dp</dimen>    
+    <dimen name="stroke_size">2dp</dimen>
+    <dimen name="whl_duration_margin_bottom">-15dp</dimen>
 
 </resources>

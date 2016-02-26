@@ -13,14 +13,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
-import com.fournodes.ud.pranky.custom.CustomToast;
-import com.fournodes.ud.pranky.utils.DatabaseHelper;
-import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
+import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.enums.Type;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
 import com.fournodes.ud.pranky.utils.FileChooser;
 import com.fournodes.ud.pranky.utils.FontManager;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
@@ -54,13 +54,13 @@ public class AddSoundDialogActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog_addsound);
         onWindowFocusChanged(true);
-        previewMediaPlayer= PreviewMediaPlayer.getInstance(this);
+        previewMediaPlayer = PreviewMediaPlayer.getInstance(this);
 
         db = new DatabaseHelper(AddSoundDialogActivity.this);
         eTextFileName = (EditText) findViewById(R.id.txtSelSound);
         eTextFileName.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
         ImageView buttonBrowse = (ImageView) findViewById(R.id.btnMusicToggle);
-        ImageView buttonClose = (ImageView) findViewById(R.id.btnDiagClose);
+        ImageView buttonClose = (ImageView) findViewById(R.id.btnClose);
         iconCustom = (ImageView) findViewById(R.id.custom2);
         buttonSave = (ImageView) findViewById(R.id.btnSave);
 
@@ -100,22 +100,22 @@ public class AddSoundDialogActivity extends Activity {
                                     fileSelected = file;
                                     previewMediaPlayer.getDurInMills(fileSelected.getAbsolutePath(),
                                             new MediaPlayer.OnPreparedListener() {
-                                        @Override
-                                        public void onPrepared(MediaPlayer mp) {
-                                            durInMillis = mp.getDuration();
-                                            Log.e("Add Sound", "Sound Duration "+String.valueOf(durInMillis));
-                                            if (durInMillis<60000) {
-                                                eTextFileName.setText(fileName);
-                                                if (mTutorial != null)
-                                                    mTutorial.moveToNext(new ViewTarget(iconCustom),
-                                                            getString(R.string.tut_pick_icon_title),
-                                                            getString(R.string.tut_pick_icon_desc));
-                                            }else{
-                                                Toast.makeText(AddSoundDialogActivity.this,
-                                                        R.string.toast_sound_duration, Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
+                                                @Override
+                                                public void onPrepared(MediaPlayer mp) {
+                                                    durInMillis = mp.getDuration();
+                                                    Log.e("Add Sound", "Sound Duration " + String.valueOf(durInMillis));
+                                                    if (durInMillis < 60000) {
+                                                        eTextFileName.setText(fileName);
+                                                        if (mTutorial != null)
+                                                            mTutorial.moveToNext(new ViewTarget(iconCustom),
+                                                                    getString(R.string.tut_pick_icon_title),
+                                                                    getString(R.string.tut_pick_icon_desc));
+                                                    } else {
+                                                        Toast.makeText(AddSoundDialogActivity.this,
+                                                                R.string.toast_sound_duration, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
 
                                 } else
                                     Toast.makeText(AddSoundDialogActivity.this,
@@ -125,7 +125,7 @@ public class AddSoundDialogActivity extends Activity {
                         }
 
                 ).showDialog();
-             }
+            }
         });
 
 
@@ -150,13 +150,13 @@ public class AddSoundDialogActivity extends Activity {
                     values.put(DatabaseHelper.COLUMN_ITEM_CATEGORY, 8);//Custom
 
 
-                    databse.insert(DatabaseHelper.TABLE_ITEMS,"null",values);
+                    databse.insert(DatabaseHelper.TABLE_ITEMS, "null", values);
 
                 } else
-                    new CustomToast(AddSoundDialogActivity.this,getString(R.string.tut_pick_icon_title)).show();
+                    new CustomToast(AddSoundDialogActivity.this, getString(R.string.tut_pick_icon_title)).show();
 
                 SharedPrefs.setCusSoundAdded(true);
-                Log.e("Sound Added",String.valueOf(SharedPrefs.isCusSoundAdded()));
+                Log.e("Sound Added", String.valueOf(SharedPrefs.isCusSoundAdded()));
                 finish();
             }
         });

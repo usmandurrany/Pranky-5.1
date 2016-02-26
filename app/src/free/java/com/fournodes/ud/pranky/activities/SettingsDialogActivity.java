@@ -11,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.gcm.GCMInitiate;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.utils.FontManager;
 
@@ -28,7 +28,7 @@ import java.util.TimeZone;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class SettingsDialogActivity extends Activity implements View.OnClickListener{
+public class SettingsDialogActivity extends Activity implements View.OnClickListener {
 
     private View decorView;
     private AppServerConn appServerConn;
@@ -56,7 +56,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
         stealthMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     startActivity(new Intent(SettingsDialogActivity.this, GetPremiumDialogActivity.class));
                     finish();
                 }
@@ -78,23 +78,25 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
                 }
 
 
-
                 if (SharedPrefs.isBgMusicEnabled()) {
-                try {
+                    try {
                         BackgroundMusic.setContext(SettingsDialogActivity.this);
                         BackgroundMusic.play();
-                     }catch(IllegalStateException e){Log.e("Settings Dialog",e.toString());}
+                    } catch (IllegalStateException e) {
+                        Log.e("Settings Dialog", e.toString());
+                    }
                 } else {
-                    try
-                    {
+                    try {
                         BackgroundMusic.stop();
-                    }catch (IllegalStateException e){Log.e("Settings Dialog",e.toString());}
+                    } catch (IllegalStateException e) {
+                        Log.e("Settings Dialog", e.toString());
+                    }
 
                 }
             }
         });
 
-        ImageView btndiagclose = (ImageView) findViewById(R.id.btnDiagClose);
+        ImageView btndiagclose = (ImageView) findViewById(R.id.btnClose);
         TextView bgmusic = (TextView) findViewById(R.id.txtBGMusic);
         final LinearLayout remotePrankID = (LinearLayout) findViewById(R.id.layoutRemoteID);
         final TextView myid = (TextView) findViewById(R.id.txtmyID);
@@ -104,8 +106,8 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
 
         // Get myAppID form shared prefs and display it in the dialog
         String myID = SharedPrefs.getMyAppID();
-        if (myID!=null)
-        myID = myID.replaceAll(".(?=.)", "$0 ");
+        if (myID != null)
+            myID = myID.replaceAll(".(?=.)", "$0 ");
         myid.setText(myID);
 
 
@@ -131,7 +133,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
 
                 if (isChecked) {
                     try {
-                        Log.e("Toggle","TRUE");
+                        Log.e("Toggle", "TRUE");
                         // Convert the expDate in shared prefs to CALENDAR type for comparision
                         Calendar exp = Calendar.getInstance(TimeZone.getDefault());
                         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
@@ -149,8 +151,9 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
                             // Resend the stored myAppID to server
                             //Send the GCM id and the myAppID as args
                             SharedPrefs.setServerState(1);
-                            appServerConn= new AppServerConn(Action.UpdateAvailability);
-                            appServerConn.execute();;
+                            appServerConn = new AppServerConn(Action.UpdateAvailability);
+                            appServerConn.execute();
+                            ;
                         }
                         // serverState is 0 and myAppId has expired
                         else if (SharedPrefs.getServerState() == 0 && exp.before(today)) {
@@ -159,7 +162,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
                             // Request new appID from server
                             SharedPrefs.setServerState(1);
                             SharedPrefs.setMyAppID("");
-                            appServerConn= new AppServerConn(Action.RenewAppId);
+                            appServerConn = new AppServerConn(Action.RenewAppId);
                             appServerConn.execute();
 
                         }
@@ -191,10 +194,7 @@ public class SettingsDialogActivity extends Activity implements View.OnClickList
         });
 
 
-
-
     }
-
 
 
     @Override

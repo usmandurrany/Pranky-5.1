@@ -48,15 +48,18 @@
 
 
     </style>
+
     <style name="ShowCaseViewTheme" parent="ShowcaseView">
         <item name="sv_backgroundColor">#dae51249</item>
         <item name="sv_showcaseColor">#7a2526</item>
         <item name="sv_buttonText">Next</item>
 
     </style>
+
     <style name="ShowCaseViewCloseButton" parent="ShowCaseViewTheme">
         <item name="sv_buttonText">Skip</item>
     </style>
+
     <style name="ShowcaseButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

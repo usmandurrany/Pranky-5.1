@@ -9,7 +9,8 @@ import android.widget.AdapterView;
  */
 public class Cleaner {
 
-    public Cleaner(){}
+    public Cleaner() {
+    }
 
     public static void unbindDrawables(View view) {
         if (view != null) {

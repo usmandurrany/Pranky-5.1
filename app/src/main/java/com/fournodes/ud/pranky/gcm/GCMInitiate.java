@@ -52,12 +52,12 @@ public class GCMInitiate {
             else if (SharedPrefs.getServerState() == 1 && SharedPrefs.getMyGcmID() == null) {
                 if (checkPlayServices()) {
                     context.startService(new Intent(
-                            context,GCMRegistrationService.class)
+                            context, GCMRegistrationService.class)
                             .putExtra(String.valueOf(Action.Callback), String.valueOf(Type.MainActivity)));
                 }
 
 
-            } else if (!SharedPrefs.isSentGcmIDToServer() && SharedPrefs.getMyAppID() == null){
+            } else if (!SharedPrefs.isSentGcmIDToServer() && SharedPrefs.getMyAppID() == null) {
                 new AppServerConn(Action.RegisterDevice).execute();
             }
 

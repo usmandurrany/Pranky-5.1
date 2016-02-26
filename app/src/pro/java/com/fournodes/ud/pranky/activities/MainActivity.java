@@ -190,8 +190,8 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
                 //Log.e("POSITION", String.valueOf(position));
-                Log.i(ItemCategory.getCategory(MainActivity.this,(position)), "Setting screen name");
-                mTracker.setScreenName("Screen-" + ItemCategory.getCategory(MainActivity.this,(position)));
+                Log.i(ItemCategory.getCategory(MainActivity.this, (position)), "Setting screen name");
+                mTracker.setScreenName("Screen-" + ItemCategory.getCategory(MainActivity.this, (position)));
                 mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
                 android.support.v4.app.Fragment fragment = (android.support.v4.app.Fragment) pm.instantiateItem(mGridPager, pageNo);
@@ -229,8 +229,7 @@ public class MainActivity extends FragmentActivity {
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                }
-                else {
+                } else {
                     if (timerLaunch)
                         timerLaunch = false;
                     clockLaunch = true;
@@ -249,8 +248,7 @@ public class MainActivity extends FragmentActivity {
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
-                }
-                else {
+                } else {
                     SharedPrefs.setBgMusicPlaying(true);
                     timerLaunch = true;
                     Intent timerDialog = new Intent(MainActivity.this, TimerDialogActivity.class);
@@ -327,7 +325,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 if (!open) {
-                /*************************** Menu Opened **************************************/
+                    /*************************** Menu Opened **************************************/
                     sideMenu.setBackgroundResource(R.drawable.sm_hide);
                     anim = ObjectAnimator.ofFloat(sideMenu, "translationX", 0, dipsToPixels(110));
                     open = true;
@@ -348,7 +346,7 @@ public class MainActivity extends FragmentActivity {
 
 
                 } else {
-                 /*************************** Menu Closed **************************************/
+                    /*************************** Menu Closed **************************************/
 
                     anim = ObjectAnimator.ofFloat(sideMenu, "translationX", dipsToPixels(110), 0);
                     open = false;
@@ -405,7 +403,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        animate(prankbtn,500,0);
+        animate(prankbtn, 500, 0);
         //animPrankButton();
     }
 
@@ -424,8 +422,8 @@ public class MainActivity extends FragmentActivity {
 
             /* Query the database, Select * WHERE category = categories[i] */
             Cursor c = db.query(DatabaseHelper.TABLE_ITEMS,
-                    null,DatabaseHelper.COLUMN_ITEM_CATEGORY + " = ?",
-                    new String[]{String.valueOf(j+1)},
+                    null, DatabaseHelper.COLUMN_ITEM_CATEGORY + " = ?",
+                    new String[]{String.valueOf(j + 1)},
                     null, null, null);
 
 
@@ -468,7 +466,7 @@ public class MainActivity extends FragmentActivity {
                     Bundle args = new Bundle();
                    /* GridItem[] itemsArray = new GridItem[itemsList.size()];
                     itemsList.toArray(itemsArray);*/
-                    args.putString("category",  categories[j]);
+                    args.putString("category", categories[j]);
                     args.putParcelableArrayList("icons", itemsList);
                     GridFragment page = new GridFragment();
                     page.setArguments(args);
@@ -563,7 +561,6 @@ public class MainActivity extends FragmentActivity {
                 interActivityMessenger, new IntentFilter(String.valueOf(Type.MainActivity)));
 
 
-
     }
 
 
@@ -620,7 +617,8 @@ public class MainActivity extends FragmentActivity {
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_to_1_3);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -629,34 +627,38 @@ public class MainActivity extends FragmentActivity {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
         grow.setStartOffset(500);
         timer.startAnimation(grow);
     }
 
-    public void animate(final View view, final int duration, final int repeatCount){
+    public void animate(final View view, final int duration, final int repeatCount) {
         Animation grow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.grow_to_1_1);
         grow.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 Animation shrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink_form_1_1);
                 view.startAnimation(shrink);
-                if (repeatCount > 0){
+                if (repeatCount > 0) {
                     shrink.setAnimationListener(new Animation.AnimationListener() {
                         @Override
-                        public void onAnimationStart(Animation animation) {}
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            animate(view, duration, repeatCount-1);
+                        public void onAnimationStart(Animation animation) {
                         }
 
                         @Override
-                        public void onAnimationRepeat(Animation animation) {}
+                        public void onAnimationEnd(Animation animation) {
+                            animate(view, duration, repeatCount - 1);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
                     });
                 }
             }
@@ -669,7 +671,7 @@ public class MainActivity extends FragmentActivity {
         view.startAnimation(grow);
     }
 
-    public void pingServer(){
+    public void pingServer() {
         if (SharedPrefs.getPingServerDate() != null) {
             try {
                 // Convert the expDate in shared prefs to CALENDAR type for comparison
@@ -680,7 +682,7 @@ public class MainActivity extends FragmentActivity {
                 // Get current Time from device for comparison
                 Calendar today = Calendar.getInstance(TimeZone.getDefault());
                 if (pingServerDate.before(today)) {
-                new AppServerConn(MainActivity.this,Action.PingServer).execute();
+                    new AppServerConn(MainActivity.this, Action.PingServer).execute();
                 }
 
             } catch (ParseException e) {
@@ -688,7 +690,6 @@ public class MainActivity extends FragmentActivity {
             }
         }
     }
-
 
 
 }

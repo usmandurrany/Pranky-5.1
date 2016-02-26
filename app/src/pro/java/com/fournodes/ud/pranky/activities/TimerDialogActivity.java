@@ -23,7 +23,7 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class TimerDialogActivity extends Activity{
+public class TimerDialogActivity extends Activity {
     private View decorView;
     private SetPrank scheduler;
     private Tutorial mTutorial;
@@ -68,7 +68,8 @@ public class TimerDialogActivity extends Activity{
 
         sec.addScrollingListener(new OnWheelScrollListener() {
             @Override
-            public void onScrollingStarted(WheelView wheel) {}
+            public void onScrollingStarted(WheelView wheel) {
+            }
 
             @Override
             public void onScrollingFinished(WheelView wheel) {
@@ -109,28 +110,28 @@ public class TimerDialogActivity extends Activity{
             @Override
             public void onClick(View view) {
 
-                    scheduler = new SetPrank(TimerDialogActivity.this,
-                            0,
-                            hour.getCurrentItem(),
-                            min.getCurrentItem(),
-                            sec.getCurrentItem(),
-                            0,
-                            Type.TimerDialogActivity);
+                scheduler = new SetPrank(TimerDialogActivity.this,
+                        0,
+                        hour.getCurrentItem(),
+                        min.getCurrentItem(),
+                        sec.getCurrentItem(),
+                        0,
+                        Type.TimerDialogActivity);
 
-                    if (scheduler.validateTime(scheduler.timerSchedule())) {
+                if (scheduler.validateTime(scheduler.timerSchedule())) {
 
-                        scheduler.ScheduleSoundPlayback(scheduler.timerSchedule());
+                    scheduler.ScheduleSoundPlayback(scheduler.timerSchedule());
 
-                        if (mTutorial != null) {
-                            mTutorial.end();
-                        }
-
-                        finish();
-                    } else {
-                        new CustomToast(TimerDialogActivity.this,
-                                getString(R.string.toast_min_time_limit)).show();
-
+                    if (mTutorial != null) {
+                        mTutorial.end();
                     }
+
+                    finish();
+                } else {
+                    new CustomToast(TimerDialogActivity.this,
+                            getString(R.string.toast_min_time_limit)).show();
+
+                }
 
             }
 
@@ -138,14 +139,12 @@ public class TimerDialogActivity extends Activity{
         });
 
 
-
-
-    if (SharedPrefs.isTimerFirstLaunch()) {
-        mTutorial = new Tutorial(this, Type.TimerDialogActivity);
-        mTutorial.show(new ViewTarget(sec),
-                getString(R.string.tut_time_attack_title),
-                getString(R.string.tut_time_attack_desc2));
-    }
+        if (SharedPrefs.isTimerFirstLaunch()) {
+            mTutorial = new Tutorial(this, Type.TimerDialogActivity);
+            mTutorial.show(new ViewTarget(sec),
+                    getString(R.string.tut_time_attack_title),
+                    getString(R.string.tut_time_attack_desc2));
+        }
 
 
     }
@@ -189,6 +188,7 @@ public class TimerDialogActivity extends Activity{
             Log.e("BG Music Pause", e.toString());
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

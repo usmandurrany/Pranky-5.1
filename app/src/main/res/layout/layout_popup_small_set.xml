@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/popup_small" />
+
+    <ImageView
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/close_btn_margin_right"
+        android:layout_marginTop="@dimen/close_btn_margin_top"
+        android:src="@drawable/btn_close_states" />
+
+    <ImageView
+        android:id="@+id/btnSet"
+        android:layout_width="222dp"
+        android:layout_height="96dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/set_btn_margin_bottom"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_set_states" />
+
+
+</merge>

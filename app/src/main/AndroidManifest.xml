@@ -115,14 +115,14 @@
             android:name=".gcm.GCMRegistrationService"
             android:exported="false" />
 
-        <activity android:name=".activities.UserRegistrationActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".activities.UserRegistrationActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".services.MonitorContacts"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>

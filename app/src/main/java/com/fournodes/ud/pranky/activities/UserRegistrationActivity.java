@@ -22,19 +22,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
-import com.fournodes.ud.pranky.objects.Country;
-import com.fournodes.ud.pranky.custom.CustomEditText;
-import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.adapters.CountryAdapter;
+import com.fournodes.ud.pranky.custom.CustomEditText;
+import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
 import com.fournodes.ud.pranky.enums.Action;
-import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.enums.Message;
+import com.fournodes.ud.pranky.enums.Type;
 import com.fournodes.ud.pranky.gcm.GCMRegistrationService;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.models.Country;
 import com.fournodes.ud.pranky.network.AppServerConn;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 import com.fournodes.ud.pranky.services.MonitorContacts;
@@ -332,7 +332,7 @@ public class UserRegistrationActivity extends Activity implements View.OnKeyList
     public boolean isPermissionGranted() {
 
 
-Log.e("Contact Permission",String.valueOf(PermissionChecker.checkCallingOrSelfPermission(UserRegistrationActivity.this,Manifest.permission.READ_CONTACTS)));
+        Log.e("Contact Permission", String.valueOf(PermissionChecker.checkCallingOrSelfPermission(UserRegistrationActivity.this, Manifest.permission.READ_CONTACTS)));
 
         if (ContextCompat.checkSelfPermission(UserRegistrationActivity.this,
                 Manifest.permission.READ_CONTACTS)

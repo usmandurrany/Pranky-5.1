@@ -20,7 +20,7 @@ public class InvalidIDTimeout extends BroadcastReceiver {
         }
 
         SharedPrefs.setInvalidIDCount(0);
-        Log.e("Reset ID",String.valueOf(SharedPrefs.getInvalidIDCount()));
+        Log.e("Reset ID", String.valueOf(SharedPrefs.getInvalidIDCount()));
 
     }
 }

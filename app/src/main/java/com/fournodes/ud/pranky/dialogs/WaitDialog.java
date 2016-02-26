@@ -7,8 +7,8 @@ import android.graphics.drawable.AnimationDrawable;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.custom.CustomTextView;
 import com.fournodes.ud.pranky.R;
+import com.fournodes.ud.pranky.custom.CustomTextView;
 
 /**
  * Created by Usman-Durrani on 28-Dec-15.
@@ -48,16 +48,17 @@ public class WaitDialog {
 
 
     }
-    public void dismiss(){
+
+    public void dismiss() {
         dialog.dismiss();
     }
 
-    public void setWaitText(String s){
+    public void setWaitText(String s) {
         CustomTextView waitText = (CustomTextView) dialog.findViewById(R.id.waitText);
         waitText.setText(s);
     }
 
-    public void setCancelable(Boolean cancelable){
+    public void setCancelable(Boolean cancelable) {
         dialog.setCancelable(cancelable);
     }
 

@@ -5,7 +5,10 @@ package com.fournodes.ud.pranky.interfaces;
  */
 public interface IFragment {
     void pageScrolled();
+
     void pageLast(int addSoundLoc);
+
     void shakeIcons();
+
     void pageFirst();
 }

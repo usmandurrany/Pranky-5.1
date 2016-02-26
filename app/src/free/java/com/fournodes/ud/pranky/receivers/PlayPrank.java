@@ -15,12 +15,12 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
-import com.fournodes.ud.pranky.utils.CameraControls;
-import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.activities.SplashActivity;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.utils.CameraControls;
 
 import static com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer.getInstance;
 
@@ -37,7 +37,8 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
     private Context context;
     private int duration;
 
-    public PlayPrank() {}
+    public PlayPrank() {
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -50,7 +51,7 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
         int volume = intent.getIntExtra("volume", 1);
         notify = intent.getStringExtra("notify");
         sender = intent.getStringExtra("sender");
-        duration = intent.getIntExtra("duration",5);
+        duration = intent.getIntExtra("duration", 5);
 
         playSound.release();
         cameraControls.releaseCamera();
@@ -76,13 +77,12 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
             cameraControls.blinkFlash(10);
 
         } else {
-            if (sysSound != -1){
+            if (sysSound != -1) {
                 playSound.create(sysSound, this);
-                repeatCount =calcRepeatCount(duration)-1;
-            }
-            else {
+                repeatCount = calcRepeatCount(duration) - 1;
+            } else {
                 playSound.create(cusSound, this);
-                repeatCount =calcRepeatCount(duration)-1;
+                repeatCount = calcRepeatCount(duration) - 1;
 
 
             }
@@ -167,11 +167,11 @@ public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnComple
         notificationManager.notify((int) System.currentTimeMillis(), notificationBuilder.build());
     }
 
-    public int calcRepeatCount(int duration){
+    public int calcRepeatCount(int duration) {
         int durInMillis = playSound.mp.getDuration();
         float durInSec = (durInMillis / 1000);
-        int rCount = (int)Math.ceil((double)(duration/durInSec));
-        Log.e("Play Prank","Repeat Count "+String.valueOf(rCount));
+        int rCount = (int) Math.ceil((double) (duration / durInSec));
+        Log.e("Play Prank", "Repeat Count " + String.valueOf(rCount));
         return rCount;
 
     }

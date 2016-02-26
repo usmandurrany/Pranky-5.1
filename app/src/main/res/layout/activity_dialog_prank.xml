@@ -6,24 +6,7 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-                android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/popup_small" />
-
-    <ImageView
-        android:id="@+id/set"
-        android:layout_width="222dp"
-        android:layout_height="96dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/set_btn_margin_bottom"
-        android:scaleType="fitCenter"
-        android:src="@drawable/btn_set_states" />
+    <include layout="@layout/layout_popup_small_set" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -55,10 +38,12 @@
                 android:textIsSelectable="false"
                 android:textSize="@dimen/settings_font_small"
                 android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <EditText
                     android:layout_marginLeft="50dp"
                     android:singleLine="true"
@@ -74,33 +59,19 @@
                     android:textSize="@dimen/settings_font_small"
                     android:background="@android:drawable/edit_text"
                     android:textStyle="bold"
-                    android:maxLength="4"/>
+                    android:maxLength="4" />
+
                 <ImageView
                     android:id="@+id/btnShowContacts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/show_contacts"/>
+                    android:src="@mipmap/show_contacts" />
 
             </LinearLayout>
 
 
-
         </LinearLayout>
     </LinearLayout>
-
-
-
-
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="@dimen/close_btn_margin_right"
-        android:layout_marginTop="@dimen/close_btn_margin_top"
-        android:src="@drawable/btn_close_states" />
 
 
 </RelativeLayout>

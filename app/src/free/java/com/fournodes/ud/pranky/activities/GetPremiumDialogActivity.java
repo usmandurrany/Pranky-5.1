@@ -64,7 +64,7 @@ public class GetPremiumDialogActivity extends Activity {
 
         ImageView showAd = (ImageView) findViewById(R.id.btnShowAd);
         ImageView buyNow = (ImageView) findViewById(R.id.btnBuyNow);
-        ImageView close = (ImageView) findViewById(R.id.close);
+        ImageView close = (ImageView) findViewById(R.id.btnClose);
         TextView prankCount = (TextView) findViewById(R.id.lblPrankCount);
         prankCount.setText(String.valueOf(SharedPrefs.getPranksLeft()));
 

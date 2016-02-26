@@ -24,7 +24,7 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
 /**
  * Created by Usman on 11/6/2015.
  */
-public class ClockDialogActivity extends Activity{
+public class ClockDialogActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,24 +77,24 @@ public class ClockDialogActivity extends Activity{
             @Override
             public void onClick(View view) {
 
-                    SetPrank scheduler = new SetPrank(ClockDialogActivity.this,
-                            day.getCurrentItem(),
-                            hour.getCurrentItem(),
-                            min.getCurrentItem(),
-                            0,
-                            ampm.getCurrentItem(),
-                            Type.ClockDialogActivity);
+                SetPrank scheduler = new SetPrank(ClockDialogActivity.this,
+                        day.getCurrentItem(),
+                        hour.getCurrentItem(),
+                        min.getCurrentItem(),
+                        0,
+                        ampm.getCurrentItem(),
+                        Type.ClockDialogActivity);
 
-                    if (scheduler.validateTime(scheduler.clockSchedule())) {
+                if (scheduler.validateTime(scheduler.clockSchedule())) {
 
-                        scheduler.ScheduleSoundPlayback(scheduler.clockSchedule());
+                    scheduler.ScheduleSoundPlayback(scheduler.clockSchedule());
 
-                        finish();
-                    } else {
-                        new CustomToast(ClockDialogActivity.this,
-                                getString(R.string.toast_time_passed)).show();
+                    finish();
+                } else {
+                    new CustomToast(ClockDialogActivity.this,
+                            getString(R.string.toast_time_passed)).show();
 
-                    }
+                }
 
             }
         });
@@ -112,6 +112,7 @@ public class ClockDialogActivity extends Activity{
         }
         return dates;
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -151,6 +152,7 @@ public class ClockDialogActivity extends Activity{
             Log.e("BG Music Pause", e.toString());
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
