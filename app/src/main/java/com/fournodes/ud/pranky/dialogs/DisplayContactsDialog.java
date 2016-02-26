@@ -14,9 +14,9 @@ import android.widget.ListView;
 
 import com.fournodes.ud.pranky.objects.ContactDetails;
 import com.fournodes.ud.pranky.objects.ContactSelected;
-import com.fournodes.ud.pranky.CustomTextView;
-import com.fournodes.ud.pranky.CustomToast;
-import com.fournodes.ud.pranky.DatabaseHelper;
+import com.fournodes.ud.pranky.custom.CustomTextView;
+import com.fournodes.ud.pranky.custom.CustomToast;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;

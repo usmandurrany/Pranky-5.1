@@ -10,7 +10,8 @@
     android:paddingRight="3dp"
     android:paddingTop="@dimen/viewpager_padding_top">
 
-<com.fournodes.ud.pranky.CustomTextView android:layout_width="match_parent"
+<com.fournodes.ud.pranky.custom.CustomTextView
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text=""
     android:id="@+id/lblCatTitle"

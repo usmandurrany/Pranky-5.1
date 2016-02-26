@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.ItemSelected;
+import com.fournodes.ud.pranky.models.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.enums.Message;

@@ -40,7 +40,7 @@
             android:layout_gravity="center"
             android:gravity="center">
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day"
@@ -66,7 +66,7 @@
             android:layout_gravity="center"
             android:gravity="center">
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/hh"
@@ -92,7 +92,7 @@
             android:layout_gravity="center"
             android:gravity="center">
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mm"
@@ -150,7 +150,7 @@
 
 
 
-        <com.fournodes.ud.pranky.CustomTextView
+        <com.fournodes.ud.pranky.custom.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Duration  "

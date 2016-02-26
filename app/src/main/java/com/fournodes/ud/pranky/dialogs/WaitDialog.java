@@ -7,7 +7,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.CustomTextView;
+import com.fournodes.ud.pranky.custom.CustomTextView;
 import com.fournodes.ud.pranky.R;
 
 /**

@@ -1,4 +1,4 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.custom;
 
 import android.app.Activity;
 import android.content.Context;

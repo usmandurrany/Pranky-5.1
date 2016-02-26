@@ -3,8 +3,8 @@ package com.fournodes.ud.pranky.network;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.fournodes.ud.pranky.DatabaseHelper;
-import com.fournodes.ud.pranky.Contacts;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
+import com.fournodes.ud.pranky.models.Contacts;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;

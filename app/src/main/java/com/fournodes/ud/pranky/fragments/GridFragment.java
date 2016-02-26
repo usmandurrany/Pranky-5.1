@@ -24,13 +24,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.CameraControls;
-import com.fournodes.ud.pranky.CustomTextView;
-import com.fournodes.ud.pranky.CustomToast;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.utils.CameraControls;
+import com.fournodes.ud.pranky.custom.CustomTextView;
+import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.objects.GridItem;
-import com.fournodes.ud.pranky.ItemSelected;
-import com.fournodes.ud.pranky.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.models.ItemSelected;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
@@ -44,7 +44,7 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
+import static com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer.getInstance;
 
 public class GridFragment extends android.support.v4.app.Fragment implements IFragment, MediaPlayer.OnCompletionListener {
 

@@ -1,10 +1,11 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.custom;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.utils.FontManager;
 
 /**

@@ -22,10 +22,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.BackgroundMusic;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
 import com.fournodes.ud.pranky.objects.Country;
-import com.fournodes.ud.pranky.CustomEditText;
-import com.fournodes.ud.pranky.CustomToast;
+import com.fournodes.ud.pranky.custom.CustomEditText;
+import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.adapters.CountryAdapter;

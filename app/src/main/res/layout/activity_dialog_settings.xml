@@ -31,7 +31,7 @@
             android:layout_height="@dimen/settings_linearlayout_height"
             android:orientation="horizontal">
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_marginTop="15dp"
                 android:id="@+id/txtBGMusic"
                 android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
             android:layout_height="@dimen/settings_linearlayout_height"
             android:orientation="horizontal">
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_marginTop="15dp"
                 android:id="@+id/txtStealth"
                 android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
             android:layout_height="@dimen/settings_linearlayout_height"
             android:orientation="horizontal">
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_marginTop="15dp"
 
                 android:id="@+id/txtRemotePrank"
@@ -155,7 +155,7 @@
             android:orientation="horizontal"
             android:visibility="invisible">
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_marginTop="15dp"
                 android:id="@+id/lblmyID"
                 android:layout_width="wrap_content"
@@ -169,7 +169,7 @@
                 android:textSize="@dimen/settings_font_small"
                 android:textStyle="bold" />
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_marginTop="15dp"
                 android:id="@+id/txtmyID"
                 android:layout_width="wrap_content"

@@ -1,8 +1,10 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.models;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

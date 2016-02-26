@@ -1,4 +1,4 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.custom;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.fournodes.ud.pranky.R;
 
 /**
  * Created by Usman on 11/20/2015.

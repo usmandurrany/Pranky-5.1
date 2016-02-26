@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -12,9 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.CustomToast;
-import com.fournodes.ud.pranky.DatabaseHelper;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.custom.CustomToast;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
@@ -44,12 +46,15 @@ public class AddSoundDialogActivity extends Activity {
     private EditText eTextFileName;
     private ImageView iconCustom;
     private Tutorial mTutorial;
+    private PreviewMediaPlayer previewMediaPlayer;
+    private int durInMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog_addsound);
         onWindowFocusChanged(true);
+        previewMediaPlayer= PreviewMediaPlayer.getInstance(this);
 
         db = new DatabaseHelper(AddSoundDialogActivity.this);
         eTextFileName = (EditText) findViewById(R.id.txtSelSound);
@@ -87,17 +92,30 @@ public class AddSoundDialogActivity extends Activity {
                                 fileExt = fileName.substring(fileName.lastIndexOf("."));
                                 //Toast.makeText(AddSoundDialogActivity.this,
                                 //fileExt, Toast.LENGTH_SHORT).show();
-
                                 if (fileExt.equals(".mp3") ||
                                         fileExt.equals(".wav") ||
                                         fileExt.equals(".3gp") ||
                                         fileExt.equals(".ogg")) {
+
                                     fileSelected = file;
-                                    eTextFileName.setText(fileName);
-                                    if (mTutorial != null)
-                                        mTutorial.moveToNext(new ViewTarget(iconCustom),
-                                                getString(R.string.tut_pick_icon_title),
-                                                getString(R.string.tut_pick_icon_desc));
+                                    previewMediaPlayer.getDurInMills(fileSelected.getAbsolutePath(),
+                                            new MediaPlayer.OnPreparedListener() {
+                                        @Override
+                                        public void onPrepared(MediaPlayer mp) {
+                                            durInMillis = mp.getDuration();
+                                            Log.e("Add Sound", "Sound Duration "+String.valueOf(durInMillis));
+                                            if (durInMillis<60000) {
+                                                eTextFileName.setText(fileName);
+                                                if (mTutorial != null)
+                                                    mTutorial.moveToNext(new ViewTarget(iconCustom),
+                                                            getString(R.string.tut_pick_icon_title),
+                                                            getString(R.string.tut_pick_icon_desc));
+                                            }else{
+                                                Toast.makeText(AddSoundDialogActivity.this,
+                                                        R.string.toast_sound_duration, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
 
                                 } else
                                     Toast.makeText(AddSoundDialogActivity.this,
@@ -116,28 +134,29 @@ public class AddSoundDialogActivity extends Activity {
             public void onClick(View view) {
 
                 if (cusIconID != 0) {
-                    copyFile(fileSelected.getAbsolutePath(), fileSelected.getName());
+                    if (mTutorial != null)
+                        mTutorial.end();
+
+                    String newFilePath = copyFile(fileSelected.getAbsolutePath(), fileSelected.getName());
                     // Gets the data repository in write mode
-                    SQLiteDatabase db = AddSoundDialogActivity.this.db.getWritableDatabase();
+                    SQLiteDatabase databse = db.getWritableDatabase();
 
                     ContentValues values = new ContentValues();
                     values.put(DatabaseHelper.COLUMN_ITEM_IMG_LOC, cusIconID);
                     values.put(DatabaseHelper.COLUMN_ITEM_NAME, fileSelected.getName());
-                    values.put(DatabaseHelper.COLUMN_ITEM_SOUND_LOC, fileSelected.getAbsolutePath());
+                    values.put(DatabaseHelper.COLUMN_ITEM_SOUND_LOC, newFilePath);
                     values.put(DatabaseHelper.COLUMN_REPEAT_COUNT, 1);
                     values.put(DatabaseHelper.COLUMN_SOUND_VOL, 1);
-                    values.put(DatabaseHelper.COLUMN_ITEM_CATEGORY, "custom");
+                    values.put(DatabaseHelper.COLUMN_ITEM_CATEGORY, 8);//Custom
 
 
-                    db.insert(DatabaseHelper.TABLE_ITEMS,"null",values);
+                    databse.insert(DatabaseHelper.TABLE_ITEMS,"null",values);
 
                 } else
                     new CustomToast(AddSoundDialogActivity.this,getString(R.string.tut_pick_icon_title)).show();
 
-
                 SharedPrefs.setCusSoundAdded(true);
-                if (mTutorial != null)
-                    mTutorial.end();
+                Log.e("Sound Added",String.valueOf(SharedPrefs.isCusSoundAdded()));
                 finish();
             }
         });
@@ -186,7 +205,7 @@ public class AddSoundDialogActivity extends Activity {
     }
 
 
-    public void copyFile(String srcPath, String fileName) {
+    public String copyFile(String srcPath, String fileName) {
         //String sourcePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TongueTwister/tt_temp.3gp";
         File source = new File(srcPath);
 
@@ -197,9 +216,11 @@ public class AddSoundDialogActivity extends Activity {
         File destination = new File(destinationPath);
         try {
             FileUtils.copyFile(source, destination);
+            return destinationPath;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 

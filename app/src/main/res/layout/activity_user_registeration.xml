@@ -44,7 +44,7 @@
         android:layout_height="@dimen/reg_logo_size"
         android:src="@drawable/signup_logo"
         />
-    <com.fournodes.ud.pranky.CustomTextView
+    <com.fournodes.ud.pranky.custom.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up_spaced"
@@ -76,7 +76,7 @@
             android:orientation="horizontal">
 
 
-            <com.fournodes.ud.pranky.CustomEditText
+            <com.fournodes.ud.pranky.custom.CustomEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
@@ -132,7 +132,7 @@
     />
 
 
-            <com.fournodes.ud.pranky.CustomEditText
+            <com.fournodes.ud.pranky.custom.CustomEditText
                 android:hint="@string/number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

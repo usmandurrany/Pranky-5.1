@@ -1,4 +1,4 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.mediaplayers;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -82,18 +82,20 @@ public class PreviewMediaPlayer {
         return -1; //Error
     }
 
-    public int getDurInMills(String item){
+    public void getDurInMills(String item, MediaPlayer.OnPreparedListener onPreparedListener){
         if (mp == null){
             try{
                 mp = new MediaPlayer();
                 mp.setDataSource(item);
-               return mp.getDuration();
+                mp.setOnPreparedListener(onPreparedListener);
+                mp.prepare();
+
             }catch (IOException e){e.printStackTrace();}
         }else{
             if (release())
-                getDurInMills(item);
+                getDurInMills(item, onPreparedListener);
         }
-        return -1; //Error
+
     }
 
 

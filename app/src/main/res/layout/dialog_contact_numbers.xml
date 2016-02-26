@@ -36,7 +36,7 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:gravity="center">
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:id="@+id/lblfrndID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

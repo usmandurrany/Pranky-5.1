@@ -1,7 +1,8 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.utils;
 
 import android.app.Application;
 
+import com.fournodes.ud.pranky.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 

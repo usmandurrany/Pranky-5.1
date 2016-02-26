@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.Contacts;
+import com.fournodes.ud.pranky.models.Contacts;
 import com.fournodes.ud.pranky.interfaces.OnCompleteListener;
 import com.fournodes.ud.pranky.network.ContactsAsync;
 

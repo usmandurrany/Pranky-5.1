@@ -15,8 +15,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.CustomToast;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.custom.CustomToast;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;

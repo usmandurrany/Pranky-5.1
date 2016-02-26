@@ -8,8 +8,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.fournodes.ud.pranky.objects.ContactSelected;
-import com.fournodes.ud.pranky.DatabaseHelper;
-import com.fournodes.ud.pranky.ItemSelected;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
+import com.fournodes.ud.pranky.models.ItemSelected;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.dialogs.WaitDialog;
 import com.fournodes.ud.pranky.enums.Action;

@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,13 +29,13 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.fournodes.ud.pranky.Analytics;
-import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.CustomToast;
-import com.fournodes.ud.pranky.DatabaseHelper;
-import com.fournodes.ud.pranky.ItemCategory;
-import com.fournodes.ud.pranky.ItemSelected;
-import com.fournodes.ud.pranky.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.utils.Analytics;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.custom.CustomToast;
+import com.fournodes.ud.pranky.utils.DatabaseHelper;
+import com.fournodes.ud.pranky.models.ItemCategory;
+import com.fournodes.ud.pranky.models.ItemSelected;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.Tutorial;
@@ -264,19 +265,27 @@ public class MainActivity extends FragmentActivity implements Messenger {
         clock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                timerLaunch = false;
                 if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound == null) {
                     cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_select_sound));
                     cToast.show();
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
                 }
-                else {
-                    if (timerLaunch)
-                        timerLaunch = false;
-                    clockLaunch = true;
+                else if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound != null){
+                    /*********************** Calculate Sound Duration Beforehand ***************/
+                    customSoundIntent( new Intent(MainActivity.this, ClockDialogActivity.class));
                     SharedPrefs.setBgMusicPlaying(true);
-                    Intent clockDialog = new Intent(MainActivity.this, ClockDialogActivity.class);
-                    startActivity(clockDialog);
+                    clockLaunch = true;
+
+                }
+                else if (ItemSelected.itemSound != -1 && ItemSelected.itemCustomSound == null){
+                    /*********************** Calculate Sound Duration Beforehand ***************/
+                    sysSoundIntent(new Intent(MainActivity.this, ClockDialogActivity.class));
+                    SharedPrefs.setBgMusicPlaying(true);
+                    clockLaunch = true;
+                }else if (ItemSelected.itemSound == -2){
+                    startActivity(new Intent(MainActivity.this, ClockDialogActivity.class).putExtra("ItemType","HardwareFunc"));
                 }
             }
         });
@@ -290,11 +299,20 @@ public class MainActivity extends FragmentActivity implements Messenger {
                     if (currPage != null)
                         ((IFragment) currPage).shakeIcons();
                 }
-                else {
+                else if (ItemSelected.itemSound == -1 && ItemSelected.itemCustomSound != null){
+                    /*********************** Calculate Sound Duration Beforehand ***************/
+                    customSoundIntent( new Intent(MainActivity.this, TimerDialogActivity.class));
                     SharedPrefs.setBgMusicPlaying(true);
                     timerLaunch = true;
-                    Intent timerDialog = new Intent(MainActivity.this, TimerDialogActivity.class);
-                    startActivity(timerDialog);
+
+                }
+                else if (ItemSelected.itemSound != -1 && ItemSelected.itemCustomSound == null){
+                    /*********************** Calculate Sound Duration Beforehand ***************/
+                    sysSoundIntent(new Intent(MainActivity.this, TimerDialogActivity.class));
+                    SharedPrefs.setBgMusicPlaying(true);
+                    timerLaunch = true;
+                }else if (ItemSelected.itemSound == -2){
+                    startActivity(new Intent(MainActivity.this, TimerDialogActivity.class).putExtra("ItemType","HardwareFunc"));
                 }
             }
         });
@@ -575,14 +593,16 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
     @Override
     protected void onResume() {
+        super.onResume();
+        Log.e("Main Activity","Resumed");
 
         pingServer();
 
 
-        if (SharedPrefs.prefs == null)
+        if (SharedPrefs.prefs == null) {
             SharedPrefs.setContext(this);
+        }
 
-        super.onResume();
         if (SharedPrefs.isSignUpComplete() && SharedPrefs.getMyAppID() != null && SharedPrefs.getAppServerID() != null) {
             AppServerConn appServerConn = new AppServerConn(this, Action.VerifyUserRegistration);
             appServerConn.execute();
@@ -620,7 +640,7 @@ public class MainActivity extends FragmentActivity implements Messenger {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("Main", "Paused");
+        Log.e("Main Activity", "Paused");
         try {
             if (BackgroundMusic.mp != null && !SharedPrefs.isBgMusicPlaying()) {
                 BackgroundMusic.pause();
@@ -808,7 +828,32 @@ public class MainActivity extends FragmentActivity implements Messenger {
 
 
     }
+    public void customSoundIntent(final Intent intent){
+        PreviewMediaPlayer previewMediaPlayer = PreviewMediaPlayer.getInstance(MainActivity.this);
+        previewMediaPlayer.getDurInMills(ItemSelected.itemCustomSound, new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                int durInMillis = mp.getDuration();
+                intent.putExtra("ItemType","CustomSound");
+                intent.putExtra("Duration",durInMillis);
+                startActivity(intent);
 
+            }
+        });
+    }
+    public void sysSoundIntent(final Intent intent){
+        PreviewMediaPlayer previewMediaPlayer = PreviewMediaPlayer.getInstance(MainActivity.this);
+        previewMediaPlayer.getDurInMills(ItemSelected.itemCustomSound, new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                int durInMillis = mp.getDuration();
+                intent.putExtra("ItemType","CustomSound");
+                intent.putExtra("Duration",durInMillis);
+                startActivity(intent);
+
+            }
+        });
+    }
 }
 
 

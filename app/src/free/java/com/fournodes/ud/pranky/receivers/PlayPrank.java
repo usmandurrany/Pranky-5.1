@@ -15,14 +15,14 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.CameraControls;
-import com.fournodes.ud.pranky.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.utils.CameraControls;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.activities.MainActivity;
 import com.fournodes.ud.pranky.activities.SplashActivity;
 
-import static com.fournodes.ud.pranky.PreviewMediaPlayer.getInstance;
+import static com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer.getInstance;
 
 public class PlayPrank extends BroadcastReceiver implements MediaPlayer.OnCompletionListener {
 

@@ -476,7 +476,7 @@ public class SharedPrefs {
     }
 
     public static void setCusSoundAdded(boolean cusSoundAdded) {
-        prefs.edit().putBoolean(SharedPrefs.CUSTOM_SOUND_ADDED,cusSoundAdded).apply();
+        prefs.edit().putBoolean(SharedPrefs.CUSTOM_SOUND_ADDED,cusSoundAdded).commit();
         SharedPrefs.cusSoundAdded = cusSoundAdded;
     }
 

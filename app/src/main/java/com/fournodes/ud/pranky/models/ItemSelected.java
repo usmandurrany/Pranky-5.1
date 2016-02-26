@@ -1,7 +1,9 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.models;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.fournodes.ud.pranky.R;
 
 /**
  * Created by Home on 11/25/2015.

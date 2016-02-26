@@ -1,6 +1,8 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.models;
 
 import android.content.Context;
+
+import com.fournodes.ud.pranky.R;
 
 /**
  * Created by Usman on 11/2/2016.

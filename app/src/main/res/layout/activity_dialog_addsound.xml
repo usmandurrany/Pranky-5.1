@@ -57,7 +57,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical">
 
-        <com.fournodes.ud.pranky.CustomTextView
+        <com.fournodes.ud.pranky.custom.CustomTextView
             android:id="@+id/txtpickIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
         android:src="@drawable/btn_save_states" />
 
 
-    <com.fournodes.ud.pranky.CustomTextView
+    <com.fournodes.ud.pranky.custom.CustomTextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

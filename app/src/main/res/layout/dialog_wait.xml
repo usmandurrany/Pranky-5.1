@@ -21,7 +21,7 @@
             android:layout_marginLeft="05dp"
             android:src="@drawable/dialog_wait_logo_animation" />
 
-        <com.fournodes.ud.pranky.CustomTextView
+        <com.fournodes.ud.pranky.custom.CustomTextView
             android:id="@+id/waitText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

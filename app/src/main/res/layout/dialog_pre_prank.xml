@@ -38,7 +38,7 @@
 
         </FrameLayout>
 
-        <com.fournodes.ud.pranky.CustomTextView
+        <com.fournodes.ud.pranky.custom.CustomTextView
             android:id="@+id/waitText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:layout_marginBottom="15dp"
 
             />
-        <com.fournodes.ud.pranky.CustomTextView
+        <com.fournodes.ud.pranky.custom.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtFriendName"

@@ -66,7 +66,7 @@
             android:textSize="@dimen/xlarge_30"
             android:textStyle="bold"
             android:layout_marginBottom="2dp"/>
-        <com.fournodes.ud.pranky.CustomTextView
+        <com.fournodes.ud.pranky.custom.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
@@ -80,7 +80,7 @@
             android:layout_marginLeft="2dp"/>
     </LinearLayout>
 
-    <com.fournodes.ud.pranky.CustomTextView
+    <com.fournodes.ud.pranky.custom.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
@@ -119,7 +119,7 @@
             android:gravity="left">
 
 
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
@@ -129,7 +129,7 @@
                 android:textIsSelectable="false"
                 android:textSize="@dimen/medium_18"
                 android:textStyle="bold" />
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
@@ -139,7 +139,7 @@
                 android:textIsSelectable="false"
                 android:textSize="@dimen/medium_18"
                 android:textStyle="bold" />
-            <com.fournodes.ud.pranky.CustomTextView
+            <com.fournodes.ud.pranky.custom.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"

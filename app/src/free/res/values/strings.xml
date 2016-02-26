@@ -64,7 +64,8 @@
     <string name="tut_select_sound_desc">Tap on the icon to pick a sound from your phone</string>
     <string name="tut_pick_icon_title">Pick an icon</string>
     <string name="tut_pick_icon_desc">Choose an icon for your sound</string>
-    <string name="toast_invalid_file">Invalid file! Select another</string>
+    <string name="toast_invalid_file">Sound should be either mp3, wav, or ogg.</string>
+    <string name="toast_sound_duration">Sound should be less than 60 seconds.</string>
     <string name="tut_save_sound_title">Save your sound</string>
     <string name="tut_save_sound_desc">Tap on save to add your sound to the list</string>
     <string name="toast_invalid_id">Invalid ID</string>

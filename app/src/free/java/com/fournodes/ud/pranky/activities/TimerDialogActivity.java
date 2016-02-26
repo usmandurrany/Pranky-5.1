@@ -9,10 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.BackgroundMusic;
-import com.fournodes.ud.pranky.CustomToast;
-import com.fournodes.ud.pranky.ItemSelected;
-import com.fournodes.ud.pranky.PreviewMediaPlayer;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
+import com.fournodes.ud.pranky.custom.CustomToast;
+import com.fournodes.ud.pranky.mediaplayers.PreviewMediaPlayer;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SetPrank;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -55,26 +54,27 @@ public class TimerDialogActivity extends Activity{
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-
-        if (ItemSelected.itemSound != -1 || ItemSelected.itemCustomSound != null){
-            if (ItemSelected.itemSound!=-1)
-                durInMillis = previewMediaPlayer.getDurInMills(ItemSelected.itemSound);
-            else
-                durInMillis = previewMediaPlayer.getDurInMills(ItemSelected.itemCustomSound);
-            int i;
-            int durInSec = durInMillis/1000;
-            int firstVal = ((int) Math.ceil((double)durInSec/5))*5;
-            values = new String[((60-firstVal)/5)+1];
-            values[0]=String.format(Locale.US,"%02d",firstVal);
-            for ( i = 1;i<values.length;i++){
-            values[i]=String.format(Locale.US,"%02d",Integer.parseInt(values[i-1])+5);
-            }
-
-        }
-        else
-            values = new String[] {"05", "10", "15","20","25","30","35","40","45","50","55","60"};
-        //Configure Hours Column
         duration = (AbstractWheel) findViewById(R.id.whlDuration);
+
+        if (getIntent().getStringExtra("ItemType").equals("CustomSound")) {
+            durInMillis = getIntent().getIntExtra("Duration", 5000);
+        }else if (getIntent().getStringExtra("ItemType").equals("SystemSound")){
+            durInMillis = getIntent().getIntExtra("Duration", 5000);
+        }else if (getIntent().getStringExtra("ItemType").equals("HardwareFunc")){
+            duration.setEnabled(false);
+        }
+
+        int i;
+        int durInSec = durInMillis/1000;
+        int firstVal = ((int) Math.ceil((double)durInSec/5))*5;
+        values = new String[((60-firstVal)/5)+1];
+        values[0]=String.format(Locale.US,"%02d",firstVal);
+        for ( i = 1;i<values.length;i++){
+            values[i]=String.format(Locale.US,"%02d",Integer.parseInt(values[i-1])+5);
+        }
+
+
+        //Configure Hours Column
        final  ArrayWheelAdapter<String> durationAdapter =
                 new ArrayWheelAdapter<>(this, values);
         //NumericWheelAdapter durationAdapter = new NumericWheelAdapter(TimerDialogActivity.this, 0, 60,"%02d");

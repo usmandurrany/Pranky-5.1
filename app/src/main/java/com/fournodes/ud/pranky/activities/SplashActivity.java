@@ -13,7 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
-import com.fournodes.ud.pranky.BackgroundMusic;
+import com.fournodes.ud.pranky.mediaplayers.BackgroundMusic;
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.utils.FontManager;

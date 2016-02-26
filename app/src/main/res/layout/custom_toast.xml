@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.fournodes.ud.pranky.CustomTextView
+    <com.fournodes.ud.pranky.custom.CustomTextView
         android:id="@+id/toastText"
         android:layout_width="300dp"
         android:layout_height="60dp"

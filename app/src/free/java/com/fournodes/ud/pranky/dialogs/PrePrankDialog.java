@@ -17,9 +17,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.fournodes.ud.pranky.CustomTextView;
+import com.fournodes.ud.pranky.custom.CustomTextView;
 import com.fournodes.ud.pranky.R;
-import com.fournodes.ud.pranky.SharedPrefs;
 import com.fournodes.ud.pranky.enums.Action;
 import com.fournodes.ud.pranky.interfaces.Messenger;
 import com.fournodes.ud.pranky.network.AppServerConn;

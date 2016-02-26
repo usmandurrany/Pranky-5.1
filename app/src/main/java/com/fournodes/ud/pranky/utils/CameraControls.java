@@ -1,4 +1,4 @@
-package com.fournodes.ud.pranky;
+package com.fournodes.ud.pranky.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
