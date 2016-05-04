@@ -8,7 +8,15 @@
     <include layout="@layout/layout_popup_long" />
 
 
-    <include layout="@layout/layout_button_set" />
+    <ImageView
+        android:id="@+id/btnSet"
+        android:layout_width="222dp"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/save_btn_margin_bottom"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_set_states" />
 
     <LinearLayout
         android:id="@+id/lytWheels"
@@ -36,20 +44,11 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <FrameLayout
-                android:layout_width="@dimen/clock_wheel_day_width"
-                android:layout_height="@dimen/clock_wheel_frame_day_height"
-                android:background="@drawable/wheel_d1">
-
-
-                <antistatic.spinnerwheel.WheelVerticalView
-                    android:id="@+id/day"
-                    android:layout_marginTop="@dimen/wheel_frame_top_margin"
-
-                    android:layout_width="@dimen/clock_wheel_day_width"
-                    android:layout_height="@dimen/clock_wheel_day_height" />
-            </FrameLayout>
-
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/day"
+                android:layout_width="90dp"
+                android:layout_height="100dp"
+                android:background="@drawable/wheel_d1" />
         </LinearLayout>
 
 
@@ -70,20 +69,11 @@
                 android:textStyle="bold"
                 android:gravity="center" />
 
-            <FrameLayout
-                android:layout_width="@dimen/timer_wheel__width"
-                android:layout_height="@dimen/timer_wheel_frame_height"
-                android:background="@drawable/wheel_d2">
-
-                <antistatic.spinnerwheel.WheelVerticalView
-                    android:id="@+id/hour"
-                    android:layout_marginTop="@dimen/wheel_frame_top_margin"
-
-                    android:layout_width="@dimen/timer_wheel__width"
-                    android:layout_height="@dimen/timer_wheel_height" />
-            </FrameLayout>
-
-
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/hour"
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:background="@drawable/wheel_d2" />
         </LinearLayout>
 
 
@@ -104,19 +94,11 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <FrameLayout
-                android:layout_width="@dimen/timer_wheel__width"
-                android:layout_height="@dimen/timer_wheel_frame_height"
-                android:background="@drawable/wheel_d3">
-
-                <antistatic.spinnerwheel.WheelVerticalView
-                    android:id="@+id/minute"
-                    android:layout_marginTop="@dimen/wheel_frame_top_margin"
-
-                    android:layout_width="@dimen/timer_wheel__width"
-                    android:layout_height="@dimen/timer_wheel_height" />
-            </FrameLayout>
-
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/minute"
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:background="@drawable/wheel_d3" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,31 +108,13 @@
             android:layout_gravity="center"
             android:gravity="center">
 
-            <com.fournodes.ud.pranky.custom.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mm"
-                android:textAllCaps="true"
-                android:textColor="@android:color/transparent"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="bold" />
 
-            <FrameLayout
-
-                android:layout_width="@dimen/clock_wheel_ampm_width"
-                android:layout_height="@dimen/clock_wheel_frame_ampm_height"
-                android:background="@drawable/wheel_d4">
-
-                <antistatic.spinnerwheel.WheelVerticalView
-                    android:id="@+id/ampm"
-                    android:layout_marginTop="@dimen/wheel_frame_top_margin"
-
-                    android:layout_width="@dimen/clock_wheel_ampm_width"
-                    android:layout_height="@dimen/clock_wheel_ampm_height" />
-            </FrameLayout>
-
-
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:layout_marginTop="21dp"
+                android:id="@+id/ampm"
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:background="@drawable/wheel_d4" />
         </LinearLayout>
         <!--<ImageView
             android:layout_width="1dp"

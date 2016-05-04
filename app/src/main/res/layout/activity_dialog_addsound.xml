@@ -19,12 +19,13 @@
         android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal">
 
-        <com.fournodes.ud.pranky.custom.CustomEditText
+        <EditText
             android:id="@+id/txtSelSound"
-            android:layout_width="170dp"
-            android:layout_height="match_parent"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:enabled="false"
+            android:background="@android:drawable/edit_text"
+            android:enabled="true"
             android:gravity="center"
             android:hint="@string/select_a_sound"
             android:textColor="#000"
@@ -131,7 +132,16 @@
     </LinearLayout>
 
 
-    <include layout="@layout/layout_button_save" />
+    <ImageView
+        android:id="@+id/btnSave"
+        android:layout_width="222dp"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/save_btn_margin_bottom"
+        android:paddingRight="1dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_save_states" />
 
 
     <com.fournodes.ud.pranky.custom.CustomTextView

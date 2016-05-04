@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.fournodes.ud.pranky.R;
 import com.fournodes.ud.pranky.SharedPrefs;
@@ -230,7 +231,7 @@ public class GridFragment extends android.support.v4.app.Fragment implements IFr
             }
             case "raw.vibrate_hw": {
 
-                //Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Vibrate", Toast.LENGTH_SHORT).show();
                 ((Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE)).
                         vibrate(new long[]{0, 2000, 1000, 2000}, -1);
 

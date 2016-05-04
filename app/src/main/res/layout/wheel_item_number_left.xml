@@ -3,10 +3,11 @@
     android:id="@+id/wheel_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/wheel_item_text_size"
+    android:textSize="18dp"
     android:lines="1"
-    android:padding="2dp"
+    android:padding="3dp"
     android:textStyle="normal"
     android:textColor="#f4ead1"
     android:layout_marginLeft="4dp"
-    android:layout_gravity="center"/>
+    android:layout_gravity="center"
+    android:gravity="center" />

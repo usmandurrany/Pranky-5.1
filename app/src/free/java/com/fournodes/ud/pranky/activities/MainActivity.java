@@ -97,52 +97,50 @@ public class MainActivity extends FragmentActivity implements Messenger {
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
-            try {
-                switch (Message.valueOf(intent.getStringExtra(String.valueOf(Action.Broadcast)))) {
-                    case PrankSent:
-                        Log.e("Prank Sent", "Successfully");
-                        break;
+            switch (Message.valueOf(intent.getStringExtra(String.valueOf(Action.Broadcast)))) {
+                case PrankSent:
+                    Log.e("Prank Sent", "Successfully");
+                    break;
 
-                    case SoundAdded:
-                        createFragments();
-                        mGridPager.setCurrentItem(pm.getCount() - 1);
-                        break;
-                    case PrankFailed: {
-                        CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_friend_unavailable));
-                        cToast.show();
-                        break;
-                    }
-                    case PrankSuccessful: {
-                        CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_prank_success));
-                        cToast.show();
-                        break;
-                    }
-
-                    case NetworkError: {
-                        CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_network_unavailable));
-                        cToast.show();
-                        break;
-                    }
-                    case UserUnregistered: {
-                        CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.notification_logged_out));
-                        cToast.show();
-                        break;
-                    }
-                    case UserRegistered: {
-
-                        break;
-                    }
-                    case TokenGenerated: {
-                        AppServerConn appServerConn = new AppServerConn(Action.RegisterDevice);
-                        appServerConn.execute();
-                        break;
-                    }
-                    case ShowPranksLeft: {
-                        showPranksLeft();
-                        break;
-                    }
+                case SoundAdded:
+                    createFragments();
+                    mGridPager.setCurrentItem(pm.getCount() - 1);
+                    break;
+                case PrankFailed: {
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_friend_unavailable));
+                    cToast.show();
+                    break;
                 }
-            }catch (NullPointerException e){e.printStackTrace();}
+                case PrankSuccessful: {
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_prank_success));
+                    cToast.show();
+                    break;
+                }
+
+                case NetworkError: {
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.toast_network_unavailable));
+                    cToast.show();
+                    break;
+                }
+                case UserUnregistered: {
+                    CustomToast cToast = new CustomToast(getApplicationContext(), getString(R.string.notification_logged_out));
+                    cToast.show();
+                    break;
+                }
+                case UserRegistered: {
+
+                    break;
+                }
+                case TokenGenerated: {
+                    AppServerConn appServerConn = new AppServerConn(Action.RegisterDevice);
+                    appServerConn.execute();
+                    break;
+                }
+                case ShowPranksLeft: {
+                    showPranksLeft();
+                    break;
+                }
+            }
         }
     };
     private BroadcastReceiver interActivityMessenger = new BroadcastReceiver() {
@@ -150,14 +148,12 @@ public class MainActivity extends FragmentActivity implements Messenger {
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             // Get extra data included in the Intent
-            try {
-                switch (Message.valueOf(intent.getStringExtra(String.valueOf(Action.Broadcast)))) {
-                    case ShowPranksLeft: {
-                        showPranksLeft();
-                        break;
-                    }
+            switch (Message.valueOf(intent.getStringExtra(String.valueOf(Action.Broadcast)))) {
+                case ShowPranksLeft: {
+                    showPranksLeft();
+                    break;
                 }
-            }catch (NullPointerException e){e.printStackTrace();}
+            }
         }
     };
 

@@ -24,5 +24,15 @@
         android:layout_marginTop="@dimen/close_btn_margin_top"
         android:src="@drawable/btn_close_states" />
 
+    <ImageView
+        android:id="@+id/btnSet"
+        android:layout_width="222dp"
+        android:layout_height="96dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/set_btn_margin_bottom"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_set_states" />
+
 
 </merge>
