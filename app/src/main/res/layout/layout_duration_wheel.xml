@@ -24,8 +24,8 @@
         android:textStyle="bold" />
 
     <FrameLayout
-        android:layout_width="150dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/duration_wheel_frame_width"
+        android:layout_height="@dimen/duration_wheel_height"
         android:background="@drawable/wheel_4"
         android:foregroundGravity="center"
         android:paddingLeft="2dp"
@@ -33,8 +33,8 @@
 
         <antistatic.spinnerwheel.WheelHorizontalView
             android:id="@+id/whlDuration"
-            android:layout_width="140dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/duration_wheel_width"
+            android:layout_height="@dimen/duration_wheel_height"
             android:layout_marginLeft="3dp" />
     </FrameLayout>
 

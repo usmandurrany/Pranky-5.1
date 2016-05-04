@@ -3,6 +3,8 @@ package com.fournodes.ud.pranky.activities;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -55,9 +57,10 @@ public class AddSoundDialogActivity extends Activity {
         setContentView(R.layout.activity_dialog_addsound);
         onWindowFocusChanged(true);
         previewMediaPlayer = PreviewMediaPlayer.getInstance(this);
-
+        int color = Color.parseColor("#f27d13");
         db = new DatabaseHelper(AddSoundDialogActivity.this);
         eTextFileName = (EditText) findViewById(R.id.txtSelSound);
+        eTextFileName.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         eTextFileName.setTypeface(FontManager.getTypeFace(this, SharedPrefs.DEFAULT_FONT));
         ImageView buttonBrowse = (ImageView) findViewById(R.id.btnMusicToggle);
         ImageView buttonClose = (ImageView) findViewById(R.id.btnClose);

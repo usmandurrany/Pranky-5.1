@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -114,6 +116,8 @@ public class PrankDialogActivity extends Activity {
         ImageView btndiagclose = (ImageView) findViewById(R.id.btnClose);
         final ImageView btnset = (ImageView) findViewById(R.id.btnSet);
         frndID = (EditText) findViewById(R.id.txtfrndID);
+        int color = Color.parseColor("#f27d13");
+        frndID.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         ImageView btnShowContacts = (ImageView) findViewById(R.id.btnShowContacts);
         btnShowContacts.setOnClickListener(new View.OnClickListener() {
             @Override

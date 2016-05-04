@@ -9,7 +9,7 @@
     <dimen name="clock_btn_margin_bottom">60dp</dimen>
     <dimen name="clock_btn_margin_left">35dp</dimen>
 
-    <dimen name="set_btn_margin_bottom">128dp</dimen>
+    <dimen name="set_btn_margin_bottom">127dp</dimen>
 
     <dimen name="day_hh_mm_ss_margin_top">185dp</dimen>
 
@@ -30,7 +30,7 @@
     <dimen name="viewpager_padding_top">10dp</dimen>
 
 
-    <dimen name="save_btn_margin_bottom">108dp</dimen>
+    <dimen name="save_btn_margin_bottom">103dp</dimen>
     <dimen name="close_btn_margin_top_long">132dp</dimen>
     <dimen name="close_btn_margin_right_long">18dp</dimen>
     <dimen name="sel_sound_margin_top">210dp</dimen>
@@ -40,7 +40,7 @@
 
 
     <dimen name="sel_sound_h1">18dp</dimen>
-    <dimen name="sel_sound_txt_box">15dp</dimen>
+    <dimen name="sel_sound_txt_box">14sp</dimen>
     <dimen name="sel_sound_icon_scroll_width">160dp</dimen>
     <dimen name="sel_sound_icon_picker_margin_top">0dp</dimen>
 
@@ -83,6 +83,28 @@
 
     <dimen name="stroke_size">2dp</dimen>
     <dimen name="whl_duration_margin_bottom">-15dp</dimen>
+
+<dimen name="popup_bottom_button_width">180dp</dimen>    
+
+<dimen name="timer_wheel__width">40dp</dimen>    
+<dimen name="timer_wheel_height">80dp</dimen>
+<dimen name="timer_wheel_frame_height">90dp</dimen>
+
+<dimen name="duration_wheel_frame_width">120dp</dimen>        
+<dimen name="duration_wheel_width">110dp</dimen>        
+<dimen name="duration_wheel_height">35dp</dimen>
+
+
+<dimen name="clock_wheel_day_width">80dp</dimen>    
+<dimen name="clock_wheel_day_height">80dp</dimen>
+<dimen name="clock_wheel_frame_day_height">90dp</dimen>
+
+<dimen name="clock_wheel_ampm_width">45dp</dimen>    
+<dimen name="clock_wheel_ampm_height">80dp</dimen>
+<dimen name="clock_wheel_frame_ampm_height">90dp</dimen>
+
+<dimen name="wheel_item_text_size">16sp</dimen>
+<dimen name="wheel_frame_top_margin">5dp</dimen>
 
 
 </resources>

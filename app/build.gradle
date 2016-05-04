@@ -7,7 +7,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionName '1.3.0'
+        versionName '1.3.1'
     }
     buildTypes {
         release {
@@ -29,27 +29,27 @@ android {
         }
         mdpi {
             dimension "device"
-            versionCode 22160130
+            versionCode 22160131
         }
         hdpi {
             dimension "device"
-            versionCode 22240130
+            versionCode 22240131
         }
         xhdpi {
             dimension "device"
-            versionCode 22320130
+            versionCode 22320131
         }
         xxhdpi {
             dimension "device"
-            versionCode 22480130
+            versionCode 22480131
         }
         xxxhdpi {
             dimension "device"
-            versionCode 22560130
+            versionCode 22560131
         }
         xxx640 {
             dimension "device"
-            versionCode 22640130
+            versionCode 22640131
         }
     }
 }
